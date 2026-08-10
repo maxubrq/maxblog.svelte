@@ -1,33 +1,38 @@
 <script lang="ts">
-	// The hub — four doorways. Hover flips the whole cell to solid blue (§8).
+	// The hub — the doorways. Hover flips the whole cell to solid blue (§8).
 	import Headline from '$lib/components/ink/Headline.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { pad } from '$lib/format';
+	import { href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	const i18n = useI18n();
+	const t = $derived(i18n.t);
+	const blurb = (name: string) => t.topicBlurbs[name as keyof typeof t.topicBlurbs] ?? '';
 </script>
 
 <svelte:head>
-	<title>topics — {site.name}</title>
-	<meta name="description" content="Four doorways: science, tech, philosophy, art." />
+	<title>{t.nav.topics.toLowerCase()} — {site.name}</title>
+	<meta name="description" content={t.topics.hubIndex} />
 </svelte:head>
 
 <section class="head">
-	<Tag>Topics / {data.doorways.length} doorways</Tag>
-	<Headline text="the ways in." accent="in." size={60} />
+	<Tag>{t.topics.hubIndex} / {data.doorways.length} {t.topics.doorways}</Tag>
+	<Headline text={t.topics.hubTitle} accent={t.topics.hubTitleAccent} size={60} />
 </section>
 
 <section class="grid">
-	{#each data.doorways as t, i (t.slug)}
-		<a class="door" href={`/topics/${t.slug}`}>
+	{#each data.doorways as d, i (d.slug)}
+		<a class="door" href={href(i18n.lang, `/topics/${d.slug}`)}>
 			<div class="row">
 				<span class="num">{pad(i + 1)}</span>
-				<Tag>{t.count} {t.count === 1 ? 'essay' : 'essays'}</Tag>
+				<Tag>{d.count} {d.count === 1 ? t.topics.essay : t.topics.essays}</Tag>
 			</div>
-			<h2>{t.name}</h2>
-			<p>{t.blurb}</p>
+			<h2>{d.name}</h2>
+			<p>{blurb(d.name)}</p>
 		</a>
 	{/each}
 </section>

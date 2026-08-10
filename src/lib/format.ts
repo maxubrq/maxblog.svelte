@@ -38,9 +38,10 @@ export function yearMonth(iso: string) {
 	return `${y}·${pad(m)}`;
 }
 
-/** `Apr 14, 2026` — the margin rail's `published` value. */
-export function long(iso: string) {
+/** `Apr 14, 2026` · `14 thg 4, 2026` — the margin rail's `published` value. */
+export function long(iso: string, lang: 'en' | 'vi' = 'en') {
 	const { y, m, d } = parts(iso);
+	if (lang === 'vi') return `${d} thg ${m}, ${y}`;
 	return `${MONTHS[m - 1]} ${d}, ${y}`;
 }
 

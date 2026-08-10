@@ -9,31 +9,35 @@
 	import OneSentence from '$lib/components/article/OneSentence.svelte';
 	import WeatherStrip from '$lib/components/article/WeatherStrip.svelte';
 	import { long, thousands } from '$lib/format';
+	import { href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	const i18n = useI18n();
+	const t = $derived(i18n.t);
 
 	const meta = $derived(data.meta);
 	const Content = $derived(data.content);
 
 	const rail = $derived(
 		[
-			['Author', site.author],
-			['Published', long(meta.date)],
-			['Reading', `${meta.reading} minutes`],
-			meta.section ? ['Section', meta.section] : null,
-			meta.chapter ? ['Chapter', meta.chapter] : null,
-			meta.coord ? ['Coord', meta.coord] : null
+			[t.article.author, site.author],
+			[t.article.published, long(meta.date, meta.lang)],
+			[t.article.reading, `${meta.reading} ${t.article.minutes}`],
+			meta.section ? [t.article.section, meta.section] : null,
+			meta.chapter ? [t.article.chapter, meta.chapter] : null,
+			meta.coord ? [t.article.coord, meta.coord] : null
 		].filter(Boolean) as [string, string][]
 	);
 
 	const foot = $derived(
 		[
-			['Filed under', meta.topic],
-			meta.series ? ['Series', meta.series] : null,
-			['License', meta.license ?? site.license],
-			['Words', thousands(meta.words)]
+			[t.article.filedUnder, meta.topic],
+			meta.series ? [t.article.series, meta.series] : null,
+			[t.article.license, meta.license ?? site.license],
+			[t.article.words, thousands(meta.words)]
 		].filter(Boolean) as [string, string][]
 	);
 </script>
@@ -52,12 +56,16 @@
 	<header>
 		<div class="tags">
 			<Tag on>{meta.topic}</Tag>
-			{#if meta.interactive}<Tag>● Interactive</Tag>{/if}
+			{#if meta.interactive}<Tag>● {t.article.interactive}</Tag>{/if}
 			{#if meta.chapter}<Tag>{meta.chapter}</Tag>{/if}
-			{#if meta.draft}<Tag>Draft — unlisted</Tag>{/if}
+			{#if meta.draft}<Tag>{t.article.draft}</Tag>{/if}
 			{#if data.translation}
-				<a class="translation" href={`/writing/${data.translation.slug}`}
-					>{data.translation.lang === 'vi' ? 'đọc bản tiếng việt' : 'read in english'} →</a
+				<a
+					class="translation"
+					hreflang={data.translation.lang}
+					rel="alternate"
+					href={href(data.translation.lang, `/writing/${data.translation.slug}`)}
+					>{t.article.readInOther}</a
 				>
 			{/if}
 		</div>
@@ -87,18 +95,18 @@
 			{#if meta.rememberSentence}
 				<OneSentence
 					sentence={meta.rememberSentence}
-					attribution={meta.rememberAttribution ?? 'the author’s pick'}
+					attribution={meta.rememberAttribution ?? t.article.authorsPick}
 				/>
 			{/if}
 
 			{#if meta.neighborhood?.length}
 				<section class="hood">
 					<div class="hood-head">
-						<span class="hood-title">in this neighborhood</span>
-						<Tag>hand-picked, by me</Tag>
+						<span class="hood-title">{t.article.neighborhood}</span>
+						<Tag>{t.article.handPicked}</Tag>
 					</div>
 					{#each meta.neighborhood as n (n.slug)}
-						<a class="hood-row" href={`/writing/${n.slug}`}>
+						<a class="hood-row" href={href(i18n.lang, `/writing/${n.slug}`)}>
 							<span class="hood-row-head">
 								<span class="hood-row-title">{n.title}</span>
 								<Tag>{[n.relation, n.min ? `${n.min}′` : null].filter(Boolean).join(' · ')}</Tag>

@@ -4,46 +4,43 @@
 	import Headline from '$lib/components/ink/Headline.svelte';
 	import IndexRow from '$lib/components/ink/IndexRow.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
-	import { preferLang } from '$lib/content/group';
 	import { short, year } from '$lib/format';
+	import { fill, href, useI18n } from '$lib/i18n';
 	import { site, topics } from '$lib/site';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
-	let filter = $state('All');
-	let lang = $state<'en' | 'vi'>(site.defaultLang);
+	const i18n = useI18n();
+	const t = $derived(i18n.t);
 
-	const options = ['All', ...topics.map((t) => t.name)];
-	// One row per essay; the toggle decides which translation is listed.
-	const inLang = $derived(preferLang(data.posts, lang));
-	const visible = $derived(filter === 'All' ? inLang : inLang.filter((p) => p.topic === filter));
+	let filter = $state('All');
+
+	// Values stay canonical (they match `topic` in frontmatter); only the "All"
+	// button is translated.
+	const options = $derived(['All', ...topics.map((x) => x.name)]);
+	const label = (o: string) => (o === 'All' ? t.writing.filterAll : o);
+
+	const visible = $derived(
+		filter === 'All' ? data.posts : data.posts.filter((p) => p.topic === filter)
+	);
 	const years = $derived([...new Set(visible.map((p) => year(p.date)))]);
 </script>
 
 <svelte:head>
-	<title>writing — {site.name}</title>
-	<meta name="description" content="Every essay, in order of when." />
+	<title>{t.writing.label.toLowerCase()} — {site.name}</title>
+	<meta name="description" content={t.writing.title} />
 </svelte:head>
 
 <section class="head">
-	<div class="head-row">
-		<Tag>Writing / {inLang.length} {inLang.length === 1 ? 'essay' : 'essays'}</Tag>
-		<span class="langs">
-			{#each ['en', 'vi'] as const as l (l)}
-				<button
-					type="button"
-					class:on={lang === l}
-					aria-pressed={lang === l}
-					onclick={() => (lang = l)}>{l}</button
-				>
-			{/each}
-		</span>
-	</div>
-	<Headline text="everything, in order of when." accent="when." size={60} />
+	<Tag
+		>{t.writing.label} / {data.posts.length}
+		{data.posts.length === 1 ? t.writing.essay : t.writing.essays}</Tag
+	>
+	<Headline text={t.writing.title} accent={t.writing.titleAccent} size={60} />
 </section>
 
-<FilterBar {options} value={filter} onchange={(v) => (filter = v)} />
+<FilterBar {options} {label} value={filter} onchange={(v) => (filter = v)} />
 
 <section class="list">
 	{#each years as y (y)}
@@ -55,7 +52,7 @@
 			{#each visible.filter((p) => year(p.date) === y) as p (p.slug)}
 				<li>
 					<IndexRow
-						href={p.href}
+						href={href(i18n.lang, `/writing/${p.slug}`)}
 						lead={short(p.date)}
 						topic={p.topic}
 						title={p.title}
@@ -68,7 +65,7 @@
 		</ul>
 	{/each}
 	{#if visible.length === 0}
-		<p class="empty"><Tag>nothing filed under {filter} yet</Tag></p>
+		<p class="empty"><Tag>{fill(t.writing.empty, { topic: label(filter) })}</Tag></p>
 	{/if}
 </section>
 
@@ -79,35 +76,6 @@
 	}
 	.head :global(h1) {
 		margin-top: 14px;
-	}
-	.head-row {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 16px;
-	}
-	.langs {
-		display: inline-flex;
-		border: 1.5px solid var(--rule-hard);
-	}
-	.langs button {
-		border: none;
-		border-right: 1px solid var(--rule);
-		background: transparent;
-		color: var(--ink);
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		padding: 4px 10px;
-		cursor: pointer;
-	}
-	.langs button:last-child {
-		border-right: none;
-	}
-	.langs button.on {
-		background: var(--blue);
-		color: var(--on-blue);
 	}
 	.list {
 		padding: 0 var(--pad-chrome) 30px;

@@ -5,41 +5,45 @@
 	import IndexRow from '$lib/components/ink/IndexRow.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { dots, pad } from '$lib/format';
+	import { href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	const i18n = useI18n();
+	const t = $derived(i18n.t);
 </script>
 
 <svelte:head>
-	<title>{site.name} — a notebook, kept in public</title>
-	<meta name="description" content={site.description} />
+	<title>{site.name} — {t.footer.tagline}</title>
+	<meta name="description" content={t.home.description} />
 </svelte:head>
 
 <!-- Masthead -->
 <section class="masthead">
 	<div class="labels">
-		<Tag>Est. 2024 — a notebook</Tag>
-		<Tag>Nº 001 / index</Tag>
+		<Tag>{t.home.tagline}</Tag>
+		<Tag>{t.home.mastheadIndex}</Tag>
 	</div>
 	<Headline
-		text={'writing, mostly about things that take a while.'}
-		accent="while."
+		text={t.home.headline}
+		accent={t.home.headlineAccent}
 		mark="scribble"
 		size={72}
 		markWidth={230}
 	/>
-	<p class="deck">{site.description} Updated roughly monthly, or when I have something to say.</p>
+	<p class="deck">{t.home.description}</p>
 </section>
 
 <!-- Featured — the latest essay as a full-bleed division -->
 {#if data.featured}
 	{@const f = data.featured}
 	<section class="featured">
-		<a class="cell" href={f.href}>
+		<a class="cell" href={href(i18n.lang, `/writing/${f.slug}`)}>
 			<div class="tags">
-				{#if f.interactive}<Tag on>● Interactive</Tag>{/if}
-				<Tag>Latest / {f.topic}</Tag>
+				{#if f.interactive}<Tag on>● {t.home.interactive}</Tag>{/if}
+				<Tag>{t.home.latestLabel} / {f.topic}</Tag>
 			</div>
 			<div class="number">01</div>
 			<h2>{f.title}</h2>
@@ -47,12 +51,12 @@
 				<p>{f.subtitle ?? f.description}</p>
 			{/if}
 			<span class="cta">
-				read the essay
+				{t.home.readEssay}
 				<ArrowMark left={130} top={-6} w={90} />
 			</span>
 		</a>
 		<div class="ink-duo plate">
-			<span class="plate-label">cyanotype plate</span>
+			<span class="plate-label">{t.home.coverPlate}</span>
 		</div>
 	</section>
 {/if}
@@ -60,14 +64,14 @@
 <!-- Recent -->
 <section class="recent">
 	<div class="head">
-		<Tag>Archive / recent</Tag>
-		<a class="all" href="/writing">all essays →</a>
+		<Tag>{t.home.archiveRecent}</Tag>
+		<a class="all" href={href(i18n.lang, '/writing')}>{t.home.allEssays}</a>
 	</div>
 	<ul>
 		{#each data.recent as p, i (p.slug)}
 			<li>
 				<IndexRow
-					href={p.href}
+					href={href(i18n.lang, `/writing/${p.slug}`)}
 					lead={pad(i + 2)}
 					topic={p.topic}
 					title={p.title}

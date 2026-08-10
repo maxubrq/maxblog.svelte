@@ -2,29 +2,37 @@
 	// A topic as its own oversized cover, then the essays as two-up cells.
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { pad, yearMonth } from '$lib/format';
+	import { href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	const i18n = useI18n();
+	const t = $derived(i18n.t);
+	const blurb = $derived(t.topicBlurbs[data.topic.name as keyof typeof t.topicBlurbs] ?? '');
 </script>
 
 <svelte:head>
 	<title>{data.topic.name.toLowerCase()} — {site.name}</title>
-	<meta name="description" content={data.topic.blurb} />
+	<meta name="description" content={blurb} />
 </svelte:head>
 
 <section class="cover">
 	<div class="row">
-		<Tag on>Topic {pad(data.index)} / {pad(data.of)}</Tag>
-		<Tag>{data.posts.length} {data.posts.length === 1 ? 'essay' : 'essays'}</Tag>
+		<Tag on>{t.topics.topicLabel} {pad(data.index)} / {pad(data.of)}</Tag>
+		<Tag
+			>{data.posts.length}
+			{data.posts.length === 1 ? t.topics.essay : t.topics.essays}</Tag
+		>
 	</div>
 	<h1>{data.topic.name}</h1>
-	<p>{data.topic.blurb}</p>
+	<p>{blurb}</p>
 </section>
 
 <section class="grid">
 	{#each data.posts as p, i (p.slug)}
-		<a class="cell" href={p.href}>
+		<a class="cell" href={href(i18n.lang, `/writing/${p.slug}`)}>
 			<div class="row">
 				<span class="num">{pad(i + 1)}</span>
 				<Tag
@@ -35,7 +43,7 @@
 			{#if p.subtitle}<p class="deck">{p.subtitle}</p>{/if}
 		</a>
 	{:else}
-		<p class="empty"><Tag>nothing filed here yet</Tag></p>
+		<p class="empty"><Tag>{t.topics.empty}</Tag></p>
 	{/each}
 </section>
 

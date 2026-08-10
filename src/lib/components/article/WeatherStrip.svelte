@@ -3,14 +3,20 @@
 	// A scannable strip of facts, plus one hand-written honest line (never
 	// invented). Difficulty shows as squares; the number is never printed.
 	import type { Weather } from '$lib/content/posts';
+	import { useI18n } from '$lib/i18n';
 
 	let { weather }: { weather: Weather } = $props();
 
+	const t = $derived(useI18n().t.weather);
+
 	const chips = $derived(
 		[
-			['◔ read time', weather.oneSitting ? `${weather.time} · one sitting` : weather.time],
-			weather.needFirst ? ['need first', weather.needFirst] : null,
-			weather.bestWhen ? ['best when', weather.bestWhen] : null
+			[
+				t.readTime,
+				weather.oneSitting ? `${weather.time} · ${t.oneSitting}` : weather.time
+			],
+			weather.needFirst ? [t.needFirst, weather.needFirst] : null,
+			weather.bestWhen ? [t.bestWhen, weather.bestWhen] : null
 		].filter(Boolean) as [string, string][]
 	);
 </script>
@@ -22,7 +28,7 @@
 			<div class="v">{chips[0][1]}</div>
 		</div>
 		<div class="chip bordered">
-			<div class="k">load</div>
+			<div class="k">{t.load}</div>
 			<div class="v">
 				<span class="load">
 					{#each Array(5) as _, i (i)}
@@ -40,7 +46,7 @@
 	</div>
 	{#if weather.warn}
 		<div class="warn">
-			<span class="warn-k">honest ↴</span>
+			<span class="warn-k">{t.honest}</span>
 			<span class="warn-v">{weather.warn}</span>
 		</div>
 	{/if}

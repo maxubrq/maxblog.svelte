@@ -1,14 +1,25 @@
 <script lang="ts">
+	// Shown outside a locale layout too (a bad prefix), so it reads the locale
+	// from the URL rather than context, and falls back to the default.
 	import { page } from '$app/state';
 	import Headline from '$lib/components/ink/Headline.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
+	import { href, messages, type Lang } from '$lib/i18n';
+	import { site } from '$lib/site';
+
+	const lang = $derived(
+		((page.params.lang ?? site.defaultLang) as Lang) in messages
+			? ((page.params.lang ?? site.defaultLang) as Lang)
+			: site.defaultLang
+	);
+	const t = $derived(messages[lang]);
 </script>
 
 <section>
 	<Tag on>Error {page.status}</Tag>
-	<Headline text="this page is not in the index." accent="not" size={52} />
-	<p>{page.error?.message ?? 'Something is missing.'}</p>
-	<a href="/writing">← back to the archive</a>
+	<Headline text={t.error.title} accent={t.error.titleAccent} size={52} />
+	<p>{page.error?.message ?? ''}</p>
+	<a href={href(lang, '/writing')}>{t.error.back}</a>
 </section>
 
 <style>

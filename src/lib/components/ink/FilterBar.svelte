@@ -1,16 +1,25 @@
 <script lang="ts">
 	// Full-width row of equal MONO buttons divided by hairlines;
 	// active = solid blue fill (§7, §8).
+	// `value` stays canonical; `label` translates it for display only.
 	let {
 		options,
 		value,
-		onchange
-	}: { options: string[]; value: string; onchange: (v: string) => void } = $props();
+		onchange,
+		label = (o: string) => o
+	}: {
+		options: string[];
+		value: string;
+		onchange: (v: string) => void;
+		label?: (option: string) => string;
+	} = $props();
 </script>
 
 <div class="bar">
 	{#each options as opt (opt)}
-		<button type="button" class:active={opt === value} onclick={() => onchange(opt)}>{opt}</button>
+		<button type="button" class:active={opt === value} onclick={() => onchange(opt)}
+			>{label(opt)}</button
+		>
 	{/each}
 </div>
 

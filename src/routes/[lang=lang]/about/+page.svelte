@@ -1,67 +1,74 @@
 <script lang="ts">
-	// About — a notebook, kept in public. Colophon + the four subjects + elsewhere.
+	// About — a notebook, kept in public. Colophon + the subjects + elsewhere.
 	import Headline from '$lib/components/ink/Headline.svelte';
-	import Tag from '$lib/components/ink/Tag.svelte';
 	import MetaRail from '$lib/components/ink/MetaRail.svelte';
+	import Tag from '$lib/components/ink/Tag.svelte';
+	import { href, useI18n } from '$lib/i18n';
 	import { site, topics } from '$lib/site';
 
-	const rail: [string, string][] = [
-		['Who', site.author],
-		['Since', '2024'],
-		['Cadence', '~monthly'],
-		['Type', 'Space Grotesk / Plex']
-	];
+	const i18n = useI18n();
+	const t = $derived(i18n.t);
+
+	const rail = $derived(
+		[
+			[t.about.metaWho, site.author],
+			[t.about.metaSince, '2024'],
+			[t.about.metaCadence, t.about.metaCadenceVal],
+			[t.about.metaType, t.about.metaTypeVal]
+		] as [string, string][]
+	);
 </script>
 
 <svelte:head>
-	<title>about — {site.name}</title>
-	<meta name="description" content="A notebook, kept in public." />
+	<title>{t.nav.about.toLowerCase()} — {site.name}</title>
+	<meta name="description" content={t.about.heading} />
 </svelte:head>
 
 <section class="split">
 	<div class="cell">
-		<Tag>About / colophon</Tag>
-		<Headline text="a notebook, kept in public." accent="public" mark="scribble" size={52} markWidth={210} />
+		<Tag>{t.about.label}</Tag>
+		<Headline
+			text={t.about.heading}
+			accent={t.about.headingAccent}
+			mark="scribble"
+			size={52}
+			markWidth={210}
+		/>
 	</div>
-	<div class="ink-duo portrait"><span class="label">portrait plate</span></div>
+	<div class="ink-duo portrait"><span class="label">{t.about.portraitPlate}</span></div>
 </section>
 
 <section class="body">
 	<MetaRail items={rail} />
 
 	<div class="measure">
-		<p>
-			I'm <strong>{site.author}</strong>. I write here about things that feel worth thinking about
-			slowly: a physics problem that stuck with me, a piece of software I finally understood, a
-			painting I kept coming back to, a sentence that would not leave me alone.
-		</p>
-		<p>
-			Some essays come with a thing you can play with — a small simulation, a diagram that responds
-			to a slider. I think of writing and interaction as the same craft: both are attempts to hand
-			someone a thought in a form they can turn over.
-		</p>
+		<!-- The catalog carries a <strong> in the bio; the strings are ours, not input. -->
+		<p>{@html t.about.bio1}</p>
+		<p>{@html t.about.bio2}</p>
 
-		<h2>what i write about</h2>
+		<h2>{t.about.topicsHeading}</h2>
 		<ul class="subjects">
-			{#each topics as t (t.slug)}
+			{#each topics as topic (topic.slug)}
 				<li>
-					<a href={`/topics/${t.slug}`}><Tag on>{t.name}</Tag></a>
-					<div class="blurb">{t.blurb}</div>
+					<a href={href(i18n.lang, `/topics/${topic.slug}`)}><Tag on>{topic.name}</Tag></a>
+					<div class="blurb">
+						{t.topicBlurbs[topic.name as keyof typeof t.topicBlurbs] ?? ''}
+					</div>
 				</li>
 			{/each}
 		</ul>
 
-		<h2>elsewhere</h2>
+		<h2>{t.about.elsewhereHeading}</h2>
 		<ul class="elsewhere">
-			{#each site.elsewhere as [k, v, href] (k)}
+			{#each site.elsewhere as [key, value, url] (key)}
 				<li>
-					<Tag>{k}</Tag>
-					<a {href}>{v}</a>
+					<Tag>{key}</Tag>
+					<a href={url.startsWith('/') ? href(i18n.lang, url) : url}>{value}</a>
 				</li>
 			{/each}
 		</ul>
 
-		<p class="thanks">Cảm ơn bạn đã ghé qua. — Thanks for stopping by.</p>
+		<p class="thanks">{t.about.farewell}</p>
 	</div>
 </section>
 
@@ -113,7 +120,7 @@
 		line-height: 1.62;
 		margin: 0 0 1.2em;
 	}
-	strong {
+	.measure p :global(strong) {
 		font-weight: 600;
 	}
 	h2 {

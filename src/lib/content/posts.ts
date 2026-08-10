@@ -1,7 +1,5 @@
 import type { Component } from 'svelte';
-import { groupOf, preferLang } from './group';
-
-export { preferLang };
+import { groupOf } from './group';
 
 /** A hand-picked neighbour, as authored in frontmatter (`neighborhood:`). */
 export interface Neighbour {

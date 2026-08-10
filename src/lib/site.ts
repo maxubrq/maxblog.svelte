@@ -19,31 +19,18 @@ export const site = {
 	] as const
 };
 
-/** The four doorways (§ topic pages). Order is the numbering on the hub. */
+/**
+ * The doorways (§ topic pages). Order is the numbering on the hub. `name` is
+ * canonical — it must match `topic` in frontmatter — and is not translated;
+ * the blurbs live in the i18n catalogs (`topicBlurbs`).
+ */
 export const topics = [
-	{
-		slug: 'science',
-		name: 'Science',
-		blurb:
-			'Mostly physics and math, sometimes biology. The essays that begin with a small mechanical fact and end somewhere I did not expect.'
-	},
-	{
-		slug: 'tech',
-		name: 'Tech',
-		blurb: 'Software, and the shape of thinking it asks of you.'
-	},
-	{
-		slug: 'philosophy',
-		name: 'Philosophy',
-		blurb: 'Attention, time, what it means to know a thing.'
-	},
-	{ slug: 'art', name: 'Art', blurb: 'Painting, music, the logic of composition.' },
-	{
-		slug: 'thinking',
-		name: 'Thinking',
-		blurb: 'Looking back, and looking at how the looking is done.'
-	},
-	{ slug: 'notes', name: 'Notes', blurb: 'Shorter pieces — a single idea, kept.' }
+	{ slug: 'science', name: 'Science' },
+	{ slug: 'tech', name: 'Tech' },
+	{ slug: 'philosophy', name: 'Philosophy' },
+	{ slug: 'art', name: 'Art' },
+	{ slug: 'thinking', name: 'Thinking' },
+	{ slug: 'notes', name: 'Notes' }
 ] as const;
 
 export type TopicSlug = (typeof topics)[number]['slug'];
