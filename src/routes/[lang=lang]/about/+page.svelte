@@ -4,6 +4,7 @@
 	import MetaRail from '$lib/components/ink/MetaRail.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { href, useI18n } from '$lib/i18n';
+	import { AUTHOR_PORTRAIT, cloudinary, srcsetFor } from '$lib/images';
 	import { site, topics } from '$lib/site';
 
 	const i18n = useI18n();
@@ -35,7 +36,16 @@
 			markWidth={210}
 		/>
 	</div>
-	<div class="ink-duo portrait"><span class="label">{t.about.portraitPlate}</span></div>
+	<div class="ink-screen portrait">
+		<img
+			class="fill"
+			src={cloudinary(AUTHOR_PORTRAIT, { width: 1080, halftone: 'fine' })}
+			srcset={srcsetFor(AUTHOR_PORTRAIT, { halftone: 'fine' })}
+			sizes="(max-width: 860px) 100vw, 50vw"
+			alt=""
+			decoding="async"
+		/>
+	</div>
 </section>
 
 <section class="body">
@@ -87,20 +97,6 @@
 	}
 	.portrait {
 		min-height: 260px;
-	}
-	.label {
-		position: absolute;
-		inset: 0;
-		z-index: 3;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: #fff;
-		opacity: 0.55;
 	}
 
 	.body {

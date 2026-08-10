@@ -6,6 +6,7 @@
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { dots, pad } from '$lib/format';
 	import { href, useI18n } from '$lib/i18n';
+	import { cloudinary, coverImageFor, srcsetFor } from '$lib/images';
 	import { site } from '$lib/site';
 	import type { PageData } from './$types';
 
@@ -13,6 +14,7 @@
 
 	const i18n = useI18n();
 	const t = $derived(i18n.t);
+	const cover = $derived(coverImageFor(data.featured?.coverImage));
 </script>
 
 <svelte:head>
@@ -55,8 +57,16 @@
 				<ArrowMark left={130} top={-6} w={90} />
 			</span>
 		</a>
-		<div class="ink-duo plate">
-			<span class="plate-label">{t.home.coverPlate}</span>
+		<!-- Cyanotype plate — the post's cover, or the branded default. -->
+		<div class="ink-screen plate">
+			<img
+				class="fill"
+				src={cloudinary(cover, { width: 1080, halftone: 'screen' })}
+				srcset={srcsetFor(cover, { halftone: 'screen' })}
+				sizes="(max-width: 860px) 100vw, 45vw"
+				alt=""
+				decoding="async"
+			/>
 		</div>
 	</section>
 {/if}
@@ -162,20 +172,6 @@
 
 	.plate {
 		min-height: 300px;
-	}
-	.plate-label {
-		position: absolute;
-		inset: 0;
-		z-index: 3;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: #fff;
-		opacity: 0.55;
 	}
 
 	.recent {

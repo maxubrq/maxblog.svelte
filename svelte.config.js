@@ -3,6 +3,7 @@ import { mdsvex } from 'mdsvex';
 import { fileURLToPath } from 'node:url';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
+import rehypeSlug from 'rehype-slug';
 import { injectComponents } from './src/lib/content/inject-components.js';
 import { readingTime } from './src/lib/content/reading-time.js';
 
@@ -24,7 +25,11 @@ const config = {
 			// rehype-katex 4). `$x$` and `$$…$$` are rendered at build time, so no
 			// KaTeX JS ships to the reader — only its stylesheet.
 			remarkPlugins: [remarkMath, readingTime],
-			rehypePlugins: [[rehypeKatex, { strict: false, output: 'html' }]]
+			// rehype-slug gives every heading the `id` the search index points at
+			// (github-slugger's rule; the corpus runs the same slugger, so the two
+			// cannot drift). It goes before KaTeX so a heading with math slugs off
+			// the source text rather than the <span class="katex"> tree.
+			rehypePlugins: [rehypeSlug, [rehypeKatex, { strict: false, output: 'html' }]]
 		})
 	],
 	kit: {

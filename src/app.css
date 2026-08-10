@@ -21,6 +21,12 @@
 	   always white, so the field has to move instead). */
 	--panel-blue: var(--blue);
 	--on-blue: #ffffff;
+	/* A halftone plate is printed in ONE colour — whichever one this theme is
+	   loudest in. The plate arrives 1-bit from the CDN and CSS inks it; see
+	   `.ink-screen` for how the two blends divide dots from paper. */
+	--screen-ink: var(--blue);
+	--screen-blend: multiply;
+	--screen-ink-blend: lighten;
 
 	/* Viz palette — the one sanctioned exception (§11). Plotted marks only. */
 	--viz-blue: var(--blue);
@@ -42,12 +48,12 @@
 	--index-max: 1080px;
 }
 
-:root:not([data-theme='light']) {
+:root:not([data-theme='light']):not([data-theme='dusk']) {
 	color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) {
+	:root:not([data-theme='light']):not([data-theme='dusk']) {
 		--paper: #0d0d11;
 		--paper2: #16161c;
 		--ink: #d8d8dd;
@@ -59,6 +65,11 @@
 		--blue-deep: #5560ff;
 		--panel-blue: var(--blue-deep);
 		--on-blue: #ffffff;
+		/* Night: violet, not blue — on ink paper the blue has already been
+		   brightened for text, and a plate needs its own loudest colour. */
+		--screen-ink: #a97ef0;
+		--screen-blend: screen;
+		--screen-ink-blend: darken;
 		--viz-clay: #f0794a;
 		--viz-gold: #e0aa2e;
 		--viz-moss: #5bb98a;
@@ -66,6 +77,28 @@
 		--viz-red: #f0645c;
 		color-scheme: dark;
 	}
+}
+
+/* Dusk — warm paper. Between day and night: same ink-blue, lower glare, the
+   page turns the colour of a lamp-lit book. Contrast stays AA+ on body text. */
+:root[data-theme='dusk'] {
+	--paper: #f4f1ea;
+	--paper2: #eae6dc;
+	--ink: #2a2620;
+	--muted: #7d766a;
+	--faint: #a9a294;
+	--rule: rgba(42, 38, 32, 0.16);
+	--rule-hard: #2a2620;
+	--blue: #1a24df;
+	--blue-deep: #0f1699;
+	--panel-blue: var(--blue);
+	--on-blue: #ffffff;
+	--viz-clay: #c04512;
+	--viz-gold: #a3740a;
+	--viz-moss: #276b4a;
+	--viz-plum: #5e2ea6;
+	--viz-red: #ac2020;
+	color-scheme: light;
 }
 
 :root[data-theme='dark'] {
@@ -80,6 +113,10 @@
 	--blue-deep: #5560ff;
 	--panel-blue: var(--blue-deep);
 	--on-blue: #ffffff;
+	/* Night: violet, not blue — see the note in the media-query mirror above. */
+	--screen-ink: #a97ef0;
+	--screen-blend: screen;
+	--screen-ink-blend: darken;
 	--viz-clay: #f0794a;
 	--viz-gold: #e0aa2e;
 	--viz-moss: #5bb98a;
@@ -172,6 +209,12 @@ hr {
 	object-fit: cover;
 	filter: grayscale(1) contrast(1.06) brightness(1.03);
 }
+/* A plate that fills its cell rather than setting the cell's height: the cover
+   on the home division, the portrait on /about. The cell owns the shape. */
+.ink-duo > img.fill {
+	position: absolute;
+	inset: 0;
+}
 .ink-duo::after {
 	content: '';
 	position: absolute;
@@ -194,6 +237,49 @@ hr {
 }
 .ink-hatch {
 	background-image: repeating-linear-gradient(-45deg, var(--blue) 0 1.5px, transparent 1.5px 7px);
+}
+
+/* ── Halftone plates (§2) ────────────────────────────────────────── */
+/* The other treatment: 1-bit dots instead of a duotone. The CDN does the
+   screening (see $lib/images) and hands back black dots on white paper; the
+   colour is put on here, so one file serves every theme and switching theme
+   fetches nothing.
+   Two blends, in order, and they mirror each other by theme.
+   First the plate is seated on the page's own paper — that is what the
+   container's background is for, so the plate's field is never a white
+   rectangle pasted on warm or ink paper. On paper `multiply` keeps the dots and
+   lets --paper through everywhere else; on ink paper `screen` does the mirror.
+   Then ::after floods the plate with --screen-ink, and `lighten` (on paper) /
+   `darken` (on ink paper) admits that colour on the dots only: the field is
+   already past the ink in every channel, so it survives untouched.
+   Result in every theme: dots in the theme's loudest colour, on its own paper.
+   `isolation` keeps both blends inside the plate — without it the page behind
+   joins in. */
+.ink-screen {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+	background: var(--paper);
+}
+.ink-screen > img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	mix-blend-mode: var(--screen-blend);
+}
+.ink-screen::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: var(--screen-ink);
+	mix-blend-mode: var(--screen-ink-blend);
+	pointer-events: none;
+	z-index: 1;
+}
+.ink-screen > img.fill {
+	position: absolute;
+	inset: 0;
 }
 
 /* ── Focus: a hard blue rule, never a glow ──────────────────────── */

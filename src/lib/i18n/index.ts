@@ -1,5 +1,5 @@
 import { getContext, setContext } from 'svelte';
-import { messages, type Lang, type Messages } from './messages';
+import { langs, messages, type Lang, type Messages } from './messages';
 
 export { fill, langs, messages, type Lang, type Messages } from './messages';
 
@@ -44,6 +44,47 @@ export function useI18n(): I18n {
 			other: 'vi' as Lang
 		}
 	);
+}
+
+/**
+ * Where the reader's own choice of locale is remembered. Written in the browser
+ * by the `[lang]` layout on every locale page, read on the server by `/` to
+ * decide where to send them. A cookie rather than localStorage because the
+ * decision has to be made before any JavaScript runs.
+ */
+export const LANG_COOKIE = 'lang';
+export const LANG_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
+
+export const isLang = (value: unknown): value is Lang =>
+	typeof value === 'string' && (langs as readonly string[]).includes(value);
+
+/**
+ * Pick a locale from an `Accept-Language` header — the reader's browser
+ * preference, used when they have no choice on record yet. Returns `null` when
+ * the header names nothing this site publishes, so the caller can fall back to
+ * the site default rather than guess.
+ *
+ * `vi-VN` counts as `vi`: the header carries regions, the site does not.
+ */
+export function negotiateLang(header: string | null): Lang | null {
+	if (!header) return null;
+
+	const ranked = header
+		.split(',')
+		.map((part) => {
+			const [tag, ...params] = part.trim().split(';');
+			const q = params.find((p) => p.trim().startsWith('q='));
+			return { tag: tag.trim().toLowerCase(), q: q ? Number(q.split('=')[1]) : 1 };
+		})
+		.filter((entry) => entry.tag && !Number.isNaN(entry.q) && entry.q > 0)
+		.sort((a, b) => b.q - a.q);
+
+	for (const { tag } of ranked) {
+		if (tag === '*') return null;
+		const base = tag.split('-')[0];
+		if (isLang(base)) return base;
+	}
+	return null;
 }
 
 /** `/writing` → `/vi/writing`. Paths are always authored locale-less. */

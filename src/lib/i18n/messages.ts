@@ -15,6 +15,10 @@ const en = {
 	nav: {
 		writing: 'Writing',
 		topics: 'Topics',
+		series: 'Series',
+		glossary: 'Glossary',
+		resources: 'Resources',
+		readingRoom: 'Reading Room',
 		about: 'About the Author'
 	},
 	locale: {
@@ -24,7 +28,64 @@ const en = {
 	},
 	footer: {
 		tagline: 'A notebook, kept in public · est. 2024',
-		search: 'Search the index'
+		search: 'Search the index',
+		readersSky: "the reader's sky"
+	},
+	search: {
+		label: 'search',
+		open: 'Open search',
+		hint: 'Search (⌘K)',
+		placeholder: 'search essays, sections, passages…',
+		close: 'esc to close',
+		loading: 'opening the index…',
+		failed: 'The index could not be loaded. Try again in a moment.',
+		scope: 'Scope',
+		all: 'All',
+		posts: 'Essays',
+		sections: 'Sections',
+		passages: 'Passages',
+		filterTopic: 'Filter by topic',
+		startTyping: 'Start typing, or try',
+		allPosts: 'Everything filed',
+		nothingFound: 'nothing found for “{q}”.',
+		clear: 'clear the query →',
+		result: 'result',
+		results: 'results',
+		essay: 'Essay',
+		section: 'Section',
+		passage: 'Passage',
+		inPost: 'in “{title}”',
+		fromPost: 'from “{title}”',
+		navigate: 'navigate',
+		openResult: 'open',
+		reopen: 'reopen anywhere',
+		closeKey: 'close',
+		typeToSearch: 'Type to search the index'
+	},
+	/** Display settings — the one dropdown in the header's right slot. */
+	reading: {
+		displaySettings: 'Display settings',
+		theme: 'theme',
+		themeDay: 'Day',
+		themeDusk: 'Dusk',
+		themeNight: 'Night',
+		sidenotes: 'notes',
+		layoutSingle: 'Inline',
+		layoutSidenote: 'Margin',
+		framing: 'interactive framing',
+		framingRule: 'Hair rule',
+		framingBleed: 'Full bleed',
+		framingCard: 'Inset card',
+		allPreferences: 'All reading preferences',
+		dropdownHint: 'Type size, measure and the reading cursor live there.'
+	},
+	/** Rooms that exist in the nav but are not written yet. */
+	placeholder: {
+		label: 'Not yet built',
+		title: 'this room is still being built.',
+		titleAccent: 'built.', // ink
+		body: 'It has a door in the nav so the shape of the site is honest, but nothing is filed here yet. Come back — or read what is already written.',
+		back: '← back to the archive'
 	},
 	home: {
 		tagline: 'A notebook · est. 2024',
@@ -126,6 +187,10 @@ const vi: typeof en = {
 	nav: {
 		writing: 'Bài viết',
 		topics: 'Chủ đề',
+		series: 'Tuyển tập',
+		glossary: 'Thuật ngữ',
+		resources: 'Tài nguyên',
+		readingRoom: 'Phòng đọc',
 		about: 'Về tác giả'
 	},
 	locale: {
@@ -134,7 +199,62 @@ const vi: typeof en = {
 	},
 	footer: {
 		tagline: 'Một cuốn sổ tay công khai · est. 2024',
-		search: 'Tìm trong mục lục'
+		search: 'Tìm trong mục lục',
+		readersSky: 'bầu trời của người đọc'
+	},
+	search: {
+		label: 'tìm',
+		open: 'Mở tìm kiếm',
+		hint: 'Tìm kiếm (⌘K)',
+		placeholder: 'tìm bài viết, mục, đoạn văn…',
+		close: 'esc để đóng',
+		loading: 'đang mở mục lục…',
+		failed: 'Không tải được mục lục. Thử lại sau giây lát.',
+		scope: 'Phạm vi',
+		all: 'Tất cả',
+		posts: 'Bài viết',
+		sections: 'Mục',
+		passages: 'Đoạn văn',
+		filterTopic: 'Lọc theo chủ đề',
+		startTyping: 'Gõ để tìm, hoặc thử',
+		allPosts: 'Toàn bộ mục lục',
+		nothingFound: 'không tìm thấy gì cho “{q}”.',
+		clear: 'xoá từ khoá →',
+		result: 'kết quả',
+		results: 'kết quả',
+		essay: 'Bài viết',
+		section: 'Mục',
+		passage: 'Đoạn văn',
+		inPost: 'trong “{title}”',
+		fromPost: 'từ “{title}”',
+		navigate: 'di chuyển',
+		openResult: 'mở',
+		reopen: 'mở lại ở bất kỳ đâu',
+		closeKey: 'đóng',
+		typeToSearch: 'Gõ để tìm trong mục lục'
+	},
+	reading: {
+		displaySettings: 'Tùy chỉnh hiển thị',
+		theme: 'nền',
+		themeDay: 'Ngày',
+		themeDusk: 'Chạng vạng',
+		themeNight: 'Đêm',
+		sidenotes: 'ghi chú lề',
+		layoutSingle: 'Trong cột',
+		layoutSidenote: 'Ngoài lề',
+		framing: 'khung hình tương tác',
+		framingRule: 'Kẻ mảnh',
+		framingBleed: 'Tràn lề',
+		framingCard: 'Khối nền',
+		allPreferences: 'Toàn bộ tùy chỉnh đọc',
+		dropdownHint: 'Cỡ chữ, độ dài dòng và con trỏ đọc nằm ở đó.'
+	},
+	placeholder: {
+		label: 'Chưa dựng xong',
+		title: 'căn phòng này vẫn đang được dựng.',
+		titleAccent: 'đang được dựng.',
+		body: 'Nó đã có một cánh cửa trên thanh điều hướng để hình dáng của trang là thật, nhưng chưa có gì được xếp vào đây. Hãy quay lại sau — hoặc đọc những gì đã viết.',
+		back: '← về lưu trữ'
 	},
 	home: {
 		tagline: 'Một cuốn sổ tay · est. 2024',

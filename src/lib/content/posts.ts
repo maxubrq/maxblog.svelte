@@ -56,6 +56,11 @@ export interface PostMeta {
 	series?: string;
 	/** Meta description + RSS summary + the deck on index pages. */
 	description?: string;
+	/**
+	 * The cover plate — a Cloudinary delivery URL, plain, with no transformations
+	 * in it (`$lib/images` adds those). Omit it for the branded default.
+	 */
+	coverImage?: string;
 	/** The author's pick — "if you remember one sentence". */
 	rememberSentence?: string;
 	rememberAttribution?: string;

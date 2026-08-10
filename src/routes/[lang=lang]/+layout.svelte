@@ -1,8 +1,11 @@
 <script lang="ts">
 	// InkChrome (§7): 3-col header · body · footer triplet — in the active locale.
 	import { page } from '$app/state';
+	import DisplaySettings from '$lib/components/chrome/DisplaySettings.svelte';
+	import SearchButton from '$lib/components/chrome/SearchButton.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
-	import { href, setI18n, swapLocale } from '$lib/i18n';
+	import { LANG_COOKIE, LANG_COOKIE_MAX_AGE, href, setI18n, swapLocale } from '$lib/i18n';
+	import { search, searchHotkey } from '$lib/search.svelte';
 	import { site } from '$lib/site';
 	import type { Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
@@ -12,19 +15,27 @@
 	// A getter, because this layout instance survives /en → /vi navigation.
 	const i18n = setI18n(() => data.lang);
 
+	/**
+	 * The seven doors, in the production blog's order. Four of them are still
+	 * placeholder rooms — they are in the nav anyway, because the shape of the
+	 * site is part of what the header says.
+	 */
 	const nav = $derived([
-		{ href: href(data.lang, '/writing'), key: 'writing', label: i18n.t.nav.writing },
-		{ href: href(data.lang, '/topics'), key: 'topics', label: i18n.t.nav.topics },
-		{ href: href(data.lang, '/about'), key: 'about', label: i18n.t.nav.about }
+		{ path: '/writing', key: 'writing', label: i18n.t.nav.writing },
+		{ path: '/topics', key: 'topics', label: i18n.t.nav.topics },
+		{ path: '/series', key: 'series', label: i18n.t.nav.series },
+		{ path: '/glossary', key: 'glossary', label: i18n.t.nav.glossary },
+		{ path: '/resources', key: 'resources', label: i18n.t.nav.resources },
+		{ path: '/reading-room', key: 'readingRoom', label: i18n.t.nav.readingRoom },
+		{ path: '/about', key: 'about', label: i18n.t.nav.about }
 	]);
 
 	// The locale root counts as writing — it *is* the index.
 	const current = $derived.by(() => {
 		const p = page.url.pathname.replace(/^\/(en|vi)/, '') || '/';
 		if (p === '/' || p.startsWith('/writing')) return 'writing';
-		if (p.startsWith('/topics')) return 'topics';
-		if (p.startsWith('/about')) return 'about';
-		return '';
+		const hit = nav.find((n) => n.path !== '/writing' && p.startsWith(n.path));
+		return hit?.key ?? '';
 	});
 
 	// On an article, the switch goes to that essay's translation (a different
@@ -36,6 +47,15 @@
 	);
 
 	const foot = $derived(page.data.foot ?? site.domain);
+
+	/**
+	 * Remember which edition the reader is actually reading, so `/` can send
+	 * them back here next time. Written on every locale page, not only when the
+	 * switcher is used — arriving on /vi from a link is a choice too.
+	 */
+	$effect(() => {
+		document.cookie = `${LANG_COOKIE}=${data.lang}; Path=/; Max-Age=${LANG_COOKIE_MAX_AGE}; SameSite=Lax`;
+	});
 </script>
 
 <svelte:head>
@@ -50,13 +70,15 @@
 	/>
 </svelte:head>
 
+<svelte:window onkeydown={searchHotkey} />
+
 <div class="root">
 	<header>
 		<a class="wordmark" href={href(data.lang)}>{site.name}<span class="dot">.</span></a>
 		<nav>
 			{#each nav as item (item.key)}
 				<a
-					href={item.href}
+					href={href(data.lang, item.path)}
 					class="navlink"
 					class:active={current === item.key}
 					aria-current={current === item.key ? 'page' : undefined}>{item.label}</a
@@ -64,21 +86,26 @@
 			{/each}
 		</nav>
 		<div class="slot">
+			<SearchButton />
+			<span class="divider"></span>
 			<a class="locale" href={switchHref} hreflang={i18n.other} rel="alternate"
 				>{i18n.t.locale.switch}</a
 			>
-			<Tag>{site.volume}</Tag>
-			<a
-				class="glyph"
-				href={href(data.lang, '/writing')}
-				aria-label={i18n.t.footer.search}>⌕</a
-			>
+			<DisplaySettings />
 		</div>
 	</header>
 
 	<main>
 		{@render children()}
 	</main>
+
+	<!-- Loaded on first open, never before: the overlay pulls in MiniSearch, and
+	     a reader who never searches should not pay for the engine. -->
+	{#if search.open}
+		{#await import('$lib/components/chrome/SearchOverlay.svelte') then Overlay}
+			<Overlay.default />
+		{/await}
+	{/if}
 
 	<footer>
 		<Tag>{foot}</Tag>
@@ -97,11 +124,18 @@
 		position: relative;
 	}
 
+	/* 3-slot header on a 1.5px rule: wordmark · centred MONO nav · tools (§7).
+	   Sticky, on solid paper, so the rule stays the site's top edge. */
 	header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
+		gap: 20px;
 		padding: 18px var(--pad-chrome);
+		background: var(--paper);
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 
@@ -120,19 +154,25 @@
 		color: var(--blue);
 	}
 
+	/* Hover = colour flip to blue, no motion. Active = blue + blue underline. */
 	nav {
 		display: flex;
-		gap: 22px;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
+		flex-wrap: wrap;
 	}
 	.navlink {
+		position: relative;
 		font-family: var(--mono);
-		font-size: 11.5px;
-		letter-spacing: 0.08em;
+		font-size: 11px;
+		letter-spacing: 0.1em;
 		text-transform: uppercase;
-		color: var(--ink);
+		white-space: nowrap;
+		color: var(--muted);
 		text-decoration: none;
-		border-bottom: 2px solid transparent;
-		padding-bottom: 2px;
+		padding: 4px 8px;
+		transition: color 0.12s;
 	}
 	.navlink:hover {
 		color: var(--blue);
@@ -140,46 +180,40 @@
 	}
 	.active {
 		color: var(--blue);
-		border-bottom-color: var(--blue);
+	}
+	.active::after {
+		content: '';
+		position: absolute;
+		left: 8px;
+		right: 8px;
+		bottom: -2px;
+		height: 1.5px;
+		background: var(--blue);
 	}
 
 	.slot {
 		justify-self: end;
 		display: flex;
 		align-items: center;
-		gap: 12px;
+		gap: 8px;
+	}
+	.divider {
+		width: 1px;
+		height: 14px;
+		background: var(--rule);
+		margin: 0 2px;
 	}
 	.locale {
 		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		border: 1.5px solid var(--rule-hard);
-		color: var(--ink);
-		padding: 3px 8px;
+		font-size: 11px;
+		letter-spacing: 0.05em;
+		line-height: 1;
+		color: var(--muted);
+		padding: 4px 8px;
 		text-decoration: none;
+		transition: color 0.15s;
 	}
 	.locale:hover {
-		background: var(--panel-blue);
-		border-color: var(--blue);
-		color: var(--on-blue);
-		text-decoration: none;
-	}
-	.glyph {
-		width: 20px;
-		height: 20px;
-		border: 1.5px solid var(--ink);
-		border-radius: 50%;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		font-family: var(--mono);
-		font-size: 10px;
-		color: var(--ink);
-		text-decoration: none;
-	}
-	.glyph:hover {
-		border-color: var(--blue);
 		color: var(--blue);
 		text-decoration: none;
 	}
@@ -198,7 +232,9 @@
 		gap: 16px;
 	}
 
-	@media (max-width: 940px) {
+	/* Seven doors plus three tools need the width; below it the nav drops to its
+	   own row, left-aligned, and the rule still closes the header. */
+	@media (max-width: 1180px) {
 		header {
 			grid-template-columns: 1fr auto;
 			row-gap: 12px;
@@ -207,8 +243,9 @@
 		nav {
 			grid-row: 2;
 			grid-column: 1 / -1;
-			gap: 16px;
-			flex-wrap: wrap;
+			justify-content: flex-start;
+			gap: 2px;
+			margin-left: -8px;
 		}
 		footer {
 			margin: 0 18px;

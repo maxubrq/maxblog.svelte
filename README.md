@@ -80,10 +80,113 @@ Two mdsvex rules worth remembering:
 Math is `$inline$` / `$$display$$`, rendered by KaTeX **at build time** — no KaTeX JS ships to
 the reader, only its stylesheet. GFM tables come from mdsvex's own remark.
 
+## Images
+
+No full-colour photography anywhere (§6): an image is a **cyanotype plate** — greyscale under a
+blue multiply, done in CSS by `DuoPhoto` / `.ink-duo`, so almost any photo reads as deliberate.
+
+Images are **served from Cloudinary**, the same account and the same contract as the production
+blog. A post names its cover in frontmatter as a plain delivery URL — no transformations in the
+URL an author writes:
+
+```yaml
+coverImage: 'https://res.cloudinary.com/dmsb4anlx/image/upload/v1784555137/maxubrq.space/x.jpg'
+```
+
+`src/lib/images.ts` adds the rest. Production does this through `next/image`'s custom loader;
+this edition has no image component to hook, so the same rewrite is explicit:
+
+```svelte
+import { cloudinary, coverImageFor, srcsetFor } from '$lib/images';
+
+const cover = coverImageFor(post.coverImage);   // → the branded default when unset
+cloudinary(cover, { width: 1080 })              // → …/upload/f_auto,q_auto,w_1080,c_limit/v1/x.jpg
+srcsetFor(cover)                                // → the same at every width in IMAGE_WIDTHS
+cloudinary(cover, { width: 1080, halftone: 'screen' })   // → … + /e_grayscale/e_ordered_dither:8/
+```
+
+`f_auto` picks the format per browser, `q_auto` the quality, `c_limit` never upscales and keeps
+the aspect ratio (`object-fit: cover` does the visual crop). Anything that is **not** a
+Cloudinary delivery URL passes through both helpers untouched, and `srcsetFor` returns
+`undefined` for it — a local plate has one size and must not claim others. `DuoPhoto` calls both
+for you; pass it a `sizes` and, for a cover above the fold, `priority`.
+
+Nothing is proxied and nothing is resized at build time: the browser fetches Cloudinary directly,
+which is why the whole site can stay prerendered static HTML.
+
+### Halftones
+
+The other treatment is a **1-bit halftone**: dots instead of a duotone (§2). There are two ways
+to get one, and they are not interchangeable.
+
+**At the CDN — the default.** Pass `halftone` and Cloudinary screens the image with its own
+ordered-dither, after the resize, so the pitch is in final pixels:
+
+```svelte
+<DuoPhoto src={cover} halftone="screen" />   <!-- or "coarse" · "fine" -->
+```
+
+`screen` is 8×8 at 45°, the offset plate; `coarse` is the same angle with bigger dots; `fine` is
+a 6×6 round dot, orthogonal, closest to newsprint.
+
+A halftone plate uses `.ink-screen` instead of `.ink-duo` — no blue multiply, because the screen
+is already the whole treatment. **The colour is put on in CSS, not at the CDN**: Cloudinary
+returns one 1-bit black-on-white plate, and two blend modes ink it per theme, so switching theme
+re-colours the plate without fetching anything.
+
+| token | day / dusk | night |
+| --- | --- | --- |
+| `--screen-ink` | `--blue` | violet `#a97ef0` — on ink paper the blue is already spent on text |
+| `--screen-blend` | `multiply` | `screen` |
+| `--screen-ink-blend` | `lighten` | `darken` |
+
+The container's background is `--paper`, so the plate's field is the page's own paper — never a
+white rectangle pasted onto warm or ink stock. The `::after` floods the plate with the ink and
+the second blend admits it on the dots only. Both blends need `isolation: isolate`, which
+`.ink-screen` sets; without it the page behind joins the blend.
+
+It costs nothing: the screened output is *smaller* than the photo it came from (≈24 KB vs 381 KB
+for the default cover at 700px), and it reaches images that only exist on Cloudinary.
+
+Two things it cannot do, which is why the script still exists: the dot pitch is per-`srcset`-width,
+so a 1× and a 2× screen do not match dot for dot, and the plate lives only in the browser — no
+fixed artefact for an OG image, a feed, or print.
+
+**Offline — for a fixed plate.** `scripts/halftone.mjs` screens a local PNG once, by hand, and
+the result is committed. Same idea, exact and reproducible.
+
+```bash
+node scripts/halftone.mjs in.png static/media/out.png [--pitch 9] [--scale 3]
+                                                      [--gamma 1] [--contrast 1]
+```
+
+It turns a PNG into a 45°-rotated dot screen the way an offset plate does: one dot per grid
+cell, dot radius tracking the cell's darkness, no intermediate grey surviving. Output is a
+1-bit greyscale PNG, and it prints the new dimensions, file size, and ink coverage.
+
+| flag | default | what it does |
+| --- | --- | --- |
+| `--pitch` | `9` | grid step in **output** pixels — larger is a coarser, more visible screen |
+| `--scale` | `3` | output size relative to the source; the dots need pixels to stay round |
+| `--gamma` | `1` | `<1` opens the shadows, `>1` deepens them, before screening |
+| `--contrast` | `1` | pushes tones away from mid-grey, before screening |
+
+Two things to hold on to:
+
+- **Run it once, by hand, when preparing the asset — never at build time.** Commit the result to
+  `static/media/`, so Vercel needs no image library and the prerendered HTML ships the final PNG.
+  A halftone is already 1-bit and tiny; it gains nothing from Cloudinary's pipeline.
+- It only depends on `node:zlib`, and only reads 8-bit non-interlaced RGB/RGBA/greyscale PNG (no
+  palette). `sips -s format png in.jpg --out in.png` on macOS produces an acceptable input.
+
 ## i18n
 
 Every page lives under a locale prefix — `/en/…` and `/vi/…`, matched by `src/params/lang.ts`.
-`/` is a 308 to `site.defaultLang`, emitted at the edge by the adapter. Each locale is its own
+`/` carries no content — it decides which edition the reader gets, in `src/routes/+page.server.ts`:
+the locale they last read in (a `lang` cookie, written by the `[lang]` layout on every locale
+page), then `Accept-Language`, then `site.defaultLang`. It is the one page that cannot be
+prerendered, and it answers **307, never 308** — a permanent redirect is cached by the browser
+forever, which would let the very first visit decide a reader's language for good. Each locale is its own
 edition: it lists only the posts whose frontmatter `lang` matches, has its own feed
 (`/en/feed.xml`, `/vi/feed.xml`), and stamps `<html lang>` via `src/hooks.server.ts`.
 
@@ -108,13 +211,57 @@ values, because the `[lang]` layout instance survives a client-side navigation f
 Topic slugs and `topic` names stay canonical English (they key the frontmatter and the URLs);
 only their blurbs are translated, in `topicBlurbs`.
 
+## Search
+
+Universal search over the whole locale, opened by the header button or **⌘K / Ctrl-K** anywhere.
+Three kinds of hit, the same three the production blog indexes: an **essay** (title, excerpt,
+topic), a **section** (one `##`/`###` heading), a **passage** (one paragraph, first six per post).
+Arrows move, `↵` opens, `esc` closes; a section hit lands on that heading's anchor.
+
+Nothing runs on a server here, so the corpus is a **build artefact**: `src/lib/content/search.ts`
+globs every post's raw `.mdx` and `/{lang}/search-index.json` prerenders it, next to `feed.xml`.
+Post metadata comes from the compiled modules (mdsvex already parsed the frontmatter); only the
+body is re-read, to split it into sections and passages.
+
+Two costs kept off the critical path: the JSON is fetched the first time search opens, and
+`SearchOverlay.svelte` is itself dynamically imported by the layout — so MiniSearch reaches the
+browser only for readers who actually search. The built index is cached per locale in module
+scope, so reopening does not refetch.
+
+**Anchors.** `rehype-slug` stamps every heading id at build time, and the corpus runs the same
+`github-slugger` over the same headings in the same order — including headings that never become
+results, because the slugger's duplicate counter has to see what rehype-slug saw. If they drift, a
+section hit scrolls nowhere. Worth re-checking after changing either side:
+
+```bash
+# every section anchor in the index must exist in the rendered page
+node -e "const j=require('./.svelte-kit/output/prerendered/pages/en/search-index.json'),fs=require('fs');
+console.log(j.sections.filter(s=>!fs.readFileSync('.svelte-kit/output/prerendered/pages/en/writing/'+s.slug+'.html','utf8').includes('id=\"'+s.anchor+'\"')).length + ' broken')"
+```
+
+**Matching** is [MiniSearch](https://lucaong.github.io/minisearch/), not the substring scan
+production uses: prefix matching while you type, `fuzzy: 0.2` for a typo, and field boosts so a
+title outranks a paragraph. Two settings are there for Vietnamese specifically — `processTerm`
+folds diacritics on both sides so `cong ty` finds `Công ty`, and `combineWith: 'AND'` keeps that
+from matching half the corpus (folded Vietnamese syllables are short, and an OR query on `ty`
+matches nearly everything).
+
 ## Layout of the code
 
 ```
 content/posts/            the posts (.mdx)
+static/media/             committed 1-bit halftone plates (everything else is on Cloudinary)
+scripts/halftone.mjs      offline halftone screener; run by hand, never at build
 src/app.css               the tokens — palette, type, layout constants, dark mirror
+src/lib/images.ts         Cloudinary delivery — the cover default + the URL/srcset rewrite
 src/lib/site.ts           name, volume, topics, links, default language
 src/lib/i18n/             the en/vi catalogs + the locale context
+src/lib/content/search.ts the search corpus builder (build-time only)
+src/lib/server/db/        drizzle schema + the lazy Postgres client (never client-side)
+src/lib/server/api.ts     shared endpoint guards: 503 / 400 / opaque 500
+src/routes/api/           the five prerender-exempt endpoints
+src/lib/search.svelte.ts  whether the search overlay is open, + the ⌘K binding
+src/lib/components/chrome/  SearchButton, SearchOverlay, DisplaySettings, Placeholder
 src/params/lang.ts        the /en · /vi route matcher
 src/lib/format.ts         the printed-document date/number voice
 src/lib/content/          post loading, frontmatter contract, mdsvex layout + plugins
@@ -124,7 +271,8 @@ src/lib/components/article/  PullQuote, Callout, Sidenote, Footnote, Fleuron, Te
                              OneSentence, WeatherStrip
 src/lib/components/tech/     CodeBlock, Terminal, DiagramPlate
 src/routes/[lang=lang]/   /{en,vi} · /writing · /writing/[slug] · /topics · /topics/[topic] ·
-                          /about · /feed.xml   (/ redirects to the default locale)
+                          /about · /feed.xml · /search-index.json · placeholder rooms
+                          (/ negotiates the locale — the only non-prerendered page)
 ```
 
 Design tokens live only in `src/app.css` as CSS custom properties, so dark mode is a token swap
@@ -132,10 +280,71 @@ and components never hardcode a colour. Two laws from the manifesto that are eas
 the *fields* are softened (paper `#fafaf7`, ink `#24242c`) but **rules stay pure black**, and
 everything is a rectangle — `border-radius: 0` is set globally.
 
+## Database & endpoints
+
+Every *page* is prerendered, but that is a per-route default, not a property of the build: the
+adapter is `adapter-vercel`, and a route that sets `export const prerender = false` becomes a real
+serverless function while the rest of the site stays static HTML. The five endpoints below are the
+only ones that do.
+
+Same Postgres, same schema, same driver as the production blog — `src/lib/server/db/schema.ts` is
+a copy of `~/MyApps/maxblog/src/db/schema.ts`, so both editions read and write the same four
+tables: `reactions`, `page_views`, `section_reach`, `poll_votes`.
+
+| route | method | what it does | who may call it |
+| --- | --- | --- | --- |
+| `/api/react` | POST | one reader's reaction to one passage | public |
+| `/api/track` | POST | `view` / `complete` / `section` telemetry | public |
+| `/api/poll` | POST · GET | cast a vote · read the tally | public |
+| `/api/witness` | GET | one post's public record: counts, ≤5 letters, retention | public |
+| `/api/signals` | GET · PATCH | everything, across every post, incl. letter text | **Basic auth** |
+
+```bash
+cp .env.example .env.local     # DATABASE_URL, DIRECT_URL, SIGNAL_PASSWORD
+pnpm drizzle-kit generate      # after editing schema.ts
+pnpm drizzle-kit migrate       # or `push` to diff against the live database
+```
+
+`DATABASE_URL` is the pooled connection (pgbouncer, transaction mode — hence `prepare: false`);
+`DIRECT_URL` is the unpooled one, because DDL cannot run over the pool.
+
+Three rules this port holds to:
+
+- **The client is lazy.** `db()` opens no connection until an endpoint asks, so `pnpm build`
+  works with no database reachable at all — prerendering must never depend on one. With
+  `DATABASE_URL` unset the endpoints answer `503`, they do not crash.
+- **`$lib/server/` is enforced, not a convention.** Importing the db module into anything that
+  reaches the browser is a *build error* (`Cannot import $lib/server/… into code that runs in the
+  browser`), so the connection string cannot leak into a bundle by accident.
+- **Errors are opaque.** A Postgres message names tables, columns and the host; endpoints log the
+  real error and return a bare `Internal error`.
+
+### /api/signals is private
+
+It returns every letter a reader has written, with session ids. Auth lives in
+`src/hooks.server.ts`, guarding the whole `/api/signals` prefix: no credentials → `401`, wrong
+credentials → `404` (a wrong password should not confirm the route exists), and **no
+`SIGNAL_PASSWORD` configured → `404`**, so a deploy that forgets the variable stays shut rather
+than falling open.
+
+> Worth knowing when comparing the two editions: production guards the *page* `/[locale]/signals`
+> in `middleware.ts`, but that middleware's matcher excludes `api`, so `/api/signals` there is
+> reachable without credentials — GET returns all letters, PATCH mutates. Guarding the prefix in
+> hooks, as here, is what closes that gap.
+
+### A note on the migration history
+
+`drizzle/0000_*` came from production and describes only three tables: `poll_votes` was added
+there with `drizzle-kit push`, which writes no migration. `drizzle/0001_*` (generated here)
+reconciles that, so a fresh database can be built from history alone. It is `CREATE TABLE IF NOT
+EXISTS`, because against the existing database the table is already there and the migration must
+be a no-op rather than a failure.
+
 ## Hosting
 
 `@sveltejs/adapter-vercel`, with `prerender = true` on the root layout: every page is static
-HTML at build time and nothing runs on a serverless function. Import the repo on Vercel — the
+HTML at build time, and the only serverless functions are the five endpoints above (which opt out
+per route). Import the repo on Vercel — the
 framework preset and `pnpm` are detected, no `vercel.json` needed. The adapter's runtime is
 pinned to `nodejs22.x` so local builds don't depend on the machine's Node version.
 
@@ -144,6 +353,8 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **The live figures.** `FloatBuilder`, `FloatExplorer`, `FloatVsFixed`, `FloatSpacing` render a
   labelled placeholder plate; the real sims are ~1,500 lines of React in
   `~/MyApps/maxblog/src/components/interactive/`.
-- The rest of the design surfaces (search ⌘K, glossary, constellation, commonplace book, print
-  edition, reader room, series, signals) exist in `maxubrq/project/pages/` and in production, but
-  not here yet.
+- The rooms behind `/series`, `/glossary`, `/resources`, `/reading-room` and `/reading` are
+  placeholder pages — a door in the nav, and a page that says it is not built yet. The designs
+  exist in `maxubrq/project/pages/` and in production.
+- The rest of the design surfaces (constellation, commonplace book, print edition, signals) are
+  not here at all yet.
