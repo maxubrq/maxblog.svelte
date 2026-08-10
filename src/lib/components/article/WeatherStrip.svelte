@@ -100,13 +100,13 @@
 		border: 1.5px solid var(--rule);
 	}
 	.sq.on {
-		background: var(--blue);
+		background: var(--panel-blue);
 		border-color: var(--blue);
 	}
 	.warn {
 		border-top: 1px solid var(--rule);
 		padding: 10px 16px;
-		background: var(--blue);
+		background: var(--panel-blue);
 		display: flex;
 		gap: 10px;
 		align-items: baseline;

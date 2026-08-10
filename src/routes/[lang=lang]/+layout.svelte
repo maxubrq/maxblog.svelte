@@ -160,7 +160,7 @@
 		text-decoration: none;
 	}
 	.locale:hover {
-		background: var(--blue);
+		background: var(--panel-blue);
 		border-color: var(--blue);
 		color: var(--on-blue);
 		text-decoration: none;

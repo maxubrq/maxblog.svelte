@@ -14,6 +14,12 @@
 	--rule-hard: #0d0d11;
 	--blue: #1a24df;
 	--blue-deep: #0f1699;
+	/* Field colour for SOLID blue panels (pull-quote, active filter, warn strip,
+	   topic doorway on hover). In light mode it is the accent itself; in dark it
+	   drops to --blue-deep, because --blue is brightened there for text on paper
+	   and white on that brightened blue does not carry (§1: text on blue is
+	   always white, so the field has to move instead). */
+	--panel-blue: var(--blue);
 	--on-blue: #ffffff;
 
 	/* Viz palette — the one sanctioned exception (§11). Plotted marks only. */
@@ -50,8 +56,9 @@
 		--rule: rgba(233, 233, 236, 0.18);
 		--rule-hard: #e9e9ec;
 		--blue: #7f88ff;
-		--blue-deep: #a4abff;
-		--on-blue: #0d0d11;
+		--blue-deep: #5560ff;
+		--panel-blue: var(--blue-deep);
+		--on-blue: #ffffff;
 		--viz-clay: #f0794a;
 		--viz-gold: #e0aa2e;
 		--viz-moss: #5bb98a;
@@ -70,8 +77,9 @@
 	--rule: rgba(233, 233, 236, 0.18);
 	--rule-hard: #e9e9ec;
 	--blue: #7f88ff;
-	--blue-deep: #a4abff;
-	--on-blue: #0d0d11;
+	--blue-deep: #5560ff;
+	--panel-blue: var(--blue-deep);
+	--on-blue: #ffffff;
 	--viz-clay: #f0794a;
 	--viz-gold: #e0aa2e;
 	--viz-moss: #5bb98a;
@@ -103,7 +111,7 @@ body {
 }
 
 ::selection {
-	background: var(--blue);
+	background: var(--panel-blue);
 	color: var(--on-blue);
 }
 

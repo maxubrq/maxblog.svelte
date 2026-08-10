@@ -82,8 +82,11 @@
 		font-style: italic;
 	}
 
-	/* Plain blockquote — the blue panel is <PullQuote>, this is the quieter one. */
-	.prose :global(blockquote) {
+	/* Plain blockquote — the blue panel is <PullQuote>, this is the quieter one.
+	   `:not(.pull)` matters: this selector is more specific than a component's
+	   own scoped rules, so without the exclusion it would repaint PullQuote's
+	   text muted-italic on top of the blue field. */
+	.prose :global(blockquote:not(.pull)) {
 		margin: 0 0 1.6em;
 		padding: 0 0 0 20px;
 		border-left: 1.5px solid var(--rule-hard);

@@ -49,7 +49,7 @@
 	}
 	.active,
 	.active:hover {
-		background: var(--blue);
+		background: var(--panel-blue);
 		color: var(--on-blue);
 	}
 </style>

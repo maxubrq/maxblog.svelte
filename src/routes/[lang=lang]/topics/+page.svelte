@@ -60,7 +60,7 @@
 		border-right: none;
 	}
 	.door:hover {
-		background: var(--blue);
+		background: var(--panel-blue);
 		color: var(--on-blue);
 		text-decoration: none;
 	}
