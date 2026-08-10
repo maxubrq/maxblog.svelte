@@ -282,6 +282,95 @@ hr {
 	inset: 0;
 }
 
+/* ── Glossary & Resources — the two site indexes share one grid ──── */
+/* Global rather than component-scoped because both pages use them and the
+   seam has to line up identically on each. */
+
+/* The mark demo: a sample sentence beside the card it opens. */
+.ink-gloss-demo {
+	display: grid;
+	grid-template-columns: 1fr 340px;
+	gap: 36px;
+	align-items: start;
+}
+
+/* The dictionary itself: two columns split by a hard rule. Odd cells carry the
+   divider, so the seam reads as one continuous line rather than a stack of
+   segments. */
+.ink-gloss-grid,
+.ink-res-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+.ink-gloss-cell,
+.ink-res-cell {
+	display: grid;
+	grid-template-columns: 28px 1fr;
+	gap: 16px;
+	padding: 20px 24px 20px 0;
+	border-top: 1.5px solid var(--rule-hard);
+	min-width: 0;
+}
+.ink-gloss-cell:nth-child(odd),
+.ink-res-cell:nth-child(odd) {
+	border-right: 1.5px solid var(--rule-hard);
+}
+.ink-gloss-cell:nth-child(even),
+.ink-res-cell:nth-child(even) {
+	padding-left: 24px;
+}
+
+/* The folded long gloss. The Tag is the marker; it turns blue when open. */
+.ink-gloss-more {
+	margin-top: 10px;
+}
+.ink-gloss-more > summary {
+	list-style: none;
+	cursor: pointer;
+	display: inline-block;
+}
+.ink-gloss-more > summary::-webkit-details-marker {
+	display: none;
+}
+.ink-gloss-more > summary::after {
+	content: ' +';
+	font-family: var(--mono);
+	font-size: 10.5px;
+	color: var(--muted);
+}
+.ink-gloss-more[open] > summary::after {
+	content: ' −';
+}
+/* `!important` because Tag.svelte's own rule is scoped (`.tag.s-hash`) and so
+   outranks any plain selector reaching in from here. */
+.ink-gloss-more > summary:hover .tag,
+.ink-gloss-more[open] > summary .tag {
+	color: var(--blue) !important;
+}
+
+@media (max-width: 860px) {
+	.ink-gloss-demo,
+	.ink-gloss-grid,
+	.ink-res-grid {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+	/* One column: the vertical seam has nothing to divide, and the left pad
+	   on even cells would look like an indent. */
+	.ink-gloss-cell:nth-child(odd),
+	.ink-res-cell:nth-child(odd) {
+		border-right: none;
+	}
+	.ink-gloss-cell:nth-child(even),
+	.ink-res-cell:nth-child(even) {
+		padding-left: 0;
+	}
+	/* Stacked, the hand-drawn arrow points at nothing. */
+	.ink-gloss-arrow {
+		display: none;
+	}
+}
+
 /* ── Focus: a hard blue rule, never a glow ──────────────────────── */
 :focus-visible {
 	outline: 2px solid var(--blue);

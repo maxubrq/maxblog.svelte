@@ -8,6 +8,7 @@ export { default as Fleuron } from './components/article/Fleuron.svelte';
 export { default as Footnote } from './components/article/Footnote.svelte';
 export { default as OneSentence } from './components/article/OneSentence.svelte';
 export { default as PullQuote } from './components/article/PullQuote.svelte';
+export { default as R } from './components/article/R.svelte';
 export { default as Sidenote } from './components/article/Sidenote.svelte';
 export { default as Term } from './components/article/Term.svelte';
 export { default as WeatherStrip } from './components/article/WeatherStrip.svelte';

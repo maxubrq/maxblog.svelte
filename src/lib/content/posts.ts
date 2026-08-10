@@ -73,6 +73,11 @@ export interface PostMeta {
 	coord?: string;
 	section?: string;
 	license?: string;
+	/**
+	 * Ids of the sources cited in this post, in the order they appear in the
+	 * prose. Injected by the resources remark pass — not hand-written.
+	 */
+	citations?: string[];
 	/** Injected by the reading-time remark plugin; set it to pin the number. */
 	reading?: number;
 	words?: number;

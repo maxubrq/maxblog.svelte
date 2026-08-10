@@ -11,6 +11,9 @@
 const KIT = '$lib/mdx';
 
 /** The tags a post may use with no import. Keep in sync with src/lib/mdx.ts. */
+import { mentionsTerm } from './remark-glossary.js';
+import { citesAnything } from './remark-resources.js';
+
 export const KIT_COMPONENTS = [
 	'Callout',
 	'CodeBlock',
@@ -24,6 +27,7 @@ export const KIT_COMPONENTS = [
 	'Footnote',
 	'OneSentence',
 	'PullQuote',
+	'R',
 	'Sidenote',
 	'Term',
 	'Terminal',
@@ -42,6 +46,14 @@ export function injectComponents({ extensions = ['.mdx'] } = {}) {
 			const used = KIT_COMPONENTS.filter((name) =>
 				new RegExp(`<${name}[\\s/>]`).test(content)
 			);
+
+			// `Term` and `R` are usually not written by hand: the remark passes
+			// add them while mdsvex compiles, which is *after* this preprocessor
+			// has run. So ask those passes whether they are going to mark this
+			// file, and import for them in advance.
+			if (!used.includes('Term') && mentionsTerm(content)) used.push('Term');
+			if (!used.includes('R') && citesAnything(filename)) used.push('R');
+
 			if (used.length === 0) return;
 
 			const line = `\timport { ${used.join(', ')} } from '${KIT}';`;

@@ -67,7 +67,7 @@ file's script, and only for the components that file actually uses. The kit is
 `src/lib/mdx.ts`:
 
 `Callout` · `CodeBlock` · `DiagramPlate` · `Figure` · `Fleuron` · `Footnote` · `OneSentence` ·
-`PullQuote` · `Sidenote` · `Term` · `Terminal` · `WeatherStrip` · `Float*` (live figures)
+`PullQuote` · `R` · `Sidenote` · `Term` · `Terminal` · `WeatherStrip` · `Float*` (live figures)
 
 To add one: create the component, export it from `src/lib/mdx.ts`, and add its name to
 `KIT_COMPONENTS` in `inject-components.js`.
@@ -257,6 +257,9 @@ src/lib/images.ts         Cloudinary delivery — the cover default + the URL/sr
 src/lib/site.ts           name, volume, topics, links, default language
 src/lib/i18n/             the en/vi catalogs + the locale context
 src/lib/content/search.ts the search corpus builder (build-time only)
+src/lib/glossary.ts       the site dictionary (data in glossary.data.js)
+src/lib/resources.ts      the bibliography (data in resources.data.js)
+src/lib/content/remark-*.js  the passes that auto-mark terms and citations while compiling
 src/lib/server/db/        drizzle schema + the lazy Postgres client (never client-side)
 src/lib/server/api.ts     shared endpoint guards: 503 / 400 / opaque 500
 src/routes/api/           the five prerender-exempt endpoints
@@ -279,6 +282,85 @@ Design tokens live only in `src/app.css` as CSS custom properties, so dark mode 
 and components never hardcode a colour. Two laws from the manifesto that are easy to break:
 the *fields* are softened (paper `#fafaf7`, ink `#24242c`) but **rules stay pure black**, and
 everything is a rectangle — `border-radius: 0` is set globally.
+
+## Glossary
+
+`src/lib/glossary.ts` is the site dictionary: one entry per marked term, with a short gloss, a
+long one, a topic, and the essays it appears in — each with the heading it was first used under.
+Entries carry a `vi` block; `getGlossaryLocale(entry, lang)` returns one locale with the English
+text as the fallback for every field.
+
+**The marks are not written by hand.** `src/lib/content/remark-glossary.js` runs while mdsvex
+compiles a post and wraps the *first* mention of each dictionary term in a `<Term>` — later
+mentions are left plain, so a page is not a field of dotted underlines. An author writes prose.
+
+```svelte
+<Term id="flow" />                          <!-- explicit, when you want it somewhere precise -->
+<Term term="widget" def="a small thing" />  <!-- ad-hoc, not in the dictionary -->
+```
+
+`/glossary` prints the same entries as an A–Z index. Its loader passes the slugs that actually
+publish in that locale, and the page narrows each entry's appearances to those before deciding
+what to show: an entry is listed if it still has a live citation, or if it never claimed one (a
+word may be defined before it is used, but a word whose every use is a draft has nothing to show).
+This is stricter than production, which keeps citations to unpublished posts.
+
+The two-column seam, the folded long gloss and the mark demo are `.ink-gloss-*` in `app.css`
+rather than component styles — `/resources` uses the same grid.
+
+## Resources
+
+`src/lib/resources.ts` is the bibliography — books, papers, standards, talks — each with an
+author, a type, a topic, an optional cover, and a note on why it earned a place. Only the *note*
+has a `vi` translation: a book keeps its published title and an author keeps their name, because
+that is how you find the thing.
+
+**Citations are auto-placed too**, by `src/lib/content/remark-resources.js`: it marks the first
+mention of a source's title, its main title before a colon, or the first author's surname. What
+makes a bare surname safe here is the candidate set — only sources that already name *this* post
+in `appearsIn` are considered, so "Sennett" is unambiguous inside one essay even though it would
+not be across the library. Organisation authors ("…Accountability Office") contribute no surname.
+A hand-placed `<R id="…" />` always wins: the author knows which sentence carries the claim.
+
+```svelte
+<R id="ieee-754" />          <!-- explicit, when the auto-match would land elsewhere -->
+```
+
+The numeral is the source's position in **this post's** bibliography, so two citations of one work
+in an essay share a number and the order follows the curated order in `RESOURCES`. Production
+threads the post slug through a React context; here the route already knows it, so `<R>` reads
+`page.params.slug` — the article lives at `/[lang]/writing/[slug]`. A source that does not list
+the current post shows `[·]` rather than a number that means nothing.
+
+`Bibliography.svelte` puts the sources at the foot of every essay that has any. It needs no
+authoring — `appearsIn` already maps sources to posts, so a post's bibliography is a lookup.
+
+**Numbering follows reading order**, and this is the one place the port deliberately diverges
+from production. There the numeral is a source's position in the *curated* list, so an essay can
+open at `[02]`; here the remark pass records the ids of the marks it placed, in document order,
+onto the post's `citations` metadata, and both `<R>` and the end-of-essay list order themselves
+with `bibliographyFor(slug, citations)`. Sources cited in `appearsIn` but never named in the prose
+follow, in curated order. One function orders both, so a numeral cannot disagree with its list.
+
+`/resources` prints the same entries as an index. It is `/glossary` one level down and shares its
+`.ink-gloss-*` grid, folded detail and availability rule; what differs is how a reader looks
+things up, so this one groups by **topic** and has no A–Z. Search matches the note *in the
+current locale*, not the English original, and citation links are narrowed to the essays that
+publish in that locale — a resource citing both `…-en` and `…-vi` shows only the relevant half.
+
+Covers go through the Cloudinary pipeline like every other image; `ResourceCover` renders nothing
+when there is no `coverImage`, which is the normal case — a wrong cover is worse than none.
+
+### Why the data lives in `.js`
+
+Both passes run inside `svelte.config.js`, which SvelteKit loads with plain Node — no TypeScript
+step. So the entries themselves sit in `glossary.data.js` / `resources.data.js`, JSDoc-typed
+against the interfaces next door, and the `.ts` modules re-export them with the types. Same reason
+`reading-time.js` is not `.ts`.
+
+One consequence worth knowing: `inject-components.js` decides a post's imports *before* mdsvex
+runs, so it cannot see marks that do not exist yet. It asks the two passes in advance —
+`mentionsTerm(content)` and `citesAnything(filename)` — and imports `Term` / `R` for them.
 
 ## Database & endpoints
 
@@ -353,7 +435,7 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **The live figures.** `FloatBuilder`, `FloatExplorer`, `FloatVsFixed`, `FloatSpacing` render a
   labelled placeholder plate; the real sims are ~1,500 lines of React in
   `~/MyApps/maxblog/src/components/interactive/`.
-- The rooms behind `/series`, `/glossary`, `/resources`, `/reading-room` and `/reading` are
+- The rooms behind `/series`, `/reading-room` and `/reading` are
   placeholder pages — a door in the nav, and a page that says it is not built yet. The designs
   exist in `maxubrq/project/pages/` and in production.
 - The rest of the design surfaces (constellation, commonplace book, print edition, signals) are

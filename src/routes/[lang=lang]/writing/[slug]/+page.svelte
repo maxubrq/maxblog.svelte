@@ -1,14 +1,14 @@
 <script lang="ts">
 	// The reading surface: title block, meta rail + prose, then the apparatus
-	// (one sentence · neighborhood · meta foot).
+	// (one sentence · sources · neighborhood).
 	import Headline from '$lib/components/ink/Headline.svelte';
-	import MetaFoot from '$lib/components/ink/MetaFoot.svelte';
+	import Bibliography from '$lib/components/article/Bibliography.svelte';
 	import MetaRail from '$lib/components/ink/MetaRail.svelte';
 	import RunningHead from '$lib/components/ink/RunningHead.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import OneSentence from '$lib/components/article/OneSentence.svelte';
 	import WeatherStrip from '$lib/components/article/WeatherStrip.svelte';
-	import { long, thousands } from '$lib/format';
+	import { long } from '$lib/format';
 	import { href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
 	import type { PageData } from './$types';
@@ -29,15 +29,6 @@
 			meta.section ? [t.article.section, meta.section] : null,
 			meta.chapter ? [t.article.chapter, meta.chapter] : null,
 			meta.coord ? [t.article.coord, meta.coord] : null
-		].filter(Boolean) as [string, string][]
-	);
-
-	const foot = $derived(
-		[
-			[t.article.filedUnder, meta.topic],
-			meta.series ? [t.article.series, meta.series] : null,
-			[t.article.license, meta.license ?? site.license],
-			[t.article.words, thousands(meta.words)]
 		].filter(Boolean) as [string, string][]
 	);
 </script>
@@ -99,6 +90,10 @@
 				/>
 			{/if}
 
+			<!-- The sources this essay cites. Built from `appearsIn`, so it needs
+			     no marks in the prose — see $lib/resources. -->
+			<Bibliography slug={meta.slug} citations={meta.citations} />
+
 			{#if meta.neighborhood?.length}
 				<section class="hood">
 					<div class="hood-head">
@@ -116,8 +111,6 @@
 					{/each}
 				</section>
 			{/if}
-
-			<MetaFoot items={foot} />
 		</div>
 	</div>
 </article>
@@ -126,7 +119,9 @@
 	article {
 		max-width: 940px;
 		margin: 0 auto;
-		padding: 0 var(--pad-measure);
+		/* Room to stop reading. The apparatus ends where the page ends
+		   otherwise, and the footer rule arrives too soon after the last line. */
+		padding: 0 var(--pad-measure) 100px;
 	}
 	header {
 		padding: 48px 0 30px;
@@ -221,7 +216,7 @@
 
 	@media (max-width: 900px) {
 		article {
-			padding: 0 18px;
+			padding: 0 18px 80px;
 		}
 		.body {
 			grid-template-columns: 1fr;

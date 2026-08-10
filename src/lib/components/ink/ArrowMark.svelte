@@ -4,13 +4,23 @@
 		w = 150,
 		dir = 'right',
 		left = 0,
-		top = 0
-	}: { w?: number; dir?: 'right' | 'down' | 'left' | 'up'; left?: number; top?: number } = $props();
+		top = 0,
+		/** Lets a page hide or shift the mark at a breakpoint — the arrow is
+		    decoration, and stacked layouts have nothing for it to point at. */
+		class: klass = ''
+	}: {
+		w?: number;
+		dir?: 'right' | 'down' | 'left' | 'up';
+		left?: number;
+		top?: number;
+		class?: string;
+	} = $props();
 
 	const rot = $derived({ right: 0, down: 90, left: 180, up: 270 }[dir]);
 </script>
 
 <svg
+	class={klass}
 	viewBox="0 0 160 80"
 	width={w}
 	height={(w * 80) / 160}

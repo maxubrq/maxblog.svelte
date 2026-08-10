@@ -222,10 +222,11 @@
 		flex: 1;
 	}
 
+	/* Full-bleed, like the header: the inset is padding, not margin, so the rule
+	   runs the whole width of the screen instead of stopping at the measure. */
 	footer {
 		border-top: 1.5px solid var(--rule-hard);
-		margin: 0 var(--pad-chrome);
-		padding: 16px 0 22px;
+		padding: 16px var(--pad-chrome) 22px;
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
@@ -248,7 +249,7 @@
 			margin-left: -8px;
 		}
 		footer {
-			margin: 0 18px;
+			padding: 16px 18px 22px;
 			flex-direction: column;
 			gap: 6px;
 		}
