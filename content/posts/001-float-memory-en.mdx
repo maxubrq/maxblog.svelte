@@ -1,0 +1,536 @@
+---
+title: 'Floating point numbers'
+subtitle: 'how is 0.1 held inside a computer?'
+date: '2026-01-29'
+topic: 'Tech'
+lang: en
+interactive: true
+chapter: 'Chapter I'
+description: 'A tour of IEEE 754: how do you compress an infinite real number line into a 32 bit register? Build a float by hand in binary, then see why the gaps between floats are uneven and what that means for every calculation you have ever written.'
+weather:
+  time: '25–30 min'
+  oneSitting: true
+  load: 4
+  bestWhen: 'freetime + a good cup of coffee'
+rememberSentence: 'A computer does not store 0.1 exactly. It stores the closest value it can manage.'
+rememberAttribution: 'from Floating point numbers'
+---
+
+During the Gulf War, on 25 February 1991, a Patriot missile battery at Dhahran,
+Saudi Arabia, failed to intercept an incoming Iraqi Scud. The Scud landed on a
+barracks. Twenty-eight American soldiers died and close to a hundred were
+wounded.
+
+The House of Representatives asked the GAO (General Accounting Office) to
+investigate. The report found no operator error and no hardware fault. The cause
+was accumulated floating-point drift. The Patriot's internal clock counted time
+in units of one tenth of a second. The number $0.1$, as we are about to see,
+cannot be stored exactly in a computer. Every tick carried a minuscule error
+with it. After roughly 100 hours of continuous operation, those tiny errors had
+added up to $0.34$ seconds.
+
+A third of a second sounds like nothing. But a Scud travels at around 1,676
+metres per second, so in that $0.34$ seconds it covers more than half a
+kilometre, far enough to fall outside the window the Patriot's radar had
+predicted. The intercept system passed over it, and twenty-eight people died.
+
+<Sidenote>
+
+  The Patriot failure is documented in [GAO
+  IMTEC-92-26](https://www.gao.gov/assets/imtec-92-26.pdf). The accumulated
+  error after 100 hours of operation was 0.3433 seconds, produced by repeated
+  multiplication of a truncated representation of 1/10. The irony is that
+  another part of the software had already been fixed to use a more accurate
+  representation, but the patch was not applied uniformly, so two places in the
+  same system disagreed with each other.
+
+</Sidenote>
+
+The same class of floating-point error bled value out of the Vancouver Stock
+Exchange index for 22 months, because every rounding shaved off a sliver. It has
+made medical systems deliver the wrong dose. It has made physics engines fire
+characters through walls. These incidents are not, strictly speaking, mistakes.
+Floating point was designed to behave this way. It is the best attempt anyone
+has made at squeezing the infinite real number line into a register with a
+finite number of bits.
+
+The standard is called *IEEE 754*, published in 1985, and at its core it has
+barely changed since.
+
+## The core problem: an infinite line into a finite number of bits
+
+Between any two numbers on the real line there are infinitely many others.
+Between $0$ and $1$ there is $0.5$. Between $0$ and $0.5$ there is $0.25$. And
+so on, forever, without end. The real line is a continuum, infinitely dense.
+
+A register in a CPU is a different kind of object. It has a finite number of
+bits. It is a row of switches, each one on or off (0 or 1). A 32 bit register
+has exactly $2^{32}$ possible states, about 4.3 billion, no more and no less.
+
+Here is the whole tragedy in one sentence: **we have to map an infinite set into
+a finite number of bits.** That is impossible, at least mathematically, if you
+want to preserve every property of the numbers. Any way of storing real numbers
+in a computer is forced to throw away almost all of them, keep a sparse subset,
+and round everything else to the nearest survivor. The question is not "is
+anything lost", it is "which numbers do we choose to keep".
+
+### What about fixed-point? What goes wrong there
+
+The simplest answer you can think of is _fixed-point_: nail the point down at
+one position. With 32 bits, for instance, you could give 16 bits to the integer
+part and 16 bits to the fractional part. That lets you represent every real
+number of the form `integer.fraction` at a fixed resolution (a fixed gap) of
+$2^{-16}\approx0.0000153$.
+
+This is tidy and predictable. The gap between two neighbouring numbers is the
+same everywhere, always $2^{-16}$, whether you are near $0$ or near the largest
+representable value. That is both the strength and the fatal flaw of the scheme.
+The strength is that it does not produce the kind of drift that accumulates into
+the disasters above.
+
+The fatal flaw is **the range of values it can represent**. With only 16 bits of
+integer part, the largest number it can hold is about 65,535. Want to store the
+mass of a galaxy? No. The radius of an atom? Also no, because $2^{-16}$ is the
+smallest thing it can express. You are trapped between two walls, a ceiling that
+is far too low and a floor that is far too high. This representation skips over
+almost the entire real line.
+
+And more importantly, it wastes bits. When you compute with very small numbers,
+most of the integer bits are useless zeros. When you compute with very large
+numbers, the fractional bits are useless too. You pay for 32 bits and only ever
+get to use a handful of them.
+
+<PullQuote>
+
+  Fixed-point hands out precision equally to every number. But we rarely need
+  precision spread evenly, we need it *relative*, sized so that it stays
+  **meaningful** whether the number is enormous or tiny.
+
+</PullQuote>
+
+### What "meaningful" actually means
+
+So what is "meaningful"? How do you know whether a digit carries any meaning?
+
+Take a simple case. Google Maps tells you there are "150 metres to your
+destination", or it tells you "150.001 metres to your destination". How much do
+those two differ? In absolute terms, one millimetre. What does one millimetre
+mean to you while you are moving down a road? I would guess nothing. It does not
+carry enough meaning to change anything you do. And yet that same one millimetre
+of error, while you are etching a chip, is a catastrophe.
+
+So not every error carries the same weight, even when it is numerically the same
+error. At larger scales we accept larger errors, and at very small scales the
+error has to shrink to match. Put differently: when we compute at small scale we
+want to keep as many digits after the point as possible, and at large scale we
+want as many digits before it.
+
+Science already had a notation for exactly this wish. Look at
+
+$1.5 \times 10^3$ and $1.5 \times 10^{-3}$
+
+Both are $1.5$, but $10^3$ and $10^{-3}$ tell you which scale each number lives
+at, one is $15,000$ and the other is $0.0015$. The $1.5$ is the part carrying
+the meaning we care about. A physicist writes the mass of an electron as $9.109
+\times 10^{-31}$ kg and the mass of the Sun as $1.989 \times 10^{30}$ kg with
+the _same_ number of significant digits, even though the two numbers are 61
+orders of magnitude apart. The $10^3$ and $10^{-3}$ also tell us where the point
+really sits: $10^3$ says slide the point three places to the right, $10^{-3}$
+says slide it three places to the left to recover the true value.
+
+This is precisely what fixed-point cannot do, and precisely what we want from a
+meaningful number: keep a fixed count of significant digits, and record
+separately where the point belongs.
+
+### Floating-point: which part floats
+
+The name _floating-point_ stands in direct opposition to fixed-point. Instead of
+nailing the point to one position in the bit string, we let it **drift**. Use a
+handful of bits to record the significant digits, and another handful to record
+where the point has drifted to. The same move scientific notation makes, only
+this time in binary.
+
+In decimal:
+
+$$1.5_{10} \times 10^3 = 1500_{10}$$
+
+In binary:
+
+$$1.1_{2} \times 2^3 = 1100_2 = 12_{10}$$
+
+The mantissa, `1.1` in binary, holds the significant digits. The exponent, `3`,
+says where the point belongs. The exponent is the part that floats. Change it
+and the point slides, so the same handful of mantissa bits can express
+$0.0011_{2}$ or $1100_{2}$ or $1.1 \times 2^{40}$. That is how float32, with the
+same 32 bits, covers a range from about $10^{-38}$ up to $10^{38}$, a span
+fixed-point could not reach in its dreams.
+
+Everything has a price, and the price here is that the gaps between
+representable numbers are no longer even. The gap is minuscule near $0$ and
+enormous near the large values. That is where the bugs make their nests. But
+first we need to know how to write a decimal number out in binary.
+
+## The basic conversions
+
+To build a float by hand you need one background skill: converting a decimal
+number to binary. The integer part and the fractional part follow two different
+rules.
+
+### Converting the integer part to binary
+
+The rule for integers is **divide by 2, keep the remainder, read upward**. Take
+13:
+
+```text
+13 ÷ 2 = 6 remainder 1   ← lowest bit
+ 6 ÷ 2 = 3 remainder 0
+ 3 ÷ 2 = 1 remainder 1
+ 1 ÷ 2 = 0 remainder 1   ← highest bit
+```
+
+Read the remainders from the bottom up: $13_{10} = 1101_2$. You can check it:
+$1\times2^3 + 1\times2^2 + 0\times2^1 + 1\times2^0 = 8 + 4 + 0 + 1 = 13$.
+
+The integer part always terminates, because dividing by 2 repeatedly gets you to
+$0$ sooner or later.
+
+### Converting the fractional part to binary
+
+The fractional part follows a different rule: **multiply by 2, take the integer
+part, read downward**. Take $0.756$:
+
+```text
+0.756 × 2 = 1.512 → 1   (keep 0.512)
+0.512 × 2 = 1.024 → 1   (keep 0.024)
+0.024 × 2 = 0.048 → 0
+0.048 × 2 = 0.096 → 0
+0.096 × 2 = 0.192 → 0
+...
+```
+
+Read from the top down: $0.756 \approx 0.11000\ldots_2$. And this is where the
+problem appears. With the integer part the division is _guaranteed_ to
+terminate. With the fraction it is **not**. For most decimal numbers this
+doubling runs forever without ever hitting $0$, falling instead into an endless
+repeating cycle.
+
+Why? Because a fraction $\frac{p}{q}$ terminates in base $b$ only when every
+prime factor of $q$ divides $b$. In decimal (base $10 = 2 \times 5$), fractions
+whose denominators are built from 2 and 5 terminate: $\frac{1}{4} = 0.25$,
+$\frac{1}{8} = 0.125$. In binary (base $2$), **only** fractions whose
+denominator is a power of 2 terminate: $\frac{1}{2} = 0.1_2$, $\frac{1}{4} =
+0.01_2$. Everything else repeats forever, including $\frac{1}{10}$, the familiar
+$0.1$.
+
+Try it in the explorer below. Switch to the **Binary fraction** tab and type
+`0.1`. You will see the four digits `0011` repeat from the fifth step onward.
+
+<PullQuote>
+
+  0.1 in binary is 0.000110011001100110011… A number that runs on forever and
+  never arrives. The computer cuts it off at a finite number of bits and rounds,
+  and rounding, of course, produces error.
+
+</PullQuote>
+
+## The anatomy of a floating-point number
+
+Now we put the pieces together. In IEEE 754 a single precision floating-point
+number, `float32`, uses exactly 32 bits, divided into three fields:
+
+| Field      | Bits | Job                            |
+| ---------- | ---- | ------------------------------ |
+| Sign       | 1    | Positive or negative           |
+| Exponent   | 8    | Where the binary point sits    |
+| Mantissa   | 23   | The significant digits         |
+
+Filling in all 32 bits does not directly spell out a position on the real line.
+It gives us the values to feed into a formula, and the formula produces the
+actual number. For an ordinary `float32` that formula is:
+
+$$(-1)^{\text{sign}} \times 2^{E - 127} \times 1.\text{mantissa}$$
+
+Two details in there are worth noticing, the `1.` in front of the mantissa and
+the subtraction of $127$ from the exponent. Those two are the cleverest
+inventions in the standard. We will take them one at a time and see why they are
+needed.
+
+### Normalisation? Why bother
+
+Think back to scientific notation. How many ways are there to write the number
+$1.23$?
+
+Certainly more than one. You can write it $123\times10^{-2}$, or
+$12.3\times10^{-1}$, or $0.0123\times10^2$.
+
+Because binary representation of reals borrows from scientific notation, it
+inherits the same problem: **there is more than one way to write a given
+number**. Left unconstrained, one value would have many bit patterns, which is
+both wasteful and confusing when comparing. _Normalisation_ exists to end the
+argument with a single rule: always slide the point so that there is **exactly
+one `1` to the left of it**. Every normal number therefore has the form
+$1.\text{something} \times 2^{e}$.
+
+But if the digit to the left of the point is _always_ `1`, why store it? This is
+the trick at the heart of IEEE 754. **The leading bit is implicit.** It is
+always
+there, so it does not need to be written down. The 23 bit mantissa holds only
+what comes _after_ the point. The result: we get 24 bits of effective precision
+while only paying for 23 bits of storage.
+
+### What the bias is for
+
+The exponent has to cover both positive powers ($2^{30}$ for large numbers) and
+negative ones ($2^{-30}$ for small ones). The obvious approach is to give the
+exponent its own sign bit, but that is clumsy, it makes comparing two floats
+complicated, and it wastes space.
+
+Instead IEEE 754 uses a **bias**, a fixed offset. For `float32` the bias is
+$127$. The _true_ exponent $e$ is stored as $E = e + 127$. The true exponent
+runs
+from $-126$ to $+127$, so the stored value $E$ runs from $1$ to $254$, always
+positive, and fits neatly into 8 bits with no sign bit. To decode, subtract
+again: $e = E - 127$. (The two values $E = 0$ and $E = 255$ are reserved for
+special cases, which we will get to.)
+
+You might wonder why $127$ was picked as the offset. There is nothing profound
+about it. We have 8 bits for the exponent, 8 bits covers $0$ to $255$, so the
+tidiest symmetric choice is the value in the middle.
+
+The payoff of the bias is that since both exponent and mantissa are stored
+unsigned, and the exponent comes first, two positive floats can be compared **as
+though they were integers** over the same bit pattern.
+
+### Building −13.756 by hand
+
+Now let us assemble everything above by hand. Take $-13.756$ as the sample
+value.
+
+Sign bit: the number is negative, so the sign bit is `1`. Integer part: $13 =
+1101_2$. Fractional part: $0.756 \approx 0.11000\ldots_2$ (a non-terminating
+string). Put together: $13.756_{10} \approx 1101.11000\ldots_2$.
+
+Now normalise, sliding the point to just after the first `1`:
+$1.10111000\ldots_2 \times 2^3$. So the true exponent is $e = 3$. Add the bias:
+$E = 3 + 127 = 130 = 10000010_2$. The mantissa is the first 23 bits after the
+point, $10111000\ldots$, with the last bit rounded.
+
+To let the machine walk through these steps for you, open the component below.
+It builds the number up from a decimal value into 32 bits, rather than decoding
+backwards the way the explorer above does.
+
+<FloatBuilder />
+
+The interaction below shows more clearly how the bits are actually stored.
+
+<FloatExplorer />
+
+<Fleuron />
+
+## The gaps between floating-point numbers
+
+Earlier I said the gaps between floating-point numbers are uneven. Now we go
+into it, because this is exactly where the two philosophies of number
+representation part ways, and "the gap" is where the difference shows up most
+plainly, measurable as a number rather than left vague.
+
+### Fixed-point: the gap is an absolute constant
+
+In fixed-point the position of the point is decided in advance. Say we use 32
+bits, 16 for the integer part and 16 for the fraction. A value is read as:
+
+$$v = \frac{n}{2^{16}}$$
+
+with `n` a 32 bit integer running from `0` to `2³² − 1` (unsigned, to keep the
+arithmetic simple). The gap between two neighbouring representable values is, by
+definition, the distance between `n` and `n+1` after dividing by `2^16`:
+
+$$\text{gap} = \frac{n+1}{2^{16}} - \frac{n}{2^{16}} = \frac{1}{2^{16}} \approx 0.0000152587890625$$
+
+Notice that this number _does not depend on `n`_. Whether the value sits near
+$0$ or near the maximum of $65535.99998$, the gap between neighbours is exactly
+$1/65536$. It is a fixed _absolute_ gap across the whole line. Plotted against
+the value, it is a horizontal line, a constant.
+
+### Floating-point: the gap is a fixed ratio
+
+In floating point a value has the form $v = (1.f) \times 2^E$, with the mantissa
+`f` holding `p` bits. The next value up comes from incrementing the last bit of
+`f`, which adds $2^{-p}$ to the mantissa, then multiplying by the same $2^E$:
+
+$$\text{ULP}(v) = 2^E \times 2^{-p} = 2^{E-p}$$
+
+This is the formula for the ULP (_unit in the last place_), the smallest unit at
+the final position. The fundamental difference is that `E` appears in the
+formula. The gap depends directly on the magnitude of `v`, because $v \approx
+2^E$. Rewritten as a ratio:
+
+$$\frac{\text{ULP}(v)}{v} \approx \frac{2^{E-p}}{2^E} = 2^{-p}$$
+
+The ratio between the gap and the value is constant across the whole line
+(outside the subnormal region, which I will come to). Plotted against the value
+on a logarithmic axis, it is no longer a horizontal line but a staircase,
+doubling each time `v` crosses a power of 2. Drag the slider and you can watch
+the steps widen one notch at a time.
+
+<FloatVsFixed />
+
+### The two side by side, in real numbers
+
+Take fixed-point Q16.16 (16 integer bits, 16 fractional bits) as the baseline,
+and float32 (`p = 24` bits, counting the implicit bit). A few concrete values
+tell the entire story.
+
+| Value  | ULP fixed-point Q16.16 | ULP float32 | Finer                 |
+| ------ | ---------------------- | ----------- | --------------------- |
+| 0.001  | 1.53e−5                | 1.16e−10    | float32, ~131,000×    |
+| 1      | 1.53e−5                | 1.19e−7     | float32, 128×         |
+| 128    | 1.53e−5                | 1.53e−5     | a tie                 |
+| 1,000  | 1.53e−5                | 6.10e−5     | fixed-point, 4×       |
+| 60,000 | 1.53e−5                | 3.91e−3     | fixed-point, 256×     |
+| 10⁹    | out of range           | 64          | fixed-point cannot    |
+
+At `0.001` float32 is finer than fixed-point by five orders of magnitude,
+because fixed-point has already spent half its bit budget on counting integers
+it does not need here. By `60,000` the position reverses: the float32 ULP swells
+to `3.91e−3`, 256 times coarser than fixed-point. And `10⁹` is somewhere Q16.16
+can never reach, since its ceiling is `65,536`. That is the crux: neither
+representation wins outright. They are two ways of dividing a finite bit budget
+according to two different philosophies.
+
+### Why floating-point takes this trade
+
+With the same `32` bits, fixed-point Q16.16 has to _choose in advance_ the range
+it will serve (from `0` to `65535.99998`), and inside that range the resolution
+is fixed. If your real value falls outside that range, larger or smaller, you
+cannot represent it at all.
+
+Floating-point does not choose a range in advance. It splits the bit budget
+differently: part of it for the _position on a logarithmic axis_ (the exponent),
+part for the _resolution at that position_ (the mantissa). The direct
+consequence is that resolution is no longer uniform, it stretches and shrinks
+with magnitude. The price: you lose the promise of "absolute error smaller than
+X" that fixed-point can make. In exchange, floating point makes a different
+promise: "relative error smaller than X", and that is the guarantee science
+actually needs, because most measurements in nature care about _significant
+digits_ rather than absolute units.
+
+### The practical consequence: why money uses fixed-point
+
+Here is where the two philosophies hit a concrete application. Money needs
+_absolute_ precision down to the cent, at every magnitude. A million dollars and
+a single cent have to add and subtract exactly, to the last digit. That is
+exactly what fixed-point provides and what floating point cannot commit to. An
+accounting system that adds money with `double` will accumulate small rounding
+errors across millions of transactions, and because floating-point gaps stretch
+with magnitude, the error on a large transaction will be bigger than the error
+on a small one, an inconsistency that is hard to defend when the books are
+reconciled. That is why accounting standards tend to count in integer "cents"
+(implicit fixed-point), or use decimal floating point (a base 10 variant),
+rather than the binary floating point of IEEE 754.
+
+Which brings the tension between "absolute" and "relative" back around to the
+Patriot at the top of this essay. That system's clock needed _absolute_
+precision in units of 0.1 seconds accumulated over hundreds of hours, but it was
+represented in a floating-point scheme that only promises _relative_ precision.
+The distance between the two philosophies, the one you just watched open up
+under the slider, is the distance that let that missile through.
+
+## IEEE 754, the extended formats, and the special values
+
+Back to the two exponent values we set aside: $E = 0$ and $E = 255$. They do not
+follow the ordinary formula, they are reserved for the edge cases.
+
+**Exponent $E = 0$.** If the mantissa is also $0$, the value is $\pm 0$. Yes,
+there are two zeros: $+0$ and $-0$ compare as equal but differ in the sign bit
+(and $1/{+0} = +\infty$ while $1/{-0} = -\infty$). If the mantissa is nonzero,
+the number is a _subnormal_: we drop the implicit `1`, which allows values
+smaller than the smallest normal number and fills in the gap around $0$.
+
+**Exponent $E = 255$.** If the mantissa is $0$, the value is $\pm\infty$, the
+result of overflow or of $1/0$. If the mantissa is nonzero, it is a `NaN` (Not a
+Number), produced by $0/0$, $\sqrt{-1}$, $\infty - \infty$. NaN is contagious:
+every operation that touches it returns NaN. And it has one strange property,
+`NaN === NaN` evaluates to `false`, making it the only value not equal to
+itself. Try `∞` and `NaN` in the interaction above and watch the exponent field
+fill up with `1`s.
+
+Float32 is only one member of a family. The same set of ideas (sign, biased
+exponent, normalised mantissa) scales into several sizes:
+
+| Format             | Total bits | Exponent | Mantissa | Bias  | Used for                              |
+| ------------------ | ---------- | -------- | -------- | ----- | ------------------------------------- |
+| half (`float16`)   | 16         | 5        | 10       | 15    | GPUs, graphics, ML inference          |
+| bfloat16           | 16         | 8        | 7        | 127   | ML training (keeps float32's range)   |
+| single (`float32`) | 32         | 8        | 23       | 127   | The common default, graphics, games   |
+| double (`float64`) | 64         | 11       | 52       | 1023  | Science, finance, JavaScript `Number` |
+| quad (`float128`)  | 128        | 15       | 112      | 16383 | Computation needing very high precision |
+
+The pair worth noticing is `float16` and `bfloat16`: the same 16 bits, split
+very differently. `float16` favours the mantissa (10 bits), so it is more
+precise
+but narrow in range. `bfloat16` cuts the mantissa to 7 bits in order to keep the
+full 8 bit exponent of `float32`, trading precision for reach. In machine
+learning people choose `bfloat16` because when you are training a neural
+network,
+overflow (losing range) is more fatal than losing a few significant digits.
+
+<Sidenote>
+
+  Beyond the binary family there are two branches worth knowing. **Decimal
+  floating point** (`decimal64`, `decimal128` in IEEE 754-2008) stores digits in
+  base 10, so $0.1$ is *exact*, which is precisely what finance and databases
+  need (the `DECIMAL`/`NUMERIC` types are this). The cost is speed, since
+  hardware is optimised for base 2. **Posit** (unum, proposed by John Gustafson)
+  is a modern redesign: precision that *tapers*, dense around $1$ where we
+  usually compute and thinning out toward both extremes, using the same bits
+  more efficiently. Posit is not yet common in hardware but it is an interesting
+  candidate for the future.
+
+</Sidenote>
+
+## In the field: rules for using floats in real systems
+
+Four rules, distilled from everything above.
+
+**Do not compare floats with `==` or `===`.** Two computations that should be
+mathematically identical can differ in the last bit. The correct approach is to
+check whether their difference is below an acceptable threshold (an epsilon).
+What the threshold should be depends on your problem.
+
+```ts
+// Fragile — can fail
+if (a + b === 0.3) {
+  /* ... */
+}
+
+// Solid
+if (Math.abs(a + b - 0.3) < 1e-10) {
+  /* ... */
+}
+```
+
+**Never use floats for money.** Money is absolutely exact. 11,000đ is 11,000đ,
+not 10,999.999999đ. Store it as an integer (count cents, not dollars), or use
+your database's decimal/`NUMERIC` type. Round off half a cent each time,
+multiply
+by millions of transactions, and you get the disaster that drained the Vancouver
+index for 22 months.
+
+**Know where your float came from.** A sensor reading is already an
+approximation, so float error usually sinks below measurement noise and is not
+worth worrying about. A financial or cryptographic value is exact by definition,
+and there float error _always_ matters. The same float carries a different level
+of danger depending on what it means.
+
+**Errors accumulate.** One float operation sows a tiny error. A thousand
+operations can sow a visible one. This is why the Patriot battery failed to
+intercept after only 100 hours of operation. If you are accumulating in a loop,
+think about techniques like Kahan summation, or simply resetting periodically.
+
+## A closing note
+
+Go back to the explorers above. Type `1/3` and watch the cycle appear in the
+binary fraction table. Drag the gap slider and see the difference between
+floating point and fixed-point open up. And now you can explain it to someone
+else.

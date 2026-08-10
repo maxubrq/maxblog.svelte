@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>maxubrq — ink edition</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; overflow: hidden; }
+  body { font-family: "IBM Plex Sans", -apple-system, sans-serif; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="image-slot.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.js"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="pages/InkEdition.jsx"></script>
+<script type="text/babel" src="pages/InkDialogue.jsx"></script>
+<script type="text/babel" src="pages/InkProfile.jsx"></script>
+<script type="text/babel" src="pages/InkSeries.jsx"></script>
+<script type="text/babel" src="pages/InkFree.jsx"></script>
+<script type="text/babel" src="pages/InkToctouParts.jsx"></script>
+<script type="text/babel" src="pages/InkToctou.jsx"></script>
+<script type="text/babel" src="pages/InkMarks.jsx"></script>
+<script type="text/babel" src="pages/InkShelf.jsx"></script>
+<script type="text/babel" src="pages/InkReaderRoom.jsx"></script>
+<script type="text/babel" src="pages/InkCommonplace.jsx"></script>
+<script type="text/babel" src="pages/InkWeather.jsx"></script>
+<script type="text/babel" src="pages/InkWeight.jsx"></script>
+<script type="text/babel" src="pages/InkSettings.jsx"></script>
+<script type="text/babel" src="pages/InkReadingCursor.jsx"></script>
+<script type="text/babel" src="pages/InkVault.jsx"></script>
+<script type="text/babel" src="pages/InkFeatures.jsx"></script>
+<script type="text/babel" src="pages/InkFeatures2.jsx"></script>
+<script type="text/babel" src="pages/InkFeatures3.jsx"></script>
+<script type="text/babel" src="pages/InkPrint.jsx"></script>
+
+<script type="text/babel">
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="ink" title="maxubrq · ink edition" subtitle="White + electric ink-blue. Brutalist digital-editorial: hairline grids, big lowercase grotesque, hand-drawn marks, cyanotype plates.">
+        <DCArtboard id="ink-home" label="Home — masthead + featured + archive" width={1080} height={980}>
+          <InkHome />
+        </DCArtboard>
+        <DCArtboard id="ink-article" label="Article — the reading surface" width={1080} height={1560}>
+          <InkArticle />
+        </DCArtboard>
+        <DCArtboard id="ink-dialogue" label="Conversation — a dialogue as an editorial spread" width={1080} height={1520}>
+          <InkDialogue />
+        </DCArtboard>
+        <DCArtboard id="ink-archive" label="Archive — everything, in order of when" width={1080} height={980}>
+          <InkArchive />
+        </DCArtboard>
+        <DCArtboard id="ink-topic" label="Topic — a curated doorway (Science)" width={1080} height={820}>
+          <InkTopic />
+        </DCArtboard>
+        <DCArtboard id="ink-about" label="About the author — a notebook, kept in public" width={1080} height={900}>
+          <InkAbout />
+        </DCArtboard>
+        <DCArtboard id="ink-profile" label="Reading profile — the honest mirror for an invisible T5 adaptation" width={1080} height={1360}>
+          <InkProfile />
+        </DCArtboard>
+        <DCArtboard id="ink-series" label="Series — the multi-part reading experience (arc · bridge · recurring threads)" width={1080} height={1440}>
+          <InkSeries />
+        </DCArtboard>
+        <DCArtboard id="ink-free" label="Free — full-bleed scroll-driven article type (scrollytelling, la pudding.cool)" width={1180} height={760}>
+          <InkFree />
+        </DCArtboard>
+        <DCArtboard id="ink-toctou" label="TOCTOU — long-form free piece (~4000 từ, 4 dụng cụ tương tác, TED-Ed structure)" width={1240} height={860}>
+          <InkToctou />
+        </DCArtboard>
+        <DCArtboard id="ink-shelf" label="Read shelf — finished pieces as printable book spines (T4)" width={1080} height={720}>
+          <InkShelf />
+        </DCArtboard>
+        <DCArtboard id="ink-reader-room" label="The Reading Room — one private roof over everything reader-owned (from About)" width={1080} height={860}>
+          <InkReaderRoom />
+        </DCArtboard>
+        <DCArtboard id="ink-commonplace" label="Commonplace book — sentences you kept, print-ready + export to Obsidian/Notion (T4→T5)" width={1080} height={1320}>
+          <InkCommonplace />
+        </DCArtboard>
+        <DCArtboard id="ink-weather" label="Lab — thời tiết của bài / reading contract, 2 forms (head + listing)" width={1080} height={1180}>
+          <InkWeather />
+        </DCArtboard>
+        <DCArtboard id="ink-weight" label="Lab — sức nặng còn lại / remaining weight (T2), scroll to feel it" width={1080} height={1040}>
+          <InkWeight />
+        </DCArtboard>
+        <DCArtboard id="ink-settings" label="Reading preferences — live config, every control re-renders the sample" width={1080} height={1400}>
+          <InkSettings />
+        </DCArtboard>
+        <DCArtboard id="ink-reading-cursor" label="Lab — con trỏ đọc / reading ruler (T2), 3 variants live" width={1080} height={1080}>
+          <InkReadingCursor />
+        </DCArtboard>
+        <DCArtboard id="ink-vault" label="The Vault — author's collection (reached from About)" width={1080} height={1180}>
+          <InkVault />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="ink-apparatus" title="The reading apparatus · ink" subtitle="Search, glossary, margin notes, and the private author dashboard — same white + ink-blue grid.">
+        <DCArtboard id="ink-marks" label="The mark — reader interaction as one data primitive (replaces the reaction bar)" width={1080} height={2080}>
+          <InkMarks />
+        </DCArtboard>
+        <DCArtboard id="ink-search" label="Universal search — ⌘K index drawer" width={1080} height={720}>
+          <InkSearch />
+        </DCArtboard>
+        <DCArtboard id="ink-glossary" label="Glossary — inline mark + site dictionary" width={1080} height={1080}>
+          <InkGlossary />
+        </DCArtboard>
+        <DCArtboard id="ink-sidenotes" label="Side notes — the margin-notes reading layout" width={1080} height={900}>
+          <InkSidenotes />
+        </DCArtboard>
+        <DCArtboard id="ink-signals" label="Reader signals — author-only dashboard" width={1080} height={880}>
+          <InkSignals />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="ink-technical" title="Technical writing · ink" subtitle="Code plates, a state-machine diagram, a callout, and a terminal — all on the book grid.">
+        <DCArtboard id="ink-tech" label="Technical post — debounce, rebuilt" width={1080} height={1520}>
+          <InkTechArticle />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="ink-topics" title="Topic pages · ink" subtitle="A hub of four doorways, and each subject as its own oversized cover.">
+        <DCArtboard id="ink-topic-hub" label="Topics — the hub (four doorways)" width={1080} height={700}>
+          <InkTopicHub />
+        </DCArtboard>
+        <DCArtboard id="ink-topic-software" label="Topic — Software" width={1080} height={720}>
+          <InkTopicPage topic="software" />
+        </DCArtboard>
+        <DCArtboard id="ink-topic-philosophy" label="Topic — Philosophy" width={1080} height={680}>
+          <InkTopicPage topic="philosophy" />
+        </DCArtboard>
+        <DCArtboard id="ink-topic-art" label="Topic — Art" width={1080} height={680}>
+          <InkTopicPage topic="art" />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="ink-series" title="Series · ink" subtitle="Volumes and chapters. Some closed, some still being written.">
+        <DCArtboard id="ink-series-shelf" label="Series — the shelf" width={1080} height={720}>
+          <InkSeriesShelf />
+        </DCArtboard>
+        <DCArtboard id="ink-series-page" label="Series — TypeScript for the Strong Engineer" width={1080} height={820}>
+          <InkSeriesPage />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="ink-memory" title="Reading memory · ink" subtitle="‘You were here.’ A soft return for half-read posts — never a modal.">
+        <DCArtboard id="ink-memory-article" label="Article — return nudge + gutter glyph" width={1080} height={760}>
+          <InkMemoryArticle />
+        </DCArtboard>
+        <DCArtboard id="ink-memory-home" label="Home — pick up where you left off" width={1080} height={760}>
+          <InkMemoryHome />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="ink-apparatus2" title="Margin questions & long-form · ink" subtitle="A pause that earns its place, and an 8k-word essay that reads like a book.">
+        <DCArtboard id="ink-margin-q" label="Margin question — a pause, not a test" width={1080} height={720}>
+          <InkMarginQuestion />
+        </DCArtboard>
+        <DCArtboard id="ink-longform" label="Long-form — front matter + movements + journey rail" width={1080} height={1000}>
+          <InkLongForm />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="ink-magic" title="✦ Magic · ink" subtitle="The crowd only after you finish, a chart of your own reading, and a margin AI that refuses to invent.">
+        <DCArtboard id="ink-witness" label="Fair-witness drawer — counts only, after the end-mark" width={1080} height={1080}>
+          <InkWitness />
+        </DCArtboard>
+        <DCArtboard id="ink-constellation" label="Constellation — the reader’s sky, now with concepts + domains (Plate XII)" width={1080} height={620}>
+          <InkConstellation />
+        </DCArtboard>
+        <DCArtboard id="ink-companion" label="The Companion — cites, and refuses to invent" width={1080} height={620}>
+          <InkCompanion />
+        </DCArtboard>
+      </DCSection>
+      <DCSection id="ink-print" title="Print / book edition · ink" subtitle="Study ⁄ Flow ⁄ Print. The essay composed onto A4 sheets: full-bleed blue cover, contents, two-column body, endnotes.">
+        <DCArtboard id="ink-print-preview" label="Print — book spreads (A4 ⁄ Letter, Save as PDF)" width={840} height={1180}>
+          <InkPrint />
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,563 @@
+---
+title: 'Số dấu chấm động (floating point number)'
+subtitle: '0.1 được biểu diễn như thế nào trong máy tính?'
+date: '2026-01-29'
+topic: 'Tech'
+lang: vi
+interactive: true
+chapter: 'Chương I'
+description: 'Tìm hiểu về IEEE 754: làm sao để biểu diễn trục số thực vô hạn vào thanh ghi 32 bit? Tự tính tay một sô float trong hệ nhị phân và tìm hiểu vì sao khoảng cách giữa các số float không đồng đều, điều đó có nghĩa là gì với mọi phép tính bạn từng viết.'
+weather:
+  time: '25–30 phút'
+  oneSitting: true
+  load: 4
+  bestWhen: 'rảnh + cà phê sáng'
+rememberSentence: 'Máy tính không lưu 0.1 một cách chính xác nó lưu giá trị gần nhất mà nó có thể quản lý.'
+rememberAttribution: 'Số dấu chấm động'
+---
+
+Trong Chiến Tranh Vùng Vịnh, ngày 25 tháng 2 năm 1991, một khẩu đội tên lửa 
+Patriot ở Dhahran, Ả Rập Xê Út, đã không đánh chặn được một tên lửa Scud của
+Iraq,
+kết quả là quả Scud rơi xuống một doanh trại hai mươi tám binh sĩ Mỹ thiệt mạng
+và gần
+một trăm người bị thương.
+
+Hạ Viện Mỹ đã yêu cầu GAO (General Accounting Office) điều tra về sự cố này, kết
+quả cho thấy không có lỗi vận hạnh hay lỗi phần cứng nào. Nguyên nhân là một sai
+số tích lũy dấu phẩy động. Đồng hồ nội bộ của Patriot với của hệ thống đếm thời 
+gian theo đơn vị một phần mười giây. Con số $0.1$, như chúng ta sắp thấy, không 
+thể được lưu trữ chính xác trong máy tính. Mỗi tick đồng hồ mang theo một sai số
+cực nhỏ. Sau khoảng 100 giờ hoạt động liên tục, những sai số tí hon ấy cộng dồn 
+lại thành $0.34$ giây.
+
+Một phần ba giây, nghe không là gì, nhưng một quả Scud bay với vận tốc cỡ
+1,676 mét mỗi giây, nên trong $0.34$ giây đó nó đi được hơn nửa cây số, đủ để
+trượt khỏi cửa sổ mà radar của Patriot dự đoán. Hệ thống đánh chặn bỏ qua nó và
+kết quả là hai
+mươi tám người đã tử nạn.
+
+<Sidenote>
+
+  Lỗi Patriot được ghi lại trong báo cáo [GAO
+  IMTEC-92-26](https://www.gao.gov/assets/imtec-92-26.pdf). Sai số tích lũy sau
+  100 giờ hoạt động là 0.3433 giây, sinh ra từ việc nhân lặp lại một biểu diễn
+  bị cắt ngắn của 1/10. Trớ trêu thay một phần khác của phần mềm đã được sửa cho
+  dùng biểu diễn chính xác hơn, nhưng bản vá không được áp dụng đồng nhất, nên
+  hai chỗ trong cùng hệ thống lệch nhau.
+
+</Sidenote>
+
+Cũng cùng một loại lỗi với dấu chấm động đó đã khiến sàn chứng khoán Vancouver 
+mất dần giá trị chỉ số suốt 22 tháng vì mỗi lần làm tròn lại cắt đi một mẩu, nó
+cũng khiến hệ thống y tế phát nhầm liều, và khiến game engine vật lý bắn nhân 
+vật xuyên qua tường. Những xự cố liên quan đến dấu chấm động, thực chất vốn
+không
+phải sai sót, số dấu chấm động được thiết kế để như vậy, nó là cố gắng tột cùng
+của
+các nhà khoa học để có thể nén trục số thực vô hạn vào một thanh ghi có số bit
+hữu hạn.
+
+Tiêu chuẩn cho số dấu chấm động tên là *IEEE 754*, xuất
+bản năm 1985 và về cốt lõi nó không thay đổi gì nhiều kể từ đó.
+
+## Vấn đề cốt lõi: nén một trục số vô hạn vào một số lượng hữu hạn bit
+
+Giữa hai số bất kỳ trên trục số thực luôn có vô hạn các số khác. Giữa $0$ và $1$
+có $0.5$, giữa $0$ và $0.5$ có $0.25$, và cứ thế mãi mãi không bao giờ hết. Trục
+số
+thực là một dòng liên tục liên tục các số dày đặc đến vô cùng.
+
+Một thanh ghi (register) trong CPU thì lại khác, nó có số lượng bit hữu hạn. 
+Nó là một dãy công tắc, mỗi công tắc bật hoặc tắt (0 hoặc 1). Một thanh ghi 32
+bit có đúng $2^{32}$, khoảng 4,3 tỷ, trạng thái khả dĩ không hơn không kém.
+
+Và đây là toàn bộ tấn bi kịch gói trong một câu: **ta phải ánh xạ một tập vô hạn
+vào một tập hữu hạn bit.**. Điều đó, về cơ bản là không thể, ít nhất là về mặt
+toán học nếu muốn giữ trọn vẹn tính chất của dãy số. Bất kỳ cách lưu số thực nào
+trong máy tính cũng buộc phải vứt bỏ gần như toàn bộ các số, chỉ giữ lại một tập
+hợp thưa thớt và làm tròn mọi thứ còn lại về các số gần nhất. Câu hỏi lúc này 
+không phải là "có mất mát không" mà là "chọn giữ lại những số nào".
+
+### Fixed-point thì sao? Vấn đề của nó là gì
+
+Câu trả lời đơn giản nhất có thể nghĩ ra là _fixed-point_, dấu chấm cố định:
+đóng đinh dấu chấm ở một vị trí cố định. Chẳng hạn với 32 bit, ta có thể chia 
+16 bit cho phần nguyên, 16 bit cho phần thập phân. Từ đó chúng ta có thể biểu 
+diễn mọi số thực có dạng `nguyên.lẻ` với độ phân giải (khoảng cách) cố định
+là $2^{-16}\approx0.0000153$.
+
+Cách này gọn gàn và dễ đoán, khoảng cách giữa hai số kề nhau luôn bằng nhau ở
+mọi nơi, bằng $2^{-16}$, dù là đang ở gần số $0$ hay ở gần số lớn nhất. Đó vừa
+là
+điểm mạnh vừa là điểm chết của cách biểu diễn này. Điểm mạnh là nó sẽ không gây
+ra
+sai số để có thể tích lũy và gây họa như các sự cố chúng ta đã nói ở trên.
+
+Điểm chết của cách này nằm ở **dải giá trị có thể biểu diễn**. Với chỉ 16 bit
+phần
+nguyên, số lớn nhất mà nó có thể biểu diễn là khoảng 65.535. Muốn lưu khối lượng
+một thiên hà? Không được, bán kính một nguyên tử thì sao? Cũng không, vì
+$2^{-16}$ là
+số nhỏ nhất có thể biểu diễn. Và giờ chúng ta bị kẹt giữa hai đầu, trần thì quá
+thấp,
+đáy thì thì lại quá cao. Với cách biểu diễn này chúng ta đã bỏ qua quá nhiều
+(hầu như
+là toàn bộ) số trong trục số thực.
+
+Và quan trọng hơn, là sự lãng phí, khi tính toán những số rất nhỏ, hầu hết các
+bit phần
+nguyên toàn là số $0$ vô dụng. Khi tính những số rất lớn, các bit phần lẻ cũng
+vô dụng nốt.
+Bạn trả tiền cho 32 bit nhưng lúc nào dùng cũng chỉ được một nhúm.
+
+<PullQuote>
+
+  Fixed-point chia đều độ chính xác cho mọi số. Nhưng chúng ta hiếm khi cần độ
+  chính
+  xác đều, chúng ta cần nó *tương đối* nguyễn sao cho nó **"có nghĩa"** dù con
+  số to hay nhỏ.
+
+</PullQuote>
+
+### Ý nghĩa thật sự của "giá trị"
+
+Vậy.."có nghĩa" là gì? Làm sao biết con số đó "có nghĩa" hay không?
+
+Ví dụ đơn giản thôi, khi Google Map nói với bạn là sẽ còn "150 mét nữa đến điểm
+đến" và
+"150.001 mét nữa đến điểm đến", hai cái này khác nhau bao nhiêu? Về mặt ngữ
+nghĩa tuyệt đối là
+một millimet, vậy một milimet này có nghĩa gì với bạn khi đang di chuyển trên
+đường không? Mình đoán
+là không, nó không có nghĩa gì cả, cụ thể hơn, không có đủ mức "ý nghĩa" để tác
+động đến bạn.
+Tuy nhiên cũng là sai số một milimet này trong khi bạn đang khắc một con chip
+thì nó là một thảm họa.
+
+Vậy không phải sai số nào cũng có ý nghĩa như nhau dù là cùng một số, một
+milimet, ở cấp độ số tính
+toán càng lớn, chúng ta chấp nhận sai số lớn, và ngược lại, ở cấp độ nhỏ, rất
+nhỏ, sai số cũng phải được
+chấp nhận ở mức độ tương ứng. Tức là khi tính toán ở scale nhỏ, chúng ta muốn
+giữ lại càng nhiều số phía
+sau dấu chấm càng tốt và ngược lại ở scale lớn càng nhiếu số trước dấu chấm càng
+tốt.
+
+Tình cờ trong khoa học đã có cách để biểu diễn mong muốn này, hãy xem
+
+$1.5 \times 10^3$ và $1.5 \times 10^{-3}$
+
+Đều là $1.5$ nhưng lần này $10^3$ và $10^{-3}$ đã giải thích độ scale mà hai số
+này thuộc về
+một cái là $15,000$ còn một cái là $0.0015$. Và $1.5$ chính là cái "ý nghĩa" mà
+chúng ta quan
+tâm. Một nhà vật lý viết khối lượng electron là $9.109 \times 10^{-31}$ kg và
+khối lượng
+Mặt Trời là $1.989 \times 10^{30}$ kg bằng _cùng_ số chữ số có nghĩa, dù hai con
+số cách
+nhau 61 bậc độ lớn. $10^3$ và $10^{-3}$ cũng hướng dẫn cho chúng ta biết dấu
+chấm thật sự nằm ở đâu
+$10^3$ nói hãy dời dấu chấm hiện tại qua phải ba con số, $10^{-3}$ nói dời dấu
+chấm hiện tại qua trái
+ba con số để có giá trị thật sự.
+
+Đây chính là cái mà fixed-point không làm được và cũng là cái mà chúng ta thực
+sự muốn từ một
+con số có ý nghĩa: giữ một số lượng chữ số có nghĩa cố định, rồi ghi riêng dấu
+phẩy nằm ở
+đâu.
+
+### Floating-point: phần nào "động"
+
+Tên gọi _floating-point_ (dấu chấm động) đối lập thẳng với fixed-point. Thay vì
+đóng đinh dấu chấm tại một nơi cố định trong chuỗi bit, chúng ta để nó **trôi**.
+Dùng một nhúm bit
+để ghi các chữ số có nghĩa, và một nhúm bit khác để ghi dấu phẩy đang trôi tới
+đâu. Theo cách mà các
+ký hiệu khoa học đã làm, chỉ khác là lần này trong hệ nhị phân.
+
+Trong hệ thập phân:
+
+$$1.5_{10} \times 10^3 = 1500_{10}$$
+
+Trong hệ nhị phân:
+
+$$1.1_{2} \times 2^3 = 1100_2 = 12_{10}$$
+
+Phần định trị (mantissa), `1.1` trong hệ nhị phân giữ các chữ số có nghĩa. Số mũ
+(exponent), `3`, cho biết dấu phẩy thuộc về đâu. Chính cái số mũ này là phần
+"động", đổi nó dấu phẩy sẽ trượt đi và chỉ cần dùng cùng một nhúm bit định trị
+có
+thể diễn tả $0.0011_{2}$ hay $1100_{2}$ hay $1.1 \times 2^{40}$. Nhờ vậy float32
+với cùng 32 bit có thể biểu diễn bao phủ được dải từ cỡ $10^{-38}$ tới
+$10^{38}$,
+một khoảng mà fixed-point có nằm mơ cũng không với tới.
+
+Nhưng mọi thứ đều có cái giá phải trả, cái giá ở đây là khoảng cách giữa các số
+biểu diễn
+được không còn đồng đều nữa. Khoảng cách này sẽ cực nhỏ khi số gần số $0$ và
+khổng lồ khi tới
+gần các giá trị lớn. Đó chính là nơi bug làm tổ. Nhưng trước hết, phải biết cách
+viết một
+con số thập phân ra nhị phân đã.
+
+## Các phép chuyển đổi cơ bản
+
+Để có thể biểu diễn thử một số float bằng tay vào hệ nhị phân bạn cần một số kỹ
+năng nền: đổi một số thập phân
+sang nhị phân. Phần nguyên và phần thập phân sẽ đi theo hai luật khác nhau.
+
+### Chuyển số nguyên sang nhị phân
+
+Quy luật chuyển đổi cho số nguyên là **chia 2 lấy dư, đọc ngược**. Lấy số 13 làm
+ví dụ:
+
+```text
+13 ÷ 2 = 6 dư 1   ← bit thấp nhất
+ 6 ÷ 2 = 3 dư 0
+ 3 ÷ 2 = 1 dư 1
+ 1 ÷ 2 = 0 dư 1   ← bit cao nhất
+```
+
+Đọc các số dư từ dưới lên: $13_{10} = 1101_2$. Bạn có thể kiểm tra lại như sau: 
+$1\times2^3 + 1\times2^2 + 0\times2^1 + 1\times2^0 = 8 + 4 + 0 + 1 = 13$.
+
+Phần nguyên luôn kết thúc vì cứ chia 2 mãi thì sớm muộn cũng về $0$.
+
+### Chuyển phần thập phân sang nhị phân
+
+Phần thập phân đi theo luật: **nhân 2 lấy phần nguyên, đọc xuôi**. Lấy
+$0.756$ làm ví dụ:
+
+```text
+0.756 × 2 = 1.512 → 1   (giữ lại 0.512)
+0.512 × 2 = 1.024 → 1   (giữ lại 0.024)
+0.024 × 2 = 0.048 → 0
+0.048 × 2 = 0.096 → 0
+0.096 × 2 = 0.192 → 0
+...
+```
+
+Đọc các từ trên xuống: $0.756 \approx 0.11000\ldots_2$. Và đây là
+chỗ vấn đề xuất hiện. Với phần nguyên thì _bảo đảm_ phép chia sẽ kết thúc, phần 
+lẻ thì **không**. Với hầu hết các số thập phân, phép nhân 2 này chạy mãi không
+bao
+giờ ra $0$ mà nó rơi vào một chu kỳ lặp vô tận.
+
+Vì sao? Vì một phân số $\frac{p}{q}$ chỉ kết thúc trong cơ số $b$ khi mọi ước
+nguyên tố của $q$ đều chia hết $b$. Trong hệ thập phân (cơ số $10 = 2 \times
+5$), những
+phân số có mẫu số tạo từ 2 và 5 thì kết thúc: $\frac{1}{4} = 0.25$, $\frac{1}{8}
+= 0.125$. Trong hệ nhị phân (cơ số $2$), **chỉ** những phân số có mẫu là lũy
+thừa của 2 mới kết thúc: $\frac{1}{2} = 0.1_2$, $\frac{1}{4} = 0.01_2$. Mọi số
+khác đều sẽ lặp vô hạn, kể cả $\frac{1}{10}$, tức số $0.1$ thân thuộc.
+
+Bạn có thể thử với explorer bên dưới, chuyển sang tab **Binary fraction**, gõ
+`0.1`.
+Bạn sẽ thấy bốn chữ số `0011` lặp lại từ bước thứ năm trở đi.
+
+<PullQuote>
+
+  0.1 trong hệ nhị phân là 0.000110011001100110011… Một số sẽ kéo dài mãi mãi
+  không bao giờ kết thúc.
+  Máy tính cắt nó ở một số bit hữu hạn rồi làm tròn, và tất nhiên, làm tròn sẽ
+  sinh ra sai số.
+
+</PullQuote>
+
+## Cấu trúc của một số dấu chấm động
+
+Giờ chúng ta sẽ ráp các mảnh bên trên lại, trong IEEE 754 một số dấu chấm động
+đơn (single) `float32`
+dùng chính xác 32 bit và được chia thành ba vùng:
+
+| Vùng                | Số Bit | Nhiệm vụ                     |
+| ------------------- | --- | ---------------------------- |
+| Dấu (sign)          | 1   | Dương hay âm                 |
+| Số mũ (exponent)    | 8   | Vị trí của dấu phẩy nhị phân |
+| Định trị (mantissa) | 23  | Các chữ số có nghĩa          |
+
+Điền vào đầy đủ 32 bit này không hiển nhiên thể hiện giá trị của một số trong
+trục số thực mà
+cung cấp cho chúng ta giá trị để ráp vào công thức rồi tính ra giá trị thực tế
+của nó.
+Công thức tính ra giá trị cho một số `float32` thông thường là:
+
+$$(-1)^{\text{dấu}} \times 2^{E - 127} \times 1.\text{định trị}$$
+
+Hai chi tiết đáng chú ý trong công thức này, cái `1.` đứng trước định trị và cái
+trừ đi $127$
+từ số mũ, hai cái này chính là hai phát minh thông minh nhất của tiêu chuẩn.
+Chúng ta sẽ tìm hiểu
+từng cái và tại sao lại cần chúng.
+
+### Chuẩn hóa? Vì sao phải chuẩn hóa?
+
+Cùng nhớ lại biểu diễn khoa học của một số, theo bạn số $1.23$ có thể được biểu
+diễn dưới bao nhiêu
+cách?
+
+Chắc chắn là không dưới một cách, có thể biểu diễn là $123\times10^{-2}$ hay
+$12.3\times10^{-1}$, cũng
+có thể là $0.0123\times10^2$
+
+Vì biểu diễn số thực trong hệ nhị phân lấy cảm hứng từ biểu diễn khoa học nên
+cũng sẽ bị vấn đề tương tự,
+**có nhiều hơn một cách để biểu diễn một con số**. Nếu để tự do biểu diễn thì
+cùng một giá trị có nhiều
+mẫu bit, vừa lãng phí vừa rối khi so sánh. _Chuẩn hóa_ (normalization) sinh ra
+để dẹp loạn vấn đề này bằng
+một quy luât: luôn dời dấu chấm sao cho có **đúng một chữ số `1` nằm bên trái
+dấu chấm**. Tức mọi số là
+chuẩn đều phải có dạng $1.\text{gì-đó} \times 2^{e}$.
+
+Nhưng nếu chữ số bên trái dấu chấm đã _luôn luôn_ là `1` thì lưu nó làm gì? Đây
+là cú lừa của IEEE 754,
+**bit dẫn đầu là bit ẩn**. Nó luôn có mặt nên không cần phải lưu. Phần định trị
+23 bit chỉ chứa phần _sau_
+dấu phẩy. Kết quả là: ta có được độ chính xác hiệu dụng của 24 bit mà chỉ tốn 23
+bit để lưu trữ, quá hời.
+
+### Bias sinh ra để làm gì?
+
+Số mũ cần biểu diễn cả lũy thừa dương ($2^{30}$ cho số lớn) lẫn âm ($2^{-30}$
+cho số nhỏ). Cách hiển nhiên là dành một bit dấu riêng cho số mũ, nhưng thế 
+thì rườm rà, làm việc so sánh hai số float trở nên phức tạp và lãng phí.
+
+Thay vào đó, IEEE 754 dùng **bias**, một phần bù cố định. Với `float32`, bias là
+$127$. Số mũ _thật_ $e$ được lưu dưới dạng $E = e + 127$. Số mũ thật sẽ chạy từ
+$-126$ đến $+127$, nên giá trị lưu $E$ chạy từ $1$ đến $254$, luôn là số dương,
+có thể nhét gọn vào 8 bit mà không cần bit dấu. Khi giải mã, ta trừ lại: $e = E - 127$.
+(Hai giá trị $E = 0$ và $E = 255$ được giữ riêng cho các trường hợp đặc biệt,
+chúng ta sẽ bàn về chúng sau.)
+
+Bạn có thắc mắc vì sao lại $127$ được chọn làm phần bù không? Nếu có, thì thật
+ra không
+có gì cao siêu đâu, chúng ta có 8 bit để biểu diễn số mũ, 8 bit biểu diễn được
+từ
+$0$ đến $256$, nên tốt nhất là để đối xứng thì lấy số ở giữa làm phần bù.
+
+cái lợi khi dùng bias là vì cả số mũ lẫn định trị đều lưu dưới dạng không dấu và
+số mũ
+đứng trước, hai số float dương có thể đem so sánh **như thể chúng là hai số
+nguyên** trên cùng dãy bit.
+
+### Thử tính tay −13.756 thành hệ nhị phân
+
+Giờ hãy thử ráp hết lại những gì phía trên bằng tay. Lấy $-13.756$ làm giá trị
+mẫu nhé.
+
+Bit dấu: vì lá số âm nên bit dấu là `1`. Phần nguyên là: $13 = 1101_2$. Phần
+thập phân: $0.756 \approx 0.11000\ldots_2$ (chuỗi không vô hạn). Ghép lại chúng 
+ta sẽ có: $13.756_{10} \approx 1101.11000\ldots_2$.
+
+Giời tới bước chuẩn hóa, dời dấu chấm về sau chữ số `1` đầu tiên:
+$1.10111000\ldots_2 \times 2^3$. Vậy số mũ thật $e = 3$. Cộng bias vào: 
+$E = 3 + 127 = 130 = 10000010_2$. Phần định trị là 23 bit đầu sau dấu chấm 
+$10111000\ldots$ làm tròn bit cuối cùng.
+
+Để máy chạy từng bước này thay bạn, mở component dưới đây. Nó dựng số từ con số
+thập phân ra 32 bit, không phải giải mã ngược như explorer ở trên.
+
+<FloatBuilder />
+
+Phần interation bên dưới sẽ thể hiện rõ hơn về các bit thực sự sẽ được lưu như thế nào.
+
+<FloatExplorer />
+
+<Fleuron />
+
+## Khoảng cách giữa các số dấu chấm động
+
+Ở phần dầu của bài mình đã nói khoảng cách giữa các các số dấu chấm động không đồng đều. 
+Bây giờ chúng ta sẽ đi sâu vào nó vì đây chính là chỗ hai triết lý biểu diễn số tách hẳn nhau
+và "khoảng cách" là nơi sự khác biệt đó lộ ra rõ nhất, đo được bằng con số chứ không còn mơ
+hồ.
+
+### Fixed-point: khoảng cách là một hằng số tuyệt đối
+
+Trong fixed-point, vị trí dấu chấm được cố định trước. Giả sử dùng 32 bit, dành
+16 bit cho phần nguyên và 16 bit cho phần thập phân. Giá trị sẽ được hiểu là:
+
+$$v = \frac{n}{2^{16}}$$
+
+với `n` là một số nguyên 32 bit chạy từ `0` đến `2³² − 1` (giả sử không dấu cho dễ tính). 
+Khoảng cách giữa hai số biểu diễn được kề nhau, theo định nghĩa, là khoảng
+cách giữa `n` và `n+1` sau khi chia cho `2^16`:
+
+$$\text{khoảng cách} = \frac{n+1}{2^{16}} - \frac{n}{2^{16}} = \frac{1}{2^{16}} \approx 0.0000152587890625$$
+
+Bạn có để ý, con số này nó _không phụ thuộc vào `n`_. Dù con số được biểu diễn đang ở gần 
+$0$ hay ở gần giá trị lớn nhất $65535.99998$, khoảng cách giữa hai số kề nhau luôn đúng bằng
+$1/65536$. Đây là khoảng cách _tuyệt đối_ cố định trên toàn trục. Nếu vẽ ra trên trục số nó sẽ là
+một đường nằm ngang, một hằng số.
+
+### Floating-point: khoảng cách là một tỉ lệ cố định
+
+Trong số dấu chấm động, giá trị có dạng $v = (1.f) \times 2^E$, với phần định trị
+`f` có `p` bit. Số liền kề sinh ra bằng cách tăng bit cuối của `f` lên một, tức
+cộng thêm $2^{-p}$ vào phần định trị, rồi nhân với cùng $2^E$:
+
+$$\text{ULP}(v) = 2^E \times 2^{-p} = 2^{E-p}$$
+
+Đây là công thức cho ULP (_unit in the last place_), đơn vị nhỏ nhất ở vị trí
+cuối. Điều khác biệt căn bản nằm ở chỗ `E` có mặt trong công thức. Khoảng cách
+phụ thuộc trực tiếp vào độ lớn của `v`, vì $v \approx 2^E$. Viết lại theo tỉ lệ:
+
+$$\frac{\text{ULP}(v)}{v} \approx \frac{2^{E-p}}{2^E} = 2^{-p}$$
+
+Tỉ lệ giữa khoảng cách và giá trị là một hằng số không đổi trên toàn trục (trừ
+vùng không chuẩn, mình sẽ nói sau). Nếu vẽ khoảng cách theo giá trị trên trục
+logarit, nó sẽ không còn là một đường ngang nữa, mà là một đường bậc thang, sẽ nhảy 
+gấp đôi vào mỗi khi `v` vượt qua một lũy thừa của 2. Hãy kéo thử thanh trượt, bạn sẽ
+thấy bậc thang đó giãn ra từng nấc.
+
+<FloatVsFixed />
+
+### Đặt hai cái cạnh nhau bằng số cụ thể
+
+Lấy fixed-point Q16.16 (16 bit nguyên, 16 bit lẻ) làm chuẩn so sánh, và float32
+(`p = 24` bit, kể cả bit ẩn). Vài giá trị cụ thể sẽ nói lên toàn bộ câu chuyện.
+
+| Giá trị | ULP fixed-point Q16.16 | ULP float32 | Ai mịn hơn          |
+| ------- | ---------------------- | ----------- | ------------------- |
+| 0.001   | 1.53e−5                | 1.16e−10    | float32, ~131.000×  |
+| 1       | 1.53e−5                | 1.19e−7     | float32, 128×       |
+| 128     | 1.53e−5                | 1.53e−5     | bằng nhau           |
+| 1.000   | 1.53e−5                | 6.10e−5     | fixed-point, 4×     |
+| 60.000  | 1.53e−5                | 3.91e−3     | fixed-point, 256×   |
+| 10⁹     | ngoài dải              | 64          | fixed-point bó tay  |
+
+Ở `0.001`, float32 mịn hơn fixed-point tới năm bậc độ lớn, vì fixed-point đã
+trót dành phân nửa ngân sách bit cho khả năng đếm số nguyên mà ở đây không cần dùng.
+Lên tới `60.000`, thế cờ lật ngược: ULP của float32 phình to thành `3.91e−3`, thô
+hơn fixed-point tới 256 lần. Còn `10⁹` thì fixed-point Q16.16 không bao giờ với
+tới, vì trần giá trị của nó chỉ là `65.536`. Đây là điểm mấu chốt: không có biểu diễn nào 
+thắng tuyệt đối, đây là hai cách chia một ngân sách bit hữu hạn theo hai triết lý khác nhau.
+
+### Vì sao floating-point lại chọn đánh đổi này
+
+Cùng `32` bit, fixed-point Q16.16 phải _chọn trước_ dải giá trị nó sẽ phục vụ
+(từ `0` tới `65535.99998`), và trong dải đó độ mịn là cố định. Nếu giá trị thật 
+của bạn nằm hẳn ngoài dải đó, dù lớn hơn hay nhỏ hơn, bạn không thể biểu diễn được.
+
+Floating-point không chọn trước dải. Nó chia ngân sách bit theo một cách khác: một
+phần cho _vị trí trên trục logarit_ (số mũ), một phần cho _độ phân giải tại vị
+trí đó_ (định trị). Hệ quả trực tiếp là độ mịn không còn đồng đều nữa, nó co/giãn theo 
+độ lớn. Cái giá phải trả: bạn mất đi lời hứa "sai số tuyệt đối nhỏ hơn X" mà 
+fixed-point làm được. Ngược lại số dấu chấm động một lời hứa khác: "sai số tương đối 
+nhỏ hơn X", đó mới là loại đảm bảo khoa học thật sự cần vì hầu hết phép đo 
+trong tự nhiên quan tâm tới _số chữ số có nghĩa_ chứ không phải đơn vị tuyệt đối.
+
+### Hệ quả thực hành: vì sao tiền tệ thường dùng fixed-point
+
+Đây là chỗ hai triết lý va vào ứng dụng cụ thể. Tiền tệ cần độ chính xác
+_tuyệt đối_ tới từng xu, ở mọi độ lớn. Một triệu đô và một xu lẻ phải cộng trừ
+chính xác như nhau tới chữ số cuối cùng. Đó đúng là thứ fixed-point cung cấp và
+số dấu chấm động không thể cam kết được. Một hệ thống kế toán dùng `double` để 
+cộng tiền sẽ tích lũy sai số làm tròn nhỏ qua hàng triệu giao dịch và vì 
+khoảng cách số dấu chấm động co giãn theo độ lớn, sai số ở giao dịch lớn sẽ to hơn 
+sai số ở giao dịch nhỏ, một sự bất nhất khó chấp nhận khi đối chiếu sổ sách. Đó là lý do
+các chuẩn kế toán hay dùng số nguyên đếm theo "xu" (tức fixed-point ngầm), hoặc
+decimal floating-point (một biến thể dùng cơ số 10), thay vì binary
+floating-point của IEEE 754.
+
+Nói tới đây, chính căng thẳng giữa "tuyệt đối" và "tương đối" lại vòng về
+vụ Patriot ở đầu bài. Đồng hồ của hệ thống đó cần độ chính xác _tuyệt đối_ theo
+từng đơn vị 0.1 giây tích lũy qua hàng trăm giờ, nhưng lại được biểu diễn bằng
+một hệ dấu chấm động chỉ cam kết độ chính xác _tương đối_. Khoảng cách giữa hai
+triết lý mà bạn vừa kéo thanh trượt nhìn thấy, chính là khoảng cách đã làm rơi
+quả tên lửa đó.
+
+## IEEE 754, các định dạng mở rộng và giá trị đặc biệt
+
+Quay lại hai giá trị số mũ mà chúng ta đã để dành: $E = 0$ và $E = 255$. Chúng
+không tuân theo công thức thông thường, mà được dành cho các trường hợp ngoài rìa
+(edge cases).
+
+**Số mũ $E = 0$.** Nếu phần định trị cũng bằng $0$, giá trị là $\pm 0$. Đúng vậy, có
+hai số không: $+0$ và $-0$ so sánh thì bằng nhau nhưng khác nhau ở bit dấu (và
+$1/{+0} = +\infty$ còn $1/{-0} = -\infty$). Nếu phần định trị khác $0$, số đó sẽ là một 
+_subnormal_: chúng ta sẽ bỏ đi bit ẩn `1`, cho phép biểu diễn những giá trị nhỏ hơn 
+cả số chuẩn nhỏ nhất mở rộng ra khả năng lấp đầy khoảng trống quanh số $0$.
+
+**Số mũ $E = 255$.** Nếu phần định trị bằng $0$, giá trị sẽ là $\pm\infty$, kết quả của
+tràn số hoặc của $1/0$. Nếu phần định trị khác $0$, đó sẽ là `NaN` (Not a Number), sinh
+ra từ $0/0$, $\sqrt{-1}$, $\infty - \infty$. NaN này lây lan: mọi phép tính chạm vào
+nó đều ra NaN. Và nó có một tính chất quái lạ, `NaN === NaN` sẽ bằng `false`, nó là
+giá trị duy nhất không bằng chính mình. Bạn có thể xem thử `∞` và `NaN` trong interaction 
+phía trên để thấy vùng số mũ điền đầy số `1`.
+
+Float32 chỉ là một thành viên của một họ các số dấu chấm động. Cùng một bộ ý tưởng (dấu, số mũ có
+bias, định trị chuẩn hóa) co giãn ra thành nhiều kích cỡ:
+
+| Định dạng          | Tổng bit | Số mũ | Định trị | Bias  | Dùng vào việc gì                     |
+| ------------------ | -------- | ----- | -------- | ----- | ------------------------------------ |
+| half (`float16`)   | 16       | 5     | 10       | 15    | GPU, đồ họa, suy luận ML             |
+| bfloat16           | 16       | 8     | 7        | 127   | Huấn luyện ML (giữ dải của float32)  |
+| single (`float32`) | 32       | 8     | 23       | 127   | Mặc định phổ thông, đồ họa, game     |
+| double (`float64`) | 64       | 11    | 52       | 1023  | Khoa học, tài chính, `Number` của JS |
+| quad (`float128`)  | 128      | 15    | 112      | 16383 | Tính toán cần độ chính xác rất cao   |
+
+Đáng để ý là cặp `float16` và `bfloat16`: cùng 16 bit, nhưng chia bit khác hẳn
+nhau. `float16` ưu tiên định trị (10 bit) nên chính xác hơn nhưng dải hẹp; `bfloat16`
+cắt định trị xuống 7 bit để giữ nguyên 8 bit số mũ của `float32`, đánh đổi độ
+chính xác lấy dải rộng hơn. Trong giới ML, người ta chọn `bfloat16` vì khi huấn 
+luyện mạng nơ-ron, tràn số (mất dải) thì chết người hơn là mất vài chữ số có nghĩa.
+
+<Sidenote>
+
+  Ngoài họ nhị phân còn hai nhánh đáng biết. **Decimal floating-point**
+  (`decimal64`, `decimal128` trong IEEE 754-2008) lưu chữ số theo cơ số 10, nên
+  $0.1$ là *chính xác*, đúng thứ ngành tài chính và cơ sở dữ liệu cần (kiểu
+  `DECIMAL`/`NUMERIC` chính là nó). Đổi lại nó chậm hơn vì phần cứng được tối ưu
+  cho cơ số 2. **Posit** (unum, do John Gustafson đề xuất) là một thiết kế lại
+  hiện đại: độ chính xác *thuôn dần*, dày đặc quanh $1$ nơi ta hay tính toán và
+  thưa dần về hai cực, dùng cùng số bit hiệu quả hơn. Posit chưa phổ biến trong
+  phần cứng nhưng là ứng viên thú vị cho tương lai.
+
+</Sidenote>
+
+## Thực chiến: quy luật dùng float trong hệ thống trong đời sống
+
+Có bốn quy tắc được chưng cất từ mọi thứ ở bên trên:
+
+**Đừng so sánh float bằng so sánh bằng `==` hay `===`.** Hai phép tính lẽ ra cho 
+cùng kết quả toán học có thể lệch nhau ở bit cuối cùng. Cách đúng là kiểm tra xem hiệu 
+của chúng có nhỏ hơn một ngưỡng chấp nhận được (epsilon) hay không. Ngưỡng bao 
+nhiêu thì tùy vào bài toán của bạn.
+
+```ts
+// Dễ gãy — có thể thất bại
+if (a + b === 0.3) {
+  /* ... */
+}
+
+// Vững chắc
+if (Math.abs(a + b - 0.3) < 1e-10) {
+  /* ... */
+}
+```
+
+**Đừng bao giờ dùng float cho tiền.** Tiền là chính xác tuyệt đối. 11.000đ là 11.000đ
+chứ không phải là 10.999,999999đ. Hãy lưu bằng số nguyên (lưu xu, đừng lưu đồng), 
+hoặc dùng kiểu decimal/`NUMERIC` của cơ sở dữ liệu. Nếu mỗi lần làm tròn nửa xu, nhân với hàng
+triệu giao dịch, sẽ gây ra thảm họa như cái cách mà sàn Vancouver mất 22 tháng giá trị chỉ số.
+
+**Biết float của bạn từ đâu tới.** Số đo từ cảm biến vốn đã là xấp xỉ, nên sai
+số float thường chìm dưới nhiễu đo và không đáng lo ngại. Còn giá trị tài chính hay mật
+mã thì chính xác theo định nghĩa, nên ở đó sai số float _luôn luôn_ đáng kể.
+Cùng một con số float nhưng mức độ nguy hiểm phụ thuộc vào nó mang ý nghĩa gì.
+
+**Sai số có thể bị cộng dồn.** Một phép tính float gieo một sai số tí hon. Một nghìn
+phép tính có thể gieo một sai số có thể nhìn thấy được. Đây là lý do khẩu đội Patriot
+không đánh chặn được chỉ sau 100 giờ vận hành. Nếu bạn đang lặp cộng dồn, hãy nghĩ
+tới các kỹ thuật như tổng Kahan hoặc đơn giản là reset lại định kỳ.
+
+## Kết
+
+Giờ bạn có thể quay lại các explorer ở trên. Gõ `1/3`, xem chu kỳ hiện ra trong bảng 
+phân số nhị phân. Kéo thanh trượt khoảng cách để xem sự khác biệt khoảng cách giữa
+số dấu chấm động và fixed-point. Và cuối cùng, giờ thì bạn có thể giải
+thích được nó cho người khác.
