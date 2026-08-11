@@ -26,6 +26,8 @@
     "@sveltejs/adapter-vercel": "^5.4.0",
     "@sveltejs/kit": "^2.8.0",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
+    "@types/d3-force": "^3.0.10",
+    "@types/d3-shape": "^3.1.8",
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
     "github-slugger": "^2.0.0",
@@ -42,6 +44,8 @@
     "vite": "^6.4.3"
   },
   "dependencies": {
+    "d3-force": "^3.0.0",
+    "d3-shape": "^3.2.0",
     "drizzle-orm": "^0.45.2",
     "postgres": "^3.4.9"
   }

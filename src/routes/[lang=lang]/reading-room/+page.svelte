@@ -19,6 +19,7 @@
 	 * The constellation is the next section to land here.
 	 */
 	import Headline from '$lib/components/ink/Headline.svelte';
+	import ReaderSky from '$lib/components/reading-room/ReaderSky.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
@@ -122,6 +123,22 @@
 		<div class="plank" aria-hidden="true"></div>
 		<div class="plank-edge" aria-hidden="true"></div>
 	{/if}
+</section>
+
+<!-- ── Your constellation ──────────────────────────────────────────────── -->
+<section class="sky-section">
+	<div class="sky-intro">
+		<div class="section-head">
+			<h2>{t.constellation.title}</h2>
+			<Tag>{t.constellation.subtitle}</Tag>
+		</div>
+		<p class="section-deck">{t.constellation.sectionDeck}</p>
+	</div>
+
+	<!-- The chart carries its own header, legend and rules — it is a plate, and
+	     a plate is bounded. So it sits outside the section's padding and runs
+	     the width of the page; the section above only introduces it. -->
+	<ReaderSky posts={data.stars} />
 </section>
 
 <!-- One explanation, for the whole room rather than per section: how any of
@@ -287,6 +304,16 @@
 		font-size: 14px;
 		color: var(--muted);
 		margin: 0;
+	}
+
+	/* The section's own padding stops at its intro; the plate below it is full
+	   bleed, so its rules line up with the masthead's and the shelf's. */
+	.sky-section {
+		padding: 34px 0 0;
+		border-top: 1.5px solid var(--rule-hard);
+	}
+	.sky-intro {
+		padding: 0 var(--pad-chrome) 22px;
 	}
 
 	/* No measure: this line runs the width of the page, because it closes the

@@ -386,10 +386,30 @@ const en = {
 		colophon:
 			'Everything on this page is computed in your browser from what you have read; none of it is sent anywhere, and clearing your site data ends it. Only you can see this room.'
 	},
+	/**
+	 * The constellation — a section of the reading room, not its own page.
+	 * Production's `layerConcepts` / `legendConcept` / `tallyConcepts` are not
+	 * here: that layer is absent for now, see the README.
+	 */
+	constellation: {
+		plate: 'Plate XII',
+		title: "the reader's sky",
+		subtitle: "this chart exists only because you've been here",
+		sectionDeck:
+			'Every essay you have opened, drawn as a star and joined in the order you read them. No two readers get the same sky, and this one was drawn here, from what is on this device.',
+		emptyTitle: 'your sky is still dark.',
+		emptyBody:
+			'Read an essay to the end and a star will appear here — this chart is drawn from your own reading.',
+		layerDomains: 'domains',
+		legendOrder: 'your reading order',
+		legendCitation: 'citation between essays',
+		legendRead: 'read',
+		legendAhead: 'cited · still ahead'
+	},
 	/* The read shelf — a section of the reading room, not its own page. */
 	shelf: {
 		sectionLabel: 'The read shelf',
-		finishedOnly: 'finished only · opening earns nothing',
+		finishedOnly: 'finished only',
 		description:
 			'Everything you finished. Each piece you carried to the last line becomes a spine, set the way a bound book is set.',
 		monogram: 'maxubrq',
@@ -775,9 +795,24 @@ const vi: typeof en = {
 		colophon:
 			'Mọi thứ trên trang này được tính ngay trong trình duyệt của bạn từ những gì bạn đã đọc; không có gì rời khỏi máy, và xóa dữ liệu trang là hết. Chỉ mình bạn có thể thấy căn phòng này.'
 	},
+	constellation: {
+		plate: 'Bản khắc XII',
+		title: 'bầu trời của người đọc',
+		subtitle: 'bản đồ này tồn tại chỉ vì bạn đã từng ghé qua',
+		sectionDeck:
+			'Mỗi bài bạn từng mở ra được vẽ thành một ngôi sao, nối lại theo thứ tự bạn đã đọc. Không hai người đọc nào có cùng một bầu trời, và bầu trời này được vẽ ngay tại đây, từ những gì nằm trên máy bạn.',
+		emptyTitle: 'bầu trời của bạn vẫn còn tối.',
+		emptyBody:
+			'Đọc trọn một bài và một ngôi sao sẽ hiện ra ở đây — bản đồ này được vẽ từ chính việc đọc của bạn.',
+		layerDomains: 'lĩnh vực',
+		legendOrder: 'thứ tự bạn đã đọc',
+		legendCitation: 'trích dẫn giữa các bài',
+		legendRead: 'đã đọc',
+		legendAhead: 'được trích · còn ở phía trước'
+	},
 	shelf: {
 		sectionLabel: 'Kệ đã đọc',
-		finishedOnly: 'chỉ bài đã đọc hết · mở ra không tính gì',
+		finishedOnly: 'chỉ những bài đã đọc hết',
 		description:
 			'Mọi thứ bạn đã đọc hết. Mỗi bài bạn mang được tới dòng cuối cùng trở thành một cái gáy sách.',
 		monogram: 'maxubrq',

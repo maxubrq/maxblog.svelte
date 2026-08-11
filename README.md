@@ -189,7 +189,8 @@ three read.
 
 `PickUpWhereYouLeftOff` puts the list on the home page, above the masthead — it renders nothing at
 all when there is nothing to resume, which is every first visit. Production's "see your sky ✦" link
-is dropped: it goes to `/constellation`, a room this edition has not built.
+is dropped: it goes to `/constellation`, which is not a URL here — the sky is a section of
+`/[lang]/reading-room`.
 
 **An entry stores its essay's locale**, and that is not decoration. A slug belongs to exactly one
 locale, so a resume link built from the *reader's* locale 404s the moment the two differ — a
@@ -601,7 +602,7 @@ colophon; here the section's deck and its `finished only · opening earns nothin
 how a spine is earned, so repeating it below the plank was the same sentence twice. The room's line
 — how any of this got here, and where it lives — runs the **full width** of the page rather than to
 a measure, because it closes the page instead of belonging to the section above it. Each new
-section (the constellation next) adds its own deck, not its own colophon.
+section adds its own deck, not its own colophon.
 
 ### The read shelf
 
@@ -626,6 +627,67 @@ It prints: the row wraps into stacked shelves instead of being guillotined at th
 blue plank edge goes black — a colour cartridge should not be spent saying what the rule already
 says.
 
+### Your constellation
+
+Every essay you have opened drawn as a star, joined by a thread in the order you read them, with an
+essay's hand-picked `neighborhood` as the citation edges. The layout is a **force simulation**
+rather than an authored diagram, and it has to be: the set of essays is different for every reader,
+so there is no arrangement to draw in advance. Domains ride a stable ellipse and each star is
+pulled toward its own, so the sky opens into regions instead of one blob that slowly separates.
+
+`d3-force` positions the stars and `d3-shape` draws the lines between them; both are `import()`ed
+inside their effects — the same discipline `SearchOverlay` uses for MiniSearch — so a reader who
+never opens the reading room pays for neither. They land as two chunks, 15.3 KB and 6.2 KB.
+
+That second number is the reason **`d3-shape` is destructured** rather than taken as a namespace:
+`import('d3-shape').then((d3) => …)` reaches its bindings by property access, which defeats
+tree-shaking and shipped the whole module — every curve, arc, symbol and stack — at **32.2 KB**.
+Naming the two imports brought it to 6.2 KB. `d3-force` keeps the namespace form on purpose: seven
+of its nine exports are used, so there is nothing to shake off.
+
+**A library that did layout *and* edges was considered and rejected.** Cytoscape.js, vis-network
+and Sigma.js all do both, and all render to canvas or WebGL — which cannot read the CSS custom
+properties this site's theming is built on, prints as a bitmap, weighs 10–300× the two d3 modules,
+and arrives with rounded, arrow-headed, shadowed defaults that argue with the manifesto. The
+deciding point is narrower than any of that: the line that looked wrong is the **reading-order
+thread**, which is not a graph edge at all — no graph library models a path through nodes in the
+order a person visited them, only relations between them. The one thing that needed fixing is the
+one thing they do not own.
+
+The thread is a **centripetal Catmull-Rom spline**, not a polyline. Reading order is not a spatial
+relation, so straight hops between stars read as a route drawn on a map; one continuous curve reads
+as a line drawn between stars. `alpha(0.5)` is the variant that cannot form a cusp or a loop when
+two stars land close together. Its ends are trimmed back by a star's radius so it joins the stars
+rather than skewering them, and a citation is a shallow arc rather than a chord — two essays that
+cite each other *and* sit next to each other would otherwise hide their edge under the thread.
+
+**Every position is read through one derived `Map`**, and that is not tidiness. `nodes` is `$state`,
+so its members are proxies, while the simulation mutates the raw objects underneath. An earlier
+version also kept a `Map` of the raw ones: the stars rendered from the proxies, the thread was
+computed from the raw array, and the two drifted apart — the thread hung several pixels off its own
+stars and stayed there once the simulation settled.
+
+An essay you have read pulls its neighbours into the sky even when you have not opened them: the
+chart is where you have been *and* what stands next to it. That is what the open circles are.
+
+**The concepts layer is not here**, and this is a data judgement rather than an unfinished port.
+Production floats a concept at the centroid of the essays that invoke it and fills it as you finish
+them, hiding any concept with fewer than two members present. Checked against this edition's
+corpus, all four of production's concepts have **at most one** member here — so the layer would
+render nothing at all, while still costing a data file, a toggle, a legend row and a tally.
+Production's own `concepts.ts` header calls its membership "a STARTER SET… treat this as a first
+pass to correct, not as a finding", so porting it would also be publishing someone's uncorrected
+guesses as the author's concept map. `layers` is an object rather than a boolean so putting it back
+is a key, not a rewrite.
+
+Two things read as sparse rather than broken today, and both are corpus, not code: with no post
+carrying `neighborhood` in its frontmatter there are no citation edges yet, and with two posts per
+locale a full sky is two stars and a thread.
+
+Production's plate carries its own title because it *was* the whole page; here the section above it
+does the naming, so the plate keeps only its chart and its legend — and the domains toggle moved
+into the legend, since both answer "how do I read this chart".
+
 ### A note on the scribble
 
 `Headline`'s scribble is an ellipse of fixed proportions, so it only wraps an accent of about the
@@ -636,7 +698,7 @@ and one geometry strikes through one of them whichever way it is set, so it uses
 instead. An underline hangs off the baseline: a width that is a little wrong over- or under-runs
 the word rather than crossing it.
 
-The constellation is the next section to land in this room.
+
 
 ## About, and the vault
 
@@ -877,9 +939,10 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **Series** — `SeriesRibbon`, `SeriesNavDrawer`, `SeriesNext`. Needs a series data layer this
   edition does not have yet; the frontmatter already carries `series` and `chapter`.
 - **`Dialogue`** — the `format: conversation` posts, where the topic/date row becomes a cast list.
-- The rest of the reading room: **the constellation is next**, then the commonplace book, the
-  misreading book, appointments and the reading profile. In production each is its own page behind
-  a door; here each becomes another section of the one room.
+- The rest of the reading room: the commonplace book, the misreading book, appointments and the
+  reading profile. In production each is its own page behind a door; here each becomes another
+  section of the one room. The **concepts layer** of the constellation is also outstanding — see
+  Your constellation for why it is not in yet.
 - The print edition is not here at all yet.
 
 ## Ideas on the shelf
