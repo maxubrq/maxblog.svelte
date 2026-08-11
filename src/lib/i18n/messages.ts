@@ -198,7 +198,11 @@ const en = {
 		topicSoftware: 'Software',
 		topicPhilosophy: 'Philosophy',
 		topicArt: 'Art',
-		colophon: 'A living document. Last updated the day I last used a new word.'
+		colophon: 'A living document. Last updated the day I last used a new word.',
+		postHeading: 'Words',
+		postSubhead: 'marked in this piece',
+		fullGlossaryPre: 'The whole dictionary lives',
+		fullGlossaryLink: 'here'
 	},
 	resources: {
 		indexLabel: 'Reference / cited works',
@@ -281,7 +285,24 @@ const en = {
 		topicLabel: 'Topic',
 		essay: 'essay',
 		essays: 'essays',
-		empty: 'nothing filed here yet'
+		empty: 'nothing filed here yet',
+		/* The room, as opposed to the shelf — see $lib/topics. */
+		editorNote: "Editor's note",
+		readThree: 'if you read three',
+		handPicked: 'hand-picked',
+		forthcoming: 'forthcoming',
+		min: 'min',
+		scratchpadLabel: 'Scratchpad',
+		scratchpadTitle: 'what i am chewing on',
+		updatedNote: 'no dates, no promises',
+		kindQuestion: 'Question',
+		kindDraft: 'Draft',
+		kindReading: 'Reading',
+		/* Two headings for one list: 'also' only makes sense when the hand-picked
+		   three stand above it. With no starters, the tail is simply the room. */
+		alsoIn: 'also filed under {name}',
+		filedIn: 'filed under {name}',
+		everyEssay: 'every essay →'
 	},
 	article: {
 		author: 'Author',
@@ -337,16 +358,6 @@ const en = {
 		topicsHeading: 'what i write about',
 		elsewhereHeading: 'elsewhere',
 		farewell: 'Thanks for stopping by.'
-	},
-	/** Per-topic blurb, keyed by the topic's canonical (English) name. */
-	topicBlurbs: {
-		Science: 'Whatever makes me curious — math, physics, and everything in between.',
-		Tech: 'Distributed systems, algorithms, OSS — explaining things and shipping them.',
-		Philosophy:
-			'Stoicism, Existentialism, Buddhist philosophy — and the joy of deep questions.',
-		Art: 'Cinema, literature, music. The arts as a form of thinking.',
-		Thinking: 'Half-thoughts. Notes from the margins of my own life.',
-		Notes: 'In conversation with what I read — books, papers, single lines.'
 	},
 	error: {
 		title: 'this page is not in the index.',
@@ -530,7 +541,11 @@ const vi: typeof en = {
 		topicSoftware: 'Phần mềm',
 		topicPhilosophy: 'Triết học',
 		topicArt: 'Nghệ thuật',
-		colophon: 'Một tài liệu sống. Cập nhật lần cuối vào ngày mình dùng một từ mới.'
+		colophon: 'Một tài liệu sống. Cập nhật lần cuối vào ngày mình dùng một từ mới.',
+		postHeading: 'Thuật ngữ',
+		postSubhead: 'được đánh dấu trong bài',
+		fullGlossaryPre: 'Toàn bộ từ điển ở',
+		fullGlossaryLink: 'đây'
 	},
 	resources: {
 		indexLabel: 'Tham khảo / tài liệu trích dẫn',
@@ -612,7 +627,21 @@ const vi: typeof en = {
 		topicLabel: 'Chủ đề',
 		essay: 'bài viết',
 		essays: 'bài viết',
-		empty: 'chưa có bài nào ở đây'
+		empty: 'chưa có bài nào ở đây',
+		editorNote: 'Lời người biên tập',
+		readThree: 'nếu chỉ đọc ba bài',
+		handPicked: 'tuyển chọn',
+		forthcoming: 'sắp có',
+		min: 'phút',
+		scratchpadLabel: 'Sổ nháp',
+		scratchpadTitle: 'những gì mình đang nghĩ',
+		updatedNote: 'không hạn, không hứa',
+		kindQuestion: 'Câu hỏi',
+		kindDraft: 'Bản nháp',
+		kindReading: 'Đang đọc',
+		alsoIn: 'cũng thuộc {name}',
+		filedIn: 'thuộc {name}',
+		everyEssay: 'tất cả bài viết →'
 	},
 	article: {
 		author: 'Tác giả',
@@ -667,14 +696,6 @@ const vi: typeof en = {
 		topicsHeading: 'mình viết về gì',
 		elsewhereHeading: 'ở nơi khác',
 		farewell: 'Cảm ơn bạn đã ghé qua.'
-	},
-	topicBlurbs: {
-		Science: 'Bất cứ điều gì làm mình tò mò, toán, lý, và mọi thứ ở giữa.',
-		Tech: 'Hệ thống phân tán, thuật toán, OSS, có thể là giải thích hoặc build cái gì đó.',
-		Philosophy: 'Khắc kỷ, hiện sinh, Phật pháp, và niềm vui của những câu hỏi sâu sắc.',
-		Art: 'Điện ảnh, văn học, âm nhạc. Nghệ thuật như một cách tư duy.',
-		Thinking: 'Những ý nghĩ nửa chừng. Ghi chú từ rìa của chính cuộc đời mình.',
-		Notes: 'Đối thoại với những gì mình đọc — sách, bài báo, đôi khi chỉ một câu.'
 	},
 	error: {
 		title: 'trang này không có trong mục lục.',

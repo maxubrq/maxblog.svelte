@@ -93,6 +93,11 @@ export interface PostMeta {
 	 */
 	citations?: string[];
 	/**
+	 * Ids of the glossary terms marked in this post, in the order the reader
+	 * meets them. Injected by the glossary remark pass — not hand-written.
+	 */
+	terms?: string[];
+	/**
 	 * The post's `##` headings with their reading minutes, injected by the toc
 	 * remark pass. Not hand-written — but frontmatter still wins, like `reading`.
 	 */

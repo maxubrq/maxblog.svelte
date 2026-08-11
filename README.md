@@ -99,8 +99,9 @@ the reader, only its stylesheet. GFM tables come from mdsvex's own remark.
 5. the prose
 6. the end mark `■`
 7. `OneSentence` — the author's pick, when `rememberSentence` is set
-8. `Bibliography` — the sources, when the post has any (see Resources)
-9. the hand-picked `neighborhood`, when the frontmatter lists one
+8. `GlossaryFootnote` — the words the essay marked, when it marked any (see Glossary)
+9. `Bibliography` — the sources, when the post has any (see Resources)
+10. the hand-picked `neighborhood`, when the frontmatter lists one
 
 The tag row, the deck and the weather strip carry `.flow-hide`; the headline and the nudge stay
 whatever the mode — see Study and flow below.
@@ -488,7 +489,8 @@ src/lib/components/ink/   the theme kit: Tag, Scribble, Underline, ArrowMark, Du
                           ResourceCover, RunningHead, MetaRail, MetaFoot, Headline,
                           IndexRow, FilterBar
 src/lib/components/article/  PullQuote, Callout, Sidenote, Footnote, Fleuron, OneSentence,
-                             WeatherStrip · Term and R (the marks) · Bibliography ·
+                             WeatherStrip · Term and R (the marks) ·
+                             Bibliography and GlossaryFootnote (the apparatus) ·
                              the reading instruments: ForeEdge, TableOfContents,
                              TocDrawer, MobileReadingBar, ReadingRuler · ArticleTracker ·
                              ReadingMemoryTracker / Nudge / Gutter
@@ -505,6 +507,76 @@ and components never hardcode a colour. Two laws from the manifesto that are eas
 the *fields* are softened (paper `#fafaf7`, ink `#24242c`) but **rules stay pure black**, and
 everything is a rectangle — `border-radius: 0` is set globally.
 
+## Topics
+
+A topic is a **room with an editor in it**, not a filter over the archive. `src/lib/topics.ts`
+holds all six — name, tagline, an editor's note, three hand-picked ways in, and a scratchpad of
+what is being thought about — copied from the production blog so both editions say the same thing
+about the same room. `/[lang]/topics` is the hub of doorways; `/[lang]/topics/[topic]` is the room:
+siblings strip · masthead · editor's note · starters · scratchpad · everything else filed here,
+newest first.
+
+**`id` is not `name`.** The id keys the URL and the frontmatter match and is never translated; the
+name is printed and always is. That separation is what lets `/vi/topics/science` be titled *Khoa
+học* without a Vietnamese essay having to write `topic: 'Khoa học'`, and it is the one place this
+edition changed its mind — the names used to stay English on the grounds that they key the URLs,
+which conflated the two jobs. The archive's filter bar carries ids for the same reason: switching
+language mid-filter keeps the filter.
+
+A post files itself by writing `topic` in its frontmatter, and `frontmatterTopics` is the list of
+spellings a room answers to, matched case-insensitively. This edition's `tech` is production's
+`software` and accepts both words, so an essay crosses between the editions without an edit.
+
+The editor's note is set by the room's own `tone` (`clinical-warm` · `plainspoken` · `literary` ·
+`sparse`), which is the **only** body size on the site that is a property of the subject rather
+than of the reader's settings. One measure governs the paragraphs and the signature both: a "— m."
+set to the edge of a wider box than the prose it signs belongs to the page, not to the note.
+
+`site.ts` used to carry a `topics` list with its blurbs off in the i18n catalogs; both are gone,
+and `topicBlurbs` with them. Nothing about a topic belongs in the chrome's own config.
+
+### The department plate
+
+On a wide screen the whole page was a left-aligned column on a 1568px canvas — the masthead's
+title stops around 345px, the note's measure around 500px — so the right of the page read as
+unfinished rather than as margin. `plate` in `$lib/topics` fills it: **a cell of the page's grid,
+divided by the same 1.5px hairline the hub's doorways are divided by**, not a picture floated into
+a gap. That is why the masthead and the note are wrapped in one `.room` grid — a plate beside the
+note alone has only the note's height to work with, and no honest ratio fills a page that wide from
+a 380px column. Spanning both gives it the vertical run a department page actually needs.
+
+The picture **fills its cell rather than setting it**: `aspect-ratio` is dropped and `object-fit:
+cover` does the crop, which is what makes the plate's rule and the note's rule land on the same
+line (the note is `flex: 1` in its column for the same reason). Any aspect can be dropped in
+without the layout caring. Below 1080px the plate stands down and the note takes the width back —
+it is the one element on the page that is atmosphere rather than reading, and a magazine drops its
+department art on a narrow page too.
+
+**No `alt`, on purpose** — the same reasoning as the 404 cat: the note beside it already says what
+the room is, in the reader's own language. That also settles what would otherwise be awkward, since
+an image is not translated but a description of one would have to be.
+
+All six rooms currently declare a plate with **no `src`**, so each draws `DuoPhoto`'s labelled
+placeholder naming the picture it is waiting for — the slot is visibly reserved, the way the
+unported live figures are. To fill one, add a plain Cloudinary delivery URL (no transformations;
+`$lib/images` adds those) and optionally `halftone: 'screen' | 'coarse' | 'fine'` for newsprint
+instead of the cyanotype. Delete a room's `plate` entirely to take the column back.
+
+### `starters` and `scratchpad` are empty on purpose
+
+Every room's arrays are `[]`, and that is a decision, not an unfinished port — they go back in once
+the archive is thick enough to choose from. Both sections claim something four posts cannot support
+honestly: *if you read three* implies there were more than three to pick from, and a scratchpad of
+six drafts beside four published essays advertises a backlog rather than a body of work. **Each
+section renders nothing while its array is empty**, so a room today is masthead · note · what is
+filed here, and reads as finished rather than as scaffolding. The tail's heading follows the same
+rule — `also filed under X` only when the starters stand above it, plain `filed under X` otherwise.
+
+Production's text is what to start from when they return: `~/MyApps/maxblog/src/lib/topics.ts`,
+three starters and about five scratchpad items per room, each with a `vi` twin. Nothing else has to
+change — the types, the components, and the tail's de-duplication (a starter's essay is not
+repeated below it) are all still wired.
+
 ## Glossary
 
 `src/lib/glossary.ts` is the site dictionary: one entry per marked term, with a short gloss, a
@@ -520,6 +592,31 @@ mentions are left plain, so a page is not a field of dotted underlines. An autho
 <Term id="flow" />                          <!-- explicit, when you want it somewhere precise -->
 <Term term="widget" def="a small thing" />  <!-- ad-hoc, not in the dictionary -->
 ```
+
+**The pass records what it marked**, in reading order, onto the post's `terms` metadata — the same
+`file.data.fm` handoff `remark-resources` uses for `citations`. `GlossaryFootnote` gathers them at
+the foot of the essay: the same short glosses the reader dismissed inline, together, at the point
+where there is room to look. Production's `GlossaryFootnote` wraps the whole article and hands a
+`collect(id)` down a React context that every `Term` calls on mount, so the list is state that
+fills in as the tree commits; here the pass knew before a byte reached the browser, so the
+component holds no state, wraps nothing, and server-renders complete.
+
+It prints **A–Z**, like production and like `/glossary` itself — not the reading order `terms`
+arrives in. The bibliography directly beneath it *is* in reading order, and the difference is not
+an inconsistency: a citation carries a numeral, so its position means something and the prose can
+point at it. A word carries no numeral, six unnumbered rows in the order they happened to come up
+read as no order at all, and a list of words has an order everyone already knows. The metadata
+keeps reading order regardless, because that is what the pass actually observed.
+
+It is the glossary's twin of `Bibliography`, and built the opposite way round. A source belongs to
+a post by *declaration* — `appearsIn` names it — so a bibliography prints even for an essay whose
+prose carries no marks. A term belongs by *use*: it is in the list because the pass found the word.
+An essay that marks nothing shows nothing. Each row links to `/glossary#gl-<letter>`, which is the
+only anchor that page has — it is sectioned by letter, not by entry.
+
+The pass also reads hand-placed `<Term id="…">` marks before it starts, and seeds its `seen` set
+with them: a word the author placed deliberately must not pick up a second mark somewhere else in
+the same essay. Those ids count as first mentions, in the position the author put them.
 
 `/glossary` prints the same entries as an A–Z index. Its loader passes the slugs that actually
 publish in that locale, and the page narrows each entry's appearances to those before deciding
@@ -660,9 +757,6 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - The rooms behind `/series` and `/reading-room` are placeholder pages — a door in the nav, and a
   page that says it is not built yet. The designs exist in `maxubrq/project/pages/` and in
   production.
-- **`GlossaryFootnote`** — the terms-used-in-this-piece block at the foot of an essay, the
-  glossary's twin of `Bibliography`. Production collects terms as they render; here the remark
-  pass already knows which it marked, so the same `file.data.fm` trick would do it.
 - The reader-facing features behind three of the four tables still have endpoints but no UI —
   see Database & endpoints. In production these are `SelectionReact` (reactions),
   `ReflectionPrompt` (polls) and `WitnessInviteCard` / `FairWitnessDrawer` (the public record).
@@ -729,9 +823,6 @@ turns it on — nobody pays the 5.4 KB by default, and backing it out is one lin
 
 Not bugs in the code, but they make the site look emptier than it is:
 
-- The glossary holds exactly one entry, `flow`, and the word **appears in no post** — so no
-  `<Term>` mark is ever placed. The entry's `appearances` claims otherwise. Either the prose or
-  the entry needs to move.
 - The bibliography's GAO report is never auto-cited: its author is an organisation (no surname to
   match) and its English title does not appear in either language's prose. It still lists in the
   essay's sources, just without a numeral pointing at it.
@@ -739,6 +830,10 @@ Not bugs in the code, but they make the site look emptier than it is:
   `[xxx]`-prefixed drafts). The frontmatter contract is identical, so the rest copy across
   unchanged.
 
-The dictionary and the bibliography are copied whole from production, and they are this sparse
-there too — one term and four sources. Neither page is waiting on a port; they are waiting on
+The bibliography is copied whole from production and is this sparse there too — four sources. The
+dictionary is not a copy: production's single entry (`flow`) was dropped, because the essay it
+claimed a use in never says the word — in either edition — and a dictionary that describes prose
+that does not exist is worse than a shorter one. The six that replace it were each checked against
+essay 001 in both languages before being written down, which is why that essay's foot carries a
+`GlossaryFootnote` and 002's does not. Neither page is waiting on a port; they are waiting on
 someone to write entries.

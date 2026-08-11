@@ -20,22 +20,9 @@ export const site = {
 };
 
 /**
- * The doorways (§ topic pages). Order is the numbering on the hub. `name` is
- * canonical — it must match `topic` in frontmatter — and is not translated;
- * the blurbs live in the i18n catalogs (`topicBlurbs`).
+ * The doorways used to be listed here, as `{ slug, name }` pairs with their
+ * blurbs off in the i18n catalogs. They now live in `$lib/topics`, which holds
+ * the whole room — the editor's note, the three ways in, the scratchpad — and
+ * translates the printed name while keeping the id canonical. Nothing about a
+ * topic belongs in the chrome's own config.
  */
-export const topics = [
-	{ slug: 'science', name: 'Science' },
-	{ slug: 'tech', name: 'Tech' },
-	{ slug: 'philosophy', name: 'Philosophy' },
-	{ slug: 'art', name: 'Art' },
-	{ slug: 'thinking', name: 'Thinking' },
-	{ slug: 'notes', name: 'Notes' }
-] as const;
-
-export type TopicSlug = (typeof topics)[number]['slug'];
-
-export const topicBySlug = (slug: string) => topics.find((t) => t.slug === slug);
-
-/** `Science` → `science`; anything unknown keeps its lowercase form. */
-export const topicSlug = (name: string) => name.trim().toLowerCase();

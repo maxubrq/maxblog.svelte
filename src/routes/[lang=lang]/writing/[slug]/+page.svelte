@@ -6,6 +6,7 @@
 	import ArticleTracker from '$lib/components/article/ArticleTracker.svelte';
 	import Bibliography from '$lib/components/article/Bibliography.svelte';
 	import ForeEdge, { foreEdgeSections } from '$lib/components/article/ForeEdge.svelte';
+	import GlossaryFootnote from '$lib/components/article/GlossaryFootnote.svelte';
 	import MobileReadingBar from '$lib/components/article/MobileReadingBar.svelte';
 	import ReadingMemoryGutter from '$lib/components/article/ReadingMemoryGutter.svelte';
 	import ReadingMemoryNudge from '$lib/components/article/ReadingMemoryNudge.svelte';
@@ -216,6 +217,12 @@
 					attribution={meta.rememberAttribution ?? t.article.authorsPick}
 				/>
 			{/if}
+
+			<!-- The words the essay marked, then the sources it cites — the
+			     apparatus of a printed book, in its order: glossary, then
+			     bibliography. The first is what the prose used, the second is
+			     what it stands on. -->
+			<GlossaryFootnote terms={meta.terms} />
 
 			<!-- The sources this essay cites. Built from `appearsIn`, so it needs
 			     no marks in the prose — see $lib/resources. -->

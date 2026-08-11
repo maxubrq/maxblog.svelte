@@ -64,6 +64,26 @@ function skip(node) {
 }
 
 /**
+ * Every `<Term>` id in the tree, in document order.
+ *
+ * The twin of `collectMarks` in `remark-resources`, and used the same two ways:
+ * before marking, to find the ids the author placed by hand — those words are
+ * spoken for, and the pass must not mark them a second time somewhere else —
+ * and after, to record the order the reader meets them in.
+ *
+ * @param {any} node
+ * @param {string[]} into
+ */
+function collectMarks(node, into) {
+	if (node.type === 'html' && typeof node.value === 'string') {
+		for (const m of node.value.matchAll(/<Term\s+[^>]*id=["']([^"']+)["']/g)) {
+			if (!into.includes(m[1])) into.push(m[1]);
+		}
+	}
+	for (const child of node.children ?? []) collectMarks(child, into);
+}
+
+/**
  * Walk the tree, replacing the first mention of each unseen term with
  * text · mark · text. Only the first: after that the reader knows the word.
  *
@@ -113,9 +133,27 @@ function walk(node, seen, pattern) {
 }
 
 export function remarkGlossary() {
-	return (/** @type {any} */ tree) => {
+	return (/** @type {any} */ tree, /** @type {any} */ file) => {
 		if (!PATTERN) return;
-		walk(tree, new Set(), PATTERN);
+
+		/** @type {string[]} */
+		const manual = [];
+		collectMarks(tree, manual);
+		walk(tree, new Set(manual), PATTERN);
+
+		// Re-read the finished tree rather than trusting the order things were
+		// marked in: a hand-placed mark late in the prose must still count as
+		// late, and only the tree knows where everything ended up.
+		/** @type {string[]} */
+		const order = [];
+		collectMarks(tree, order);
+		if (order.length === 0) return;
+
+		// Onto the post's `metadata`, the same way the resources pass publishes
+		// `citations` — this is how `GlossaryFootnote` learns what was marked
+		// without collecting anything while the page renders.
+		const fm = (file.data.fm ??= {});
+		fm.terms ??= order;
 	};
 }
 

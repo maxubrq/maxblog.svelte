@@ -5,13 +5,19 @@
 	import { pad } from '$lib/format';
 	import { href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
+	import { TOPIC_CONTENT, getTopicLocale } from '$lib/topics';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	const i18n = useI18n();
 	const t = $derived(i18n.t);
-	const blurb = (name: string) => t.topicBlurbs[name as keyof typeof t.topicBlurbs] ?? '';
+
+	// The count is the only thing the server had to work out; the name and the
+	// tagline are the room's own, in the reader's locale.
+	const doors = $derived(
+		data.doorways.map((d) => ({ ...d, ...getTopicLocale(TOPIC_CONTENT[d.id], i18n.lang) }))
+	);
 </script>
 
 <svelte:head>
@@ -25,14 +31,14 @@
 </section>
 
 <section class="grid">
-	{#each data.doorways as d, i (d.slug)}
-		<a class="door" href={href(i18n.lang, `/topics/${d.slug}`)}>
+	{#each doors as d, i (d.id)}
+		<a class="door" href={href(i18n.lang, `/topics/${d.id}`)}>
 			<div class="row">
 				<span class="num">{pad(i + 1)}</span>
 				<Tag>{d.count} {d.count === 1 ? t.topics.essay : t.topics.essays}</Tag>
 			</div>
 			<h2>{d.name}</h2>
-			<p>{blurb(d.name)}</p>
+			<p>{d.tagline}</p>
 		</a>
 	{/each}
 </section>

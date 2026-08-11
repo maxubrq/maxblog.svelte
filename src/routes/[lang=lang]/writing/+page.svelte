@@ -6,7 +6,8 @@
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { short, year } from '$lib/format';
 	import { fill, href, useI18n } from '$lib/i18n';
-	import { site, topics } from '$lib/site';
+	import { site } from '$lib/site';
+	import { TOPICS_ORDER, TOPIC_CONTENT, getTopicLocale, type TopicId } from '$lib/topics';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -16,14 +17,21 @@
 
 	let filter = $state('All');
 
-	// Values stay canonical (they match `topic` in frontmatter); only the "All"
-	// button is translated.
-	const options = $derived(['All', ...topics.map((x) => x.name)]);
-	const label = (o: string) => (o === 'All' ? t.writing.filterAll : o);
+	/**
+	 * The buttons carry topic *ids*, not the names on them: the id is stable
+	 * across locales, so switching language mid-filter keeps the filter. A room
+	 * answers to every spelling in its `frontmatterTopics`, which is what lets
+	 * one button cover both `Tech` and production's `Software`.
+	 */
+	const options = $derived(['All', ...TOPICS_ORDER]);
+	const label = (o: string) =>
+		o === 'All' ? t.writing.filterAll : getTopicLocale(TOPIC_CONTENT[o as TopicId], i18n.lang).name;
 
-	const visible = $derived(
-		filter === 'All' ? data.posts : data.posts.filter((p) => p.topic === filter)
-	);
+	const visible = $derived.by(() => {
+		if (filter === 'All') return data.posts;
+		const accepted = TOPIC_CONTENT[filter as TopicId].frontmatterTopics.map((x) => x.toLowerCase());
+		return data.posts.filter((p) => accepted.includes(p.topic?.toLowerCase() ?? ''));
+	});
 	const years = $derived([...new Set(visible.map((p) => year(p.date)))]);
 </script>
 

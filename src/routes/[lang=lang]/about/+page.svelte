@@ -5,10 +5,16 @@
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { href, useI18n } from '$lib/i18n';
 	import { AUTHOR_PORTRAIT, cloudinary, srcsetFor } from '$lib/images';
-	import { site, topics } from '$lib/site';
+	import { site } from '$lib/site';
+	import { TOPICS_ORDER, TOPIC_CONTENT, getTopicLocale } from '$lib/topics';
 
 	const i18n = useI18n();
 	const t = $derived(i18n.t);
+
+	// The doorway list, in the reader's locale — the same taglines the hub prints.
+	const rooms = $derived(
+		TOPICS_ORDER.map((id) => ({ id, ...getTopicLocale(TOPIC_CONTENT[id], i18n.lang) }))
+	);
 
 	const rail = $derived(
 		[
@@ -58,12 +64,10 @@
 
 		<h2>{t.about.topicsHeading}</h2>
 		<ul class="subjects">
-			{#each topics as topic (topic.slug)}
+			{#each rooms as room (room.id)}
 				<li>
-					<a href={href(i18n.lang, `/topics/${topic.slug}`)}><Tag on>{topic.name}</Tag></a>
-					<div class="blurb">
-						{t.topicBlurbs[topic.name as keyof typeof t.topicBlurbs] ?? ''}
-					</div>
+					<a href={href(i18n.lang, `/topics/${room.id}`)}><Tag on>{room.name}</Tag></a>
+					<div class="blurb">{room.tagline}</div>
 				</li>
 			{/each}
 		</ul>
