@@ -160,6 +160,8 @@ export function getSeriesLocale(
 /** The minimum a chapter needs from a post to stop being a promise. */
 export interface ChapterPost {
 	slug: string;
+	/** The locale the post publishes under — an essay belongs to exactly one. */
+	lang: Lang;
 	title: string;
 	date: string;
 	reading: number;
@@ -183,7 +185,16 @@ export function resolveChapters(
 ): ResolvedChapter[] {
 	return series.chapters.map((c) => {
 		const slug = lang === 'vi' && c.viSlug ? c.viSlug : c.slug;
-		const post = posts.get(slug);
+		const found = posts.get(slug);
+		/**
+		 * A post only counts in the locale it publishes under. Without this a
+		 * chapter with no `viSlug` falls back to the English slug, finds the
+		 * English post, and links to `/vi/writing/<en-slug>` — which 404s, because
+		 * an essay lives at exactly one locale. An untranslated chapter is simply
+		 * a chapter that does not exist here yet, and prints as the promise it
+		 * still is.
+		 */
+		const post = found?.lang === lang ? found : undefined;
 		const bridge = (lang === 'vi' && c.vi?.bridge) || c.bridge;
 
 		if (post) {

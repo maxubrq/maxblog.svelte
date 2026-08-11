@@ -16,6 +16,7 @@ export const load: PageLoad = async ({ params }) => {
 			p.slug,
 			{
 				slug: p.slug,
+				lang: p.lang,
 				title: p.title,
 				date: p.date,
 				reading: p.reading,

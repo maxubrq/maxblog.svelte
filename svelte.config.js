@@ -52,7 +52,27 @@ const config = {
 		// pinning it just keeps local builds off the host's Node version.
 		adapter: adapter({ runtime: 'nodejs22.x' }),
 		prerender: {
-			handleHttpError: 'fail'
+			handleHttpError: 'fail',
+
+			/**
+			 * A prerenderable route that produced no pages is normally a bug — the
+			 * usual cause is an `entries` export that silently returned nothing, and
+			 * failing the build is right.
+			 *
+			 * `/series/[id]` is the one honest exception: `SERIES` in `$lib/series`
+			 * is deliberately empty until an arc is finished, so its `entries`
+			 * generates nothing and nothing links to it to be crawled. The build
+			 * has no way to tell that apart from the bug, so it is named here.
+			 *
+			 * The suppression cannot go stale: add one series and the route *is*
+			 * prerendered, so it stops appearing in `routes` and this branch is
+			 * never taken again. Every other unseen route still fails the build.
+			 */
+			handleUnseenRoutes: ({ routes, message }) => {
+				const expected = '/[lang=lang]/series/[id]';
+				const unexpected = routes.filter((id) => id !== expected);
+				if (unexpected.length > 0) throw new Error(message);
+			}
 		},
 		alias: {
 			$content: 'content'

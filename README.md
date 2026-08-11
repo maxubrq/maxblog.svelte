@@ -862,6 +862,14 @@ is the same static HTML for everyone. `seriesProgress` takes the finished set as
 touches no `localStorage`, so it stays usable on the server. The current chapter is the first one
 *not* finished: a series is read forwards, and the place to stand is the first door still shut.
 
+**A chapter only counts in the locale it publishes under.** `viSlug` is optional, so a chapter
+without one falls back to the English slug — and `posts` holds every locale, so the lookup *would*
+find the English post, mark the chapter as existing, and link to `/vi/writing/<en-slug>`, which
+404s: an essay lives at exactly one locale. `resolveChapters` therefore checks the post's own `lang`
+before accepting it. An untranslated chapter is simply one that does not exist here yet, and prints
+as the promise it still is. Without that check the *build* fails rather than the page, because
+`handleHttpError: 'fail'` catches the dead link while prerendering — which is how it was found.
+
 ### `SERIES` is empty on purpose
 
 Nothing is finished yet, so there is no arc to describe — the same call as the topics' starters and
@@ -870,6 +878,13 @@ shelf, the arc page and the ribbon together, and `/series/[id]` starts prerender
 empty it generates no pages at all, which is correct). Until then each surface draws its empty
 state. This was verified with a temporary three-chapter fixture — read / current / unwritten, with
 a bridge — and the fixture removed afterwards.
+
+That empty list costs one line of build config. A prerenderable route that produces no pages is
+normally a bug (an `entries` export that quietly returned nothing), so SvelteKit fails the build —
+and `/series/[id]` generates nothing while `SERIES` is empty, with no link to it to crawl either.
+`handleUnseenRoutes` in `svelte.config.js` names that one route and still throws for any other, so
+the check keeps its value everywhere else. It cannot go stale: add a series and the route *is*
+prerendered, so it stops being reported and the branch is never taken again.
 
 ## Glossary
 
