@@ -90,19 +90,27 @@ the reader, only its stylesheet. GFM tables come from mdsvex's own remark.
 
 ## The article page
 
-`/[lang]/writing/[slug]` is the reading surface. Top to bottom: running head · title block ·
-the prose · then the apparatus, in this order:
+`/[lang]/writing/[slug]` is the reading surface. Top to bottom:
 
-1. the end mark `■`
-2. `OneSentence` — the author's pick, when `rememberSentence` is set
-3. `Bibliography` — the sources, when the post has any (see Resources)
-4. the hand-picked `neighborhood`, when the frontmatter lists one
+1. the running head, and the fore-edge in the gutter (see The reading instruments)
+2. the title block — tag row · headline · deck
+3. `ReadingMemoryNudge`, when you have started this essay before
+4. `WeatherStrip` — the reading contract, met on the way in
+5. the prose
+6. the end mark `■`
+7. `OneSentence` — the author's pick, when `rememberSentence` is set
+8. `Bibliography` — the sources, when the post has any (see Resources)
+9. the hand-picked `neighborhood`, when the frontmatter lists one
+
+The tag row, the deck and the weather strip carry `.flow-hide`; the headline and the nudge stay
+whatever the mode — see Study and flow below.
 
 There is no meta strip at the foot, and no meta rail beside the prose: topic, licence and word
 count used to print at the foot, and author/date/reading/chapter used to stand in the left
-margin. Both were removed and the prose took the column back. `meta.words` is still computed and
-`meta.license` still parsed — nothing reads them now, so `MetaRail`, `MetaFoot` and the
-`article.author` / `published` / `filedUnder` / `license` / `words` catalogue keys are unused.
+margin. Both were removed and the prose took the column back. So `MetaFoot` is unused now, as are
+the `article.author` / `published` / `filedUnder` / `license` / `words` catalogue keys and the
+`meta.words` / `meta.license` frontmatter this edition still parses. (`MetaRail` itself is *not*
+unused — `/about` still prints one.)
 
 The article ends on 100px of empty page (80 on mobile), set on `article` rather than on the last
 block, so the gap is there whichever block closes the piece.
@@ -161,7 +169,8 @@ author** and leaves the device; reading memory keeps a place **for the reader** 
 So it has no `dev` guard and no `doNotTrack` check — there is nothing here to opt out of.
 
 `$lib/reading-memory.ts` holds one entry per essay under production's `reading_memory` key: how
-far in, which `##`, how many minutes are left, and when. Three surfaces read it.
+far in, which `##`, how many minutes are left, and when. Four components touch it — one writes,
+three read.
 
 - **`ReadingMemoryTracker`** writes it. Like `ArticleTracker` it owns no scroll listener — the
   page measures itself once — and it writes on a 2s settle, so scrolling through an essay does not
@@ -231,8 +240,8 @@ picked up a `<Term>` or an `<R>`.
 
 Eleven settings, all device-local and never sent anywhere. `/[lang]/reading` is the room where
 all of them live, with a sample that answers the moment you touch a control; the header's display
-dropdown carries the four worth taking mid-sentence (theme · notes · framing · mode, plus the two
-in-article instruments). Both edit the same store, so neither can show a stale value.
+dropdown carries the six worth taking mid-sentence: theme · notes · framing · mode, and the two
+in-article instruments. Both surfaces edit the same store, so neither can show a stale value.
 
 The storage keys are production's — `font-size`, `line-spacing`, `measure`, `typeface`, `theme`,
 `theme-auto`, `reading-mode`, `reading-ruler`, `time-left`, `layout`, `framing` — so a reader with
