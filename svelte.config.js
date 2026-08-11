@@ -7,6 +7,7 @@ import rehypeSlug from 'rehype-slug';
 import { injectComponents } from './src/lib/content/inject-components.js';
 import { readingTime } from './src/lib/content/reading-time.js';
 import { remarkGlossary } from './src/lib/content/remark-glossary.js';
+import { remarkLinks } from './src/lib/content/remark-links.js';
 import { remarkResources } from './src/lib/content/remark-resources.js';
 import { toc } from './src/lib/content/toc.js';
 
@@ -35,7 +36,10 @@ const config = {
 			// rehype-slug will see (an inlineMath node, not the dollar signs);
 			// before, because it must not read a heading that has picked up a
 			// <Term> or an <R>.
-			remarkPlugins: [readingTime, remarkMath, toc, remarkGlossary, remarkResources],
+			// remarkLinks goes last: the two mark passes skip `link` nodes on
+			// purpose, and once a link has been rewritten into html tags its text
+			// is no longer inside one — they would mark inside link text.
+			remarkPlugins: [readingTime, remarkMath, toc, remarkGlossary, remarkResources, remarkLinks],
 			// rehype-slug gives every heading the `id` the search index points at
 			// (github-slugger's rule; the corpus runs the same slugger, so the two
 			// cannot drift). It goes before KaTeX so a heading with math slugs off

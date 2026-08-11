@@ -6,6 +6,7 @@
 export { default as Callout } from './components/article/Callout.svelte';
 export { default as Fleuron } from './components/article/Fleuron.svelte';
 export { default as Footnote } from './components/article/Footnote.svelte';
+export { default as LinkPreview } from './components/article/LinkPreview.svelte';
 export { default as OneSentence } from './components/article/OneSentence.svelte';
 export { default as PullQuote } from './components/article/PullQuote.svelte';
 export { default as R } from './components/article/R.svelte';

@@ -197,6 +197,51 @@ const en = {
 		send: 'Send',
 		sent: 'Sent ✓'
 	},
+	/** Series — see `$lib/series` and maxubrq/project/pages/InkSeries.jsx. */
+	series: {
+		label: 'Series',
+		titleLead: 'the',
+		titleAccent: 'series.',
+		description:
+			'Pieces that only fully land in order. Read them apart or together; the site carries the thread between them.',
+		count: '{n} on the shelf',
+		emptyTitle: 'no arc is finished yet.',
+		emptyBody:
+			'A series is described here before it is written, so the shape can be promised whole. Nothing is far enough along to promise, so the shelf is empty rather than half-built.',
+		stateInProgress: 'in progress',
+		stateComplete: 'complete',
+		writtenOf: '{n} of {total} written',
+		writtenOpen: '{n} written',
+		movements: '● {n} movements',
+		openEnded: '● open-ended',
+		theArc: 'the arc · where you are',
+		movement: 'movement {n}',
+		movementOf: 'movement {n} of {total}',
+		stateRead: 'read',
+		stateHere: 'you are here',
+		stateAhead: 'ahead',
+		min: 'min',
+		unwritten: 'not written yet',
+		fullArc: '◔ full arc',
+		arcCost: '{min} min · {n} movements',
+		readIt: 'read it',
+		inOrder: 'in order, the first time',
+		you: 'you',
+		youAre: '{read} of {total} min in',
+		bridge: 'the bridge · {from} → {to}',
+		carryThisIn: 'carry this in',
+		whereYouLeftOff: 'where you left off',
+		holdThisGoingIn: 'hold this going in',
+		enterMovement: 'enter movement {n} →',
+		threadsLabel: 'threads that recur · which movements they run through',
+		whySeries: 'why a series, not several posts'
+	},
+	/** The card behind an outbound link — see `LinkPreview`. */
+	linkPreview: {
+		loading: 'looking…',
+		external: 'external link',
+		open: 'open ↗'
+	},
 	glossary: {
 		indexLabel: 'Reference / site dictionary',
 		titleLead: 'the',
@@ -645,6 +690,49 @@ const vi: typeof en = {
 		cancel: 'Hủy',
 		send: 'Gửi',
 		sent: 'Đã gửi ✓'
+	},
+	series: {
+		label: 'Tuyển tập',
+		titleLead: 'các',
+		titleAccent: 'tuyển tập.',
+		description:
+			'Những bài chỉ trọn vẹn khi đọc đúng thứ tự. Đọc rời hay đọc liền đều được; trang này như sợi chỉ nối giữa chúng.',
+		count: '{n} trên kệ',
+		emptyTitle: 'chưa vòng cung nào hoàn thiện.',
+		emptyBody:
+			'Một tuyển tập được mô tả ở đây trước khi được viết, để hứa được trọn hình dáng của nó. Chưa cái nào đủ xa để hứa, nên kệ để trống thay vì dựng dở.',
+		stateInProgress: 'đang viết',
+		stateComplete: 'đã trọn',
+		writtenOf: 'đã viết {n} trên {total}',
+		writtenOpen: 'đã viết {n}',
+		movements: '● {n} chương',
+		openEnded: '● chưa định số',
+		theArc: 'vòng cung · bạn đang ở đâu',
+		movement: 'chương {n}',
+		movementOf: 'chương {n} trên {total}',
+		stateRead: 'đã đọc',
+		stateHere: 'bạn đang ở đây',
+		stateAhead: 'phía trước',
+		min: 'phút',
+		unwritten: 'chưa viết',
+		fullArc: '◔ trọn vòng cung',
+		arcCost: '{min} phút · {n} chương',
+		readIt: 'cách đọc',
+		inOrder: 'theo thứ tự, ở lần đầu',
+		you: 'bạn',
+		youAre: 'đã đi {read} trên {total} phút',
+		bridge: 'nhịp cầu · {from} → {to}',
+		carryThisIn: 'mang theo cái này',
+		whereYouLeftOff: 'chỗ bạn dừng lại',
+		holdThisGoingIn: 'giữ điều này khi bước vào',
+		enterMovement: 'vào chương {n} →',
+		threadsLabel: 'những sợi chỉ lặp lại · chạy qua các chương nào',
+		whySeries: 'vì sao là một tuyển tập, không phải vài bài rời'
+	},
+	linkPreview: {
+		loading: 'đang xem…',
+		external: 'liên kết ngoài',
+		open: 'mở ↗'
 	},
 	glossary: {
 		indexLabel: 'Tham khảo / từ điển của trang',

@@ -11,6 +11,7 @@
 const KIT = '$lib/mdx';
 
 /** The tags a post may use with no import. Keep in sync with src/lib/mdx.ts. */
+import { hasExternalLink } from './remark-links.js';
 import { mentionsTerm } from './remark-glossary.js';
 import { citesAnything } from './remark-resources.js';
 
@@ -25,6 +26,7 @@ export const KIT_COMPONENTS = [
 	'FloatSpacing',
 	'FloatVsFixed',
 	'Footnote',
+	'LinkPreview',
 	'OneSentence',
 	'PullQuote',
 	'R',
@@ -53,6 +55,7 @@ export function injectComponents({ extensions = ['.mdx'] } = {}) {
 			// file, and import for them in advance.
 			if (!used.includes('Term') && mentionsTerm(content)) used.push('Term');
 			if (!used.includes('R') && citesAnything(filename)) used.push('R');
+			if (!used.includes('LinkPreview') && hasExternalLink(content)) used.push('LinkPreview');
 
 			if (used.length === 0) return;
 

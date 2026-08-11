@@ -13,6 +13,7 @@
 	import ReadingMemoryTracker from '$lib/components/article/ReadingMemoryTracker.svelte';
 	import ReadingRuler from '$lib/components/article/ReadingRuler.svelte';
 	import ReaderMarks from '$lib/components/article/ReaderMarks.svelte';
+	import SeriesRibbon from '$lib/components/article/SeriesRibbon.svelte';
 	import RunningHead from '$lib/components/ink/RunningHead.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import TocDrawer from '$lib/components/article/TocDrawer.svelte';
@@ -196,6 +197,11 @@
 
 	<div class="body">
 		<div class="measure">
+			<!-- The arc this piece belongs to, when it belongs to one. Above the
+			     nudge because "which series is this" is a fact about the essay,
+			     while "where were you in it" is a fact about the reader. -->
+			<SeriesRibbon slug={meta.slug} />
+
 			<!-- "You were here", for an essay already started — and the pin in the
 			     margin at the section itself. -->
 			<ReadingMemoryNudge slug={meta.slug} />

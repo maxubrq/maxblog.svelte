@@ -74,8 +74,8 @@ No imports needed — `src/lib/content/inject-components.js` splices the kit int
 file's script, and only for the components that file actually uses. The kit is
 `src/lib/mdx.ts`:
 
-`Callout` · `CodeBlock` · `DiagramPlate` · `Figure` · `Fleuron` · `Footnote` · `OneSentence` ·
-`PullQuote` · `R` · `Sidenote` · `Term` · `Terminal` · `WeatherStrip` · `Float*` (live figures)
+`Callout` · `CodeBlock` · `DiagramPlate` · `Figure` · `Fleuron` · `Footnote` · `LinkPreview` ·
+`OneSentence` · `PullQuote` · `R` · `Sidenote` · `Term` · `Terminal` · `WeatherStrip` · `Float*`
 
 To add one: create the component, export it from `src/lib/mdx.ts`, and add its name to
 `KIT_COMPONENTS` in `inject-components.js`.
@@ -84,6 +84,18 @@ Two mdsvex rules worth remembering:
 
 - Markdown inside a component only parses when a **blank line** separates it from the tags.
 - Markdown content arrives as a `<p>`, so a component must not wrap children in a `<p>`.
+
+**An outbound link becomes a `<LinkPreview>`** — a hover card with what is behind it. Production
+swaps the `a` element through MDX's components map; mdsvex has no such map, so the swap happens
+while the tree is still markdown, in `src/lib/content/remark-links.js`, the same way the glossary
+and citation marks are placed. Only `http:` / `https:` links are wrapped: an internal link goes
+somewhere the reader can already see the shape of, and a preview of your own page is a card telling
+you what you are about to be told. Anchors, `mailto:` and relative paths pass through untouched.
+
+That pass runs **last**, and the order is load-bearing. `remarkGlossary` and `remarkResources` both
+skip `link` nodes on purpose — a term should not pick up a dotted underline inside a link, and a
+citation numeral should not be planted in one. Rewrite the link into HTML tags first and its text is
+no longer inside a `link` node, so both passes would happily mark it.
 
 Math is `$inline$` / `$$display$$`, rendered by KaTeX **at build time** — no KaTeX JS ships to
 the reader, only its stylesheet. GFM tables come from mdsvex's own remark.
@@ -530,10 +542,10 @@ src/lib/i18n/             the en/vi catalogs + the locale context
 src/lib/content/search.ts the search corpus builder (build-time only)
 src/lib/glossary.ts       the site dictionary (data in glossary.data.js)
 src/lib/resources.ts      the bibliography (data in resources.data.js)
-src/lib/content/remark-*.js  the passes that auto-mark terms and citations while compiling
+src/lib/content/remark-*.js  the passes that mark terms, citations and outbound links
 src/lib/server/db/        drizzle schema + the lazy Postgres client (never client-side)
 src/lib/server/api.ts     shared endpoint guards: 503 / 400 / opaque 500
-src/routes/api/           the five prerender-exempt endpoints
+src/routes/api/           the six prerender-exempt endpoints
 src/lib/search.svelte.ts  whether the search overlay is open, + the ⌘K binding
 src/lib/reading.svelte.ts the reader's settings, live — the store both surfaces edit
 src/lib/reading-prefs.ts  every device-local reader setting + the <html> stamping
@@ -811,6 +823,54 @@ No entry carries a `vi` block, and that is not an oversight waiting to be fixed:
 already written in whichever language the author thought the thought in, and translating a private
 note would be writing a new one. `getVaultLocale` is there for the day one genuinely needs both.
 
+## Series
+
+A series is an argument built across an arc, not several posts sharing a tag. `src/lib/series.ts`
+is the data layer the rest of the site was missing, and it exists for one reason: **a series has to
+describe chapters that are not written yet.** A post can say "I belong to a series"; it cannot say
+how long the arc is, what order it runs in, or what a reader should carry from one part into the
+next. So the arc is authored in the module and the posts are looked up *from* it — not the other
+way round. The frontmatter `series` / `chapter` fields are for the essay's own tag row and are not
+the source of the arc.
+
+`resolveChapters` is the whole idea in one function: every chapter is a **declaration**, and its
+`fallbackTitle` / `fallbackDate` / `fallbackMin` carry the promise until a post exists to replace
+them. An unwritten chapter still prints, still holds its place in the arc, and is simply not a link.
+Posts are passed *in* rather than imported — loading them is async here (mdsvex behind
+`import.meta.glob`), and reaching for them inside the module would make every caller async for
+nothing.
+
+Four surfaces, all wired:
+
+- `/[lang]/series` — the shelf. A row keeps two facts apart: what the author promised (the arc, its
+  length, its state) and what is actually written. "2 of 3 written" is the author being honest about
+  a contract still being fulfilled, not a progress bar for the reader.
+- `/[lang]/series/[id]` — the arc, following `maxubrq/project/pages/InkSeries.jsx`: the **contract**
+  for the whole (a sum the individual essays cannot state), the **arc** with the reader's place
+  marked, the **bridge**, and the **threads** that recur.
+- `SeriesRibbon` at the head of an essay — the smallest honest form of "there is something before
+  this and something after". The shape of the arc belongs on the series page, not stacked on the
+  prose.
+
+**The bridge is the point of the page.** It is a handoff, not a "next" button: on one side the
+`rememberSentence` of the part just finished, on the other the author's own line on what to carry
+in, written per chapter in the arc. It only draws once there is something to hand *over* — the
+reader has to have finished a part for there to be a bank to cross from.
+
+Only "where you are" is the reader's, and it comes out of reading memory after mount, so the page
+is the same static HTML for everyone. `seriesProgress` takes the finished set as an argument and
+touches no `localStorage`, so it stays usable on the server. The current chapter is the first one
+*not* finished: a series is read forwards, and the place to stand is the first door still shut.
+
+### `SERIES` is empty on purpose
+
+Nothing is finished yet, so there is no arc to describe — the same call as the topics' starters and
+scratchpad. Everything above is written and wired; adding one object to `SERIES` lights up the
+shelf, the arc page and the ribbon together, and `/series/[id]` starts prerendering (with the list
+empty it generates no pages at all, which is correct). Until then each surface draws its empty
+state. This was verified with a temporary three-chapter fixture — read / current / unwritten, with
+a bridge — and the fixture removed afterwards.
+
 ## Glossary
 
 `src/lib/glossary.ts` is the site dictionary: one entry per marked term, with a short gloss, a
@@ -919,7 +979,7 @@ runs, so it cannot see marks that do not exist yet. It asks the two passes in ad
 
 Every *page* is prerendered, but that is a per-route default, not a property of the build: the
 adapter is `adapter-vercel`, and a route that sets `export const prerender = false` becomes a real
-serverless function while the rest of the site stays static HTML. The five endpoints below are the
+serverless function while the rest of the site stays static HTML. The six endpoints below are the
 only ones that do.
 
 Same Postgres, same schema, same driver as the production blog — `src/lib/server/db/schema.ts` is
@@ -933,6 +993,7 @@ tables: `reactions`, `page_views`, `section_reach`, `poll_votes`.
 | `/api/poll` | POST · GET | cast a vote · read the tally | public |
 | `/api/witness` | GET | one post's public record: counts, ≤5 letters, retention | public |
 | `/api/signals` | GET · PATCH | everything, across every post, incl. letter text | **Basic auth** |
+| `/api/link-preview` | GET | title · description · host of an outbound link | public |
 
 ```bash
 cp .env.example .env.local     # DATABASE_URL, DIRECT_URL, SIGNAL_PASSWORD
@@ -953,6 +1014,31 @@ Three rules this port holds to:
   browser`), so the connection string cannot leak into a bundle by accident.
 - **Errors are opaque.** A Postgres message names tables, columns and the host; endpoints log the
   real error and return a bare `Internal error`.
+
+### /api/link-preview, and why it is on the server at all
+
+Hovering an outbound link in an essay opens a card with the page's host, title and description —
+enough to decide whether to spend a page-load on it. That has to be fetched on the server because a
+browser cannot read another origin's `<head>`, which is the one thing on this list that is not
+about the reader: it fetches a *public* page on their behalf and returns three strings from it.
+
+The link is never blocked on the fetch. It is a real anchor from the first paint, and a slow
+endpoint, an unreachable site or a page with no metadata all fall back to the bare host — still
+true, still useful. Results are cached in module scope, so a URL mentioned twice on a page costs one
+request, and the response carries a day's `Cache-Control` so the CDN carries the rest.
+
+**The SSRF guard is the substantive difference from production.** That version validates the
+protocol and nothing else, which leaves the server willing to fetch any address the caller names —
+including ones only the server can reach. On a cloud host `http://169.254.169.254/…` is the instance
+metadata service. This one blocks loopback, private, link-local, unique-local and `.internal` hosts,
+**re-checks every redirect hop** (following redirects automatically would let a public URL bounce
+the server onto a private one), refuses non-HTML content types, caps the read at 512 KB and times
+out at 5s. Verified: the metadata IP, `localhost:5432`, `10.0.0.1` and `file://` all answer 400,
+where production would have fetched all four.
+
+Its honest limit is in the code: the check is on the literal hostname, so a *name* that resolves to
+a private address still passes, as does rebinding between the check and the fetch. Closing those
+needs DNS resolution plus a pinned-IP connection, which the platform's `fetch` does not expose.
 
 ### /api/signals is private
 
@@ -978,7 +1064,7 @@ be a no-op rather than a failure.
 ## Hosting
 
 `@sveltejs/adapter-vercel`, with `prerender = true` on the root layout: every page is static
-HTML at build time, and the only serverless functions are the five endpoints above (which opt out
+HTML at build time, and the only serverless functions are the six endpoints above (which opt out
 per route). Import the repo on Vercel — the
 framework preset and `pnpm` are detected, no `vercel.json` needed. The adapter's runtime is
 pinned to `nodejs22.x` so local builds don't depend on the machine's Node version.
@@ -988,15 +1074,14 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **The live figures.** `FloatBuilder`, `FloatExplorer`, `FloatVsFixed`, `FloatSpacing` render a
   labelled placeholder plate; the real sims are ~1,500 lines of React in
   `~/MyApps/maxblog/src/components/interactive/`.
-- The room behind `/series` is still a placeholder page — a door in the nav, and a page that says
-  it is not built yet. The design exists in `maxubrq/project/pages/` and in production.
-  (`/reading-room` is built — see The reading room.)
+- Every room in the nav is built. `/series` is real but its shelf is empty by design — see Series.
 - Two of the four tables still have endpoints but no UI — see Database & endpoints. In production
   these are `ReflectionPrompt` (polls) and `WitnessInviteCard` / `FairWitnessDrawer` (the public
   record). `ArticleTracker` is done, and `reactions` is now written by the mark — see The article
   page.
-- **Series** — `SeriesRibbon`, `SeriesNavDrawer`, `SeriesNext`. Needs a series data layer this
-  edition does not have yet; the frontmatter already carries `series` and `chapter`.
+- **Series**, the rest of it — `SeriesNavDrawer` (the arc as a drawer inside a chapter) and
+  `SeriesNext` (the bridge out, at the foot of a chapter). The data layer and `SeriesRibbon` are
+  done — see Series.
 - **`Dialogue`** — the `format: conversation` posts, where the topic/date row becomes a cast list.
 - The rest of the reading room: the commonplace book, the misreading book, appointments and the
   reading profile. In production each is its own page behind a door; here each becomes another
