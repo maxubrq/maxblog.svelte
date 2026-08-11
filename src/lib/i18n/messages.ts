@@ -370,6 +370,33 @@ const en = {
 	 * production's messages/en.json; `addedCount` and `collapsed` drop ICU plural
 	 * syntax, which this catalogue has no formatter for, and say the same thing.
 	 */
+	/**
+	 * The reading room. Production's is a *hub* — six doors, each to its own
+	 * page, and counts printed on the doors. This edition shows the rooms
+	 * themselves, one after another on a single page, so there is nothing to
+	 * click through and none of production's door/blurb/count strings apply.
+	 * Only the masthead and the colophon are lifted; the rest is this edition's.
+	 */
+	readingRoom: {
+		privateTag: 'private · stays on this device',
+		titleLead: 'the reading',
+		titleAccent: 'room.',
+		description:
+			'Everything you have made by reading, kept together on one page.',
+		colophon:
+			'Everything on this page is computed in your browser from what you have read; none of it is sent anywhere, and clearing your site data ends it. Only you can see this room.'
+	},
+	/* The read shelf — a section of the reading room, not its own page. */
+	shelf: {
+		sectionLabel: 'The read shelf',
+		finishedOnly: 'finished only · opening earns nothing',
+		description:
+			'Everything you finished. Each piece you carried to the last line becomes a spine, set the way a bound book is set.',
+		monogram: 'maxubrq',
+		emptyTitle: 'your shelf is still empty.',
+		emptyBody:
+			'Carry one piece all the way to the last line and its spine appears here. Opening a piece puts nothing on the shelf.'
+	},
 	vault: {
 		backToAbout: '← about the author',
 		countLabel: '{count} things · by year acquired',
@@ -738,6 +765,25 @@ const vi: typeof en = {
 		vaultTitle: 'căn hầm →',
 		vaultBlurb:
 			'Một tủ đồ riêng — những cuốn sách, đĩa nhạc, bài báo, bộ phim và vài món đồ thuộc về mình, mỗi thứ kèm một dòng lý do. Một căn phòng yên hơn, ngay cạnh trang này.'
+	},
+	readingRoom: {
+		privateTag: 'riêng tư · chỉ nằm trên máy này',
+		titleLead: 'căn phòng',
+		titleAccent: 'đọc.',
+		description:
+			'Mọi thứ bạn tạo ra bằng việc đọc, gom lại, tạo thành phòng đọc của riêng bạn.',
+		colophon:
+			'Mọi thứ trên trang này được tính ngay trong trình duyệt của bạn từ những gì bạn đã đọc; không có gì rời khỏi máy, và xóa dữ liệu trang là hết. Chỉ mình bạn có thể thấy căn phòng này.'
+	},
+	shelf: {
+		sectionLabel: 'Kệ đã đọc',
+		finishedOnly: 'chỉ bài đã đọc hết · mở ra không tính gì',
+		description:
+			'Mọi thứ bạn đã đọc hết. Mỗi bài bạn mang được tới dòng cuối cùng trở thành một cái gáy sách.',
+		monogram: 'maxubrq',
+		emptyTitle: 'kệ của bạn vẫn còn trống.',
+		emptyBody:
+			'Mang một bài đi tới dòng cuối cùng thì gáy sách của nó hiện ra ở đây. Chỉ mở bài ra thì không có gì được đặt lên kệ.'
 	},
 	vault: {
 		backToAbout: '← về tác giả',

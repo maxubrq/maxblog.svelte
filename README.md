@@ -577,6 +577,67 @@ three starters and about five scratchpad items per room, each with a `vi` twin. 
 change — the types, the components, and the tail's de-duplication (a starter's essay is not
 repeated below it) are all still wired.
 
+## The reading room
+
+**Deliberately unlike production**, and this is the one page where the two editions disagree about
+what the room *is*. There it is a hub: six doors with counts printed on them, each leading to its
+own page. Here everything is shown, one section after another, on a single page — a door that only
+says how many things are behind it makes the reader click to find out what they are, and the room
+is the reader's own, so there is nothing to tease. `/shelf` is therefore not a URL in this edition;
+the shelf is a section of `/[lang]/reading-room`. None of production's door/blurb/count strings
+apply, so only the masthead and the colophon were lifted.
+
+**The room is empty on the server.** The loader hands over the catalogue — every post in this
+locale — so a spine can be lettered with a live title; *which* of them you finished is read out of
+your own device after mount. Nothing about a reader is ever rendered on a server, which is what
+lets the page stay prerendered static HTML like every other.
+
+`spines` is `null` until the device has been asked, and that is not the same as empty: rendering
+"your shelf is still empty" on the first frame would tell a reader with a full shelf they had read
+nothing.
+
+**One closing line for the whole room, not one per section.** Production gives the shelf its own
+colophon; here the section's deck and its `finished only · opening earns nothing` tag already say
+how a spine is earned, so repeating it below the plank was the same sentence twice. The room's line
+— how any of this got here, and where it lives — runs the **full width** of the page rather than to
+a measure, because it closes the page instead of belonging to the section above it. Each new
+section (the constellation next) adds its own deck, not its own colophon.
+
+### The read shelf
+
+Opening a piece earns nothing. A spine appears the moment you reach the last line, never at a
+percentage — `$lib/shelf` reads `reading_memory` and keeps only `finished` entries, which makes it
+the exact opposite of `PickUpWhereYouLeftOff`: that lists what you have *started* and drops an
+essay the moment it is finished. Between them they account for every entry in the store.
+
+A spine's dimensions are seeded from a **hash of its slug**, not from its position in the list. The
+design did the latter, which would reshuffle the whole shelf every time you finished something new
+— a real shelf does not resize its books.
+
+Two details fall out of the join rather than needing a rule. The catalogue is one locale's posts,
+so an essay finished in the other locale simply does not appear rather than appearing with a link
+that 404s. And in dark mode the palette inverts the `light` flag by itself: `--paper2` spines go
+dark and `--ink` spines go light, so the row still breaks up, just the other way round.
+
+`TONES` carries both `Tech` and `Software`, because the store is shared with production and a spine
+may have been finished on either edition.
+
+It prints: the row wraps into stacked shelves instead of being guillotined at the margin, and the
+blue plank edge goes black — a colour cartridge should not be spent saying what the rule already
+says.
+
+### A note on the scribble
+
+`Headline`'s scribble is an ellipse of fixed proportions, so it only wraps an accent of about the
+width it was tuned for. On a wide accent it lassoes the air above the word and strikes through the
+letters. `markTop` / `markLeft` are now props (defaulting to the old hardcoded values, so no
+existing headline moved) — but this room's accent is `room.` in one locale and `đọc.` in the other,
+and one geometry strikes through one of them whichever way it is set, so it uses `mark="underline"`
+instead. An underline hangs off the baseline: a width that is a little wrong over- or under-runs
+the word rather than crossing it.
+
+The constellation is the next section to land in this room.
+
 ## About, and the vault
 
 `/[lang]/about` was already close to production; what it was missing is the **door**.
@@ -806,9 +867,9 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **The live figures.** `FloatBuilder`, `FloatExplorer`, `FloatVsFixed`, `FloatSpacing` render a
   labelled placeholder plate; the real sims are ~1,500 lines of React in
   `~/MyApps/maxblog/src/components/interactive/`.
-- The rooms behind `/series` and `/reading-room` are placeholder pages — a door in the nav, and a
-  page that says it is not built yet. The designs exist in `maxubrq/project/pages/` and in
-  production.
+- The room behind `/series` is still a placeholder page — a door in the nav, and a page that says
+  it is not built yet. The design exists in `maxubrq/project/pages/` and in production.
+  (`/reading-room` is built — see The reading room.)
 - The reader-facing features behind three of the four tables still have endpoints but no UI —
   see Database & endpoints. In production these are `SelectionReact` (reactions),
   `ReflectionPrompt` (polls) and `WitnessInviteCard` / `FairWitnessDrawer` (the public record).
@@ -816,8 +877,10 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **Series** — `SeriesRibbon`, `SeriesNavDrawer`, `SeriesNext`. Needs a series data layer this
   edition does not have yet; the frontmatter already carries `series` and `chapter`.
 - **`Dialogue`** — the `format: conversation` posts, where the topic/date row becomes a cast list.
-- The rest of the design surfaces (constellation, commonplace book, print edition) are not here
-  at all yet.
+- The rest of the reading room: **the constellation is next**, then the commonplace book, the
+  misreading book, appointments and the reading profile. In production each is its own page behind
+  a door; here each becomes another section of the one room.
+- The print edition is not here at all yet.
 
 ## Ideas on the shelf
 

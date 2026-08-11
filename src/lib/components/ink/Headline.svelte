@@ -11,7 +11,16 @@
 		as = 'h1',
 		size = 60,
 		lowercase = true,
-		markWidth = 240
+		markWidth = 240,
+		/**
+		 * Where the mark sits relative to the accented word. The defaults are
+		 * tuned for a *short* accent — the scribble is an ellipse of fixed
+		 * proportions, so on a wide word it ends up lassoing the air above and
+		 * striking through the letters instead of wrapping them. Nudge it there
+		 * rather than living with a headline that reads as crossed out.
+		 */
+		markTop = -18,
+		markLeft = -20
 	}: {
 		text: string;
 		accent?: string;
@@ -20,6 +29,8 @@
 		size?: number;
 		lowercase?: boolean;
 		markWidth?: number;
+		markTop?: number;
+		markLeft?: number;
 	} = $props();
 
 	// [before, accent, after] — falls back to the whole string when there's no accent.
@@ -38,11 +49,12 @@
 	style="--size: {size}px"
 >
 	{parts[0]}{#if parts[1]}<span class="accent"
-			>{parts[1]}{#if mark === 'scribble'}<Scribble w={markWidth} h={(markWidth * 130) / 360} left={-20} top={-18} />{:else if mark === 'underline'}<Underline
+			>{parts[1]}{#if mark === 'scribble'}<Scribble
 					w={markWidth}
-					left={2}
-					bottom={-10}
-				/>{/if}</span
+					h={(markWidth * 130) / 360}
+					left={markLeft}
+					top={markTop}
+				/>{:else if mark === 'underline'}<Underline w={markWidth} left={2} bottom={-10} />{/if}</span
 		>{/if}{parts[2]}
 </svelte:element>
 
