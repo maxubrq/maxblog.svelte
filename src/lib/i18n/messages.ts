@@ -142,6 +142,34 @@ const en = {
 		savedNote: 'Saved on this device as you go.',
 		reset: 'Defaults'
 	},
+	/** Where you stopped, per essay — see $lib/reading-memory. */
+	readingMemory: {
+		youWereHere: 'you were here',
+		about: 'about',
+		minute: 'minute',
+		minutes: 'minutes',
+		fromEnd: 'from the end',
+		resumeReading: 'resume reading →',
+		dismiss: 'dismiss', // ink
+		lastHere: 'last here', // ink
+		pickUpTitle: 'Pick up where you left off',
+		whereYouWereLabel: 'where you were',
+		clearMemory: 'clear memory',
+		resumeShort: 'resume →',
+		minLeftShort: 'min left',
+		/* The relative clock. Production keeps these inside the function that
+		   formats them, having nowhere else to put two languages; here they are
+		   catalogue strings like any other the reader sees. */
+		justNow: 'just now', // ink
+		minutesAgo: '{n} min ago', // ink
+		hoursAgo: '{n} hr ago', // ink
+		today: 'today', // ink
+		yesterday: 'yesterday', // ink
+		weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], // ink
+		morning: 'morning', // ink
+		afternoon: 'afternoon', // ink
+		evening: 'evening' // ink
+	},
 	glossary: {
 		indexLabel: 'Reference / site dictionary',
 		titleLead: 'the',
@@ -449,6 +477,30 @@ const vi: typeof en = {
 		],
 		savedNote: 'Tự lưu trên thiết bị này.',
 		reset: 'Mặc định'
+	},
+	readingMemory: {
+		youWereHere: 'bạn đã đọc đến đây',
+		about: 'còn khoảng',
+		minute: 'phút',
+		minutes: 'phút',
+		fromEnd: 'nữa là hết',
+		resumeReading: 'đọc tiếp →',
+		dismiss: 'bỏ qua',
+		lastHere: 'dừng ở đây',
+		pickUpTitle: 'Tiếp tục nơi đã dừng',
+		whereYouWereLabel: 'bạn đã ở đây',
+		clearMemory: 'xóa',
+		resumeShort: 'tiếp →',
+		minLeftShort: 'phút còn lại',
+		justNow: 'vừa xong',
+		minutesAgo: '{n} phút trước',
+		hoursAgo: '{n} giờ trước',
+		today: 'hôm nay',
+		yesterday: 'hôm qua',
+		weekdays: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+		morning: 'buổi sáng',
+		afternoon: 'buổi chiều',
+		evening: 'buổi tối'
 	},
 	glossary: {
 		indexLabel: 'Tham khảo / từ điển của trang',

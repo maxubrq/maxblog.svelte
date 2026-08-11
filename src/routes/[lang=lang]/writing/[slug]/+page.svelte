@@ -3,9 +3,13 @@
 	// (one sentence · sources · neighborhood) — with the reading instruments
 	// standing in the gutter around it: the fore-edge, the contents, the cursor.
 	import Headline from '$lib/components/ink/Headline.svelte';
+	import ArticleTracker from '$lib/components/article/ArticleTracker.svelte';
 	import Bibliography from '$lib/components/article/Bibliography.svelte';
 	import ForeEdge, { foreEdgeSections } from '$lib/components/article/ForeEdge.svelte';
 	import MobileReadingBar from '$lib/components/article/MobileReadingBar.svelte';
+	import ReadingMemoryGutter from '$lib/components/article/ReadingMemoryGutter.svelte';
+	import ReadingMemoryNudge from '$lib/components/article/ReadingMemoryNudge.svelte';
+	import ReadingMemoryTracker from '$lib/components/article/ReadingMemoryTracker.svelte';
 	import ReadingRuler from '$lib/components/article/ReadingRuler.svelte';
 	import RunningHead from '$lib/components/ink/RunningHead.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
@@ -95,6 +99,28 @@
 
 <ReadingRuler enabled={reading.ruler} />
 
+<!-- Counts, never identities: opened · reached a section · finished. It takes
+     the page's own measurement rather than listening again. -->
+<ArticleTracker
+	postSlug={meta.slug}
+	locale={meta.lang}
+	{progress}
+	{activeSection}
+	draft={meta.draft}
+/>
+
+<!-- Where *you* stopped — device-local, and never leaves it. -->
+<ReadingMemoryTracker
+	slug={meta.slug}
+	title={meta.title}
+	topic={meta.topic}
+	lang={meta.lang}
+	reading={meta.reading}
+	{toc}
+	{progress}
+	{activeSection}
+/>
+
 {#if toc.length > 0}
 	<!-- The gutter, one instrument. The fore-edge carries the weight left in
 	     your hand and the contents at once: a section is a run of leaves, hover
@@ -168,6 +194,11 @@
 
 	<div class="body">
 		<div class="measure">
+			<!-- "You were here", for an essay already started — and the pin in the
+			     margin at the section itself. -->
+			<ReadingMemoryNudge slug={meta.slug} />
+			<ReadingMemoryGutter slug={meta.slug} />
+
 			<!-- The weather of the piece — the reading contract, met on the way in.
 			     Hidden in flow: flow is for a reader who already committed. -->
 			{#if meta.weather}
@@ -263,6 +294,8 @@
 		max-width: var(--measure);
 		min-width: 0;
 		margin: 0 auto;
+		/* The reading-memory pin is absolute against this column. */
+		position: relative;
 	}
 
 	/* The way into the full list, standing at the head of the fore-edge rail.

@@ -130,6 +130,66 @@ running head, the drawer and the bar can never disagree about where you are.
   contrast, the rest fall back to 34%, and the whole thing fades out when you stop moving. Never
   a rule laid across the text, which makes the eye read the rule instead of the sentence.
 
+### Telemetry
+
+`ArticleTracker` records the three facts `/api/track` keeps: a session opened this essay, reached
+a section, finished it. Counts, never identities — one row per session per post (and per section),
+deduplicated by unique constraints in the schema, and **nothing is read back into the page**: the
+reader is never shown a number about their own reading.
+
+It owns no listeners. Production's version runs a second scroll handler and a second
+`IntersectionObserver`; here it takes `progress` and `activeSection` from the page's own
+measurement, which also settles what "reached a section" means — the reader is standing under it,
+the same signal the running head and the contents use. One definition of where the reader is.
+
+Three things switch it off entirely, before a session id is so much as created:
+
+- **`dev`.** Both editions write to the same Postgres, so a `pnpm dev` session would otherwise
+  land in the real numbers as a reader.
+- **A draft.** That is the author previewing, not readership.
+- **`navigator.doNotTrack`.** This edition's addition, not production's: the site counts in order
+  to know whether an essay was finished, and that is a question a reader is allowed to decline.
+
+`$lib/session.ts` holds the id — a uuid in localStorage under production's `mx_sid`, so a reader
+with both editions open is one reader. It is not an account and not a fingerprint; clearing site
+data ends it.
+
+### Reading memory
+
+The other half of the pair, and the distinction is the point: telemetry counts readers **for the
+author** and leaves the device; reading memory keeps a place **for the reader** and never does.
+So it has no `dev` guard and no `doNotTrack` check — there is nothing here to opt out of.
+
+`$lib/reading-memory.ts` holds one entry per essay under production's `reading_memory` key: how
+far in, which `##`, how many minutes are left, and when. Three surfaces read it.
+
+- **`ReadingMemoryTracker`** writes it. Like `ArticleTracker` it owns no scroll listener — the
+  page measures itself once — and it writes on a 2s settle, so scrolling through an essay does not
+  save fifty times. Two effects, not one: the settle effect re-runs on every frame and its teardown
+  must *not* save (that would invert the debounce), while a second effect reads nothing reactive,
+  so its teardown is the real departure. `pagehide` covers the exits no teardown sees — a closed
+  tab, and a page entering the back/forward cache.
+- **`ReadingMemoryNudge`** is the blue band at the head of an essay you have started. Dismissed per
+  *session*, not for good: closing it deals with this visit, and a reader returning tomorrow still
+  deserves to be told.
+- **`ReadingMemoryGutter`** is the bookmark itself — a dot in the margin at the section, and a hard
+  blue rule across its head. The heading comes from the post's markdown, so the component marks it
+  with `.memory-resume` (styled in `app.css`) and unmarks it on the way out, rather than writing
+  inline styles into an element it does not own.
+
+`PickUpWhereYouLeftOff` puts the list on the home page, above the masthead — it renders nothing at
+all when there is nothing to resume, which is every first visit. Production's "see your sky ✦" link
+is dropped: it goes to `/constellation`, a room this edition has not built.
+
+**An entry stores its essay's locale**, and that is not decoration. A slug belongs to exactly one
+locale, so a resume link built from the *reader's* locale 404s the moment the two differ — a
+Vietnamese reader resuming an English essay. `entryLang()` prefers the recorded locale, falls back
+to the slug's own `-en` / `_vi` suffix (which is what entries written by production have), and only
+then to the reader's.
+
+`lastSeen()` takes its labels from the i18n catalogue rather than hardcoding two languages the way
+production must, having nowhere else to put them.
+
 **Study and flow** are a CSS switch (`data-reading-mode` on `<html>`), not a different tree:
 changing your mind mid-essay must not rebuild the article under you, or you lose your place.
 Flow widens the column and hides everything marked `.flow-hide` — the tag row, the deck, the
@@ -401,6 +461,8 @@ src/lib/search.svelte.ts  whether the search overlay is open, + the ⌘K binding
 src/lib/reading.svelte.ts the reader's settings, live — the store both surfaces edit
 src/lib/reading-prefs.ts  every device-local reader setting + the <html> stamping
 src/lib/reading-progress.svelte.ts  one scroll listener: progress · active section · per-section
+src/lib/session.ts        the reader's session id (a uuid, for deduplicating counts)
+src/lib/reading-memory.ts where you stopped, per essay — device-local, never sent anywhere
 src/lib/content/toc.js    the contents, with per-section reading minutes (build-time only)
 src/lib/components/chrome/  SearchButton, SearchOverlay, DisplaySettings, Placeholder
 src/params/lang.ts        the /en · /vi route matcher
@@ -412,7 +474,9 @@ src/lib/components/ink/   the theme kit: Tag, Scribble, Underline, ArrowMark, Du
 src/lib/components/article/  PullQuote, Callout, Sidenote, Footnote, Fleuron, OneSentence,
                              WeatherStrip · Term and R (the marks) · Bibliography ·
                              the reading instruments: ForeEdge, TableOfContents,
-                             TocDrawer, MobileReadingBar, ReadingRuler
+                             TocDrawer, MobileReadingBar, ReadingRuler · ArticleTracker ·
+                             ReadingMemoryTracker / Nudge / Gutter
+src/lib/components/home/     PickUpWhereYouLeftOff
 src/lib/components/tech/     CodeBlock, Terminal, DiagramPlate
 src/routes/[lang=lang]/   /{en,vi} · /writing · /writing/[slug] · /topics · /topics/[topic] ·
                           /glossary · /resources · /reading · /about · /feed.xml ·
@@ -583,12 +647,10 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **`GlossaryFootnote`** — the terms-used-in-this-piece block at the foot of an essay, the
   glossary's twin of `Bibliography`. Production collects terms as they render; here the remark
   pass already knows which it marked, so the same `file.data.fm` trick would do it.
-- The reader-facing features behind the four tables (reactions, polls, the reading cursor's
-  *record* — where you stopped — and the signals dashboard) have endpoints but no UI — see
-  Database & endpoints. In production these are `SelectionReact`, `ReflectionPrompt`,
-  `WitnessInviteCard` / `FairWitnessDrawer` and `ArticleTracker`.
-- **Reading memory** — `ReadingMemoryTracker` / `Nudge` / `Gutter`: the "you were here" bookmark
-  a returning reader lands on. Device-local, so nothing blocks it but the work.
+- The reader-facing features behind three of the four tables still have endpoints but no UI —
+  see Database & endpoints. In production these are `SelectionReact` (reactions),
+  `ReflectionPrompt` (polls) and `WitnessInviteCard` / `FairWitnessDrawer` (the public record).
+  `ArticleTracker` is done — see The article page.
 - **Series** — `SeriesRibbon`, `SeriesNavDrawer`, `SeriesNext`. Needs a series data layer this
   edition does not have yet; the frontmatter already carries `series` and `chapter`.
 - **`Dialogue`** — the `format: conversation` posts, where the topic/date row becomes a cast list.

@@ -3,6 +3,7 @@
 	import ArrowMark from '$lib/components/ink/ArrowMark.svelte';
 	import Headline from '$lib/components/ink/Headline.svelte';
 	import IndexRow from '$lib/components/ink/IndexRow.svelte';
+	import PickUpWhereYouLeftOff from '$lib/components/home/PickUpWhereYouLeftOff.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { dots, pad } from '$lib/format';
 	import { href, useI18n } from '$lib/i18n';
@@ -21,6 +22,11 @@
 	<title>{site.name} — {t.footer.tagline}</title>
 	<meta name="description" content={t.home.description} />
 </svelte:head>
+
+<!-- What you are in the middle of. Renders nothing when there is nothing to
+     resume, which is every first visit — so it can stand above the masthead
+     without pushing the site down for a reader who has none. -->
+<PickUpWhereYouLeftOff />
 
 <!-- Masthead -->
 <section class="masthead">

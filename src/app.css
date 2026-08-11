@@ -559,6 +559,15 @@ hr {
 	display: none !important;
 }
 
+/* ── Reading memory ─────────────────────────────────────────────── */
+/* The section a reader stopped at, marked at its head. The heading comes from
+   the post's markdown, so `ReadingMemoryGutter` can only put a class on it —
+   which is the right seam anyway: the look belongs here with the other rules. */
+.memory-resume {
+	border-top: 2px solid var(--blue);
+	padding-top: 14px;
+}
+
 /* ── Interactive framing ────────────────────────────────────────── */
 /* How a diagram or a live figure sits in the column, per `data-framing` on
    <html>. `.interactive-plate` goes on the <figure> of each such component. */
