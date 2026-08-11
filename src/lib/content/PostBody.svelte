@@ -11,10 +11,13 @@
 </div>
 
 <style>
+	/* The reading surface, and the only place on the site the reader's own type
+	   settings apply. The chrome keeps its sizes and its grotesque: a running
+	   head set in 26px serif is not what "I want bigger text" means. */
 	.prose {
-		font-family: var(--body);
-		font-size: 18px;
-		line-height: 1.62;
+		font-family: var(--reading-font, var(--body));
+		font-size: var(--reading-fs, 18px);
+		line-height: var(--reading-lh, 1.62);
 	}
 
 	/* mdsvex output is not scoped to this component, hence :global. */
@@ -34,20 +37,29 @@
 		color: var(--blue);
 	}
 
-	/* Heading spacing follows two different rules on purpose.
+	/* Heading *sizes* are `em` of the prose, so they ride the reader's text
+	   size: at 26px body copy a fixed 22px `h3` would be smaller than the
+	   paragraph under it, and the hierarchy would invert itself. 1.67em and
+	   1.22em are exactly 30px and 22px at the default 18px.
 
-	   *Above* a heading the space is `em`, so it grows with the heading: a new
-	   section should open with more air than a sub-point inside one, and that
-	   ordering is what tells a reader how deep they just went.
+	   Heading *spacing* is `em` on both sides, so the air around a heading
+	   scales with it: a new section opens with more room than a sub-point
+	   inside one, and that ordering is what tells a reader how deep they just
+	   went. The multipliers are large on purpose, and the small headings need
+	   the largest of all — `em` is a multiple of the heading's *own* size, so a
+	   modest-looking figure collapses on an 11px mono label. That was the
+	   original bug here: at 0.6em the `h4` was left with 6.6px of air and sat on
+	   its own text while the `h2` got 15px. Check any change to these in px, not
+	   in em, or the same trap closes again.
 
-	   *Below* it the space is px, and the same px for every level. The gap under
-	   a heading belongs to the paragraph it introduces, not to the heading —
-	   which is exactly what `em` got wrong here: at 0.6em an 11px `h4` was left
-	   with 6.6px of air and sat on its own text, while the 30px `h2` got 15px. */
+	     h2  2.5em → 75px above · 2em   → 60px below
+	     h3  1.9em → 42px above · 1.5em → 33px below
+	     h4  3.1em → 34px above · 2.5em → 27px below
+	     h5  2.4em → 26px above · 2em   → 22px below */
 	.prose :global(h2) {
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: 30px;
+		font-size: 1.67em;
 		letter-spacing: -0.03em;
 		line-height: 1.05;
 		text-transform: lowercase;
@@ -56,7 +68,7 @@
 	.prose :global(h3) {
 		font-family: var(--display);
 		font-weight: 600;
-		font-size: 22px;
+		font-size: 1.22em;
 		letter-spacing: -0.02em;
 		text-transform: lowercase;
 		margin: 1.9em 0 1.5em 0;
@@ -68,8 +80,6 @@
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 		color: var(--muted);
-		/* 3.1em of a small mono label is only ~34px — the top margin has to be
-		   written large here precisely because the font it scales from is tiny. */
 		margin: 3.1em 0 2.5em 0;
 	}
 	/* An `h5` is rare enough that no post has one yet, but a post that grows one
@@ -220,9 +230,11 @@
 		border-top: 1px solid var(--rule);
 	}
 
+	/* One size down on a phone — but only as the *floor* the reader's own
+	   setting starts from, never as a cap on it. */
 	@media (max-width: 720px) {
 		.prose {
-			font-size: 17px;
+			font-size: var(--reading-fs, 17px);
 		}
 	}
 </style>

@@ -5,6 +5,7 @@
 	import SearchButton from '$lib/components/chrome/SearchButton.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { LANG_COOKIE, LANG_COOKIE_MAX_AGE, href, setI18n, swapLocale } from '$lib/i18n';
+	import { reading } from '$lib/reading.svelte';
 	import { search, searchHotkey } from '$lib/search.svelte';
 	import { site } from '$lib/site';
 	import type { Snippet } from 'svelte';
@@ -56,6 +57,15 @@
 	$effect(() => {
 		document.cookie = `${LANG_COOKIE}=${data.lang}; Path=/; Max-Age=${LANG_COOKIE_MAX_AGE}; SameSite=Lax`;
 	});
+
+	/**
+	 * Read the stored preferences once, here, because the layout is the one
+	 * thing that wraps every surface editing them — the header dropdown and
+	 * `/reading` — and it survives client-side navigation between the two.
+	 * The blocking script in `app.html` has already painted them; this is the
+	 * store catching up with what the page is showing.
+	 */
+	$effect(() => reading.hydrate());
 </script>
 
 <svelte:head>

@@ -83,7 +83,64 @@ const en = {
 		cursor: 'Reading cursor', // ink
 		timeLeft: 'Minutes left', // ink
 		allPreferences: 'All reading preferences',
-		dropdownHint: 'Type size and measure live there.'
+		dropdownHint: 'Type size and measure live there.',
+
+		/* The /reading page. Lifted from the production blog's messages/en.json,
+		   except where this edition differs — see `flowModeHint` and
+		   `measureHint`, which would otherwise describe a page that is not this
+		   one. */
+		label: 'Preferences',
+		deviceOnly: 'saved to this device only',
+		headingLead: 'read it',
+		headingAccent: 'your way.',
+		intro:
+			'Every control changes the sample beside it the moment you touch it — nothing is applied blind. The defaults are deliberately gentle; the site never nudges you toward more reading.',
+		sectionPage: 'the page',
+		textSize: 'text size',
+		textSizeHint: '16 to 26px. Never below the readable threshold.',
+		lineSpacing: 'line spacing',
+		lineSpacingHint:
+			'Leading set by the height of Vietnamese diacritics, not by the Latin default.',
+		spacingTight: 'Tight',
+		spacingNormal: 'Normal',
+		spacingAiry: 'Airy',
+		measure: 'measure',
+		// ink — the steps here are column widths, not characters per line.
+		measureHint: 'How wide the column of text runs. Short lines read faster and slip less.',
+		typeface: 'typeface',
+		typefaceHint: 'Grotesque for the screen, or a serif for long reading.',
+		typefaceSans: 'Sans',
+		typefaceSerif: 'Serif',
+		sectionLight: 'light',
+		themeHint: 'Day, dusk, night — paper and contrast change with it.',
+		themeAuto: 'theme by time of day',
+		themeAutoHint:
+			'The page warms toward evening and softens its contrast at night, following your clock.',
+		sectionReading: 'reading',
+		flowMode: 'flow mode',
+		// ink — production's flow hides the navigation and the footer too; this
+		// edition keeps its chrome and clears the opening of the essay.
+		flowModeHint:
+			'Clears the way in — no tag row, no deck, no reading contract — and gives the column a little more room. For when you have already decided to read.',
+		rulerHint:
+			'The passage you are on holds full contrast, the rest fall back by a breath. It fades when you stop moving.',
+		timeLeftHint:
+			'Shows “N min left” beside the contents. The fore-edge in the gutter always shows the weight left; this adds the estimate in minutes back.',
+		sectionArticle: 'the article page',
+		sidenotesHint: 'Notes out in the margin on wide screens, or inline in a single column.',
+		framingHint: 'How diagrams and interactive figures sit in the column.',
+		livePreview: 'Live preview',
+		previewStudy: 'standard view',
+		previewFlow: 'flow mode · chrome hidden',
+		previewLines: [
+			'A reading ruler is the rare interface element whose success is measured',
+			'by how little you notice it. The row you are on holds full contrast, and',
+			'everything else falls back by a breath — a band of attention, not a line',
+			'laid across the page. On a long paragraph, that is enough to keep the eye',
+			'from slipping, the one failure that makes you read a sentence twice.'
+		],
+		savedNote: 'Saved on this device as you go.',
+		reset: 'Defaults'
 	},
 	glossary: {
 		indexLabel: 'Reference / site dictionary',
@@ -341,7 +398,57 @@ const vi: typeof en = {
 		cursor: 'Con trỏ đọc',
 		timeLeft: 'Số phút còn lại',
 		allPreferences: 'Toàn bộ tùy chỉnh đọc',
-		dropdownHint: 'Cỡ chữ và độ dài dòng nằm ở đó.'
+		dropdownHint: 'Cỡ chữ và độ dài dòng nằm ở đó.',
+
+		label: 'Tùy chỉnh',
+		deviceOnly: 'chỉ lưu trên thiết bị này',
+		headingLead: 'đọc theo',
+		headingAccent: 'cách của bạn.',
+		intro:
+			'Mọi nút bấm đổi ngay mẫu chữ bên cạnh — không có gì được áp dụng mù. Mặc định cố ý nhẹ nhàng; trang này không bao giờ thúc bạn đọc thêm.',
+		sectionPage: 'trang chữ',
+		textSize: 'cỡ chữ',
+		textSizeHint: 'Từ 16 đến 26px. Không bao giờ dưới ngưỡng đọc được.',
+		lineSpacing: 'khoảng dòng',
+		lineSpacingHint:
+			'Khoảng dòng chọn theo chiều cao dấu tiếng Việt, không theo mặc định Latin.',
+		spacingTight: 'Chặt',
+		spacingNormal: 'Vừa',
+		spacingAiry: 'Thoáng',
+		measure: 'độ dài dòng',
+		measureHint: 'Cột chữ rộng tới đâu. Dòng ngắn đọc nhanh hơn, ít tụt dòng.',
+		typeface: 'kiểu chữ',
+		typefaceHint: 'Grotesque cho màn hình, hay serif cho đọc dài.',
+		typefaceSans: 'Sans',
+		typefaceSerif: 'Serif',
+		sectionLight: 'ánh sáng',
+		themeHint: 'Ngày, chạng vạng, đêm — nền và tương phản đổi theo.',
+		themeAuto: 'nền theo thời khắc',
+		themeAutoHint:
+			'Trang tự ấm dần về chiều và dịu tương phản về đêm, theo giờ trên máy bạn.',
+		sectionReading: 'khi đọc',
+		flowMode: 'chế độ dòng chảy',
+		flowModeHint:
+			'Dọn quang lối vào — bỏ hàng thẻ, bỏ sapo, bỏ bản giao kèo đọc — và nới cột chữ rộng thêm chút. Dành cho lúc bạn đã quyết định đọc rồi.',
+		rulerHint:
+			'Đoạn đang đọc giữ tương phản đầy, phần còn lại lùi nhẹ. Tự mờ khi bạn đứng yên.',
+		timeLeftHint:
+			'Hiện “còn N phút” cạnh mục lục. Cạnh sách trong gutter luôn cho bạn thấy sức nặng còn lại; đây là phần ước lượng bằng phút, thêm vào nếu bạn muốn.',
+		sectionArticle: 'trang bài viết',
+		sidenotesHint: 'Ghi chú nằm ngoài lề trên màn hình rộng, hoặc chen giữa cột chữ.',
+		framingHint: 'Cách biểu đồ và hình tương tác nằm trong cột chữ.',
+		livePreview: 'Xem trực tiếp',
+		previewStudy: 'chế độ thường',
+		previewFlow: 'dòng chảy · đã ẩn khung',
+		previewLines: [
+			'Con trỏ đọc là thứ giao diện hiếm hoi mà thành công của nó được đo bằng',
+			'việc bạn để ý đến nó ít tới đâu. Dòng bạn đang đọc giữ tương phản đầy,',
+			'phần còn lại lùi lại một hơi thở — một dải chú ý, không phải một vạch kẻ',
+			'ngang trang giấy. Với một đoạn dài, chừng đó là đủ để mắt không trượt dòng,',
+			'cái lỗi duy nhất khiến bạn đọc lại một câu và mất mạch.'
+		],
+		savedNote: 'Tự lưu trên thiết bị này.',
+		reset: 'Mặc định'
 	},
 	glossary: {
 		indexLabel: 'Tham khảo / từ điển của trang',

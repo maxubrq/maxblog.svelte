@@ -44,8 +44,40 @@
 	/* Layout constants (§3) */
 	--pad-chrome: 30px;
 	--pad-measure: 44px;
-	--measure: 780px;
+	--measure: 820px;
 	--index-max: 1080px;
+
+	/* ── Reader-controlled reading surface (see /reading) ──────────────
+	   --reading-font  the prose typeface (sans | serif)
+	   --reading-fs / --reading-lh  size and leading of the prose; set on
+	   <html> by the blocking script in app.html and by applyPrefs(), so
+	   they inherit into every surface at once.
+	   --measure       the width of the reading column, from `measure`
+	   --article-w     the column plus its own margins — the article's outer
+	                   width, which has to follow the measure or the widest
+	                   step would be capped by a container that never moved. */
+	--reading-font: var(--body);
+	--article-w: calc(var(--measure) + var(--pad-measure) * 2);
+}
+
+/* Serif reading. No extra webfont is loaded — this is the system book face,
+   which is what a reader asking for serif actually wants (and it is free). */
+[data-typeface='serif'] {
+	--reading-font: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+}
+
+/* Measure. The step *names* are production's, so a reader with both editions
+   open keeps one setting; the widths are this edition's, whose reading column
+   is wider than production's — `60` is what the page looks like out of the box
+   and nothing moves until the reader asks. */
+[data-measure='52'] {
+	--measure: 700px;
+}
+[data-measure='60'] {
+	--measure: 820px;
+}
+[data-measure='72'] {
+	--measure: 940px;
 }
 
 :root:not([data-theme='light']):not([data-theme='dusk']) {
@@ -384,11 +416,12 @@ hr {
 	/* Fixed against the left edge of the centred 940px column. Production
 	   makes this a sticky cell in a three-column grid; this edition centres
 	   the article in a container, so the rail is anchored to the same seam by
-	   hand. --measure-col is half the column plus the rail's own gap. */
-	--fore-edge-gap: clamp(52px, calc((100vw - 940px) / 2 - 60px), 190px);
+	   hand — and to `--article-w`, so it moves with the reader's measure
+	   instead of standing where the column used to be. */
+	--fore-edge-gap: clamp(52px, calc((100vw - var(--article-w)) / 2 - 60px), 190px);
 	position: fixed;
 	top: 120px;
-	right: calc(50% + 470px + var(--fore-edge-gap));
+	right: calc(50% + var(--article-w) / 2 + var(--fore-edge-gap));
 	display: flex;
 	align-items: center;
 	z-index: 20;
@@ -524,6 +557,28 @@ hr {
    row would keep its display and flow would only half happen. */
 [data-reading-mode='flow'] .flow-hide {
 	display: none !important;
+}
+
+/* ── Interactive framing ────────────────────────────────────────── */
+/* How a diagram or a live figure sits in the column, per `data-framing` on
+   <html>. `.interactive-plate` goes on the <figure> of each such component. */
+.interactive-plate {
+	margin: 2.6em 0;
+}
+[data-framing='bleed'] .interactive-plate {
+	margin: 2.6em -80px;
+}
+[data-framing='card'] .interactive-plate {
+	margin: 2.6em -20px;
+	padding: 4px 24px;
+	background: var(--paper2);
+}
+/* The bleed reaches outside the measure, which there is no room for once the
+   column is the width of the screen. */
+@media (max-width: 900px) {
+	[data-framing='bleed'] .interactive-plate {
+		margin: 2.6em 0;
+	}
 }
 
 /* ── Focus: a hard blue rule, never a glow ──────────────────────── */

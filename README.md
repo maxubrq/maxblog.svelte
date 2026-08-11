@@ -135,11 +135,8 @@ changing your mind mid-essay must not rebuild the article under you, or you lose
 Flow widens the column and hides everything marked `.flow-hide` — the tag row, the deck, the
 weather strip. Flow is for a reader who already committed.
 
-Three settings live in the header's display dropdown and are stored under production's own
-keys (`reading-mode`, `reading-ruler`, `time-left`), so a reader with both editions open keeps
-the same page: the mode, the cursor, and whether the "N min left" estimate shows. Mode and
-cursor are stamped in the blocking script in `app.html` — mode decides the width of the column,
-and settling that after hydration would reflow the article under the reader's eyes.
+The mode, the cursor and the "N min left" estimate are three of the eleven reader settings — see
+**Reading preferences** below for the rest, and for how any of them reach the prose at all.
 
 > **Deliberately unlike production.** There, the site header is *replaced* on an article by a
 > fixed running head carrying contents · flow · search · theme · print · folio. This edition
@@ -169,6 +166,52 @@ pnpm build && node scripts/check-anchors.mjs
 The pass runs after `remarkMath` and before the two mark passes: after, so a heading with `$x$`
 slugs off the same string `rehype-slug` will see; before, so it never reads a heading that has
 picked up a `<Term>` or an `<R>`.
+
+## Reading preferences
+
+Eleven settings, all device-local and never sent anywhere. `/[lang]/reading` is the room where
+all of them live, with a sample that answers the moment you touch a control; the header's display
+dropdown carries the four worth taking mid-sentence (theme · notes · framing · mode, plus the two
+in-article instruments). Both edit the same store, so neither can show a stale value.
+
+The storage keys are production's — `font-size`, `line-spacing`, `measure`, `typeface`, `theme`,
+`theme-auto`, `reading-mode`, `reading-ruler`, `time-left`, `layout`, `framing` — so a reader with
+both editions open keeps one setting.
+
+**Everything lands on `<html>`**, `data-*` for the switches and custom properties for the numbers,
+which is why `applyPrefs()` is the only call needed to make a change visible everywhere at once:
+
+| setting | lands as | read by |
+| --- | --- | --- |
+| text size · line spacing | `--reading-fs` · `--reading-lh` | `.prose` in `PostBody.svelte` |
+| typeface | `data-typeface` → `--reading-font` | `.prose`; the chrome never changes face |
+| measure | `data-measure` → `--measure` → `--article-w` | the article's column *and* the fore-edge rail, which is anchored to `--article-w` so it moves with the text |
+| theme · theme by clock | `data-theme` | `app.css` |
+| mode | `data-reading-mode` | `.flow-hide`, and the column |
+| cursor | `data-ruler` | `.ruler-block` |
+| notes | `data-layout` | `Sidenote.svelte` |
+| framing | `data-framing` | `.interactive-plate` on `DiagramPlate` |
+
+Heading sizes in the prose are `em` of the reading size, not px: at 26px body copy a fixed 22px
+`h3` would be *smaller* than the paragraph under it and the hierarchy would invert.
+
+Four things are easy to get wrong here, and all four were:
+
+- **Never read reactive state inside `hydrate()`.** It is called from an `$effect`; an effect that
+  reads a piece of state and then writes it re-triggers itself, and Svelte answers with
+  `effect_update_depth_exceeded` and *stops updating the page*. Every control still works, the
+  values still save, and nothing on screen ever changes again. It is guarded by a plain
+  (non-`$state`) flag for the same reason.
+- **"No theme chosen" is a state, not a gap.** With nothing stored, the blocking script stamps no
+  `data-theme` at all so the CSS can follow `prefers-color-scheme`. `applyPrefs` therefore takes a
+  `stampTheme` flag: without it, changing the *measure* would stamp `light` on a reader whose
+  system is dark and flip the page under them. The controls show the system's theme in that state,
+  because a `light` chip lit over a dark page is the site lying about itself.
+- **`--article-w` has to follow the measure.** Fixed at 940px, the widest step was capped at 852px
+  of text and the control silently did half of what it said.
+- **A component's scoped rule outranks a plain one from `app.css`.** `DiagramPlate` carries no
+  margin of its own precisely so `.interactive-plate` can own it; had it kept one, `framing` would
+  have done nothing.
 
 ## Images
 
@@ -355,7 +398,7 @@ src/lib/server/db/        drizzle schema + the lazy Postgres client (never clien
 src/lib/server/api.ts     shared endpoint guards: 503 / 400 / opaque 500
 src/routes/api/           the five prerender-exempt endpoints
 src/lib/search.svelte.ts  whether the search overlay is open, + the ⌘K binding
-src/lib/reading.svelte.ts the three settings an open article watches: mode, cursor, minutes
+src/lib/reading.svelte.ts the reader's settings, live — the store both surfaces edit
 src/lib/reading-prefs.ts  every device-local reader setting + the <html> stamping
 src/lib/reading-progress.svelte.ts  one scroll listener: progress · active section · per-section
 src/lib/content/toc.js    the contents, with per-section reading minutes (build-time only)
@@ -372,8 +415,8 @@ src/lib/components/article/  PullQuote, Callout, Sidenote, Footnote, Fleuron, On
                              TocDrawer, MobileReadingBar, ReadingRuler
 src/lib/components/tech/     CodeBlock, Terminal, DiagramPlate
 src/routes/[lang=lang]/   /{en,vi} · /writing · /writing/[slug] · /topics · /topics/[topic] ·
-                          /glossary · /resources · /about · /feed.xml · /search-index.json
-                          · placeholder rooms
+                          /glossary · /resources · /reading · /about · /feed.xml ·
+                          /search-index.json · placeholder rooms
                           (/ negotiates the locale — the only non-prerendered page)
 ```
 
@@ -534,9 +577,9 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **The live figures.** `FloatBuilder`, `FloatExplorer`, `FloatVsFixed`, `FloatSpacing` render a
   labelled placeholder plate; the real sims are ~1,500 lines of React in
   `~/MyApps/maxblog/src/components/interactive/`.
-- The rooms behind `/series`, `/reading-room` and `/reading` are placeholder pages — a door in
-  the nav, and a page that says it is not built yet. The designs exist in
-  `maxubrq/project/pages/` and in production.
+- The rooms behind `/series` and `/reading-room` are placeholder pages — a door in the nav, and a
+  page that says it is not built yet. The designs exist in `maxubrq/project/pages/` and in
+  production.
 - **`GlossaryFootnote`** — the terms-used-in-this-piece block at the foot of an essay, the
   glossary's twin of `Bibliography`. Production collects terms as they render; here the remark
   pass already knows which it marked, so the same `file.data.fm` trick would do it.

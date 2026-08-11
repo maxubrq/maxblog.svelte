@@ -19,7 +19,7 @@
 	} = $props();
 </script>
 
-<figure class="plate">
+<figure class="plate interactive-plate">
 	<div class="head">
 		<Tag on={live}>{live ? `● ${label}` : label}</Tag>
 		{#if hint}<Tag>{hint}</Tag>{/if}
@@ -37,9 +37,11 @@
 </figure>
 
 <style>
+	/* No margin here on purpose: the plate's spacing is the reader's `framing`
+	   setting, and it lives on `.interactive-plate` in app.css. A scoped rule
+	   would outrank it and the setting would do nothing. */
 	.plate {
 		border: 1.5px solid var(--rule-hard);
-		margin: 0 0 34px;
 	}
 	.head {
 		display: flex;

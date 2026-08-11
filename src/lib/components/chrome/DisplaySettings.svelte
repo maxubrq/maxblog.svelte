@@ -15,8 +15,6 @@
 		MODES,
 		THEMES,
 		THEME_GLYPH,
-		loadPrefs,
-		savePref,
 		type FramingPref,
 		type LayoutPref,
 		type ModePref,
@@ -28,41 +26,12 @@
 	const t = $derived(i18n.t.reading);
 
 	let open = $state(false);
-	let theme = $state<ThemePref>('light');
-	let layout = $state<LayoutPref>('sidenote');
-	let framing = $state<FramingPref>('card');
 	let root = $state<HTMLDivElement>();
 
-	$effect(() => {
-		const p = loadPrefs();
-		// With no stored theme the page is following the system; show *that* as
-		// the active chip rather than a "light" the reader never picked.
-		const stamped = document.documentElement.dataset.theme as ThemePref | undefined;
-		theme =
-			stamped ??
-			(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : p.theme);
-		layout = p.layout;
-		framing = p.framing;
-		// Mode, cursor and the estimate belong to the article, which watches the
-		// store rather than this dropdown.
-		reading.hydrate();
-	});
-
-	function chooseTheme(next: ThemePref) {
-		theme = next;
-		savePref('theme', next);
-		document.documentElement.dataset.theme = next;
-	}
-	function chooseLayout(next: LayoutPref) {
-		layout = next;
-		savePref('layout', next);
-		document.documentElement.dataset.layout = next;
-	}
-	function chooseFraming(next: FramingPref) {
-		framing = next;
-		savePref('framing', next);
-		document.documentElement.dataset.framing = next;
-	}
+	// The values live in the store, not here: `/reading` edits the same settings
+	// and neither surface remounts on a client-side navigation, so a local copy
+	// would go stale the moment the reader used the other one.
+	const prefs = $derived(reading.prefs);
 
 	const themeLabel = $derived<Record<ThemePref, string>>({
 		light: t.themeDay,
@@ -113,9 +82,9 @@
 					{#each THEMES as id (id)}
 						<button
 							class="chip"
-							class:active={theme === id}
-							aria-pressed={theme === id}
-							onclick={() => chooseTheme(id)}>{THEME_GLYPH[id]} {themeLabel[id]}</button
+							class:active={prefs.theme === id && !prefs.themeAuto}
+							aria-pressed={prefs.theme === id && !prefs.themeAuto}
+							onclick={() => reading.setTheme(id)}>{THEME_GLYPH[id]} {themeLabel[id]}</button
 						>
 					{/each}
 				</div>
@@ -127,9 +96,9 @@
 					{#each LAYOUTS as id (id)}
 						<button
 							class="chip"
-							class:active={layout === id}
-							aria-pressed={layout === id}
-							onclick={() => chooseLayout(id)}>{layoutLabel[id]}</button
+							class:active={prefs.layout === id}
+							aria-pressed={prefs.layout === id}
+							onclick={() => reading.set('layout', id)}>{layoutLabel[id]}</button
 						>
 					{/each}
 				</div>
@@ -141,9 +110,9 @@
 					{#each FRAMINGS as id (id)}
 						<button
 							class="chip"
-							class:active={framing === id}
-							aria-pressed={framing === id}
-							onclick={() => chooseFraming(id)}>{framingLabel[id]}</button
+							class:active={prefs.framing === id}
+							aria-pressed={prefs.framing === id}
+							onclick={() => reading.set('framing', id)}>{framingLabel[id]}</button
 						>
 					{/each}
 				</div>
@@ -155,9 +124,9 @@
 					{#each MODES as id (id)}
 						<button
 							class="chip"
-							class:active={reading.mode === id}
-							aria-pressed={reading.mode === id}
-							onclick={() => reading.setMode(id)}>{modeLabel[id]}</button
+							class:active={prefs.mode === id}
+							aria-pressed={prefs.mode === id}
+							onclick={() => reading.set('mode', id)}>{modeLabel[id]}</button
 						>
 					{/each}
 				</div>
@@ -171,15 +140,15 @@
 				<div class="chips">
 					<button
 						class="chip"
-						class:active={reading.ruler}
-						aria-pressed={reading.ruler}
-						onclick={() => reading.setRuler(!reading.ruler)}>{t.cursor}</button
+						class:active={prefs.ruler}
+						aria-pressed={prefs.ruler}
+						onclick={() => reading.set('ruler', !prefs.ruler)}>{t.cursor}</button
 					>
 					<button
 						class="chip"
-						class:active={reading.timeLeft}
-						aria-pressed={reading.timeLeft}
-						onclick={() => reading.setTimeLeft(!reading.timeLeft)}>{t.timeLeft}</button
+						class:active={prefs.timeLeft}
+						aria-pressed={prefs.timeLeft}
+						onclick={() => reading.set('timeLeft', !prefs.timeLeft)}>{t.timeLeft}</button
 					>
 				</div>
 			</div>

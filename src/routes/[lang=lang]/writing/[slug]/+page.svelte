@@ -38,10 +38,6 @@
 			scroll = null;
 		};
 	});
-	// The dropdown that writes these lives in the layout, so an article opened
-	// directly has to pull the stored settings in itself.
-	$effect(() => reading.hydrate());
-
 	const progress = $derived(scroll?.progress ?? 0);
 	const activeSection = $derived(scroll?.activeSection ?? '');
 
@@ -217,7 +213,9 @@
 
 <style>
 	article {
-		max-width: 940px;
+		/* The column plus its margins — see --article-w in app.css. Fixed at
+		   940px this capped the widest measure at 852px of text. */
+		max-width: var(--article-w);
 		margin: 0 auto;
 		/* Room to stop reading. The apparatus ends where the page ends
 		   otherwise, and the footer rule arrives too soon after the last line. */
@@ -259,10 +257,10 @@
 	}
 	/* The essay has no margin rail — author, date and chapter are already in the
 	   tag row and the fore-edge — so the prose takes the whole column back.
-	   Wider than `--measure`, but only by a little: past ~90 characters the eye
-	   starts losing the return to the next line. */
+	   The width is the reader's, from `measure` on /reading; `--measure`
+	   defaults to the 820px this page shipped with. */
 	.measure {
-		max-width: 820px;
+		max-width: var(--measure);
 		min-width: 0;
 		margin: 0 auto;
 	}
@@ -294,8 +292,10 @@
 	/* Flow: the prose, wider and alone. `.flow-hide` is the switch (app.css);
 	   what is left here is the room the hidden chrome gives back. The selector
 	   reaches <html>, which is outside this component, hence :global. */
+	/* Flow gives the column a little more room than the reader asked for —
+	   it is the mode for someone who wants the text and nothing else. */
 	:global([data-reading-mode='flow']) .measure {
-		max-width: 900px;
+		max-width: calc(var(--measure) + 80px);
 	}
 	:global([data-reading-mode='flow']) header {
 		border-bottom: none;

@@ -52,9 +52,12 @@
 		color: var(--blue);
 		margin-bottom: 4px;
 	}
-	/* Wide: hang it in the margin without disturbing the measure. */
+	/* Wide, and only if the reader wants notes in the margin: hang it there
+	   without disturbing the measure. `layout: single` keeps it in the column,
+	   which is also what every narrow screen gets. The attribute is on <html>,
+	   outside this component, hence :global. */
 	@media (min-width: 1180px) {
-		.sidenote {
+		:global([data-layout='sidenote']) .sidenote {
 			float: right;
 			clear: right;
 			width: 240px;
