@@ -8,6 +8,7 @@ import { injectComponents } from './src/lib/content/inject-components.js';
 import { readingTime } from './src/lib/content/reading-time.js';
 import { remarkGlossary } from './src/lib/content/remark-glossary.js';
 import { remarkResources } from './src/lib/content/remark-resources.js';
+import { toc } from './src/lib/content/toc.js';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -29,7 +30,12 @@ const config = {
 			// remarkResources runs after remarkGlossary so a citation is never
 			// marked inside a <Term> that the glossary pass just created; and
 			// readingTime runs first, on the prose as the author wrote it.
-			remarkPlugins: [readingTime, remarkMath, remarkGlossary, remarkResources],
+			// `toc` goes after remarkMath and before the two mark passes: after,
+			// because a heading with `$x$` has to slug off the same string
+			// rehype-slug will see (an inlineMath node, not the dollar signs);
+			// before, because it must not read a heading that has picked up a
+			// <Term> or an <R>.
+			remarkPlugins: [readingTime, remarkMath, toc, remarkGlossary, remarkResources],
 			// rehype-slug gives every heading the `id` the search index points at
 			// (github-slugger's rule; the corpus runs the same slugger, so the two
 			// cannot drift). It goes before KaTeX so a heading with math slugs off

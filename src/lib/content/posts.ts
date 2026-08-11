@@ -32,6 +32,20 @@ export interface Weather {
 }
 
 /**
+ * One station in a post: an `##` heading, and how long the run of prose under
+ * it takes to read. Written at build time by `toc.js` — never by hand — and
+ * shared by every reading instrument (the fore-edge, the drawer, the mobile
+ * bar), so a section is the same length whichever one you look at.
+ */
+export interface TocItem {
+	/** The heading's anchor, from the same slugger `rehype-slug` uses. */
+	id: string;
+	text: string;
+	level: 2;
+	readMinutes: number;
+}
+
+/**
  * Frontmatter contract for every file in `content/posts/`.
  * Deliberately the same shape the production (Next.js) blog uses, so posts
  * migrate across without editing their front matter.
@@ -78,6 +92,11 @@ export interface PostMeta {
 	 * prose. Injected by the resources remark pass — not hand-written.
 	 */
 	citations?: string[];
+	/**
+	 * The post's `##` headings with their reading minutes, injected by the toc
+	 * remark pass. Not hand-written — but frontmatter still wins, like `reading`.
+	 */
+	toc?: TocItem[];
 	/** Injected by the reading-time remark plugin; set it to pin the number. */
 	reading?: number;
 	words?: number;

@@ -76,8 +76,14 @@ const en = {
 		framingRule: 'Hair rule',
 		framingBleed: 'Full bleed',
 		framingCard: 'Inset card',
+		mode: 'reading mode', // ink
+		modeStudy: 'Study', // ink
+		modeFlow: 'Flow', // ink
+		inArticle: 'in the article', // ink
+		cursor: 'Reading cursor', // ink
+		timeLeft: 'Minutes left', // ink
 		allPreferences: 'All reading preferences',
-		dropdownHint: 'Type size, measure and the reading cursor live there.'
+		dropdownHint: 'Type size and measure live there.'
 	},
 	glossary: {
 		indexLabel: 'Reference / site dictionary',
@@ -210,7 +216,17 @@ const en = {
 		authorsPick: 'the author’s pick',
 		neighborhood: 'in this neighborhood',
 		handPicked: 'hand-picked, by me',
-		readInOther: 'đọc bản tiếng việt →'
+		readInOther: 'đọc bản tiếng việt →',
+		contents: 'Contents',
+		openContents: 'open the contents',
+		closeContents: 'close the contents',
+		/** The two ends of the fore-edge: what is behind you, what is ahead. */
+		read: 'read', // ink
+		left: 'left', // ink
+		minLeft: '{n} min left',
+		nearlyDone: 'nearly done',
+		total: 'Total',
+		min: 'min'
 	},
 	weather: {
 		readTime: '◔ read time',
@@ -318,8 +334,14 @@ const vi: typeof en = {
 		framingRule: 'Kẻ mảnh',
 		framingBleed: 'Tràn lề',
 		framingCard: 'Khối nền',
+		mode: 'lối đọc',
+		modeStudy: 'Nghiền ngẫm',
+		modeFlow: 'Một mạch',
+		inArticle: 'trong bài',
+		cursor: 'Con trỏ đọc',
+		timeLeft: 'Số phút còn lại',
 		allPreferences: 'Toàn bộ tùy chỉnh đọc',
-		dropdownHint: 'Cỡ chữ, độ dài dòng và con trỏ đọc nằm ở đó.'
+		dropdownHint: 'Cỡ chữ và độ dài dòng nằm ở đó.'
 	},
 	glossary: {
 		indexLabel: 'Tham khảo / từ điển của trang',
@@ -451,7 +473,16 @@ const vi: typeof en = {
 		authorsPick: 'lựa chọn của tác giả',
 		neighborhood: 'những bài lân cận',
 		handPicked: 'mình tự chọn',
-		readInOther: 'read in english →'
+		readInOther: 'read in english →',
+		contents: 'Mục lục',
+		openContents: 'mở mục lục',
+		closeContents: 'đóng mục lục',
+		read: 'đã đọc',
+		left: 'còn lại',
+		minLeft: 'còn {n} phút',
+		nearlyDone: 'sắp xong',
+		total: 'Tổng',
+		min: 'phút'
 	},
 	weather: {
 		readTime: '◔ thời gian đọc',

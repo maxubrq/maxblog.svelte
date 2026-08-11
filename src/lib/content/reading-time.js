@@ -7,10 +7,17 @@
  * 220 wpm; code blocks are skipped (you don't read a code plate, you study it).
  */
 
-const WPM = 220;
+export const WPM = 220;
 
-/** @param {any} node @returns {string} */
-function text(node) {
+/**
+ * Every word of a subtree, with the plates left out — you do not *read* a code
+ * block, you study it. Exported because `toc.js` has to count words the same
+ * way this does; two counters that disagree would put a section's minutes at
+ * odds with the post's own.
+ *
+ * @param {any} node @returns {string}
+ */
+export function text(node) {
 	if (!node) return '';
 	if (node.type === 'code' || node.type === 'html') return '';
 	if (typeof node.value === 'string') return node.value;

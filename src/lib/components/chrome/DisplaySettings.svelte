@@ -2,24 +2,27 @@
 	/**
 	 * Display settings — one button in the header's right slot (§4).
 	 *
-	 * Theme, notes layout and interactive framing live in the same dropdown:
-	 * they are one decision ("how should this page look"), so they get one
-	 * control. Theme is wired through; layout and framing write their attribute
-	 * and wait for the components that will read it.
+	 * Theme, notes layout, interactive framing, reading mode and the two
+	 * in-article instruments live in the same dropdown: they are one decision
+	 * ("how should this page look"), so they get one control. Everything here
+	 * writes a data attribute on <html>, or a store the article reads.
 	 */
 	import SettingsMark from '$lib/components/ink/SettingsMark.svelte';
 	import { href, useI18n } from '$lib/i18n';
 	import {
 		FRAMINGS,
 		LAYOUTS,
+		MODES,
 		THEMES,
 		THEME_GLYPH,
 		loadPrefs,
 		savePref,
 		type FramingPref,
 		type LayoutPref,
+		type ModePref,
 		type ThemePref
 	} from '$lib/reading-prefs';
+	import { reading } from '$lib/reading.svelte';
 
 	const i18n = useI18n();
 	const t = $derived(i18n.t.reading);
@@ -40,6 +43,9 @@
 			(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : p.theme);
 		layout = p.layout;
 		framing = p.framing;
+		// Mode, cursor and the estimate belong to the article, which watches the
+		// store rather than this dropdown.
+		reading.hydrate();
 	});
 
 	function chooseTheme(next: ThemePref) {
@@ -71,6 +77,10 @@
 		rule: t.framingRule,
 		bleed: t.framingBleed,
 		card: t.framingCard
+	});
+	const modeLabel = $derived<Record<ModePref, string>>({
+		study: t.modeStudy,
+		flow: t.modeFlow
 	});
 
 	function onPointerDown(e: MouseEvent) {
@@ -136,6 +146,41 @@
 							onclick={() => chooseFraming(id)}>{framingLabel[id]}</button
 						>
 					{/each}
+				</div>
+			</div>
+
+			<div class="section">
+				<div class="section-label">{t.mode}</div>
+				<div class="chips">
+					{#each MODES as id (id)}
+						<button
+							class="chip"
+							class:active={reading.mode === id}
+							aria-pressed={reading.mode === id}
+							onclick={() => reading.setMode(id)}>{modeLabel[id]}</button
+						>
+					{/each}
+				</div>
+			</div>
+
+			<!-- Two instruments the reader can put away. Each chip is its own
+			     switch: the label names the thing, and `active` says whether it
+			     is on — there is no "off" to press instead. -->
+			<div class="section">
+				<div class="section-label">{t.inArticle}</div>
+				<div class="chips">
+					<button
+						class="chip"
+						class:active={reading.ruler}
+						aria-pressed={reading.ruler}
+						onclick={() => reading.setRuler(!reading.ruler)}>{t.cursor}</button
+					>
+					<button
+						class="chip"
+						class:active={reading.timeLeft}
+						aria-pressed={reading.timeLeft}
+						onclick={() => reading.setTimeLeft(!reading.timeLeft)}>{t.timeLeft}</button
+					>
 				</div>
 			</div>
 

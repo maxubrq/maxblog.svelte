@@ -1,15 +1,20 @@
 <script lang="ts">
 	// The reading surface: title block, meta rail + prose, then the apparatus
-	// (one sentence · sources · neighborhood).
+	// (one sentence · sources · neighborhood) — with the reading instruments
+	// standing in the gutter around it: the fore-edge, the contents, the cursor.
 	import Headline from '$lib/components/ink/Headline.svelte';
 	import Bibliography from '$lib/components/article/Bibliography.svelte';
-	import MetaRail from '$lib/components/ink/MetaRail.svelte';
+	import ForeEdge, { foreEdgeSections } from '$lib/components/article/ForeEdge.svelte';
+	import MobileReadingBar from '$lib/components/article/MobileReadingBar.svelte';
+	import ReadingRuler from '$lib/components/article/ReadingRuler.svelte';
 	import RunningHead from '$lib/components/ink/RunningHead.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
+	import TocDrawer from '$lib/components/article/TocDrawer.svelte';
 	import OneSentence from '$lib/components/article/OneSentence.svelte';
 	import WeatherStrip from '$lib/components/article/WeatherStrip.svelte';
-	import { long } from '$lib/format';
 	import { href, useI18n } from '$lib/i18n';
+	import { createReadingProgress } from '$lib/reading-progress.svelte';
+	import { reading } from '$lib/reading.svelte';
 	import { site } from '$lib/site';
 	import type { PageData } from './$types';
 
@@ -20,16 +25,65 @@
 
 	const meta = $derived(data.meta);
 	const Content = $derived(data.content);
+	const toc = $derived(meta.toc ?? []);
+	const sections = $derived(foreEdgeSections(toc));
 
-	const rail = $derived(
-		[
-			[t.article.author, site.author],
-			[t.article.published, long(meta.date, meta.lang)],
-			[t.article.reading, `${meta.reading} ${t.article.minutes}`],
-			meta.section ? [t.article.section, meta.section] : null,
-			meta.chapter ? [t.article.chapter, meta.chapter] : null,
-			meta.coord ? [t.article.coord, meta.coord] : null
-		].filter(Boolean) as [string, string][]
+	// One measurement of the page, shared by every instrument on it.
+	let scroll = $state<ReturnType<typeof createReadingProgress> | null>(null);
+	$effect(() => {
+		const s = createReadingProgress();
+		scroll = s;
+		return () => {
+			s.stop();
+			scroll = null;
+		};
+	});
+	// The dropdown that writes these lives in the layout, so an article opened
+	// directly has to pull the stored settings in itself.
+	$effect(() => reading.hydrate());
+
+	const progress = $derived(scroll?.progress ?? 0);
+	const activeSection = $derived(scroll?.activeSection ?? '');
+
+	let tocOpen = $state(false);
+
+	/**
+	 * The folio. A book of about two dozen leaves, numbered the way a book is —
+	 * it says where you are standing, never how far along you are as a fraction.
+	 */
+	const ROMAN: [string, number][] = [
+		['xl', 40],
+		['x', 10],
+		['ix', 9],
+		['v', 5],
+		['iv', 4],
+		['i', 1]
+	];
+	function romanize(n: number) {
+		let out = '';
+		for (const [numeral, value] of ROMAN) {
+			while (n >= value) {
+				out += numeral;
+				n -= value;
+			}
+		}
+		return out;
+	}
+	const folio = $derived(romanize(Math.max(1, Math.round(progress * 24 + 1))));
+
+	// "N min left" — an estimate of what it costs to finish, not a score. The
+	// reader can switch it off; the weight in the gutter stays either way.
+	const totalMin = $derived(toc.reduce((sum, item) => sum + item.readMinutes, 0) || meta.reading);
+	const minLeft = $derived(Math.max(0, Math.round(totalMin * (1 - progress))));
+	const timeLeftLabel = $derived(
+		minLeft <= 0 ? t.article.nearlyDone : t.article.minLeft.replace('{n}', String(minLeft))
+	);
+
+	// The running head names the section you are in, and falls back to the essay
+	// itself in the opening, before the first heading.
+	const activeLabel = $derived(toc.find((item) => item.id === activeSection)?.text ?? '');
+	const runningHead = $derived(
+		activeLabel || `${site.name} · vol.04 · ${meta.topic.toLowerCase()}`
 	);
 </script>
 
@@ -41,11 +95,54 @@
 	{#if meta.description}<meta property="og:description" content={meta.description} />{/if}
 </svelte:head>
 
-<RunningHead text={`${site.name} · vol.04 · ${meta.topic.toLowerCase()}`} />
+<RunningHead text={runningHead} {folio} />
+
+<ReadingRuler enabled={reading.ruler} />
+
+{#if toc.length > 0}
+	<!-- The gutter, one instrument. The fore-edge carries the weight left in
+	     your hand and the contents at once: a section is a run of leaves, hover
+	     names it, click goes there. The full list is one tap away in the drawer,
+	     for readers who want a list. -->
+	<ForeEdge
+		{progress}
+		{sections}
+		readLabel={t.article.read}
+		leftLabel={t.article.left}
+		contentsLabel={t.article.contents}
+		timeLeftLabel={reading.timeLeft ? timeLeftLabel : undefined}
+	>
+		<button class="contents" onclick={() => (tocOpen = true)} aria-label={t.article.openContents}
+			>{t.article.contents}</button
+		>
+	</ForeEdge>
+
+	<!-- On a phone the gutter is gone; the strip takes the weight and the bar at
+	     the foot takes the contents. -->
+	<ForeEdge {progress} variant="edge" />
+
+	<MobileReadingBar
+		items={toc}
+		{activeSection}
+		{progress}
+		showTimeLeft={reading.timeLeft}
+		onopen={() => (tocOpen = true)}
+	/>
+
+	<TocDrawer
+		open={tocOpen}
+		onclose={() => (tocOpen = false)}
+		items={toc}
+		{activeSection}
+		{progress}
+		sectionProgress={scroll?.sectionProgress ?? {}}
+		showTimeLeft={reading.timeLeft}
+	/>
+{/if}
 
 <article lang={meta.lang}>
 	<header>
-		<div class="tags">
+		<div class="tags flow-hide">
 			<Tag on>{meta.topic}</Tag>
 			{#if meta.interactive}<Tag>● {t.article.interactive}</Tag>{/if}
 			{#if meta.chapter}<Tag>{meta.chapter}</Tag>{/if}
@@ -69,19 +166,22 @@
 			markWidth={280}
 		/>
 		{#if meta.subtitle}
-			<p class="deck">{meta.subtitle}</p>
+			<p class="deck flow-hide">{meta.subtitle}</p>
 		{/if}
 	</header>
 
 	<div class="body">
-		<MetaRail items={rail} />
-
 		<div class="measure">
+			<!-- The weather of the piece — the reading contract, met on the way in.
+			     Hidden in flow: flow is for a reader who already committed. -->
 			{#if meta.weather}
-				<WeatherStrip weather={meta.weather} />
+				<div class="flow-hide"><WeatherStrip weather={meta.weather} /></div>
 			{/if}
 
 			<Content />
+
+			<!-- Finis. The mark a printed essay ends on, before the apparatus. -->
+			<div class="end-mark" aria-hidden="true">■</div>
 
 			{#if meta.rememberSentence}
 				<OneSentence
@@ -123,8 +223,12 @@
 		   otherwise, and the footer rule arrives too soon after the last line. */
 		padding: 0 var(--pad-measure) 100px;
 	}
+	/* The rule under the title is a hard one, and a hard rule needs air on both
+	   sides or the headline sits on it. The gap below (`.body`) is the larger of
+	   the two, so the rule reads as the floor of the title block rather than as
+	   the ceiling of the prose. */
 	header {
-		padding: 48px 0 30px;
+		padding: 48px 0 44px;
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 	.tags {
@@ -146,19 +250,56 @@
 		line-height: 1.3;
 		letter-spacing: -0.02em;
 		color: var(--muted);
-		margin: 18px 0 0;
+		margin: 24px 0 0;
 		max-width: 52ch;
 	}
 
 	.body {
-		display: grid;
-		grid-template-columns: 150px 1fr;
-		gap: 34px;
-		padding: 32px 0 0;
+		padding: 56px 0 0;
 	}
+	/* The essay has no margin rail — author, date and chapter are already in the
+	   tag row and the fore-edge — so the prose takes the whole column back.
+	   Wider than `--measure`, but only by a little: past ~90 characters the eye
+	   starts losing the return to the next line. */
 	.measure {
-		max-width: var(--measure);
+		max-width: 820px;
 		min-width: 0;
+		margin: 0 auto;
+	}
+
+	/* The way into the full list, standing at the head of the fore-edge rail.
+	   Vertical, because the rail is. */
+	.contents {
+		background: transparent;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+		font-family: var(--mono);
+		font-size: 9px;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+	.contents:hover {
+		color: var(--blue);
+	}
+
+	.end-mark {
+		text-align: center;
+		margin: 2em 0 0;
+		color: var(--blue);
+		font-size: 16px;
+	}
+
+	/* Flow: the prose, wider and alone. `.flow-hide` is the switch (app.css);
+	   what is left here is the room the hidden chrome gives back. The selector
+	   reaches <html>, which is outside this component, hence :global. */
+	:global([data-reading-mode='flow']) .measure {
+		max-width: 900px;
+	}
+	:global([data-reading-mode='flow']) header {
+		border-bottom: none;
+		padding-bottom: 6px;
 	}
 
 	.hood {
@@ -218,9 +359,13 @@
 		article {
 			padding: 0 18px 80px;
 		}
+		/* The same proportion, one size down — 100px of air above the first
+		   line is generous on a desktop and a wasted screen on a phone. */
+		header {
+			padding: 36px 0 32px;
+		}
 		.body {
-			grid-template-columns: 1fr;
-			gap: 20px;
+			padding: 38px 0 64px;
 		}
 	}
 </style>

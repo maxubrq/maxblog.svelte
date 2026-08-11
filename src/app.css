@@ -371,6 +371,161 @@ hr {
 	}
 }
 
+/* ── The fore-edge — remaining weight instead of a progress bar ─────
+   Two homes for the same instrument: a rail beside the reading column where
+   there is room for it, a thin strip at the edge of the screen where there is
+   not. Never both at once.
+
+   These live here rather than in ForeEdge.svelte because the band, its wash
+   and its flag are one composite whose parts are positioned against each
+   other, and because `--fore-edge-gap` is a page measurement, not a component
+   one: it is the air between the rail and the first word of a line. */
+.fore-edge-rail {
+	/* Fixed against the left edge of the centred 940px column. Production
+	   makes this a sticky cell in a three-column grid; this edition centres
+	   the article in a container, so the rail is anchored to the same seam by
+	   hand. --measure-col is half the column plus the rail's own gap. */
+	--fore-edge-gap: clamp(52px, calc((100vw - 940px) / 2 - 60px), 190px);
+	position: fixed;
+	top: 120px;
+	right: calc(50% + 470px + var(--fore-edge-gap));
+	display: flex;
+	align-items: center;
+	z-index: 20;
+}
+.fore-edge-mobile {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 16px;
+	display: none;
+	align-items: flex-end;
+	justify-content: flex-start;
+	padding: 24px 4px 0 0;
+	z-index: 40;
+	pointer-events: none;
+}
+@media (max-width: 1180px) {
+	/* By here the gutter has run out — the strip takes over. */
+	.fore-edge-rail {
+		display: none;
+	}
+	.fore-edge-mobile {
+		display: flex;
+	}
+}
+
+/* One hit band per section: the fore-edge is the table of contents. The band
+   itself is invisible — what shows is the wash over its leaves and the flag
+   with its name. */
+.fore-edge-band {
+	position: absolute;
+	left: 0;
+	right: 0;
+	display: block;
+	text-decoration: none;
+	cursor: pointer;
+}
+.fore-edge-band:hover {
+	text-decoration: none;
+}
+.fore-edge-band-wash {
+	position: absolute;
+	inset: 0 7px;
+	background: var(--blue);
+	transition: opacity 0.14s ease;
+	pointer-events: none;
+}
+
+/* The name, set in the air between the rail and the text column so the eye
+   travels one way — toward the page, never off the left of the screen and
+   never over the first words of a line. A long title wraps down the margin the
+   way a hand-written note does, rather than reaching into the text. */
+.fore-edge-flag {
+	position: absolute;
+	left: calc(100% + 10px);
+	top: 50%;
+	transform: translateY(-50%);
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: baseline;
+	gap: 3px 8px;
+	width: max-content;
+	/* Never wider than the air it sits in, so it cannot reach the text — with a
+	   floor, since a flag too narrow to read is worse than no flag. */
+	max-width: max(112px, calc(var(--fore-edge-gap, 140px) - 22px));
+	padding: 6px 10px;
+	background: var(--paper);
+	border: 1.5px solid var(--rule-hard);
+	font-family: var(--body);
+	font-size: 12.5px;
+	line-height: 1.3;
+	color: var(--ink);
+	transition: opacity 0.14s ease;
+	pointer-events: none;
+	z-index: 3;
+}
+.fore-edge-flag-num {
+	grid-area: 1 / 1;
+	font-family: var(--mono);
+	font-size: 10px;
+	letter-spacing: 0.06em;
+	color: var(--blue);
+}
+/* Three lines, then the title is cut — a flag, not a summary. */
+.fore-edge-flag-text {
+	grid-area: 2 / 1 / 2 / -1;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	overflow: hidden;
+	overflow-wrap: anywhere;
+}
+.fore-edge-flag-min {
+	grid-area: 1 / 2;
+	justify-self: end;
+	font-family: var(--mono);
+	font-size: 10px;
+	color: var(--muted);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ── Reading cursor (con trỏ đọc) ───────────────────────────────── */
+/* A band of attention, never a line laid across the text: the block you are
+   reading holds full contrast and the rest fall back by a breath. Enabled per
+   reader via data-ruler on <html>; data-ruler-live is added by ReadingRuler
+   only while the reader is moving, so standing still restores the whole page.
+   Blocks are opted in with .ruler-block by the same component. */
+[data-ruler='on'] .ruler-block {
+	transition: opacity 0.32s ease;
+}
+[data-ruler='on'][data-ruler-live='on'] .ruler-block {
+	opacity: 0.34;
+}
+[data-ruler='on'][data-ruler-live='on'] .ruler-block.ruler-focus {
+	opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+	[data-ruler='on'] .ruler-block {
+		transition: none;
+	}
+}
+
+/* ── Flow mode ──────────────────────────────────────────────────── */
+/* Study is the page with its apparatus; flow is the prose, wider and alone.
+   It is a CSS switch rather than a different tree, so changing your mind
+   mid-essay does not rebuild the article under you — and does not lose your
+   place. */
+/* `!important` for the same reason the glossary rules above need it: a
+   component's own scoped rule (`.tags.s-hash { display: flex }`) matches with
+   the same specificity as this one and is injected later, so without it the tag
+   row would keep its display and flow would only half happen. */
+[data-reading-mode='flow'] .flow-hide {
+	display: none !important;
+}
+
 /* ── Focus: a hard blue rule, never a glow ──────────────────────── */
 :focus-visible {
 	outline: 2px solid var(--blue);
@@ -384,6 +539,10 @@ hr {
 		--ink: #000;
 	}
 	.no-print {
+		display: none !important;
+	}
+	/* A printed page has its own fore-edge: the paper. */
+	.fore-edge {
 		display: none !important;
 	}
 }

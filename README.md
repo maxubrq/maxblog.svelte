@@ -5,12 +5,20 @@ A personal blog in SvelteKit 2 / Svelte 5, built to the **Ink Edition** art dire
 oversized lowercase grotesque, mono fine print. Content is MDX in `content/`.
 
 ```bash
-pnpm install
+pnpm install    # also runs `svelte-kit sync` via the prepare script
 pnpm dev        # http://localhost:5173
 pnpm build      # prerenders the whole site
 pnpm preview
 pnpm check      # svelte-check
 ```
+
+SvelteKit 2 · Svelte 5 (runes) · Vite 6 · mdsvex. `vite-plugin-svelte` has to move with Vite —
+v4 peers only on Vite 5, so the two are upgraded as a pair.
+
+The `prepare` script is load-bearing, not decoration: `svelte-kit sync` is what writes
+`.svelte-kit/tsconfig.json`, which the root `tsconfig.json` extends. Without it a clean clone
+(Vercel, CI) builds with `Cannot find base config file "./.svelte-kit/tsconfig.json"` — harmless,
+but it means esbuild silently ignored the TS config for that pass, and it buries real warnings.
 
 ## Writing a post
 
@@ -79,6 +87,88 @@ Two mdsvex rules worth remembering:
 
 Math is `$inline$` / `$$display$$`, rendered by KaTeX **at build time** — no KaTeX JS ships to
 the reader, only its stylesheet. GFM tables come from mdsvex's own remark.
+
+## The article page
+
+`/[lang]/writing/[slug]` is the reading surface. Top to bottom: running head · title block ·
+the prose · then the apparatus, in this order:
+
+1. the end mark `■`
+2. `OneSentence` — the author's pick, when `rememberSentence` is set
+3. `Bibliography` — the sources, when the post has any (see Resources)
+4. the hand-picked `neighborhood`, when the frontmatter lists one
+
+There is no meta strip at the foot, and no meta rail beside the prose: topic, licence and word
+count used to print at the foot, and author/date/reading/chapter used to stand in the left
+margin. Both were removed and the prose took the column back. `meta.words` is still computed and
+`meta.license` still parsed — nothing reads them now, so `MetaRail`, `MetaFoot` and the
+`article.author` / `published` / `filedUnder` / `license` / `words` catalogue keys are unused.
+
+The article ends on 100px of empty page (80 on mobile), set on `article` rather than on the last
+block, so the gap is there whichever block closes the piece.
+
+### The reading instruments
+
+Everything around the prose is one question — *where am I, and what is left?* — answered by one
+measurement. `src/lib/reading-progress.svelte.ts` runs a single rAF-throttled scroll listener and
+publishes `progress` · `activeSection` · `sectionProgress`; four instruments read it, so the
+running head, the drawer and the bar can never disagree about where you are.
+
+- **`ForeEdge`** — the fore-edge of the book, drawn in the gutter. Not a progress bar: what you
+  have read compresses into a thin band, what remains stays a thick block, and you feel the
+  weight left the way your thumb feels it in a paperback. It is *also* the contents — each
+  section owns a run of leaves whose length is its reading time; hover names it, click goes
+  there. The fraction only ever sets thickness and is never printed as a number. Two homes,
+  never both at once: a rail in the left gutter above 1180px, a 10px strip at the right edge of
+  the viewport below it (that one is inert — a 10px tap target is not a control).
+- **`TocDrawer` + `TableOfContents`** — the list, for readers who want a list. Roman numerals,
+  per-section minutes, a hairline gauge of how far into each you have come. A sheet from the
+  bottom on a phone, a card in the middle on a desktop.
+- **`MobileReadingBar`** — the section you are in and what it costs to finish, on the bottom
+  edge. No progress track: the strip at the right of the screen carries that.
+- **`ReadingRuler`** — the reading cursor. The block nearest the reading line holds full
+  contrast, the rest fall back to 34%, and the whole thing fades out when you stop moving. Never
+  a rule laid across the text, which makes the eye read the rule instead of the sentence.
+
+**Study and flow** are a CSS switch (`data-reading-mode` on `<html>`), not a different tree:
+changing your mind mid-essay must not rebuild the article under you, or you lose your place.
+Flow widens the column and hides everything marked `.flow-hide` — the tag row, the deck, the
+weather strip. Flow is for a reader who already committed.
+
+Three settings live in the header's display dropdown and are stored under production's own
+keys (`reading-mode`, `reading-ruler`, `time-left`), so a reader with both editions open keeps
+the same page: the mode, the cursor, and whether the "N min left" estimate shows. Mode and
+cursor are stamped in the blocking script in `app.html` — mode decides the width of the column,
+and settling that after hydration would reflow the article under the reader's eyes.
+
+> **Deliberately unlike production.** There, the site header is *replaced* on an article by a
+> fixed running head carrying contents · flow · search · theme · print · folio. This edition
+> already has a real header with search and the display settings, so a second fixed bar would
+> only duplicate them. Instead the vertical folio at the right page edge became live — it names
+> the section you are in and the folio numeral — and the way into the contents stands at the
+> head of the fore-edge rail. Production's `TableOfContents` also runs its own
+> `IntersectionObserver`, which only fires once a heading *crosses* its band; open the contents
+> without scrolling first and nothing is marked. Here it takes the article's `activeSection`.
+
+**The contents are build-time data.** `src/lib/content/toc.js` is a remark pass that writes
+`toc` into the frontmatter bag next to `words` and `reading`: one entry per `##`, each with its
+own `readMinutes` at the same 220 wpm the post is counted at (it imports `text()` from
+`reading-time.js` so the two counters cannot disagree). The length of a section is a property of
+the text, not of the viewport.
+
+The ids come from `github-slugger` fed **every** heading in document order — including the `###`s
+that never become entries — because that is exactly what `rehype-slug` does to the rendered page,
+and its duplicate counter has to have seen the same headings in the same order. The search
+corpus holds to the same rule. Nothing in the build fails when they drift; the anchors just
+scroll nowhere. So:
+
+```bash
+pnpm build && node scripts/check-anchors.mjs
+```
+
+The pass runs after `remarkMath` and before the two mark passes: after, so a heading with `$x$`
+slugs off the same string `rehype-slug` will see; before, so it never reads a heading that has
+picked up a `<Term>` or an `<R>`.
 
 ## Images
 
@@ -252,6 +342,7 @@ matches nearly everything).
 content/posts/            the posts (.mdx)
 static/media/             committed 1-bit halftone plates (everything else is on Cloudinary)
 scripts/halftone.mjs      offline halftone screener; run by hand, never at build
+scripts/check-anchors.mjs every TOC anchor must exist in the rendered page; run after a build
 src/app.css               the tokens — palette, type, layout constants, dark mirror
 src/lib/images.ts         Cloudinary delivery — the cover default + the URL/srcset rewrite
 src/lib/site.ts           name, volume, topics, links, default language
@@ -264,17 +355,25 @@ src/lib/server/db/        drizzle schema + the lazy Postgres client (never clien
 src/lib/server/api.ts     shared endpoint guards: 503 / 400 / opaque 500
 src/routes/api/           the five prerender-exempt endpoints
 src/lib/search.svelte.ts  whether the search overlay is open, + the ⌘K binding
+src/lib/reading.svelte.ts the three settings an open article watches: mode, cursor, minutes
+src/lib/reading-prefs.ts  every device-local reader setting + the <html> stamping
+src/lib/reading-progress.svelte.ts  one scroll listener: progress · active section · per-section
+src/lib/content/toc.js    the contents, with per-section reading minutes (build-time only)
 src/lib/components/chrome/  SearchButton, SearchOverlay, DisplaySettings, Placeholder
 src/params/lang.ts        the /en · /vi route matcher
 src/lib/format.ts         the printed-document date/number voice
 src/lib/content/          post loading, frontmatter contract, mdsvex layout + plugins
 src/lib/components/ink/   the theme kit: Tag, Scribble, Underline, ArrowMark, DuoPhoto,
-                          RunningHead, MetaRail, MetaFoot, Headline, IndexRow, FilterBar
-src/lib/components/article/  PullQuote, Callout, Sidenote, Footnote, Fleuron, Term,
-                             OneSentence, WeatherStrip
+                          ResourceCover, RunningHead, MetaRail, MetaFoot, Headline,
+                          IndexRow, FilterBar
+src/lib/components/article/  PullQuote, Callout, Sidenote, Footnote, Fleuron, OneSentence,
+                             WeatherStrip · Term and R (the marks) · Bibliography ·
+                             the reading instruments: ForeEdge, TableOfContents,
+                             TocDrawer, MobileReadingBar, ReadingRuler
 src/lib/components/tech/     CodeBlock, Terminal, DiagramPlate
 src/routes/[lang=lang]/   /{en,vi} · /writing · /writing/[slug] · /topics · /topics/[topic] ·
-                          /about · /feed.xml · /search-index.json · placeholder rooms
+                          /glossary · /resources · /about · /feed.xml · /search-index.json
+                          · placeholder rooms
                           (/ negotiates the locale — the only non-prerendered page)
 ```
 
@@ -435,8 +534,90 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - **The live figures.** `FloatBuilder`, `FloatExplorer`, `FloatVsFixed`, `FloatSpacing` render a
   labelled placeholder plate; the real sims are ~1,500 lines of React in
   `~/MyApps/maxblog/src/components/interactive/`.
-- The rooms behind `/series`, `/reading-room` and `/reading` are
-  placeholder pages — a door in the nav, and a page that says it is not built yet. The designs
-  exist in `maxubrq/project/pages/` and in production.
-- The rest of the design surfaces (constellation, commonplace book, print edition, signals) are
-  not here at all yet.
+- The rooms behind `/series`, `/reading-room` and `/reading` are placeholder pages — a door in
+  the nav, and a page that says it is not built yet. The designs exist in
+  `maxubrq/project/pages/` and in production.
+- **`GlossaryFootnote`** — the terms-used-in-this-piece block at the foot of an essay, the
+  glossary's twin of `Bibliography`. Production collects terms as they render; here the remark
+  pass already knows which it marked, so the same `file.data.fm` trick would do it.
+- The reader-facing features behind the four tables (reactions, polls, the reading cursor's
+  *record* — where you stopped — and the signals dashboard) have endpoints but no UI — see
+  Database & endpoints. In production these are `SelectionReact`, `ReflectionPrompt`,
+  `WitnessInviteCard` / `FairWitnessDrawer` and `ArticleTracker`.
+- **Reading memory** — `ReadingMemoryTracker` / `Nudge` / `Gutter`: the "you were here" bookmark
+  a returning reader lands on. Device-local, so nothing blocks it but the work.
+- **Series** — `SeriesRibbon`, `SeriesNavDrawer`, `SeriesNext`. Needs a series data layer this
+  edition does not have yet; the frontmatter already carries `series` and `chapter`.
+- **`Dialogue`** — the `format: conversation` posts, where the topic/date row becomes a cast list.
+- The rest of the design surfaces (constellation, commonplace book, print edition) are not here
+  at all yet.
+
+## Ideas on the shelf
+
+Researched, not decided. The findings are written down so the next person does not have to
+re-read someone's source to get back to this point.
+
+### Lenis for smooth scrolling — [lenis.dev](https://lenis.dev)
+
+**Feasible, and cheaper to integrate than it looks.** Lenis (`1.3.26`, 5.4 KB gzip + 513 B CSS)
+does not translate the page: `grep -c transform` over its bundle is `0`. It intercepts
+wheel/touch, interpolates a number, and calls the browser's *real* scroll every frame —
+
+```js
+setScroll(scroll) { this.options.wrapper.scrollTo({ top: scroll, behavior: 'instant' }) }
+```
+
+— so `window.scrollY`, `getBoundingClientRect()`, the native `scroll` event and
+`IntersectionObserver` all stay truthful, and every reading instrument keeps working untouched.
+`respectReducedMotion` is on by default. There is no official Svelte package (react/vue/framer
+only), but the vanilla API in an `$effect` on the root layout is about fifteen lines.
+
+Four things in this repo would have to change:
+
+1. `ForeEdge`'s `goTo()` uses `window.scrollTo({ behavior: 'smooth' })` — two interpolators
+   writing one number. It becomes `lenis.scrollTo(el, { offset: -110 })`.
+2. `TocDrawer` and `SearchOverlay` lock the page with `body.style.overflow = 'hidden'`, and
+   **Lenis cannot see that**: its `checkOverflow()` reads `getComputedStyle(this.rootElement)`,
+   which is `<html>`, not `<body>`. Scroll accumulates behind the open sheet and lands in one
+   jump when it closes. They would call `lenis.stop()` / `lenis.start()` instead.
+3. Client-side navigation: `onNativeScroll` only re-syncs while Lenis is idle, so a link clicked
+   mid-glide fights SvelteKit's scroll reset. Needs `stopInertiaOnNavigate: true` and a
+   `lenis.resize()` in `afterNavigate`, since the page height changes.
+4. `anchors: { offset: -110 }`, so a `#id` link from the contents or from search glides the same
+   way the fore-edge does instead of jumping.
+
+**Two reasons it is on the shelf and not in the build.**
+
+The page is full of `position: fixed` — the fore-edge rail, the running head, the reading bar,
+the header, the sidenotes — and Lenis documents fixed elements lagging on pre-M1 macOS Safari.
+For decoration a dropped frame is invisible; the fore-edge is a **measuring instrument standing
+next to the text it measures**, and one frame out of step with that text reads as a bug rather
+than as an effect. The risk points straight at the newest work.
+
+And it argues with the art direction. This edition is a printed object: everything a rectangle,
+`border-radius: 0` set globally, rules pure black, one blue. The fore-edge exists so a reader
+*feels* the weight left the way a paperback gives it to the hand. Paper has no inertia. (A
+smaller version of the same seam: `ReadingRuler` fades the cursor after 1.4s of stillness, and
+Lenis's tail runs ~1.2s, so the band would linger past the moment the reader actually stopped.)
+
+**If it is ever tried**, the cheap way is a `smoothScroll` key in `reading-prefs.ts` and a row in
+the display dropdown beside the reading cursor, with `import('lenis')` fired only when a reader
+turns it on — nobody pays the 5.4 KB by default, and backing it out is one line.
+
+## Known gaps in the data
+
+Not bugs in the code, but they make the site look emptier than it is:
+
+- The glossary holds exactly one entry, `flow`, and the word **appears in no post** — so no
+  `<Term>` mark is ever placed. The entry's `appearances` claims otherwise. Either the prose or
+  the entry needs to move.
+- The bibliography's GAO report is never auto-cited: its author is an organisation (no surname to
+  match) and its English title does not appear in either language's prose. It still lists in the
+  essay's sources, just without a numeral pointing at it.
+- `content/posts/` holds 4 files against production's 432 (both languages, 14 of them still
+  `[xxx]`-prefixed drafts). The frontmatter contract is identical, so the rest copy across
+  unchanged.
+
+The dictionary and the bibliography are copied whole from production, and they are this sparse
+there too — one term and four sources. Neither page is waiting on a port; they are waiting on
+someone to write entries.

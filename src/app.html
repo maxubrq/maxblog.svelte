@@ -32,6 +32,11 @@
 				d.dataset.layout = g('layout') === 'single' ? 'single' : 'sidenote';
 				var f = g('framing');
 				d.dataset.framing = f === 'rule' || f === 'bleed' ? f : 'card';
+				// Reading mode decides the width of the column, so it has to be
+				// stamped here — settling it after hydration would reflow the
+				// article under the reader's eyes.
+				d.dataset.readingMode = g('reading-mode') === 'flow' ? 'flow' : 'study';
+				if (g('reading-ruler') === 'true') d.dataset.ruler = 'on';
 			} catch (e) {}
 		</script>
 	</head>

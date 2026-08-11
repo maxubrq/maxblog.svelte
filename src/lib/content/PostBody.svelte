@@ -34,6 +34,16 @@
 		color: var(--blue);
 	}
 
+	/* Heading spacing follows two different rules on purpose.
+
+	   *Above* a heading the space is `em`, so it grows with the heading: a new
+	   section should open with more air than a sub-point inside one, and that
+	   ordering is what tells a reader how deep they just went.
+
+	   *Below* it the space is px, and the same px for every level. The gap under
+	   a heading belongs to the paragraph it introduces, not to the heading —
+	   which is exactly what `em` got wrong here: at 0.6em an 11px `h4` was left
+	   with 6.6px of air and sat on its own text, while the 30px `h2` got 15px. */
 	.prose :global(h2) {
 		font-family: var(--display);
 		font-weight: 700;
@@ -41,7 +51,7 @@
 		letter-spacing: -0.03em;
 		line-height: 1.05;
 		text-transform: lowercase;
-		margin: 1.7em 0 0.5em;
+		margin: 2.5em 0 2em 0;
 	}
 	.prose :global(h3) {
 		font-family: var(--display);
@@ -49,7 +59,7 @@
 		font-size: 22px;
 		letter-spacing: -0.02em;
 		text-transform: lowercase;
-		margin: 1.5em 0 0.45em;
+		margin: 1.9em 0 1.5em 0;
 	}
 	.prose :global(h4) {
 		font-family: var(--mono);
@@ -58,7 +68,20 @@
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 		color: var(--muted);
-		margin: 1.8em 0 0.6em;
+		/* 3.1em of a small mono label is only ~34px — the top margin has to be
+		   written large here precisely because the font it scales from is tiny. */
+		margin: 3.1em 0 2.5em 0;
+	}
+	/* An `h5` is rare enough that no post has one yet, but a post that grows one
+	   should not fall through to the browser's default serif bold. */
+	.prose :global(h5) {
+		font-family: var(--mono);
+		font-weight: 500;
+		font-size: 11px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--faint);
+		margin: 2.4em 0 2em 0;
 	}
 
 	.prose :global(ul),
