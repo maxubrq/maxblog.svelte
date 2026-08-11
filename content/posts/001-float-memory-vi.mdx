@@ -25,7 +25,7 @@ một trăm người bị thương.
 
 Hạ Viện Mỹ đã yêu cầu GAO (General Accounting Office) điều tra về sự cố này, kết
 quả cho thấy không có lỗi vận hạnh hay lỗi phần cứng nào. Nguyên nhân là một sai
-số tích lũy dấu phẩy động. Đồng hồ nội bộ của Patriot với của hệ thống đếm thời 
+số tích lũy dấu chấm động. Đồng hồ nội bộ của Patriot với của hệ thống đếm thời 
 gian theo đơn vị một phần mười giây. Con số $0.1$, như chúng ta sắp thấy, không 
 thể được lưu trữ chính xác trong máy tính. Mỗi tick đồng hồ mang theo một sai số
 cực nhỏ. Sau khoảng 100 giờ hoạt động liên tục, những sai số tí hon ấy cộng dồn 
@@ -164,7 +164,7 @@ ba con số để có giá trị thật sự.
 Đây chính là cái mà fixed-point không làm được và cũng là cái mà chúng ta thực
 sự muốn từ một
 con số có ý nghĩa: giữ một số lượng chữ số có nghĩa cố định, rồi ghi riêng dấu
-phẩy nằm ở
+chấm nằm ở
 đâu.
 
 ### Floating-point: phần nào "động"
@@ -172,7 +172,7 @@ phẩy nằm ở
 Tên gọi _floating-point_ (dấu chấm động) đối lập thẳng với fixed-point. Thay vì
 đóng đinh dấu chấm tại một nơi cố định trong chuỗi bit, chúng ta để nó **trôi**.
 Dùng một nhúm bit
-để ghi các chữ số có nghĩa, và một nhúm bit khác để ghi dấu phẩy đang trôi tới
+để ghi các chữ số có nghĩa, và một nhúm bit khác để ghi dấu chấm đang trôi tới
 đâu. Theo cách mà các
 ký hiệu khoa học đã làm, chỉ khác là lần này trong hệ nhị phân.
 
@@ -185,8 +185,8 @@ Trong hệ nhị phân:
 $$1.1_{2} \times 2^3 = 1100_2 = 12_{10}$$
 
 Phần định trị (mantissa), `1.1` trong hệ nhị phân giữ các chữ số có nghĩa. Số mũ
-(exponent), `3`, cho biết dấu phẩy thuộc về đâu. Chính cái số mũ này là phần
-"động", đổi nó dấu phẩy sẽ trượt đi và chỉ cần dùng cùng một nhúm bit định trị
+(exponent), `3`, cho biết dấu chấm thuộc về đâu. Chính cái số mũ này là phần
+"động", đổi nó dấu chấm sẽ trượt đi và chỉ cần dùng cùng một nhúm bit định trị
 có
 thể diễn tả $0.0011_{2}$ hay $1100_{2}$ hay $1.1 \times 2^{40}$. Nhờ vậy float32
 với cùng 32 bit có thể biểu diễn bao phủ được dải từ cỡ $10^{-38}$ tới
@@ -274,7 +274,7 @@ dùng chính xác 32 bit và được chia thành ba vùng:
 | Vùng                | Số Bit | Nhiệm vụ                     |
 | ------------------- | --- | ---------------------------- |
 | Dấu (sign)          | 1   | Dương hay âm                 |
-| Số mũ (exponent)    | 8   | Vị trí của dấu phẩy nhị phân |
+| Số mũ (exponent)    | 8   | Vị trí của dấu chấm nhị phân |
 | Định trị (mantissa) | 23  | Các chữ số có nghĩa          |
 
 Điền vào đầy đủ 32 bit này không hiển nhiên thể hiện giá trị của một số trong
@@ -315,7 +315,7 @@ Nhưng nếu chữ số bên trái dấu chấm đã _luôn luôn_ là `1` thì 
 là cú lừa của IEEE 754,
 **bit dẫn đầu là bit ẩn**. Nó luôn có mặt nên không cần phải lưu. Phần định trị
 23 bit chỉ chứa phần _sau_
-dấu phẩy. Kết quả là: ta có được độ chính xác hiệu dụng của 24 bit mà chỉ tốn 23
+dấu chấm. Kết quả là: ta có được độ chính xác hiệu dụng của 24 bit mà chỉ tốn 23
 bit để lưu trữ, quá hời.
 
 ### Bias sinh ra để làm gì?
