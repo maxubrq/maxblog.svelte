@@ -577,6 +577,58 @@ three starters and about five scratchpad items per room, each with a `vi` twin. 
 change — the types, the components, and the tail's de-duplication (a starter's essay is not
 repeated below it) are all still wired.
 
+## About, and the vault
+
+`/[lang]/about` was already close to production; what it was missing is the **door**.
+
+Its content column is production's proportions — a 270px rail and the rest, at 90% of the page —
+and deliberately **not tied to `--measure`**. That token is the *reader's* article width
+(700/820/940 by preference), so letting it govern here made a colophon obey a setting meant for
+prose: the page got narrower because someone chose a narrow measure for reading essays. Two things
+that follow from the same cascade are worth knowing, because both were bugs: `.measure p` sets
+18px, so the sign-off has to be qualified as `.measure p.thanks` or it prints at body size (the
+`!important` that used to sit on its margin was the tell), and the page ends on 120px of air rather
+than on its last rule.
+
+The vault is
+deliberately **not in the nav** — the only way in is the panel at the foot of `/about`, and a
+private cabinet with a menu entry is not private, it is a section. The page also carries
+`robots: noindex, follow`: reachable, not advertised.
+
+`/[lang]/vault` is a **timeline grouped by the year a thing entered the collection, not by kind**,
+and that ordering is the whole argument. Sorted by kind it is a list of favourites, which every
+site has; sorted by arrival, a record and a paper from the same year stand next to each other and
+the shelf becomes a chronology of what changed the author's mind, and when. `added` is when it
+reached me, `made` is when the work was made — never the same axis, and the page is built on the
+first.
+
+The newest two years stay open and the rest fold away; `toggled` records only the years the reader
+has clicked, so changing the medium filter re-derives sensible open/closed state rather than
+stranding a year open because of a click on a different list.
+
+**The spine takes one change from production.** A dense year flows into two columns, but a second
+column of entries needs a second spine — otherwise its nodes hang in the air marking a line that
+was never drawn, which is what production ships. `column-rule` draws it, and the 11px `column-gap`
+is not arbitrary: the rule sits at the centre of the gap, so a gap of exactly one node's width puts
+it under the second column's nodes the way the border does under the first. The visible gutter is
+that 11px plus the 30px each entry already holds clear for its own spine. The node is the one
+circle on the site — a timeline node is not a rectangle.
+
+Covers go through `ResourceCover` like the bibliography's, so the vault's mixed shelf (jackets,
+album art, film posters) lines up on the same fixed 2:3 crop. One plate is a jacket and gets the
+full width; two or more are a glance at a place or a course and shrink to fit the row, capped at
+four — past that the strip stops being a glance and starts being a gallery.
+
+**One data fix.** In production, *On Writing Well* carries the overjustification paper's `id`, a
+copy-paste slip two entries apart. React only warns about a duplicate key; Svelte's keyed `{#each}`
+throws, so it is `on_writing_well` here — worth mending upstream, since the two editions are
+otherwise the same shelf. Two of the seven media (`Objects`, `Experience`) have no entries yet;
+their filter buttons print the empty state, which is honest rather than hidden.
+
+No entry carries a `vi` block, and that is not an oversight waiting to be fixed: the notes are
+already written in whichever language the author thought the thought in, and translating a private
+note would be writing a new one. `getVaultLocale` is there for the day one genuinely needs both.
+
 ## Glossary
 
 `src/lib/glossary.ts` is the site dictionary: one entry per marked term, with a short gloss, a

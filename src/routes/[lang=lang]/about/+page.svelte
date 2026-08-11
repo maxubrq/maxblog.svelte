@@ -72,6 +72,20 @@
 			{/each}
 		</ul>
 
+		<!-- The doorway to the vault — the only way in, which is the point. It is
+		     kept out of the nav deliberately: a private cabinet with a menu entry
+		     is not private, it is a section. -->
+		<a class="vault-door" href={href(i18n.lang, '/vault')}>
+			<span class="door-head">
+				<Tag on>{t.about.vaultTagLeft}</Tag>
+				<Tag>{t.about.vaultTagRight}</Tag>
+			</span>
+			<span class="door-body">
+				<span class="door-title">{t.about.vaultTitle}</span>
+				<span class="door-blurb">{t.about.vaultBlurb}</span>
+			</span>
+		</a>
+
 		<h2>{t.about.elsewhereHeading}</h2>
 		<ul class="elsewhere">
 			{#each site.elsewhere as [key, value, url] (key)}
@@ -103,16 +117,24 @@
 		min-height: 260px;
 	}
 
+	/**
+	 * Wider than an essay, and deliberately not tied to `--measure`. That token
+	 * is the *reader's* article width (700/820/940 by preference), and letting
+	 * it govern here made a colophon obey a setting meant for prose — the page
+	 * got narrower because someone chose a narrow measure for reading essays.
+	 * The proportions are production's: a 270px rail and the rest, at 90% of the
+	 * page, which lands the content around three-quarters of the screen.
+	 */
 	.body {
 		display: grid;
-		grid-template-columns: 150px 1fr;
+		grid-template-columns: 270px minmax(0, 1.2fr);
 		gap: 34px;
-		max-width: 900px;
+		max-width: 90%;
 		margin: 0 auto;
-		padding: 36px var(--pad-measure) 20px;
+		/* The page ends on real air, not on the last rule. */
+		padding: 36px var(--pad-measure) 120px;
 	}
 	.measure {
-		max-width: var(--measure);
 		min-width: 0;
 	}
 	.measure p {
@@ -152,6 +174,57 @@
 		margin-top: 6px;
 	}
 
+	/* A whole cell that inverts on hover, like a doorway on the topics hub —
+	   the page's one invitation, and it should feel like a door. */
+	.vault-door {
+		display: block;
+		margin: 1.6em 0 0;
+		border: 1.5px solid var(--rule-hard);
+		color: var(--ink);
+		transition: background 0.14s ease;
+	}
+	.vault-door:hover {
+		background: var(--panel-blue);
+		border-color: var(--panel-blue);
+		text-decoration: none;
+	}
+	.door-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 12px;
+		flex-wrap: wrap;
+		padding: 10px 16px;
+		border-bottom: 1px solid var(--rule);
+	}
+	.door-body {
+		display: block;
+		padding: 20px 16px 22px;
+	}
+	.door-title {
+		display: block;
+		font-family: var(--display);
+		font-weight: 700;
+		font-size: 30px;
+		letter-spacing: -0.03em;
+		text-transform: lowercase;
+		line-height: 1;
+		color: var(--blue);
+	}
+	.door-blurb {
+		display: block;
+		font-size: 14px;
+		line-height: 1.5;
+		color: var(--muted);
+		margin-top: 8px;
+		max-width: 44ch;
+	}
+	.vault-door:hover .door-title,
+	.vault-door:hover .door-blurb,
+	.vault-door:hover :global(.tag) {
+		color: var(--on-blue);
+	}
+
 	.elsewhere {
 		list-style: none;
 		padding: 0;
@@ -169,13 +242,17 @@
 		font-size: 13px;
 	}
 
-	.thanks {
+	/* Qualified by the element, or `.measure p` outranks it and the sign-off
+	   prints at 18px like body copy — which is what was happening, and why the
+	   margin below used to need `!important` to be heard at all. */
+	.measure p.thanks {
 		font-family: var(--mono);
 		font-size: 12px;
+		line-height: 1.6;
 		color: var(--muted);
 		border-top: 1.5px solid var(--rule-hard);
 		padding-top: 16px;
-		margin: 30px 0 0 !important;
+		margin: 30px 0 0;
 	}
 
 	@media (max-width: 860px) {
@@ -190,7 +267,9 @@
 		.body {
 			grid-template-columns: 1fr;
 			gap: 20px;
-			padding: 26px 18px 20px;
+			/* 90% of a phone is two useless 5% gutters. */
+			max-width: none;
+			padding: 26px 18px 80px;
 		}
 		.subjects {
 			grid-template-columns: 1fr;

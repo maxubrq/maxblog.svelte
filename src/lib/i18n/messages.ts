@@ -357,7 +357,44 @@ const en = {
 		bio2: 'Some of these essays come with a thing you can play with — a small simulation, a diagram that responds to a slider, a figure that recomputes itself. I think of writing and interaction as the same craft: both are attempts to hand someone a thought in a form they can turn over.',
 		topicsHeading: 'what i write about',
 		elsewhereHeading: 'elsewhere',
-		farewell: 'Thanks for stopping by.'
+		farewell: 'Thanks for stopping by.',
+		/* The doorway to the vault — the only way in, which is the point. */
+		vaultTagLeft: 'Not in the menu',
+		vaultTagRight: 'reached only from here',
+		vaultTitle: 'the vault →',
+		vaultBlurb:
+			'A private cabinet — the books, records, papers, films and objects that belong to me, each with a line on why. A quieter room off this page.'
+	},
+	/**
+	 * The vault — reached only from /about, so it has no nav string. Lifted from
+	 * production's messages/en.json; `addedCount` and `collapsed` drop ICU plural
+	 * syntax, which this catalogue has no formatter for, and say the same thing.
+	 */
+	vault: {
+		backToAbout: '← about the author',
+		countLabel: '{count} things · by year acquired',
+		titleLead: 'the',
+		titleAccent: 'vault',
+		description:
+			'A cabinet of things that belong to me — books, records, papers, films, courses, a few places — laid out in the order they entered my life, not by kind. Each kept because it changed the way I think. One line on why, in my own words.',
+		filterAll: 'All',
+		media: {
+			Books: 'Books',
+			Music: 'Music',
+			Papers: 'Papers',
+			Films: 'Films',
+			Objects: 'Objects',
+			Course: 'Course',
+			Experience: 'Experience'
+		},
+		made: 'made {year}',
+		addedCount: '{count} added',
+		expand: 'open +',
+		collapse: 'fold −',
+		collapsed: '{count} kept this year — click to open',
+		empty: 'Nothing of that kind in here yet.',
+		colophon:
+			'Kept privately, shared quietly. No ratings, no affiliate links, no “buy” button. Dated by when it reached me, not when it was made. Older years fold away — click to open. — Còn giữ, tức là còn quan trọng.'
 	},
 	error: {
 		title: 'this page is not in the index.',
@@ -695,7 +732,38 @@ const vi: typeof en = {
 		bio2: 'Một số bài viết sẽ có đính kèm ví dụ tương tác.',
 		topicsHeading: 'mình viết về gì',
 		elsewhereHeading: 'ở nơi khác',
-		farewell: 'Cảm ơn bạn đã ghé qua.'
+		farewell: 'Cảm ơn bạn đã ghé qua.',
+		vaultTagLeft: 'Không có trong menu',
+		vaultTagRight: 'chỉ vào được từ đây',
+		vaultTitle: 'căn hầm →',
+		vaultBlurb:
+			'Một tủ đồ riêng — những cuốn sách, đĩa nhạc, bài báo, bộ phim và vài món đồ thuộc về mình, mỗi thứ kèm một dòng lý do. Một căn phòng yên hơn, ngay cạnh trang này.'
+	},
+	vault: {
+		backToAbout: '← về tác giả',
+		countLabel: '{count} món · xếp theo năm nhận được',
+		titleLead: 'căn',
+		titleAccent: 'hầm',
+		description:
+			'Một tủ đồ của riêng mình — sách, đĩa nhạc, bài báo, phim, khóa học, vài nơi chốn — xếp theo thứ tự chúng bước vào đời mình, không xếp theo loại. Mỗi thứ được giữ lại vì nó đã đổi cách mình nghĩ. Một dòng lý do, bằng lời của mình.',
+		filterAll: 'Tất cả',
+		media: {
+			Books: 'Sách',
+			Music: 'Nhạc',
+			Papers: 'Bài báo',
+			Films: 'Phim',
+			Objects: 'Đồ vật',
+			Course: 'Khóa học',
+			Experience: 'Trải nghiệm'
+		},
+		made: 'làm năm {year}',
+		addedCount: 'thêm {count} món',
+		expand: 'mở +',
+		collapse: 'thu gọn −',
+		collapsed: 'giữ lại {count} món trong năm này — bấm để mở',
+		empty: 'Chưa có món nào thuộc loại này.',
+		colophon:
+			'Giữ riêng, chia sẻ khẽ. Không chấm điểm, không link tiếp thị, không nút “mua”. Ghi theo năm nó đến tay mình, không phải năm nó ra đời. Những năm cũ được gấp lại — bấm để mở. — Còn giữ, tức là còn quan trọng.'
 	},
 	error: {
 		title: 'trang này không có trong mục lục.',
