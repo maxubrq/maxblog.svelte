@@ -170,6 +170,33 @@ const en = {
 		afternoon: 'afternoon', // ink
 		evening: 'evening' // ink
 	},
+	/**
+	 * The mark — see `ReaderMarks` and `maxubrq/project/pages/InkMarks.jsx`.
+	 * The five words are the gesture vocabulary; the hints exist because a
+	 * reader has never met them before and a tooltip is not an explanation.
+	 */
+	marks: {
+		pickOne: 'pick a gesture — every mark is private first',
+		labels: {
+			keep: 'keep',
+			dissent: 'dissent',
+			snag: 'snag',
+			ask: 'ask',
+			note: 'note'
+		},
+		hints: {
+			keep: 'a sentence worth carrying out of the essay',
+			dissent: 'the same gesture, sign reversed — I do not believe this',
+			snag: 'an anchor to come back to, not a place to leave',
+			ask: 'a question pinned to the passage',
+			note: 'for the author, privately'
+		},
+		notePlaceholder: 'Your note…',
+		reachAuthor: 'goes to the author · not counted',
+		cancel: 'Cancel',
+		send: 'Send',
+		sent: 'Sent ✓'
+	},
 	glossary: {
 		indexLabel: 'Reference / site dictionary',
 		titleLead: 'the',
@@ -596,6 +623,28 @@ const vi: typeof en = {
 		morning: 'buổi sáng',
 		afternoon: 'buổi chiều',
 		evening: 'buổi tối'
+	},
+	marks: {
+		pickOne: 'chọn một cử chỉ — mọi dấu đều riêng tư trước',
+		labels: {
+			keep: 'giữ',
+			dissent: 'không tin',
+			snag: 'vấp',
+			ask: 'hỏi',
+			note: 'nhắn'
+		},
+		hints: {
+			keep: 'câu đáng mang ra khỏi bài',
+			dissent: 'song sinh ngược dấu của giữ — mình không tin câu này',
+			snag: 'neo để quay lại, không phải chỗ để bỏ đi',
+			ask: 'một câu hỏi để ở lề',
+			note: 'gửi riêng cho tác giả'
+		},
+		notePlaceholder: 'Ghi chú của bạn…',
+		reachAuthor: 'gửi tới tác giả · không thống kê',
+		cancel: 'Hủy',
+		send: 'Gửi',
+		sent: 'Đã gửi ✓'
 	},
 	glossary: {
 		indexLabel: 'Tham khảo / từ điển của trang',

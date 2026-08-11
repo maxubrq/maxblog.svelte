@@ -12,6 +12,7 @@
 	import ReadingMemoryNudge from '$lib/components/article/ReadingMemoryNudge.svelte';
 	import ReadingMemoryTracker from '$lib/components/article/ReadingMemoryTracker.svelte';
 	import ReadingRuler from '$lib/components/article/ReadingRuler.svelte';
+	import ReaderMarks from '$lib/components/article/ReaderMarks.svelte';
 	import RunningHead from '$lib/components/ink/RunningHead.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import TocDrawer from '$lib/components/article/TocDrawer.svelte';
@@ -206,7 +207,12 @@
 				<div class="flow-hide"><WeatherStrip weather={meta.weather} /></div>
 			{/if}
 
-			<Content />
+			<!-- Wraps the prose and nothing else: a selection in the apparatus below
+			     — a source's title, a glossary line — is not a passage of the essay,
+			     and a mark drawn there would have nowhere to be redrawn. -->
+			<ReaderMarks slug={meta.slug} draft={meta.draft}>
+				<Content />
+			</ReaderMarks>
 
 			<!-- Finis. The mark a printed essay ends on, before the apparatus. -->
 			<div class="end-mark" aria-hidden="true">■</div>

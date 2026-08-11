@@ -217,7 +217,7 @@
 	}
 	.filters button.active,
 	.filters button.active:hover {
-		background: var(--blue);
+		background: var(--panel-blue);
 		color: var(--on-blue);
 	}
 
@@ -267,8 +267,8 @@
 		cursor: pointer;
 	}
 	.fold.on {
-		background: var(--blue);
-		border-color: var(--blue);
+		background: var(--panel-blue);
+		border-color: var(--panel-blue);
 		color: var(--on-blue);
 	}
 

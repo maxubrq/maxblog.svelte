@@ -455,8 +455,8 @@
 		cursor: pointer;
 	}
 	.legend button.on {
-		background: var(--blue);
-		border-color: var(--blue);
+		background: var(--panel-blue);
+		border-color: var(--panel-blue);
 		color: var(--on-blue);
 	}
 	/* Pushed to the far end: a control among captions has to look like a

@@ -116,6 +116,65 @@ unused — `/about` still prints one.)
 The article ends on 100px of empty page (80 on mobile), set on `article` rather than on the last
 block, so the gap is there whichever block closes the piece.
 
+### The mark
+
+`ReaderMarks` wraps the prose — and only the prose: a selection in the apparatus below it is not a
+passage of the essay, and a mark drawn there would have nowhere to be redrawn.
+
+It is built to `maxubrq/project/pages/InkMarks.jsx`, which **replaces** the reaction bar production
+still ships (`SelectionReact`, ❤ ✦ ?). One primitive instead of four feelings — five gestures that
+each write the same record, so what comes later reads one stream instead of five bespoke ones:
+**keep** (worth carrying out of the essay) · **dissent** (the same gesture, sign reversed) ·
+**snag** (an anchor to come back to, not a place to leave) · **ask** (a question pinned to the
+passage) · **note** (for the author). The glyphs are proofreader's marks drawn as SVG strokes;
+the design is explicit that they are *never emoji*.
+
+**Everything is private first, and that is what makes it cheap.** Only `note` leaves the device, so
+there is no consent step to design — the other four never travel. It also means `/api/react` and
+the shared `reactions` table need **no change at all**: `note` is already a value the endpoint
+accepts, and the four new words are never written to a table production also reads. `dev` and
+`draft` are still refused (both editions write to one Postgres). `doNotTrack` is deliberately *not*
+consulted, which is the opposite of `ArticleTracker`: there the site counts readers who never asked
+to be counted, here the reader is writing a letter they chose to write.
+
+The marks are **drawn, not styled** — rough.js strokes on an SVG layer above the text, seeded from
+the mark's own number so a redraw is the same hand, and animated once with a stroke-dash so the pen
+appears to draw it on. rough.js is `import()`ed with the first mark. Each gesture is a different
+hand: a rule for keep, two rules and a strike for dissent, a wobble for snag, a rule plus an ellipse
+around the numeral for ask, and for note a bracket in the margin — a note is addressed somewhere,
+so the prose should not look edited by it.
+
+**The one thing that actually blocked this**: `Selection.toString()` returns the text as the eye saw
+it, one space between words, while the DOM's `textContent` still holds the newlines the markdown
+source wrapped at (~80 columns). A quote taken from a selection therefore never matches the text
+node it came from, and every mark failed to draw while recording perfectly — a silent, total
+failure. `flatten()` collapses whitespace while keeping a map back to the original offsets, and the
+search runs on that. Anything that matches prose against a selection in this repo needs the same
+treatment.
+
+**The bar is the page's two colours swapped** — an ink field with paper marks — and that has to be
+said in *tokens*, not in white. The design canvas is a light-only mock, so it hardcodes white text
+on a fixed dark bar; mapped straight across, the field follows `--ink` and turns *light* at night
+while the text stays white, and the whole bar becomes unreadable in exactly one theme. `--bar-field`
+/ `--bar-mark` are declared once on `.bar` and everything on it derives from that pair.
+
+The same audit turned up six solid blue fields carrying white text — in the mark bar, the vault's
+filters and fold, and the sky's layer toggle — that used `--blue` where `app.css` requires
+`--panel-blue`. The token exists for this: at night `--blue` is brightened so it can be *text* on
+paper, and white on that brightened blue does not carry, so a solid blue *field* has to drop to
+`--blue-deep`. `FilterBar` had it right and was the model.
+
+The anchor is the shape a W3C TextQuoteSelector uses — quote plus a slice of context each side — so
+a mark survives the author editing the paragraph around it. Production stores the bare quote and
+loses the mark the moment a character changes.
+
+A passage crossing an inline element is recorded but not drawn: the remark passes put `<Term>` and
+`<R>` inside sentences, so a selection over one has no single text node to wrap. Better to leave it
+undrawn than to rebuild the author's markup around it.
+
+Not built yet from that design: `belief` (an article-level gesture), `dwell` (passive, local), and
+the register — the reader's own list of marks in the gutter.
+
 ### The reading instruments
 
 Everything around the prose is one question — *where am I, and what is left?* — answered by one
@@ -932,10 +991,10 @@ pinned to `nodejs22.x` so local builds don't depend on the machine's Node versio
 - The room behind `/series` is still a placeholder page — a door in the nav, and a page that says
   it is not built yet. The design exists in `maxubrq/project/pages/` and in production.
   (`/reading-room` is built — see The reading room.)
-- The reader-facing features behind three of the four tables still have endpoints but no UI —
-  see Database & endpoints. In production these are `SelectionReact` (reactions),
-  `ReflectionPrompt` (polls) and `WitnessInviteCard` / `FairWitnessDrawer` (the public record).
-  `ArticleTracker` is done — see The article page.
+- Two of the four tables still have endpoints but no UI — see Database & endpoints. In production
+  these are `ReflectionPrompt` (polls) and `WitnessInviteCard` / `FairWitnessDrawer` (the public
+  record). `ArticleTracker` is done, and `reactions` is now written by the mark — see The article
+  page.
 - **Series** — `SeriesRibbon`, `SeriesNavDrawer`, `SeriesNext`. Needs a series data layer this
   edition does not have yet; the frontmatter already carries `series` and `chapter`.
 - **`Dialogue`** — the `format: conversation` posts, where the topic/date row becomes a cast list.
