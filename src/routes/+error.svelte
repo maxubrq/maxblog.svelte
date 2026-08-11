@@ -13,13 +13,27 @@
 			: site.defaultLang
 	);
 	const t = $derived(messages[lang]);
+
+	// The cat is for 404 only. A 500 is the site's fault, not a wrong turn, and
+	// a cartoon apologising for it would be the wrong register.
+	const lost = $derived(page.status === 404);
 </script>
 
-<section>
-	<Tag on>Error {page.status}</Tag>
-	<Headline text={t.error.title} accent={t.error.titleAccent} size={52} />
-	<p>{page.error?.message ?? ''}</p>
-	<a href={href(lang, '/writing')}>{t.error.back}</a>
+<section class:with-plate={lost}>
+	<div class="said">
+		<Tag on>Error {page.status}</Tag>
+		<Headline text={t.error.title} accent={t.error.titleAccent} size={52} />
+		{#if page.error?.message}
+			<p>{page.error.message}</p>
+		{/if}
+		<a href={href(lang, '/writing')}>{t.error.back}</a>
+	</div>
+
+	{#if lost}
+		<!-- Decorative: the headline beside it already says this, in the reader's
+		     own language, and the sign in the picture only says it in English. -->
+		<img src="/media/404-cat.webp" alt="" width="1024" height="1024" />
+	{/if}
 </section>
 
 <style>
@@ -27,7 +41,16 @@
 		padding: 60px var(--pad-chrome) 80px;
 		max-width: 780px;
 	}
-	section :global(h1) {
+	/* Two columns once there is a picture to place, and only then. */
+	.with-plate {
+		max-width: var(--index-max);
+		display: grid;
+		grid-template-columns: 1fr 340px;
+		gap: 48px;
+		align-items: center;
+	}
+
+	.said :global(h1) {
 		margin-top: 14px;
 	}
 	p {
@@ -41,5 +64,28 @@
 		font-size: 11.5px;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
+	}
+
+	/* The one full-colour image on the site, and it is allowed because it is a
+	   drawing rather than a photograph — §6 is about photography, which has to
+	   become a cyanotype plate to belong here. It still gets the hard border
+	   every plate gets, so it reads as something pasted onto the page. */
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: 1.5px solid var(--rule-hard);
+	}
+
+	@media (max-width: 860px) {
+		.with-plate {
+			grid-template-columns: 1fr;
+			gap: 32px;
+			max-width: 520px;
+		}
+		/* Below the words: the sentence is the answer, the cat is the consolation. */
+		img {
+			order: 2;
+		}
 	}
 </style>

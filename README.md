@@ -287,6 +287,13 @@ Four things are easy to get wrong here, and all four were:
 No full-colour photography anywhere (§6): an image is a **cyanotype plate** — greyscale under a
 blue multiply, done in CSS by `DuoPhoto` / `.ink-duo`, so almost any photo reads as deliberate.
 
+The one exception is the cat on the 404 page (`static/media/404-cat.webp`), and it is an exception
+because §6 is about *photography*: a drawing is already a deliberate object and has nothing to be
+rescued from. It keeps the hard border every plate gets, its `alt` is empty because the headline
+beside it says the same thing in the reader's own language (the sign in the picture only says it in
+English), and it is shown for **404 only** — a 500 is the site's fault, not a wrong turn, and a
+cartoon apologising for it would be the wrong register.
+
 Images are **served from Cloudinary**, the same account and the same contract as the production
 blog. A post names its cover in frontmatter as a plain delivery URL — no transformations in the
 URL an author writes:
@@ -452,7 +459,7 @@ matches nearly everything).
 
 ```
 content/posts/            the posts (.mdx)
-static/media/             committed 1-bit halftone plates (everything else is on Cloudinary)
+static/media/             committed plates — the halftones, and the 404 cat
 scripts/halftone.mjs      offline halftone screener; run by hand, never at build
 scripts/check-anchors.mjs every TOC anchor must exist in the rendered page; run after a build
 src/app.css               the tokens — palette, type, layout constants, dark mirror
