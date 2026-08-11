@@ -140,7 +140,7 @@ function InkChrome({ current, children, foot = 'maxubrq.space' }) {
       </header>
       <div className="ink-scroll" style={{ height: 'calc(100% - 61px)', overflowY: 'auto', position: 'relative' }}>
         {children}
-        <footer style={{ borderTop: `1.5px solid ${INK.ruleHard}`, margin: '0 0', padding: '16px 0 22px',
+        <footer style={{ borderTop: `1.5px solid ${INK.ruleHard}`, margin: '0 30px', padding: '16px 0 22px',
           display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
           <Tag>{foot}</Tag>
           <Tag>A notebook, kept in public · est. 2024</Tag>

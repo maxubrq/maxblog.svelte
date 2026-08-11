@@ -38,6 +38,7 @@
 <script type="text/babel" src="pages/InkSettings.jsx"></script>
 <script type="text/babel" src="pages/InkReadingCursor.jsx"></script>
 <script type="text/babel" src="pages/InkVault.jsx"></script>
+<script type="text/babel" src="pages/Ink404.jsx"></script>
 <script type="text/babel" src="pages/InkFeatures.jsx"></script>
 <script type="text/babel" src="pages/InkFeatures2.jsx"></script>
 <script type="text/babel" src="pages/InkFeatures3.jsx"></script>
@@ -98,6 +99,9 @@ function App() {
         </DCArtboard>
         <DCArtboard id="ink-reading-cursor" label="Lab — con trỏ đọc / reading ruler (T2), 3 variants live" width={1080} height={1080}>
           <InkReadingCursor />
+        </DCArtboard>
+        <DCArtboard id="ink-404" label="404 — trang không tồn tại (plate + ba cửa còn mở)" width={1080} height={900}>
+          <Ink404 />
         </DCArtboard>
         <DCArtboard id="ink-vault" label="The Vault — author's collection (reached from About)" width={1080} height={1180}>
           <InkVault />
