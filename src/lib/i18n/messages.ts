@@ -406,6 +406,126 @@ const en = {
 		total: 'Total',
 		min: 'min'
 	},
+	/** The letter box the apparatus ends on — see `ReflectionPrompt`. */
+	reflection: {
+		label: 'a quiet word to the author',
+		/** One per essay, picked by its slug — production's three questions. */
+		prompts: [
+			'What did you take away from this?',
+			'Did anything here change how you think about the problem?',
+			'What question does this leave you with?'
+		],
+		placeholder: 'Your thoughts, private, and only for the author.',
+		privacy: 'not published · never shown to other readers',
+		send: 'Send',
+		sending: 'Sending…',
+		sent: 'Received. Only the author will read this. — Thank you.',
+		failed: 'It did not get through — try again in a moment.'
+	},
+	/**
+	 * The three live figures of the float essay. Lifted verbatim from the
+	 * production catalog (`floatBuilder`, `floatExplorer`), so both editions
+	 * explain float32 in the same words; `floatVsFixed` is new here, because
+	 * production wrote that figure's Vietnamese into the component itself and
+	 * this edition has to say it in English too. The `<m> <ms> <me> <mm> <b> <i>
+	 * <sup>` tags are the rich-message markup — see `interactive/rich.ts`.
+	 */
+	floatBuilder: {
+		label: 'By hand · float32',
+		zeroTitle: 'Special value: zero',
+		zeroBody:
+			'0 has no normalised form — there is no leading 1 bit. The standard reserves <m>exponent = 0</m> and <m>mantissa = 0</m> for it. The sign bit is still there, so both <m>+0</m> and <m>-0</m> exist.',
+		infTitle: 'Special value: infinity',
+		infBody:
+			'Infinity uses an all-ones exponent (<m>255</m>) with a mantissa of <m>0</m>. The sign says whether it is <m>+∞</m> or <m>−∞</m>. There are no significant digits to store.',
+		nanTitle: 'Special value: NaN',
+		nanBody:
+			'NaN (Not a Number) also uses an all-ones exponent (<m>255</m>), but with a <b>non-zero</b> mantissa. Those mantissa bits are the payload — unconstrained, so millions of different bit patterns are all NaN.',
+		step1Title: 'Split off the sign',
+		step1Body:
+			'{signWord} → sign bit = <ms>{signBit}</ms>. From here on we work with <m>|{num}| = {abs}</m>.',
+		signNegative: 'A negative number',
+		signPositive: 'A positive number',
+		step2Title: 'Convert to binary',
+		step2Body:
+			'Integer part: <m>{int} = {intBits}₂</m>. Fractional part: double it repeatedly → <m>0.{frac}{ell}</m>. Put back together: <m>{intBits}.{frac}{ell}₂</m>{note}.',
+		step2Truncated: ' (the sequence never terminates — this is the seed of the error)',
+		step3Title: 'Normalise to 1.f × 2ᵉ',
+		step3Body:
+			'Shift the point until exactly one <m>1</m> stands to its left: <m>1.{sig}{ell} × 2<sup>{e}</sup></m>. The true exponent is <me>e = {e}</me>. That leading <m>1</m> is the <i>hidden bit</i> — it is always there, so it is never stored.',
+		step4Title: 'Add the exponent bias',
+		step4Body:
+			'To store a signed exponent without a sign bit of its own, add the bias <m>127</m>. <me>E = {e} + 127 = {expBits} = {expBin}₂</me>.',
+		step5Title: 'Truncate and round to 23 mantissa bits',
+		step5Body:
+			'Take the first 23 bits after the point of the significand, rounding the last one: <mm>{mantBin}</mm>',
+		step6Title: 'Assemble the 32 bits',
+		storedLabel: 'What is actually stored',
+		errorLine: 'You asked for <b>{asked}</b>, the machine stored <b>{stored}</b>. Error {err}.',
+		exactLine: 'Exact — this value is representable with nothing left over.',
+		keySign: 'sign',
+		keyExp: 'exponent',
+		keyMant: 'mantissa'
+	},
+	floatExplorer: {
+		fieldSign: 'sign',
+		fieldExp: 'exponent  (8 bits)',
+		fieldMant: 'mantissa  (23 bits)',
+		panelSign: 'Sign',
+		panelExp: 'Exponent',
+		panelMant: 'Mantissa',
+		bitN: 'bit {n}',
+		bitIsSign: 'sign',
+		bitIsExp: 'exponent bit {n}',
+		bitIsMant: 'mantissa bit {n}',
+		tabAnatomy: 'field anatomy',
+		tabFraction: 'binary fraction',
+		signPositive: '0  →  positive  (+1)',
+		signNegative: '1  →  negative  (−1)',
+		specialZero: '{bits}  (special: represents ±0)',
+		specialSubnormal: '{bits}  (special: exponent treated as −126)',
+		specialInfNan: '{bits}  (special: signals ∞ or NaN)',
+		nanPayload: 'NaN payload ({n})',
+		noSignificantBits: '0  (no significant bits)',
+		reconstructedAs: 'Reconstructed as',
+		representationError: 'Representation error',
+		noErrorSpecial: 'No error — special value.',
+		exactValue: 'Exact — this value is representable.',
+		asked: 'asked',
+		got: 'got',
+		gapUnavoidable: 'The gap is unavoidable.',
+		fractionSpecial: 'This is a special value — no fractional part to convert.',
+		fractionInteger:
+			'{n} has no fractional part, so its binary representation is finite and exact (for this integer range).',
+		algorithm:
+			'Algorithm: multiply the fraction by 2. Take the integer part as the next binary digit. Repeat with the remainder.',
+		algorithmRepeat:
+			' When a value recurs, the sequence repeats forever — the number cannot be stored exactly.',
+		colStep: 'Step',
+		colValue: 'Value',
+		colBit: 'Bit',
+		cycleStarts: '⟲ cycle starts — repeats forever',
+		cutoff: '← 23-bit mantissa cutoff here',
+		repeatNote:
+			'The fractional part of {n} repeats in binary, just as 1/3 repeats in decimal. The mantissa stores only 23 bits of an infinite sequence — then rounds. That rounding is the error.',
+		spec: 'IEEE 754-2008 single precision'
+	},
+	floatVsFixed: {
+		label: 'Spacing (ULP): fixed-point Q16.16 and float32',
+		around: 'Values around',
+		axis: 'representable value (log scale)',
+		tie: 'even at 128',
+		legendFixed: 'fixed-point Q16.16 — flat',
+		legendFloat: 'float32 — a staircase',
+		readAround: 'Around',
+		readFloat: 'float32 is spaced',
+		readFixed: 'and fixed-point',
+		finer: 'finer',
+		coarser: 'coarser',
+		readRatio: 'float32 is about {ratio} {word}.',
+		outOfRange:
+			'out of range. Q16.16 stops at 65,536, so at this magnitude it has nothing to compare with.'
+	},
 	weather: {
 		readTime: '◔ read time',
 		oneSitting: 'one sitting',
@@ -515,10 +635,31 @@ const en = {
 		colophon:
 			'Kept privately, shared quietly. No ratings, no affiliate links, no “buy” button. Dated by when it reached me, not when it was made. Older years fold away — click to open. — Còn giữ, tức là còn quan trọng.'
 	},
+	/**
+	 * ink — a 404 is an editorial event, not an error screen: say plainly what
+	 * happened, then hand the reader real doorways. The `lost` block is the 404
+	 * only; the three keys above it serve any status.
+	 */
 	error: {
 		title: 'this page is not in the index.',
 		titleAccent: 'not', // ink
-		back: '← back to the archive'
+		back: '← back to the archive',
+		status: 'HTTP {status}',
+		lost: {
+			title: 'this page is not here any more',
+			titleAccent: 'here',
+			lede: 'The link you opened does not point at an essay. It may have been renamed, folded into a series, or never existed outside a mistyped URL.',
+			doors: 'somewhere you might have meant',
+			doorWriting: 'Everything, newest first',
+			doorWritingMeta: 'the index',
+			doorSeries: 'Essays that belong together',
+			doorSeriesMeta: 'in order',
+			doorRoom: 'Marks and the sentences you kept',
+			doorRoomMeta: 'private',
+			home: '← back to the front page',
+			hint: 'or ⌘K on any page to search the whole index',
+			alt: 'a black cat holding a hand-lettered sign reading PAGE NOT FOUND'
+		}
 	}
 };
 
@@ -893,6 +1034,115 @@ const vi: typeof en = {
 		total: 'Tổng',
 		min: 'phút'
 	},
+	reflection: {
+		label: 'một lời riêng cho tác giả',
+		prompts: [
+			'Bạn mang được gì ra khỏi bài này?',
+			'Có gì ở đây làm bạn nghĩ khác đi về vấn đề không?',
+			'Bài này để lại cho bạn câu hỏi nào?'
+		],
+		placeholder: 'Điều bạn nghĩ, chỉ có tác giả đọc được.',
+		privacy: 'không đăng · không hiện cho người đọc khác',
+		send: 'Gửi',
+		sending: 'Đang gửi…',
+		sent: 'Đã nhận. Chỉ tác giả đọc điều này. — Cảm ơn bạn.',
+		failed: 'Chưa gửi được — thử lại sau một lát nhé.'
+	},
+	floatBuilder: {
+		label: 'Tính tay · float32',
+		zeroTitle: 'Giá trị đặc biệt: số không',
+		zeroBody:
+			'0 không có dạng chuẩn hóa — không có bit dẫn đầu là 1. Tiêu chuẩn dành riêng cho nó <m>exponent = 0</m> và <m>mantissa = 0</m>. Bit dấu vẫn còn, nên tồn tại cả <m>+0</m> và <m>-0</m>.',
+		infTitle: 'Giá trị đặc biệt: vô cực',
+		infBody:
+			'Vô cực dùng exponent toàn 1 (<m>255</m>) và mantissa <m>0</m>. Dấu cho biết đó là <m>+∞</m> hay <m>−∞</m>. Không có chữ số có nghĩa nào để lưu.',
+		nanTitle: 'Giá trị đặc biệt: NaN',
+		nanBody:
+			'NaN (Not a Number) cũng dùng exponent toàn 1 (<m>255</m>) nhưng mantissa <b>khác 0</b>. Phần mantissa đó là payload — tự do, nên có hàng triệu mẫu bit khác nhau đều là NaN.',
+		step1Title: 'Tách dấu',
+		step1Body:
+			'{signWord} → bit dấu = <ms>{signBit}</ms>. Từ giờ làm việc với <m>|{num}| = {abs}</m>.',
+		signNegative: 'Số âm',
+		signPositive: 'Số dương',
+		step2Title: 'Đổi sang nhị phân',
+		step2Body:
+			'Phần nguyên: <m>{int} = {intBits}₂</m>. Phần thập phân: nhân đôi liên tục → <m>0.{frac}{ell}</m>. Ghép lại: <m>{intBits}.{frac}{ell}₂</m>{note}.',
+		step2Truncated: ' (chuỗi không bao giờ kết thúc — đây là mầm của sai số)',
+		step3Title: 'Chuẩn hóa về 1.f × 2ᵉ',
+		step3Body:
+			'Dời dấu phẩy tới khi bên trái chỉ còn đúng một chữ số <m>1</m>: <m>1.{sig}{ell} × 2<sup>{e}</sup></m>. Số mũ thật là <me>e = {e}</me>. Bit <m>1</m> dẫn đầu đó là <i>bit ẩn</i> — luôn có nên không bao giờ phải lưu.',
+		step4Title: 'Cộng bias cho số mũ',
+		step4Body:
+			'Để lưu số mũ có dấu mà không cần một bit dấu riêng, ta cộng bias <m>127</m>. <me>E = {e} + 127 = {expBits} = {expBin}₂</me>.',
+		step5Title: 'Cắt và làm tròn về 23 bit mantissa',
+		step5Body:
+			'Lấy 23 bit đầu sau dấu phẩy của phần định trị, làm tròn bit cuối: <mm>{mantBin}</mm>',
+		step6Title: 'Ráp 32 bit',
+		storedLabel: 'Giá trị thực sự được lưu',
+		errorLine: 'Bạn hỏi <b>{asked}</b>, máy lưu <b>{stored}</b>. Sai số {err}.',
+		exactLine: 'Chính xác — giá trị này biểu diễn được tròn trịa.',
+		keySign: 'dấu',
+		keyExp: 'số mũ',
+		keyMant: 'phần định trị'
+	},
+	floatExplorer: {
+		fieldSign: 'dấu',
+		fieldExp: 'số mũ  (8 bit)',
+		fieldMant: 'phần định trị  (23 bit)',
+		panelSign: 'Dấu',
+		panelExp: 'Số mũ',
+		panelMant: 'Phần định trị',
+		bitN: 'bit {n}',
+		bitIsSign: 'dấu',
+		bitIsExp: 'bit số mũ {n}',
+		bitIsMant: 'bit định trị {n}',
+		tabAnatomy: 'giải phẫu các trường',
+		tabFraction: 'phân số nhị phân',
+		signPositive: '0  →  dương  (+1)',
+		signNegative: '1  →  âm  (−1)',
+		specialZero: '{bits}  (đặc biệt: biểu diễn ±0)',
+		specialSubnormal: '{bits}  (đặc biệt: số mũ được coi là −126)',
+		specialInfNan: '{bits}  (đặc biệt: báo hiệu ∞ hoặc NaN)',
+		nanPayload: 'Tải trọng NaN ({n})',
+		noSignificantBits: '0  (không có bit có nghĩa)',
+		reconstructedAs: 'Dựng lại thành',
+		representationError: 'Sai số biểu diễn',
+		noErrorSpecial: 'Không có sai số — đây là giá trị đặc biệt.',
+		exactValue: 'Chính xác — giá trị này biểu diễn được.',
+		asked: 'bạn gõ',
+		got: 'máy lưu',
+		gapUnavoidable: 'Khoảng cách này không tránh được.',
+		fractionSpecial: 'Đây là giá trị đặc biệt — không có phần thập phân để chuyển đổi.',
+		fractionInteger:
+			'{n} không có phần thập phân, nên biểu diễn nhị phân của nó hữu hạn và chính xác (trong khoảng số nguyên này).',
+		algorithm:
+			'Thuật toán: nhân phần thập phân với 2. Lấy phần nguyên làm chữ số nhị phân tiếp theo. Lặp lại với phần dư.',
+		algorithmRepeat:
+			' Khi một giá trị lặp lại, dãy số sẽ lặp mãi mãi — con số không thể lưu chính xác được.',
+		colStep: 'Bước',
+		colValue: 'Giá trị',
+		colBit: 'Bit',
+		cycleStarts: '⟲ chu kỳ bắt đầu — lặp mãi mãi',
+		cutoff: '← cắt ở 23 bit định trị',
+		repeatNote:
+			'Phần thập phân của {n} lặp vô hạn trong hệ nhị phân, y như 1/3 lặp trong hệ thập phân. Phần định trị chỉ lưu 23 bit của một dãy vô hạn — rồi làm tròn. Chính chỗ làm tròn đó là sai số.',
+		spec: 'IEEE 754-2008 độ chính xác đơn'
+	},
+	floatVsFixed: {
+		label: 'Khoảng cách (ULP): fixed-point Q16.16 và float32',
+		around: 'Giá trị quanh',
+		axis: 'giá trị được biểu diễn (trục log)',
+		tie: 'hòa tại 128',
+		legendFixed: 'fixed-point Q16.16 — phẳng',
+		legendFloat: 'float32 — bậc thang',
+		readAround: 'Ở quanh',
+		readFloat: 'khoảng cách của float32 là',
+		readFixed: 'còn của fixed-point là',
+		finer: 'mịn hơn',
+		coarser: 'thô hơn',
+		readRatio: 'float32 {word} khoảng {ratio}.',
+		outOfRange: 'ngoài dải. Q16.16 dừng ở 65.536, nên ở độ lớn này nó không có gì để so.'
+	},
 	weather: {
 		readTime: '◔ thời gian đọc',
 		oneSitting: 'một lượt',
@@ -986,7 +1236,23 @@ const vi: typeof en = {
 	error: {
 		title: 'trang này không có trong mục lục.',
 		titleAccent: 'không',
-		back: '← về lưu trữ'
+		back: '← về lưu trữ',
+		status: 'HTTP {status}',
+		lost: {
+			title: 'trang này không còn ở đây',
+			titleAccent: 'ở đây',
+			lede: 'Đường dẫn bạn vừa mở không trỏ tới bài nào cả. Có thể bài đã được đổi tên, gộp vào một tuyển tập, hoặc chưa từng tồn tại ngoài một cái link gõ sai.',
+			doors: 'những nơi có thể bạn quan tâm',
+			doorWriting: 'Toàn bộ, mới nhất trước',
+			doorWritingMeta: 'mục lục',
+			doorSeries: 'Những bài thuộc về nhau',
+			doorSeriesMeta: 'theo thứ tự',
+			doorRoom: 'Marks và những câu bạn đã giữ',
+			doorRoomMeta: 'riêng tư',
+			home: '← về trang chủ',
+			hint: 'hoặc ⌘K ở bất kỳ trang nào để tìm trong toàn bộ mục lục',
+			alt: 'một con mèo đen cầm tấm biển viết tay PAGE NOT FOUND'
+		}
 	}
 };
 

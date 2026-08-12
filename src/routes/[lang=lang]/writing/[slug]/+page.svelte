@@ -13,6 +13,7 @@
 	import ReadingMemoryTracker from '$lib/components/article/ReadingMemoryTracker.svelte';
 	import ReadingRuler from '$lib/components/article/ReadingRuler.svelte';
 	import ReaderMarks from '$lib/components/article/ReaderMarks.svelte';
+	import ReflectionPrompt from '$lib/components/article/ReflectionPrompt.svelte';
 	import SeriesRibbon from '$lib/components/article/SeriesRibbon.svelte';
 	import RunningHead from '$lib/components/ink/RunningHead.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
@@ -239,6 +240,12 @@
 			<!-- The sources this essay cites. Built from `appearsIn`, so it needs
 			     no marks in the prose — see $lib/resources. -->
 			<Bibliography slug={meta.slug} citations={meta.citations} />
+
+			<!-- The reader's turn. Last of the apparatus and before the
+			     neighbourhood, the way production orders it: the essay has
+			     finished saying what it had to say, and nothing else is asked of
+			     the reader after this. -->
+			<ReflectionPrompt slug={meta.slug} draft={meta.draft} />
 
 			{#if meta.neighborhood?.length}
 				<section class="hood">

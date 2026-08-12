@@ -995,7 +995,7 @@ runs, so it cannot see marks that do not exist yet. It asks the two passes in ad
 Every *page* is prerendered, but that is a per-route default, not a property of the build: the
 adapter is `adapter-vercel`, and a route that sets `export const prerender = false` becomes a real
 serverless function while the rest of the site stays static HTML. The six endpoints below are the
-only ones that do.
+only ones that do — plus one page, `/signals`, the author's dashboard.
 
 Same Postgres, same schema, same driver as the production blog — `src/lib/server/db/schema.ts` is
 a copy of `~/MyApps/maxblog/src/db/schema.ts`, so both editions read and write the same four
@@ -1055,18 +1055,19 @@ Its honest limit is in the code: the check is on the literal hostname, so a *nam
 a private address still passes, as does rebinding between the check and the fetch. Closing those
 needs DNS resolution plus a pinned-IP connection, which the platform's `fetch` does not expose.
 
-### /api/signals is private
+### /signals and /api/signals are private
 
-It returns every letter a reader has written, with session ids. Auth lives in
-`src/hooks.server.ts`, guarding the whole `/api/signals` prefix: no credentials → `401`, wrong
-credentials → `404` (a wrong password should not confirm the route exists), and **no
-`SIGNAL_PASSWORD` configured → `404`**, so a deploy that forgets the variable stays shut rather
-than falling open.
+Between them they return every letter a reader has written, with session ids. Auth lives in
+`src/hooks.server.ts`, guarding both prefixes — the dashboard page and the feed it reads: no
+credentials → `401`, wrong credentials → `404` (a wrong password should not confirm the route
+exists), and **no `SIGNAL_PASSWORD` configured → `404`**, so a deploy that forgets the variable
+stays shut rather than falling open. Page and feed share one realm, so the browser asks once and
+then sends the same credentials with the dashboard's own `fetch`.
 
 > Worth knowing when comparing the two editions: production guards the *page* `/[locale]/signals`
 > in `middleware.ts`, but that middleware's matcher excludes `api`, so `/api/signals` there is
-> reachable without credentials — GET returns all letters, PATCH mutates. Guarding the prefix in
-> hooks, as here, is what closes that gap.
+> reachable without credentials — GET returns all letters, PATCH mutates. Guarding both prefixes
+> in hooks, as here, is what closes that gap.
 
 ### A note on the migration history
 

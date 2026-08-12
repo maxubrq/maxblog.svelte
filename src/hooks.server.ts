@@ -4,12 +4,16 @@ import type { Handle } from '@sveltejs/kit';
 
 /**
  * Everything under here is the reader's own data: the letters they wrote and
- * the sessions they read in. It is guarded here, in one place, rather than on
- * the route — the production blog guards the *page* in middleware whose matcher
- * excludes `/api`, which leaves the API itself open. One rule, applied to the
- * prefix, cannot develop that gap.
+ * the sessions they read in. Both doors to it are guarded here, in one place,
+ * rather than on the route — the page `/signals` and the feed it reads,
+ * `/api/signals`. The production blog guards the page in middleware whose
+ * matcher excludes `/api`, which leaves the API itself open; one rule, applied
+ * to both prefixes, cannot develop that gap.
+ *
+ * The page and the feed share the realm on purpose: the browser is asked once,
+ * and then sends the same credentials with the dashboard's own fetch.
  */
-const PROTECTED = /^\/api\/signals(\/|$)/;
+const PROTECTED = /^\/(api\/)?signals(\/|$)/;
 const USER = 'maxubrq';
 
 /** Constant-time compare, so a wrong password cannot be found one byte at a time. */

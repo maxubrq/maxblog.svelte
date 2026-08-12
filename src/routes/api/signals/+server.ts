@@ -9,7 +9,7 @@
  */
 import { badRequest, ok, readJson, requireDatabase, serverError } from '$lib/server/api';
 import { db, schema } from '$lib/server/db';
-import { countDistinct, desc, eq, inArray, ne, sql } from 'drizzle-orm';
+import { countDistinct, desc, eq, inArray, notInArray, sql } from 'drizzle-orm';
 import type { RequestHandler } from './$types';
 
 export const prerender = false;
@@ -76,7 +76,11 @@ export const GET: RequestHandler = async () => {
 						total: sql<number>`COUNT(*)::int`
 					})
 					.from(reactions)
-					.where(ne(reactions.reaction, 'note'))
+					// Prose the reader wrote is not a passage they kept: a note's
+					// `passage` is the sentence it was pinned to, and a letter's is the
+					// question it answered. Production excludes `note` only, so the
+					// reflection prompts show up there among the most-kept sentences.
+					.where(notInArray(reactions.reaction, LETTER_KINDS))
 					.groupBy(reactions.passage, reactions.postSlug)
 					.orderBy(desc(sql`COUNT(*)`))
 					.limit(20),
@@ -118,6 +122,16 @@ export const GET: RequestHandler = async () => {
 				reach: Math.round((Number(row.sessions) / total) * 100)
 			});
 		}
+
+		/**
+		 * `GROUP BY` returns the sections in whatever order Postgres liked, and a
+		 * retention ribbon drawn in that order is a zig-zag that means nothing.
+		 * The table stores no document order — only which section a session
+		 * reached — so the order is recovered from the counts: a reader who got to
+		 * §5 passed §1–4, which makes reach monotone along the essay. Sorting by
+		 * it puts the sections back in reading order and draws the funnel.
+		 */
+		for (const list of Object.values(sectionsByPost)) list.sort((a, b) => b.reach - a.reach);
 
 		const byReaders = Object.fromEntries(readersByPost.map((r) => [r.postSlug, r]));
 		const byReactions = Object.fromEntries(reactionsByPost.map((r) => [r.postSlug, r]));
