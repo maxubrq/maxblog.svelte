@@ -328,7 +328,7 @@ const en = {
 	},
 	home: {
 		tagline: 'A notebook · est. 2024',
-		mastheadIndex: 'Nº 001 / index',
+		mastheadIndex: '',
 		headline: 'writing, mostly about things that take a while.',
 		headlineAccent: 'while.', // ink
 		description:
@@ -839,9 +839,9 @@ const vi: typeof en = {
 		description:
 			'Những bài chỉ trọn vẹn khi đọc đúng thứ tự. Đọc rời hay đọc liền đều được; trang này như sợi chỉ nối giữa chúng.',
 		count: '{n} trên kệ',
-		emptyTitle: 'chưa vòng cung nào hoàn thiện.',
+		emptyTitle: 'chưa có tuyển tập nào cả',
 		emptyBody:
-			'Một tuyển tập được mô tả ở đây trước khi được viết, để hứa được trọn hình dáng của nó. Chưa cái nào đủ xa để hứa, nên kệ để trống thay vì dựng dở.',
+			'Một tuyển tập được mô tả ở đây trước khi được viết, thường sẽ như là một lời hứa với bản thân mình. Chưa cái nào đủ xa để hứa.',
 		stateInProgress: 'đang viết',
 		stateComplete: 'đã trọn',
 		writtenOf: 'đã viết {n} trên {total}',
@@ -959,12 +959,12 @@ const vi: typeof en = {
 		back: '← về lưu trữ'
 	},
 	home: {
-		tagline: 'Một cuốn sổ tay · est. 2024',
-		mastheadIndex: 'Nº 001 / index',
+		tagline: 'est. 2026',
+		mastheadIndex: '',
 		headline: 'viết về những điều bản thân mình cảm thấy thú vị.',
 		headlineAccent: 'thú vị.',
 		description:
-			'Các bài viết về khoa học, công nghệ, triết học và nghệ thuật, thường kèm theo thứ gì đó có thể tương tác.',
+			'Các bài viết về khoa học, công nghệ, triết học và nghệ thuật, có thể kèm theo thứ gì đó có thể tương tác.',
 		latestLabel: 'Mới nhất',
 		interactive: 'Tương tác',
 		readEssay: 'đọc bài viết',
@@ -1162,7 +1162,7 @@ const vi: typeof en = {
 		metaCadenceVal: '~hàng tháng',
 		metaType: 'Chữ',
 		metaTypeVal: 'Space Grotesk / Plex',
-		bio1: 'Mình là <strong>maxubrq</strong>. Mình viết ở đây về những điều cảm thấy thú vị đó có thể là một bài toán vật lý, một đoạn code, một bức tranh hoặc là một câu văn.',
+		bio1: 'Hi! Mình là <strong>maxubrq</strong>. Mình viết ở đây về những điều cảm thấy thú vị đó có thể là một bài toán vật lý, một đoạn code, một bức tranh hoặc là một câu văn.',
 		bio2: 'Một số bài viết sẽ có đính kèm ví dụ tương tác.',
 		topicsHeading: 'mình viết về gì',
 		elsewhereHeading: 'ở nơi khác',
@@ -1171,7 +1171,7 @@ const vi: typeof en = {
 		vaultTagRight: 'chỉ vào được từ đây',
 		vaultTitle: 'căn hầm →',
 		vaultBlurb:
-			'Một tủ đồ riêng — những cuốn sách, đĩa nhạc, bài báo, bộ phim và vài món đồ thuộc về mình, mỗi thứ kèm một dòng lý do. Một căn phòng yên hơn, ngay cạnh trang này.'
+			'Một tủ đồ riêng, là những cuốn sách, đĩa nhạc, bài báo, bộ phim và vài món đồ thuộc về mình, mỗi thứ kèm một dòng lý do.'
 	},
 	readingRoom: {
 		privateTag: 'riêng tư · chỉ nằm trên máy này',
@@ -1213,7 +1213,7 @@ const vi: typeof en = {
 		titleLead: 'căn',
 		titleAccent: 'hầm',
 		description:
-			'Một tủ đồ của riêng mình — sách, đĩa nhạc, bài báo, phim, khóa học, vài nơi chốn — xếp theo thứ tự chúng bước vào đời mình, không xếp theo loại. Mỗi thứ được giữ lại vì nó đã đổi cách mình nghĩ. Một dòng lý do, bằng lời của mình.',
+			'Một tủ đồ của riêng mình: sách, đĩa nhạc, bài báo, phim, khóa học, vài nơi chốn. Sắp xếp theo thứ tự chúng bước vào đời mình. Mỗi thứ được giữ lại vì nó đã đổi cách mình nghĩ một chút hoặc nhiều chút. Một dòng lý do ngắn bằng lời của mình.',
 		filterAll: 'Tất cả',
 		media: {
 			Books: 'Sách',
