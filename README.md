@@ -230,6 +230,17 @@ Three things switch it off entirely, before a session id is so much as created:
 - **`navigator.doNotTrack`.** This edition's addition, not production's: the site counts in order
   to know whether an essay was finished, and that is a question a reader is allowed to decline.
 
+#### Vercel Web Analytics · Speed Insights
+
+The site's only third-party measurement, both injected in the root `+layout.svelte` so they also
+see `/`, the 404 and `/signals`. Both are cookieless and keep no cross-site identity. What
+Analytics adds over `/api/track` is traffic the essays cannot see — which routes are visited at
+all, and where from; Speed Insights reports Web Vitals from real visits rather than a lab run.
+
+They follow the same `doNotTrack` rule, and earlier: the check runs before either `inject…` call,
+so a reader who has declined fetches neither script. In `pnpm dev` Analytics runs in `development`
+mode (logs to the console, sends nothing) and Speed Insights in `debug`.
+
 `$lib/session.ts` holds the id — a uuid in localStorage under production's `mx_sid`, so a reader
 with both editions open is one reader. It is not an account and not a fingerprint; clearing site
 data ends it.
