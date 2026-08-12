@@ -17,24 +17,21 @@ rememberAttribution: 'Số dấu chấm động'
 ---
 
 Trong Chiến Tranh Vùng Vịnh, ngày 25 tháng 2 năm 1991, một khẩu đội tên lửa 
-Patriot ở Dhahran, Ả Rập Xê Út, đã không đánh chặn được một tên lửa Scud của
-Iraq,
-kết quả là quả Scud rơi xuống một doanh trại hai mươi tám binh sĩ Mỹ thiệt mạng
-và gần
-một trăm người bị thương.
+Patriot ở Dhahran, Ả Rập Xê Út của Mỹ, đã không đánh chặn được một tên lửa Scud của
+Iraq, kết quả là quả Scud rơi xuống một doanh trại làm cho hai mươi tám binh sĩ thiệt mạng
+và gần một trăm người bị thương.
 
 Hạ Viện Mỹ đã yêu cầu GAO (General Accounting Office) điều tra về sự cố này, kết
 quả cho thấy không có lỗi vận hạnh hay lỗi phần cứng nào. Nguyên nhân là một sai
-số tích lũy dấu chấm động. Đồng hồ nội bộ của Patriot với của hệ thống đếm thời 
+số tích lũy của dấu chấm động. Đồng hồ nội bộ của Patriot với của hệ thống đếm thời 
 gian theo đơn vị một phần mười giây. Con số $0.1$, như chúng ta sắp thấy, không 
 thể được lưu trữ chính xác trong máy tính. Mỗi tick đồng hồ mang theo một sai số
 cực nhỏ. Sau khoảng 100 giờ hoạt động liên tục, những sai số tí hon ấy cộng dồn 
 lại thành $0.34$ giây.
 
-Một phần ba giây, nghe không là gì, nhưng một quả Scud bay với vận tốc cỡ
-1,676 mét mỗi giây, nên trong $0.34$ giây đó nó đi được hơn nửa cây số, đủ để
-trượt khỏi cửa sổ mà radar của Patriot dự đoán. Hệ thống đánh chặn bỏ qua nó và
-kết quả là hai
+Một phần ba giây, nghe qua thì không là gì, nhưng một quả Scud bay với vận tốc cỡ
+1,676 mét mỗi giây, nên $0.34$ giây đó nó đi được hơn nửa cây số, đủ để trượt khỏi 
+cửa sổ mà radar của Patriot dự đoán. Hệ thống đánh chặn bỏ qua nó và kết quả là hai
 mươi tám người đã tử nạn.
 
 <Sidenote>
@@ -49,32 +46,28 @@ mươi tám người đã tử nạn.
 
 Cũng cùng một loại lỗi với dấu chấm động đó đã khiến sàn chứng khoán Vancouver 
 mất dần giá trị chỉ số suốt 22 tháng vì mỗi lần làm tròn lại cắt đi một mẩu, nó
-cũng khiến hệ thống y tế phát nhầm liều, và khiến game engine vật lý bắn nhân 
-vật xuyên qua tường. Những xự cố liên quan đến dấu chấm động, thực chất vốn
-không
-phải sai sót, số dấu chấm động được thiết kế để như vậy, nó là cố gắng tột cùng
-của
+cũng khiến hệ thống y tế phát nhầm liều và khiến game engine vật lý có thể bắn nhân 
+vật xuyên qua tường. Những xự cố liên quan đến dấu chấm động, thực chất vốn không
+phải sai sót, số dấu chấm động được thiết kế để như vậy, nó là cố gắng tột cùng của
 các nhà khoa học để có thể nén trục số thực vô hạn vào một thanh ghi có số bit
 hữu hạn.
 
-Tiêu chuẩn cho số dấu chấm động tên là *IEEE 754*, xuất
-bản năm 1985 và về cốt lõi nó không thay đổi gì nhiều kể từ đó.
+Tiêu chuẩn cho số dấu chấm động tên là *IEEE 754*, xuất bản năm 1985 và về cốt lõi nó không thay đổi gì nhiều kể từ đó.
 
 ## Vấn đề cốt lõi: nén một trục số vô hạn vào một số lượng hữu hạn bit
 
 Giữa hai số bất kỳ trên trục số thực luôn có vô hạn các số khác. Giữa $0$ và $1$
 có $0.5$, giữa $0$ và $0.5$ có $0.25$, và cứ thế mãi mãi không bao giờ hết. Trục
-số
-thực là một dòng liên tục liên tục các số dày đặc đến vô cùng.
+số thực là một dòng liên tục liên tục các số dày đặc đến vô cùng.
 
 Một thanh ghi (register) trong CPU thì lại khác, nó có số lượng bit hữu hạn. 
 Nó là một dãy công tắc, mỗi công tắc bật hoặc tắt (0 hoặc 1). Một thanh ghi 32
 bit có đúng $2^{32}$, khoảng 4,3 tỷ, trạng thái khả dĩ không hơn không kém.
 
-Và đây là toàn bộ tấn bi kịch gói trong một câu: **ta phải ánh xạ một tập vô hạn
+Và đây là toàn bộ tấn bi kịch gói gọn trong một câu: **ta phải ánh xạ một tập vô hạn
 vào một tập hữu hạn bit.**. Điều đó, về cơ bản là không thể, ít nhất là về mặt
-toán học nếu muốn giữ trọn vẹn tính chất của dãy số. Bất kỳ cách lưu số thực nào
-trong máy tính cũng buộc phải vứt bỏ gần như toàn bộ các số, chỉ giữ lại một tập
+toán học, nếu muốn giữ trọn vẹn tính chất của dãy số. Bất kỳ cách lưu số thực nào
+trong máy tính cũng buộc phải vứt bỏ gần như toàn bộ các số trên trục, chỉ giữ lại một tập
 hợp thưa thớt và làm tròn mọi thứ còn lại về các số gần nhất. Câu hỏi lúc này 
 không phải là "có mất mát không" mà là "chọn giữ lại những số nào".
 
@@ -82,33 +75,25 @@ không phải là "có mất mát không" mà là "chọn giữ lại những s�
 
 Câu trả lời đơn giản nhất có thể nghĩ ra là _fixed-point_, dấu chấm cố định:
 đóng đinh dấu chấm ở một vị trí cố định. Chẳng hạn với 32 bit, ta có thể chia 
-16 bit cho phần nguyên, 16 bit cho phần thập phân. Từ đó chúng ta có thể biểu 
+16 bit cho phần nguyên, 16 bit cho phần lẻ (thập phân). Từ đó chúng ta có thể biểu 
 diễn mọi số thực có dạng `nguyên.lẻ` với độ phân giải (khoảng cách) cố định
 là $2^{-16}\approx0.0000153$.
 
 Cách này gọn gàn và dễ đoán, khoảng cách giữa hai số kề nhau luôn bằng nhau ở
 mọi nơi, bằng $2^{-16}$, dù là đang ở gần số $0$ hay ở gần số lớn nhất. Đó vừa
-là
-điểm mạnh vừa là điểm chết của cách biểu diễn này. Điểm mạnh là nó sẽ không gây
-ra
-sai số để có thể tích lũy và gây họa như các sự cố chúng ta đã nói ở trên.
+là điểm mạnh vừa là điểm chết của cách biểu diễn này. Điểm mạnh ở chỗ là nó sẽ không gây
+ra sai số để có thể tích lũy và gây họa như các sự cố chúng ta đã nói ở trên.
 
-Điểm chết của cách này nằm ở **dải giá trị có thể biểu diễn**. Với chỉ 16 bit
-phần
-nguyên, số lớn nhất mà nó có thể biểu diễn là khoảng 65.535. Muốn lưu khối lượng
-một thiên hà? Không được, bán kính một nguyên tử thì sao? Cũng không, vì
-$2^{-16}$ là
+Điểm yếu của cách này nằm ở chỗ **dải giá trị có thể biểu diễn** của nó. Với chỉ 16 bit
+phần nguyên, số lớn nhất mà nó có thể biểu diễn là khoảng **65.535**. Muốn lưu khối lượng
+một thiên hà? Không được, bán kính một nguyên tử thì sao? Cũng không, vì $2^{-16}$ là
 số nhỏ nhất có thể biểu diễn. Và giờ chúng ta bị kẹt giữa hai đầu, trần thì quá
-thấp,
-đáy thì thì lại quá cao. Với cách biểu diễn này chúng ta đã bỏ qua quá nhiều
-(hầu như
-là toàn bộ) số trong trục số thực.
+thấp, đáy thì thì lại quá cao. Với cách biểu diễn này chúng ta đã bỏ qua quá nhiều
+(hầu như là toàn bộ) số trong trục số thực.
 
 Và quan trọng hơn, là sự lãng phí, khi tính toán những số rất nhỏ, hầu hết các
-bit phần
-nguyên toàn là số $0$ vô dụng. Khi tính những số rất lớn, các bit phần lẻ cũng
-vô dụng nốt.
-Bạn trả tiền cho 32 bit nhưng lúc nào dùng cũng chỉ được một nhúm.
+bit phần nguyên toàn là số $0$ vô dụng. Khi tính những số rất lớn, các bit phần lẻ cũng
+vô dụng nốt. Bạn trả tiền cho 32 bit nhưng lúc nào dùng cũng chỉ được một nhúm.
 
 <PullQuote>
 

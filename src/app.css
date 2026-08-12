@@ -10,6 +10,10 @@
 	--ink: #24242c;
 	--muted: #77777f;
 	--faint: #a7a7ad;
+	/* Bold running text. On paper, weight alone carries emphasis — `inherit`,
+	   not `--ink`, so a bold word inside a blue panel keeps the panel's white.
+	   The ink themes brighten it instead; see the note in the dark palette. */
+	--ink-strong: inherit;
 	--rule: rgba(13, 13, 17, 0.14);
 	--rule-hard: #0d0d11;
 	--blue: #1a24df;
@@ -91,6 +95,12 @@
 		--ink: #d8d8dd;
 		--muted: #8b8b93;
 		--faint: #5e5e66;
+		/* IBM Plex Sans is loaded up to 600 and no further, and on ink paper a
+		   600 sits so close to the body weight that a bold word stops reading as
+		   one — light text blooms against a dark field and eats the difference.
+		   Faking 700 would smear the letterforms, so the emphasis is carried by
+		   brightness: the body sits below white, and bold reaches it. */
+		--ink-strong: #ffffff;
 		--rule: rgba(233, 233, 236, 0.18);
 		--rule-hard: #e9e9ec;
 		--blue: #7f88ff;
@@ -139,6 +149,8 @@
 	--ink: #d8d8dd;
 	--muted: #8b8b93;
 	--faint: #5e5e66;
+	/* Bold reaches white here — see the note in the media-query mirror above. */
+	--ink-strong: #ffffff;
 	--rule: rgba(233, 233, 236, 0.18);
 	--rule-hard: #e9e9ec;
 	--blue: #7f88ff;

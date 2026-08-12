@@ -108,8 +108,12 @@
 		font-size: 0.85em;
 	}
 
+	/* Weight *and* colour: `--ink-strong` is `inherit` on paper, so this is the
+	   same 600 it always was there, and only the ink themes lift it clear of the
+	   body text. See the token's note in app.css. */
 	.prose :global(strong) {
 		font-weight: 600;
+		color: var(--ink-strong);
 	}
 	.prose :global(em) {
 		font-style: italic;
