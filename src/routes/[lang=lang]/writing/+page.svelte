@@ -7,7 +7,7 @@
 	import { short, year } from '$lib/format';
 	import { fill, href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
-	import { TOPICS_ORDER, TOPIC_CONTENT, getTopicLocale, type TopicId } from '$lib/topics';
+	import { LISTED_TOPICS, TOPIC_CONTENT, getTopicLocale, type TopicId } from '$lib/topics';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -23,7 +23,9 @@
 	 * answers to every spelling in its `frontmatterTopics`, which is what lets
 	 * one button cover both `Tech` and production's `Software`.
 	 */
-	const options = $derived(['All', ...TOPICS_ORDER]);
+	// A walk-in room is not offered here — the archive holds none of its posts,
+	// so its button would filter the page down to nothing.
+	const options = $derived(['All', ...LISTED_TOPICS]);
 	const label = (o: string) =>
 		o === 'All' ? t.writing.filterAll : getTopicLocale(TOPIC_CONTENT[o as TopicId], i18n.lang).name;
 

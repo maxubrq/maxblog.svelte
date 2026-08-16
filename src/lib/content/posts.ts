@@ -1,3 +1,4 @@
+import { isUnlistedTopic } from '$lib/topics';
 import type { Component } from 'svelte';
 import { groupOf } from './group';
 
@@ -142,8 +143,16 @@ function normalize(metadata: PostMeta, slug: string): Post {
 /**
  * All posts, newest first. Loads every module, so call it from server loads
  * and prerendered endpoints only — never from a component.
+ *
+ * `includeUnlisted` defaults to *true* on purpose: a list that quietly loses
+ * posts is the harder bug to see, so the three surfaces that leave the walk-in
+ * rooms out — the front page, the archive and the feed — say so at the call.
+ * See `TopicData.unlisted` for which rooms those are and why.
  */
-export async function listPosts({ includeDrafts = false } = {}): Promise<Post[]> {
+export async function listPosts({
+	includeDrafts = false,
+	includeUnlisted = true
+} = {}): Promise<Post[]> {
 	const posts = await Promise.all(
 		Object.entries(modules).map(async ([path, load]) =>
 			normalize((await load()).metadata, slugOf(path))
@@ -152,6 +161,7 @@ export async function listPosts({ includeDrafts = false } = {}): Promise<Post[]>
 
 	return posts
 		.filter((p) => includeDrafts || !p.draft)
+		.filter((p) => includeUnlisted || !isUnlistedTopic(p.topic))
 		.sort((a, b) => b.date.localeCompare(a.date));
 }
 

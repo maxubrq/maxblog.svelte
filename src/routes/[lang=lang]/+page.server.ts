@@ -5,8 +5,11 @@ import type { EntryGenerator, PageServerLoad } from './$types';
 export const entries: EntryGenerator = () => langs.map((lang) => ({ lang }));
 
 export const load: PageServerLoad = async ({ params }) => {
-	// Each locale is its own edition: it lists only the posts written in it.
-	const posts = (await listPosts()).filter((p) => p.lang === (params.lang as Lang));
+	// Each locale is its own edition: it lists only the posts written in it. The
+	// walk-in rooms stay out of the front page — see `TopicData.unlisted`.
+	const posts = (await listPosts({ includeUnlisted: false })).filter(
+		(p) => p.lang === (params.lang as Lang)
+	);
 	const [featured, ...rest] = posts;
 
 	return {

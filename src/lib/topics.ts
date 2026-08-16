@@ -109,6 +109,17 @@ export interface TopicData extends TopicLocale {
 	tone: TopicTone;
 	/** The `topic` values in frontmatter that file a post into this room. */
 	frontmatterTopics: string[];
+	/**
+	 * A room you have to walk into. Its posts are left out of the front page,
+	 * the archive and the feed — the room's own page is the way to them.
+	 *
+	 * `notes` is the one: they are responses to what I read, kept in public but
+	 * not published *at* anyone. A short note filed between two essays would
+	 * outnumber them in the archive and set the pace of the site to something it
+	 * is not. They stay in the search index, because a reader looking for
+	 * something they know exists should find it.
+	 */
+	unlisted?: boolean;
 	/** Not localized — see `TopicPlate`. */
 	plate?: TopicPlate;
 	vi?: Partial<TopicLocale>;
@@ -287,6 +298,7 @@ export const TOPIC_CONTENT: Record<TopicId, TopicData> = {
 		tagline: 'In conversation with what I read.',
 		tone: 'plainspoken',
 		frontmatterTopics: ['Notes'],
+		unlisted: true,
 		plate: { src: 'https://res.cloudinary.com/dmsb4anlx/image/upload/v1786432326/maxubrq.space/Notes_djkvly.png', halftone: 'screen' },
 		intro: [
 			'Some books I read once and put away. Others I argue with for years. The notes here are the second kind — sustained responses to texts that did not let me leave them alone, written in the margin and then expanded outward.',
@@ -308,3 +320,21 @@ export const TOPIC_CONTENT: Record<TopicId, TopicData> = {
 		},
 	},
 };
+
+/**
+ * The frontmatter spellings that file a post into a room you have to walk into
+ * — see `TopicData.unlisted`. Lowercased once, because the match is
+ * case-insensitive everywhere else too: the author is writing prose, not keys.
+ */
+const UNLISTED_SPELLINGS = new Set(
+	TOPICS_ORDER.filter((id) => TOPIC_CONTENT[id].unlisted).flatMap((id) =>
+		TOPIC_CONTENT[id].frontmatterTopics.map((t) => t.toLowerCase())
+	)
+);
+
+/** Is this post's `topic:` one of those rooms? */
+export const isUnlistedTopic = (topic?: string): boolean =>
+	topic !== undefined && UNLISTED_SPELLINGS.has(topic.toLowerCase());
+
+/** The rooms the archive's filter bar offers — the walk-in ones are not among them. */
+export const LISTED_TOPICS = TOPICS_ORDER.filter((id) => !TOPIC_CONTENT[id].unlisted);

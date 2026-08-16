@@ -12,7 +12,9 @@ const esc = (s: string) =>
 
 export const GET: RequestHandler = async ({ params }) => {
 	const lang = params.lang as Lang;
-	const posts = (await listPosts()).filter((p) => p.lang === lang);
+	// A subscriber asked for the essays. Notes are read in their own room, not
+	// pushed into someone's reader — see `TopicData.unlisted`.
+	const posts = (await listPosts({ includeUnlisted: false })).filter((p) => p.lang === lang);
 
 	const items = posts
 		.map((p) => {
