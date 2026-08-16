@@ -93,7 +93,7 @@ function InkReaderRoom() {
           borderTop: `1.5px solid ${INK.ruleHard}`, paddingTop: 16, lineHeight: 1.6 }}>
           Counts live here in the room, never on the pages themselves — a page leads with your sentences,
           not a tally. Everything is computed on your device from what you’ve read; nothing is uploaded.
-          — Chỉ mình bạn có thể thấy căn phòng này.
+          — Căn phòng này chỉ mình bạn thấy.
         </p>
       </section>
     </InkChrome>

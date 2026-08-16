@@ -81,7 +81,7 @@ function InkShelf() {
         </h1>
         <p style={{ maxWidth: '58ch', fontFamily: BODY, fontStyle: 'italic', fontSize: 17, lineHeight: 1.55,
           color: INK.muted, margin: '22px 0 0' }}>
-          Everything you <em>finished</em>. Each piece you carried to the last
+          Not everything you clicked — everything you <em>finished</em>. Each piece you carried to the last
           line becomes a spine, set the way a bound book is set. A shelf you can print and put on a real
           wall. No ratings, no dates, no tally on the board.
         </p>

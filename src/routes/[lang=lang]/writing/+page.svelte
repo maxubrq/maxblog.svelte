@@ -66,7 +66,7 @@
 						lead={short(p.date)}
 						topic={p.topic}
 						title={p.title}
-						meta={`${p.reading}′`}
+						meta={p.openDraft ? t.openDraft.indexMark : `${p.reading}′`}
 						interactive={p.interactive}
 						leadWidth="64px"
 					/>

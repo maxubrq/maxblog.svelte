@@ -26,15 +26,16 @@
 	 * uses for d3.
 	 */
 	import { dev } from '$app/environment';
-	import { useI18n } from '$lib/i18n';
+	import { fill, useI18n } from '$lib/i18n';
 	import { sessionId } from '$lib/session';
 	import type { Snippet } from 'svelte';
 
 	let {
 		slug,
 		draft = false,
+		rev,
 		children
-	}: { slug: string; draft?: boolean; children: Snippet } = $props();
+	}: { slug: string; draft?: boolean; rev?: string; children: Snippet } = $props();
 
 	const i18n = useI18n();
 	const t = $derived(i18n.t.marks);
@@ -67,6 +68,12 @@
 		n: number;
 		kind: Kind;
 		anchor: Anchor;
+		/**
+		 * The revision of an open draft the mark was made at, when the piece is
+		 * one. It is what lets a mark say *when* it was true rather than simply
+		 * failing to appear once the author has rewritten the sentence under it.
+		 */
+		rev?: string;
 		/** When it was made — the reader's own trail is chronological. */
 		ts: number;
 	}
@@ -286,7 +293,7 @@
 	}
 
 	function commit(kind: Kind, anchor: Anchor) {
-		const mark: Mark = { n: (marks.at(-1)?.n ?? 0) + 1, kind, anchor, ts: Date.now() };
+		const mark: Mark = { n: (marks.at(-1)?.n ?? 0) + 1, kind, anchor, rev, ts: Date.now() };
 		if (scope) wrap(scope, mark);
 		marks = [...marks, mark];
 		save(marks);
@@ -306,6 +313,20 @@
 
 	// ── Redrawing what was marked before ────────────────────────────────────
 
+	/**
+	 * Marks whose sentence is no longer in the text — **fuzzy**, not gone.
+	 *
+	 * On a finished essay this is empty and stays empty. On an open draft it is
+	 * the promise the draft makes, kept: the author rewrote the passage, so the
+	 * mark cannot be drawn where it was, and the alternative to saying so is a
+	 * mark that quietly disappears — which is the same as editing silently.
+	 *
+	 * The test is whether the quote occurs in the prose at all, deliberately not
+	 * whether `wrap` succeeded: `wrap` also declines a quote that crosses an
+	 * inline element, and that mark is present, merely undrawn.
+	 */
+	let fuzzy = $state<Mark[]>([]);
+
 	$effect(() => {
 		if (!scope) return;
 		const root = scope;
@@ -314,8 +335,10 @@
 		// A frame after hydration: the prose and its own marks have to be settled
 		// before a whole quote can be found inside one text node.
 		const id = requestAnimationFrame(() => {
+			const prose = flatten(root.textContent ?? '').text;
 			for (const m of stored) wrap(root, m);
 			marks = stored;
+			fuzzy = stored.filter((m) => !prose.includes(m.anchor.quote));
 		});
 		return () => cancelAnimationFrame(id);
 	});
@@ -554,6 +577,28 @@
 	{#if sent}
 		<div class="sent">{t.sent}</div>
 	{/if}
+
+	{#if fuzzy.length > 0}
+		<!-- Nothing is drawn over the prose for these: the sentence they were
+		     made on is not there to draw on. They are listed instead, with the
+		     revision each was made at, so the reader can see what they marked
+		     rather than wonder where it went. -->
+		<aside class="fuzzy">
+			<span class="fuzzy-head">{t.fuzzyTitle}</span>
+			<ul>
+				{#each fuzzy as m (m.n)}
+					<li>
+						<span class="fuzzy-quote"
+							>“{m.anchor.quote.slice(0, 90)}{m.anchor.quote.length > 90 ? '…' : ''}”</span
+						>
+						<span class="fuzzy-at">
+							{t.labels[m.kind]}{m.rev ? ` · ${fill(t.fuzzyAt, { r: m.rev })}` : ''}
+						</span>
+					</li>
+				{/each}
+			</ul>
+		</aside>
+	{/if}
 </div>
 
 {#snippet glyph(kind: Kind, size: number)}
@@ -580,6 +625,45 @@
 <style>
 	.scope {
 		position: relative;
+	}
+
+	.fuzzy {
+		margin-top: 34px;
+		border-top: 1px solid var(--rule);
+		padding-top: 14px;
+	}
+	.fuzzy-head {
+		font-family: var(--mono);
+		font-size: 10.5px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--faint);
+	}
+	.fuzzy ul {
+		margin: 10px 0 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 10px;
+	}
+	.fuzzy li {
+		display: grid;
+		gap: 3px;
+	}
+	.fuzzy-quote {
+		font-family: var(--body);
+		font-size: 15px;
+		line-height: 1.5;
+		color: var(--muted);
+		/* Faded rather than struck: the mark is uncertain, not cancelled. */
+		opacity: 0.75;
+	}
+	.fuzzy-at {
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--faint);
 	}
 
 	.mk-layer {

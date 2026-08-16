@@ -177,6 +177,10 @@ const en = {
 	 */
 	marks: {
 		pickOne: 'pick a gesture — every mark is private first',
+		/* An open draft can move the sentence a mark was made on. The mark is
+		   then reported rather than dropped — see `ReaderMarks`. */
+		fuzzyTitle: 'marks whose sentence has since been rewritten',
+		fuzzyAt: 'made at {r}',
 		labels: {
 			keep: 'keep',
 			dissent: 'dissent',
@@ -405,6 +409,47 @@ const en = {
 		nearlyDone: 'nearly done',
 		total: 'Total',
 		min: 'min'
+	},
+	/**
+	 * The open draft (ink). The English is a translation of the design, which was
+	 * written in Vietnamese — the register to keep is plain and unadvertised: a
+	 * piece left out in the open, not a teaser for one.
+	 */
+	openDraft: {
+		flagNow: 'Open draft · still being written',
+		flagPast: 'Open draft · a version that has passed',
+		bodyNow:
+			'This piece is not finished. It is here because writing in the dark too long is how I start fooling myself. You can read it, but what you are reading is breathing.',
+		bodyPast:
+			'You are standing at an older moment of this piece. The words here were real words once — they are only no longer the current ones.',
+		whereItStands: 'where the piece stands',
+		settled: 'settled',
+		editing: 'being written',
+		notes: 'still notes',
+		started: 'started',
+		edits: 'times edited',
+		lengthNow: 'length now',
+		wordsN: '~{n} words',
+		finishBy: 'finish by',
+		noPromise: 'no promise',
+		pull: 'Pull the piece back to a moment',
+		railCount: '{edits} edits · {saved} saved',
+		notedThen: 'noted while editing',
+		backToNow: 'back to now →',
+		scarsOn: 'scar layer · on',
+		scarsOff: 'scar layer · off',
+		/* `{struck}` and `{added}` are drawn as samples of the layer itself, not
+		   printed as words — see `OpenDraftHead`. */
+		scarsExplainOn: 'Sentences {struck} and sentences {added} are both showing at {r}.',
+		scarsExplainOff: 'Only the text of {r}. The scars are still there, just not shown.',
+		struck: 'struck',
+		added: 'newly added',
+		unwritten: 'not written yet',
+		asAt: 'as at {r}',
+		lastTouched: 'last touched {ago}',
+		/** Beside a row in the archive — short, because the row is one line. */
+		indexMark: 'still being written',
+		revisionOf: 'version {r} of {total}'
 	},
 	/** The letter box the apparatus ends on — see `ReflectionPrompt`. */
 	reflection: {
@@ -812,6 +857,8 @@ const vi: typeof en = {
 	},
 	marks: {
 		pickOne: 'chọn một cử chỉ — mọi dấu đều riêng tư trước',
+		fuzzyTitle: 'những dấu mà câu của nó đã bị viết lại',
+		fuzzyAt: 'đánh ở {r}',
 		labels: {
 			keep: 'giữ',
 			dissent: 'không tin',
@@ -1033,6 +1080,40 @@ const vi: typeof en = {
 		nearlyDone: 'sắp xong',
 		total: 'Tổng',
 		min: 'phút'
+	},
+	/** Bản nháp lộ thiên — nguyên văn của design (`pages/InkDraft.jsx`). */
+	openDraft: {
+		flagNow: 'Bản nháp lộ thiên · đang còn sửa',
+		flagPast: 'Bản nháp lộ thiên · một bản đã qua',
+		bodyNow:
+			'Bài này chưa xong. Nó nằm đây vì viết trong bóng tối lâu quá thì mình bắt đầu tự lừa mình. Bạn đọc được, nhưng đọc một thứ đang thở.',
+		bodyPast:
+			'Bạn đang đứng ở một thời điểm cũ của bài. Chữ ở đây từng là chữ thật — nó chỉ không còn là chữ hiện tại.',
+		whereItStands: 'bài đang ở đâu',
+		settled: 'đã yên',
+		editing: 'đang sửa',
+		notes: 'mới là ghi chú',
+		started: 'bắt đầu',
+		edits: 'số lần sửa',
+		lengthNow: 'dài lúc này',
+		wordsN: '~{n} từ',
+		finishBy: 'dự tính xong',
+		noPromise: 'chưa hứa',
+		pull: 'Kéo bài về một thời điểm',
+		railCount: '{edits} lần sửa · {saved} bản được lưu',
+		notedThen: 'ghi lúc sửa',
+		backToNow: 'về hiện tại →',
+		scarsOn: 'lớp vết sửa · đang bật',
+		scarsOff: 'lớp vết sửa · đang tắt',
+		scarsExplainOn: 'Câu {struck} và câu {added} ở bản {r} đều đang hiện.',
+		scarsExplainOff: 'Chỉ còn văn bản của bản {r}. Vết sửa vẫn nằm đó, chỉ là không hiện.',
+		struck: 'bị gạch',
+		added: 'mới thêm',
+		unwritten: 'chưa viết',
+		asAt: 'như ở {r}',
+		lastTouched: 'chạm lần cuối {ago}',
+		indexMark: 'đang còn sửa',
+		revisionOf: 'bản {r} trong {total}'
 	},
 	reflection: {
 		label: 'một lời riêng cho tác giả',

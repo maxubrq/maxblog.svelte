@@ -320,6 +320,104 @@ The pass runs after `remarkMath` and before the two mark passes: after, so a hea
 slugs off the same string `rehype-slug` will see; before, so it never reads a heading that has
 picked up a `<Term>` or an `<R>`.
 
+## The open draft
+
+**Bản nháp lộ thiên** — a piece left out in the open while it is still being written, with every
+earlier save still reachable. Built to `maxubrq/project/pages/InkDraft.jsx` (SFIM, T4). It is not a
+teaser and it is not `draft: true`: those two are opposites here, and independent. `draft: true`
+means *unlisted, but it still builds*; an open draft is unfinished **and** listed, on purpose.
+
+The whole feature exists to keep one promise — **nothing is edited silently**. Every change leaves
+a readable scar, and every past version can be pulled back, including the embarrassing ones.
+
+### Where the data comes from
+
+Two halves, and the split is the point.
+
+`openDraft:` in a post's frontmatter is the author writing, by hand, where the piece stands *today*:
+the note pinned to this save, and the state of each section (`settled` · `editing` · `notes`). It
+travels with the prose, in the same commit.
+
+```yaml
+openDraft:
+  startedAt: '2026-08-16'
+  promise: 'chưa hứa'
+  note: 'quay câu cuối về phía người đọc. còn mục V.'
+  sections:
+    - label: 'I. Ba nhóm trẻ và hộp bút màu'
+      state: 'settled'
+    - label: 'V. Vậy thì làm gì với chuyện này'
+      state: 'notes'
+      notes:
+        - 'Cẩn thận: mục này rất dễ trượt thành một bài self-help.'
+```
+
+The history is **read out of git** by `scripts/drafts.mjs`, which writes `src/lib/drafts.data.js` —
+generated, and **committed**, exactly as `scripts/halftone.mjs` commits its plates:
+
+```bash
+node scripts/drafts.mjs              # every post carrying openDraft:
+node scripts/drafts.mjs 003-pure-joy-vi
+```
+
+Reading git at build time is the obvious alternative and it is a trap: Vercel clones shallow, the
+history would come back empty, and the page would quietly claim the piece had never been touched.
+A draft that lies about its own edits is the one bug this feature cannot ship with.
+
+Because each revision is read from the frontmatter of *its own commit*, a past note says what the
+author thought that afternoon rather than what they would say about it now, and travelling back
+rolls the section table back with the prose. **Every commit is an edit; only a commit whose
+frontmatter carries a `note` is a saved revision** a reader can stand on — which is why the rail
+draws twenty-three ticks and six stops rather than six of each.
+
+### The diff
+
+Computed, never authored. `scripts/drafts.mjs` aligns two revisions paragraph by paragraph (LCS over
+the paragraph text), pairs the changed ones by similarity, then diffs the pair word by word. Two
+constants carry the legibility, and both were tuned against real revisions:
+
+- `KEEP = 0.5` — below this the two paragraphs are unrelated blocks, not one paragraph edited.
+- `REWRITE = 0.5` — past this share of a paragraph changing, a word-level diff reads as confetti,
+  so the paragraph is shown as what it honestly is: the old one struck out, the new one whole.
+
+A run of changed paragraphs is paired in order with a forward-only pointer, so a revision that
+reworks four paragraphs in a row does not read as four deletions followed by four unrelated
+blocks — and a deletion that is stepped over is printed where it stood.
+
+### On the page
+
+The head (`OpenDraftHead`) carries the flag, the state table, the rail, the note pinned to the save
+you are standing at, and the scar layer's switch. Everything in it is read from *that* revision:
+standing at an old save under today's verdict about it would be the dishonesty the feature exists to
+avoid.
+
+Where the reader is standing is **not** in the load function. The page stays prerendered static
+HTML at the current text; `?r=r02` is applied and written client-side, which is all a shareable link
+needs.
+
+**Past revisions are not compiled mdx.** Six historical versions cannot be run through mdsvex, and
+diffing compiled HTML is a worse problem than the one being solved, so a component survives as the
+kind of block it was (`aside`, `quote`, `fleuron`) and its text is typeset to match approximately.
+The current revision always renders as the real essay, components and all.
+
+While the reader is travelling, everything that speaks about the live essay stands down: the
+trackers, the reading memory, the nudge, the weather, the fore-edge and the whole apparatus
+(one sentence · glossary · sources · the letter box). A nudge saying *3 minutes left* over prose
+that no longer exists is measuring the wrong text. The `■` is not printed at all — an open draft
+has not earned it.
+
+### What it costs the rest of the site
+
+- **The archive** lists it with `still being written` where the reading minutes would be.
+- **The feed leaves it out** until every section is `settled` (`isSettled` in `$lib/drafts`). A piece
+  edited twenty-three times would otherwise arrive twenty-three times. Sections all settled is the
+  only finish line this feature recognises — no `done: true` to forget, no date to miss.
+- **Marks go fuzzy, not missing.** `ReaderMarks` records the revision a mark was made at, and a mark
+  whose sentence is no longer in the prose is listed under the essay with the version it was made
+  at, rather than silently failing to draw. The test is whether the quote occurs in the text at all
+  — deliberately not whether `wrap` succeeded, since `wrap` also declines a quote that crosses an
+  inline element, and that mark is present, merely undrawn.
+
 ## Reading preferences
 
 Eleven settings, all device-local and never sent anywhere. `/[lang]/reading` is the room where

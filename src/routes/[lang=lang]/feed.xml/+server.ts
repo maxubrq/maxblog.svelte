@@ -1,4 +1,5 @@
 import { listPosts } from '$lib/content/posts';
+import { isSettled } from '$lib/drafts';
 import { langs, messages, type Lang } from '$lib/i18n';
 import { site } from '$lib/site';
 import type { EntryGenerator, RequestHandler } from './$types';
@@ -14,7 +15,14 @@ export const GET: RequestHandler = async ({ params }) => {
 	const lang = params.lang as Lang;
 	// A subscriber asked for the essays. Notes are read in their own room, not
 	// pushed into someone's reader — see `TopicData.unlisted`.
-	const posts = (await listPosts({ includeUnlisted: false })).filter((p) => p.lang === lang);
+	//
+	// An open draft is left out for a related reason: it is a piece a reader can
+	// walk in on, not one to be delivered — and a piece that is edited twenty
+	// times would arrive twenty times. It joins the feed when its own sections
+	// say it is done, which is the only finish line it has.
+	const posts = (await listPosts({ includeUnlisted: false })).filter(
+		(p) => p.lang === lang && (!p.openDraft || isSettled(p.openDraft))
+	);
 
 	const items = posts
 		.map((p) => {

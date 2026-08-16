@@ -1,3 +1,4 @@
+import type { OpenDraft } from '$lib/drafts';
 import { isUnlistedTopic } from '$lib/topics';
 import type { Component } from 'svelte';
 import { groupOf } from './group';
@@ -63,6 +64,13 @@ export interface PostMeta {
 	lang?: 'en' | 'vi';
 	/** Hidden from every index, but the page still builds. */
 	draft?: boolean;
+	/**
+	 * The opposite of `draft`, and the two are independent: an open draft is
+	 * unfinished *and* listed, on purpose. Declaring this block turns the piece
+	 * into one — see `$lib/drafts`. `scripts/drafts.mjs` reads the same block out
+	 * of each past commit to build the history the reader can travel back into.
+	 */
+	openDraft?: OpenDraft;
 	/** Carries a live figure — earns the `● interactive` tag. */
 	interactive?: boolean;
 	/** `Chapter 8` · `GT - Chương IV` — shown as a coordinate tag. */

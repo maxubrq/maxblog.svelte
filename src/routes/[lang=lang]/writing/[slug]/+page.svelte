@@ -5,6 +5,9 @@
 	import Headline from '$lib/components/ink/Headline.svelte';
 	import ArticleTracker from '$lib/components/article/ArticleTracker.svelte';
 	import Bibliography from '$lib/components/article/Bibliography.svelte';
+	import OpenDraftHead from '$lib/components/draft/OpenDraftHead.svelte';
+	import RevisionBody from '$lib/components/draft/RevisionBody.svelte';
+	import UnwrittenSections from '$lib/components/draft/UnwrittenSections.svelte';
 	import ForeEdge, { foreEdgeSections } from '$lib/components/article/ForeEdge.svelte';
 	import GlossaryFootnote from '$lib/components/article/GlossaryFootnote.svelte';
 	import MobileReadingBar from '$lib/components/article/MobileReadingBar.svelte';
@@ -20,8 +23,11 @@
 	import TocDrawer from '$lib/components/article/TocDrawer.svelte';
 	import OneSentence from '$lib/components/article/OneSentence.svelte';
 	import WeatherStrip from '$lib/components/article/WeatherStrip.svelte';
-	import { href, useI18n } from '$lib/i18n';
+	import { draftOf } from '$lib/drafts';
+	import { replaceState } from '$app/navigation';
+	import { fill, href, useI18n } from '$lib/i18n';
 	import { createReadingProgress } from '$lib/reading-progress.svelte';
+	import { lastSeen } from '$lib/reading-memory';
 	import { reading } from '$lib/reading.svelte';
 	import { site } from '$lib/site';
 	import type { PageData } from './$types';
@@ -50,6 +56,61 @@
 	const activeSection = $derived(scroll?.activeSection ?? '');
 
 	let tocOpen = $state(false);
+
+	/**
+	 * The open draft, if this piece is one — see `$lib/drafts`.
+	 *
+	 * `picked` is the revision the reader is standing at and is a *label*, not
+	 * an index: navigating to another essay must not carry a position from this
+	 * one, and a label that does not belong to the new piece simply falls back
+	 * to its newest save.
+	 *
+	 * Everything below stays out of the load function on purpose. The page is
+	 * prerendered, and where a reader stands in the history is not a fact about
+	 * the page — it is a fact about this visit, so `?r=` is applied and written
+	 * client-side and the served HTML is always the current text.
+	 */
+	const history = $derived(draftOf(meta.slug));
+	let picked = $state<string | null>(null);
+	let scars = $state(true);
+
+	const revIndex = $derived.by(() => {
+		if (!history) return 0;
+		const i = history.revisions.findIndex((rev) => rev.r === picked);
+		return i === -1 ? history.revisions.length - 1 : i;
+	});
+	const revision = $derived(history ? history.revisions[revIndex] : null);
+	/** Standing anywhere but the newest save. The live prose is not what is shown. */
+	const travelling = $derived(!!history && !!revision && revision.r !== history.current);
+
+	// A shared `?r=` link has to land where it says it does.
+	$effect(() => {
+		if (!history) return;
+		const asked = new URL(location.href).searchParams.get('r');
+		if (asked && history.revisions.some((rev) => rev.r === asked)) picked = asked;
+	});
+
+	/** How long ago the piece was last handled — the newest save, not the one
+	 *  the reader happens to be standing at. */
+	const touchedAgo = $derived(
+		history
+			? lastSeen(
+					Date.parse(history.revisions[history.revisions.length - 1].date),
+					t.readingMemory,
+					i18n.lang
+				)
+			: ''
+	);
+
+	function pickRevision(i: number) {
+		if (!history) return;
+		const rev = history.revisions[i];
+		picked = rev.r;
+		const url = new URL(location.href);
+		if (rev.r === history.current) url.searchParams.delete('r');
+		else url.searchParams.set('r', rev.r);
+		replaceState(url, {});
+	}
 
 	/**
 	 * The folio. A book of about two dozen leaves, numbered the way a book is —
@@ -110,22 +171,26 @@
 	locale={meta.lang}
 	{progress}
 	{activeSection}
-	draft={meta.draft}
+	draft={meta.draft || travelling}
 />
 
-<!-- Where *you* stopped — device-local, and never leaves it. -->
-<ReadingMemoryTracker
-	slug={meta.slug}
-	title={meta.title}
-	topic={meta.topic}
-	lang={meta.lang}
-	reading={meta.reading}
-	{toc}
-	{progress}
-	{activeSection}
-/>
+<!-- Where *you* stopped — device-local, and never leaves it. Reading an old
+     revision is not reading the essay, so nothing about it is remembered:
+     scrolling a version from three edits ago must not move where you were. -->
+{#if !travelling}
+	<ReadingMemoryTracker
+		slug={meta.slug}
+		title={meta.title}
+		topic={meta.topic}
+		lang={meta.lang}
+		reading={meta.reading}
+		{toc}
+		{progress}
+		{activeSection}
+	/>
+{/if}
 
-{#if toc.length > 0}
+{#if toc.length > 0 && !travelling}
 	<!-- The gutter, one instrument. The fore-edge carries the weight left in
 	     your hand and the contents at once: a section is a run of leaves, hover
 	     names it, click goes there. The full list is one tap away in the drawer,
@@ -173,6 +238,9 @@
 			{#if meta.interactive}<Tag>● {t.article.interactive}</Tag>{/if}
 			{#if meta.chapter}<Tag>{meta.chapter}</Tag>{/if}
 			{#if meta.draft}<Tag>{t.article.draft}</Tag>{/if}
+			{#if history && revision}
+				<Tag on>{fill(t.openDraft.lastTouched, { ago: touchedAgo })}</Tag>
+			{/if}
 			{#if data.translation}
 				<a
 					class="translation"
@@ -194,58 +262,100 @@
 		{#if meta.subtitle}
 			<p class="deck flow-hide">{meta.subtitle}</p>
 		{/if}
+		{#if history && revision}
+			<!-- The draft's own head: what it is, where each section stands, the rail
+			     of saves, and the scar layer's switch. Inside <header> so it sits
+			     above the title block's rule, in the article's full width rather than
+			     in the measure — the state table needs a column of its own. -->
+			<OpenDraftHead
+				{history}
+				index={revIndex}
+				{scars}
+				onpick={pickRevision}
+				onscars={(on) => (scars = on)}
+			/>
+		{/if}
 	</header>
 
 	<div class="body">
 		<div class="measure">
-			<!-- The arc this piece belongs to, when it belongs to one. Above the
-			     nudge because "which series is this" is a fact about the essay,
-			     while "where were you in it" is a fact about the reader. -->
-			<SeriesRibbon slug={meta.slug} />
+			<!-- All three speak about the live essay: which arc it belongs to, where
+			     you stopped in it, what it costs to read. None of that is a fact
+			     about a version from three edits ago, so they stand down while the
+			     reader is back there — a nudge saying "3 minutes left" over prose
+			     that no longer exists is measuring the wrong text. -->
+			{#if !travelling}
+				<!-- The arc this piece belongs to, when it belongs to one. Above the
+				     nudge because "which series is this" is a fact about the essay,
+				     while "where were you in it" is a fact about the reader. -->
+				<SeriesRibbon slug={meta.slug} />
 
-			<!-- "You were here", for an essay already started — and the pin in the
-			     margin at the section itself. -->
-			<ReadingMemoryNudge slug={meta.slug} />
-			<ReadingMemoryGutter slug={meta.slug} />
+				<!-- "You were here", for an essay already started — and the pin in the
+				     margin at the section itself. -->
+				<ReadingMemoryNudge slug={meta.slug} />
+				<ReadingMemoryGutter slug={meta.slug} />
 
-			<!-- The weather of the piece — the reading contract, met on the way in.
-			     Hidden in flow: flow is for a reader who already committed. -->
-			{#if meta.weather}
-				<div class="flow-hide"><WeatherStrip weather={meta.weather} /></div>
+				<!-- The weather of the piece — the reading contract, met on the way in.
+				     Hidden in flow: flow is for a reader who already committed. -->
+				{#if meta.weather}
+					<div class="flow-hide"><WeatherStrip weather={meta.weather} /></div>
+				{/if}
 			{/if}
 
 			<!-- Wraps the prose and nothing else: a selection in the apparatus below
 			     — a source's title, a glossary line — is not a passage of the essay,
 			     and a mark drawn there would have nowhere to be redrawn. -->
-			<ReaderMarks slug={meta.slug} draft={meta.draft}>
-				<Content />
-			</ReaderMarks>
-
-			<!-- Finis. The mark a printed essay ends on, before the apparatus. -->
-			<div class="end-mark" aria-hidden="true">■</div>
-
-			{#if meta.rememberSentence}
-				<OneSentence
-					sentence={meta.rememberSentence}
-					attribution={meta.rememberAttribution ?? t.article.authorsPick}
-				/>
+			{#if travelling && revision}
+				<!-- A past save, rebuilt from git. Not wrapped in <ReaderMarks>: a mark
+				     anchors into the live text, and one drawn over a version that no
+				     longer exists would have nowhere to be redrawn tomorrow. -->
+				<RevisionBody body={revision.body} {scars} />
+			{:else}
+				<ReaderMarks slug={meta.slug} draft={meta.draft} rev={history?.current}>
+					<Content />
+				</ReaderMarks>
 			{/if}
 
-			<!-- The words the essay marked, then the sources it cites — the
-			     apparatus of a printed book, in its order: glossary, then
-			     bibliography. The first is what the prose used, the second is
-			     what it stands on. -->
-			<GlossaryFootnote terms={meta.terms} />
+			{#if revision}
+				<!-- What is still only notes, printed as notes. -->
+				<UnwrittenSections sections={revision.sections} at={revision.r} {travelling} />
+			{/if}
 
-			<!-- The sources this essay cites. Built from `appearsIn`, so it needs
-			     no marks in the prose — see $lib/resources. -->
-			<Bibliography slug={meta.slug} citations={meta.citations} />
+			<!-- Finis. The mark a printed essay ends on, before the apparatus — an
+			     open draft has not earned it and does not print it. -->
+			{#if !history}
+				<div class="end-mark" aria-hidden="true">■</div>
+			{/if}
 
-			<!-- The reader's turn. Last of the apparatus and before the
-			     neighbourhood, the way production orders it: the essay has
-			     finished saying what it had to say, and nothing else is asked of
-			     the reader after this. -->
-			<ReflectionPrompt slug={meta.slug} draft={meta.draft} />
+			<!-- The apparatus belongs to the essay as it stands now: its sentence to
+			     remember, the words it marked, the sources it stands on, the letter
+			     box. None of that is true of a version from three edits ago, so
+			     while the reader is back there the page shows the prose and the
+			     draft's own furniture, and nothing else. -->
+			{#if !travelling}
+				{#if meta.rememberSentence}
+					<OneSentence
+						sentence={meta.rememberSentence}
+						attribution={meta.rememberAttribution ?? t.article.authorsPick}
+					/>
+				{/if}
+
+				<!-- The words the essay marked, then the sources it cites — the
+				     apparatus of a printed book, in its order: glossary, then
+				     bibliography. The first is what the prose used, the second is
+				     what it stands on. -->
+				<GlossaryFootnote terms={meta.terms} />
+
+				<!-- The sources this essay cites. Built from `appearsIn`, so it needs
+				     no marks in the prose — see $lib/resources. -->
+				<Bibliography slug={meta.slug} citations={meta.citations} />
+
+				<!-- The reader's turn. Last of the apparatus and before the
+				     neighbourhood, the way production orders it: the essay has
+				     finished saying what it had to say, and nothing else is asked of
+				     the reader after this. -->
+				<ReflectionPrompt slug={meta.slug} draft={meta.draft} />
+			{/if}
 
 			{#if meta.neighborhood?.length}
 				<section class="hood">

@@ -41,11 +41,20 @@
 
 	// On an article, the switch goes to that essay's translation (a different
 	// slug); everywhere else the same page in the other locale.
-	const switchHref = $derived(
-		page.data.translation
-			? href(i18n.other, `/writing/${page.data.translation.slug}`)
-			: swapLocale(page.url.pathname, i18n.other)
-	);
+	//
+	// An essay with no twin is the third case, and it is not hypothetical: an
+	// article's URL exists only under the locale it is written in, so swapping
+	// the prefix builds a page that was never prerendered. The switcher offers
+	// the other locale's archive instead — the reader still gets there, and the
+	// build no longer follows a link to a 404.
+	const switchHref = $derived.by(() => {
+		if (page.data.translation) return href(i18n.other, `/writing/${page.data.translation.slug}`);
+		if (page.data.meta) return href(i18n.other, '/writing');
+		return swapLocale(page.url.pathname, i18n.other);
+	});
+
+	/** Only a real translation is an alternate; the archive is a way out, not one. */
+	const alternate = $derived(page.data.meta && !page.data.translation ? null : switchHref);
 
 	const foot = $derived(page.data.foot ?? site.domain);
 
@@ -71,7 +80,9 @@
 <svelte:head>
 	<link rel="canonical" href={site.url + page.url.pathname} />
 	<link rel="alternate" hreflang={data.lang} href={site.url + page.url.pathname} />
-	<link rel="alternate" hreflang={i18n.other} href={site.url + switchHref} />
+	{#if alternate}
+		<link rel="alternate" hreflang={i18n.other} href={site.url + alternate} />
+	{/if}
 	<link
 		rel="alternate"
 		type="application/rss+xml"
