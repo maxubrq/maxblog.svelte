@@ -1,15 +1,22 @@
 <script lang="ts">
 	// "If you remember one sentence" — the author's pick, in blue DISPLAY (§7).
+	//
+	// Both labels come from the catalogue rather than from here: the plate is
+	// also exported to MDX (`$lib/mdx`), so a post can drop it in with nothing
+	// but a sentence, and it must still speak the locale it is standing in.
 	import Tag from '../ink/Tag.svelte';
+	import { useI18n } from '$lib/i18n';
 
-	let { sentence, attribution = "the author’s pick" }: { sentence: string; attribution?: string } =
-		$props();
+	let { sentence, attribution }: { sentence: string; attribution?: string } = $props();
+
+	const i18n = useI18n();
+	const t = $derived(i18n.t.article);
 </script>
 
 <div class="plate">
 	<div class="head">
-		<Tag on>If you remember one sentence</Tag>
-		<Tag>{attribution}</Tag>
+		<Tag on>{t.oneSentence}</Tag>
+		<Tag>{attribution ?? t.authorsPick}</Tag>
 	</div>
 	<p>{sentence}</p>
 </div>

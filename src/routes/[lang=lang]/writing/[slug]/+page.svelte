@@ -334,9 +334,11 @@
 			     draft's own furniture, and nothing else. -->
 			{#if !travelling}
 				{#if meta.rememberSentence}
+					<!-- No fallback here: the plate falls back to the catalogue itself,
+					     so every caller of it says the same thing. -->
 					<OneSentence
 						sentence={meta.rememberSentence}
-						attribution={meta.rememberAttribution ?? t.article.authorsPick}
+						attribution={meta.rememberAttribution}
 					/>
 				{/if}
 
