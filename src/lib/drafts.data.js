@@ -12,7 +12,7 @@
  */
 export const DRAFTS = {
 	"003-pure-joy-vi": {
-		"edits": 6,
+		"edits": 7,
 		"startedAt": "2026-08-16",
 		"promise": "chưa hứa",
 		"current": "r06",
