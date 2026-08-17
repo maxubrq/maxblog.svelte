@@ -238,8 +238,12 @@
 			{#if meta.interactive}<Tag>● {t.article.interactive}</Tag>{/if}
 			{#if meta.chapter}<Tag>{meta.chapter}</Tag>{/if}
 			{#if meta.draft}<Tag>{t.article.draft}</Tag>{/if}
-			{#if history && revision}
-				<Tag on>{fill(t.openDraft.lastTouched, { ago: touchedAgo })}</Tag>
+			{#if meta.openDraft}
+				<Tag on
+					>{history
+						? fill(t.openDraft.lastTouched, { ago: touchedAgo })
+						: t.openDraft.indexMark}</Tag
+				>
 			{/if}
 			{#if data.translation}
 				<a
@@ -262,19 +266,19 @@
 		{#if meta.subtitle}
 			<p class="deck flow-hide">{meta.subtitle}</p>
 		{/if}
-		{#if history && revision}
+		{#if meta.openDraft}
 			<!-- The draft's own head: what it is, where each section stands, the rail
 			     of saves, and the scar layer's switch. Inside <header> so it sits
 			     above the title block's rule, in the article's full width rather than
-			     in the measure — the state table needs a column of its own. -->
+			     in the measure — the state table needs a column of its own.
+			     Keyed off the frontmatter, not the history: the piece is an open
+			     draft from its first line, and the history only arrives once a save
+			     has been annotated. -->
 			<OpenDraftHead
+				open={meta.openDraft}
+				words={meta.words}
 				{history}
 				index={revIndex}
-				live={{
-					note: meta.openDraft?.note ?? '',
-					sections: meta.openDraft?.sections ?? [],
-					words: meta.words
-				}}
 				{scars}
 				onpick={pickRevision}
 				onscars={(on) => (scars = on)}
@@ -321,18 +325,18 @@
 				</ReaderMarks>
 			{/if}
 
-			{#if revision}
+			{#if meta.openDraft}
 				<!-- What is still only notes, printed as notes. -->
 				<UnwrittenSections
-					sections={travelling ? revision.sections : (meta.openDraft?.sections ?? [])}
-					at={revision.r}
+					sections={travelling && revision ? revision.sections : meta.openDraft.sections}
+					at={revision?.r ?? ''}
 					{travelling}
 				/>
 			{/if}
 
 			<!-- Finis. The mark a printed essay ends on, before the apparatus — an
 			     open draft has not earned it and does not print it. -->
-			{#if !history}
+			{#if !meta.openDraft}
 				<div class="end-mark" aria-hidden="true">■</div>
 			{/if}
 

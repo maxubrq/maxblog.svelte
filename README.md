@@ -434,9 +434,14 @@ points `core.hooksPath` at `.githooks/`).
 Doing it by hand is the same thing without the hooks: `pnpm drafts` after the
 commit, `pnpm drafts:check` to ask whether the committed file is current.
 
-**What the page reads live, and what it reads from history.** The newest save's
-note, section states and length come from the post's own frontmatter and its
-build-time word count — not from the data module. So an edit in progress is
+**What the page reads live, and what it reads from history.** The head is keyed
+off `openDraft:` in the frontmatter, not off the data module: a piece is an open
+draft from its first line, and the flag, the state table and the unwritten
+sections print before any save has been annotated. The rail waits — it appears
+once there are two saved revisions, because a history of one save is not
+somewhere else to stand. The newest save's note, section states and length come
+from the frontmatter and the build-time word count too, never from the data
+module. So an edit in progress is
 already true on the page in `pnpm dev`, and a forgotten amend leaves the rail one
 stop short rather than describing the prose under it wrongly. The data module is
 only ever asked about the past, which is all it knows. The rail labels its last

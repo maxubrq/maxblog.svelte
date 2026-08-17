@@ -11,32 +11,42 @@
 	 * to avoid.
 	 *
 	 * The one exception is the *newest* save, whose note, sections and length are
-	 * taken from `live` — the post's own frontmatter and its build-time word
+	 * taken from `open` — the post's own frontmatter and its build-time word
 	 * count — rather than from the data module. The two agree whenever
 	 * `scripts/drafts.mjs` has been re-run, and when it has not, this is what
 	 * keeps the head from describing the prose printed under it wrongly. The
 	 * history is then only ever asked about the past, which is all it knows.
+	 *
+	 * Which is why `history` is optional. A piece declaring `openDraft:` is an
+	 * open draft from its first line, before any save has been annotated — the
+	 * flag and the state table come from the frontmatter and print regardless.
+	 * Only the machinery for standing somewhere else waits for a history to
+	 * stand in, and a history of one save is not somewhere else.
 	 */
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import DraftFlag from './DraftFlag.svelte';
 	import SectionStates from './SectionStates.svelte';
 	import TimeRail from './TimeRail.svelte';
-	import type { DraftHistory, DraftSection } from '$lib/drafts';
+	import type { DraftHistory, OpenDraft } from '$lib/drafts';
 	import { fill, useI18n } from '$lib/i18n';
 	import { lastSeen } from '$lib/reading-memory';
 
 	let {
-		history,
+		open,
+		words: liveWords,
+		history = null,
 		index,
-		live,
 		scars,
 		onpick,
 		onscars
 	}: {
-		history: DraftHistory;
-		index: number;
 		/** The piece as it stands in the working tree — see the note above. */
-		live: { note: string; sections: DraftSection[]; words: number };
+		open: OpenDraft;
+		/** Its build-time word count, the live twin of a revision's `words`. */
+		words: number;
+		/** Null until a save has been annotated: the frontmatter is enough. */
+		history?: DraftHistory | null;
+		index: number;
 		scars: boolean;
 		onpick: (i: number) => void;
 		onscars: (on: boolean) => void;
@@ -45,29 +55,35 @@
 	const i18n = useI18n();
 	const t = $derived(i18n.t.openDraft);
 
-	const rev = $derived(history.revisions[index]);
-	const travelling = $derived(rev.r !== history.current);
-	const note = $derived(travelling ? rev.note : live.note);
-	const sections = $derived(travelling ? rev.sections : live.sections);
-	const words = $derived(travelling ? rev.words : live.words);
-	const ago = $derived(lastSeen(Date.parse(rev.date), i18n.t.readingMemory, i18n.lang));
+	const rev = $derived(history ? history.revisions[index] : null);
+	const travelling = $derived(!!history && !!rev && rev.r !== history.current);
+	/** The rail is worth drawing once there is somewhere else to stand. */
+	const canTravel = $derived(!!history && history.revisions.length > 1);
+	const note = $derived(travelling && rev ? rev.note : open.note);
+	const sections = $derived(travelling && rev ? rev.sections : open.sections);
+	const words = $derived(travelling && rev ? rev.words : liveWords);
+	const ago = $derived(
+		rev ? lastSeen(Date.parse(rev.date), i18n.t.readingMemory, i18n.lang) : ''
+	);
 	const stamp = $derived(
-		new Date(rev.date).toLocaleDateString(i18n.lang === 'vi' ? 'vi-VN' : 'en-US', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit'
-		})
+		rev
+			? new Date(rev.date).toLocaleDateString(i18n.lang === 'vi' ? 'vi-VN' : 'en-US', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit'
+				})
+			: ''
 	);
 	/** The legend sentence, cut at its `{struck}` / `{added}` slots. */
 	const legend = $derived(
 		t.scarsExplainOn.split(/(\{struck\}|\{added\})/).map((part, at) => ({
 			at,
 			mark: part === '{struck}' ? 'del' : part === '{added}' ? 'ins' : null,
-			text: fill(part, { r: rev.r })
+			text: fill(part, { r: rev?.r ?? '' })
 		}))
 	);
 	const started = $derived(
-		new Date(history.startedAt).toLocaleDateString(i18n.lang === 'vi' ? 'vi-VN' : 'en-US', {
+		new Date(open.startedAt).toLocaleDateString(i18n.lang === 'vi' ? 'vi-VN' : 'en-US', {
 			year: 'numeric',
 			month: '2-digit',
 			day: '2-digit'
@@ -83,76 +99,80 @@
 	<div class="left">
 		<DraftFlag {travelling} />
 
-		<div class="machine">
-			<div class="machine-head">
-				<Tag on>{t.pull}</Tag>
-				<Tag>{fill(t.railCount, { edits: history.edits, saved: history.revisions.length })}</Tag>
-			</div>
-
-			<TimeRail {history} {index} {onpick} />
-
-			<div class="note">
-				<div class="when">
-					<span class="stamp">{rev.r} · {stamp}</span>
-					<span class="ago">· {ago}</span>
+		{#if canTravel && history && rev}
+			<div class="machine">
+				<div class="machine-head">
+					<Tag on>{t.pull}</Tag>
+					<Tag>{fill(t.railCount, { edits: history.edits, saved: history.revisions.length })}</Tag>
 				</div>
-				{#if note}
-					<p class="said">
-						“{note}”
-						<span class="said-tag">{t.notedThen}</span>
-					</p>
-				{:else}
-					<!-- An edit the author did not stop to annotate. Saying so is better
-					     than printing an empty pair of quotation marks. -->
-					<p class="unsaid">{t.noNote}</p>
-				{/if}
-			</div>
 
-			<div class="scars">
-				<button class="toggle" class:on={scars} onclick={() => onscars(!scars)}>
-					{scars ? t.scarsOn : t.scarsOff}
-				</button>
-				{#if travelling}
-					<button class="back" onclick={() => onpick(history.revisions.length - 1)}>
-						{t.backToNow}
+				<TimeRail {history} {index} {onpick} />
+
+				<div class="note">
+					<div class="when">
+						<span class="stamp">{rev.r} · {stamp}</span>
+						<span class="ago">· {ago}</span>
+					</div>
+					{#if note}
+						<p class="said">
+							“{note}”
+							<span class="said-tag">{t.notedThen}</span>
+						</p>
+					{:else}
+						<!-- An edit the author did not stop to annotate. Saying so is better
+						     than printing an empty pair of quotation marks. -->
+						<p class="unsaid">{t.noNote}</p>
+					{/if}
+				</div>
+
+				<div class="scars">
+					<button class="toggle" class:on={scars} onclick={() => onscars(!scars)}>
+						{scars ? t.scarsOn : t.scarsOff}
 					</button>
-				{/if}
-			</div>
+					{#if travelling}
+						<button class="back" onclick={() => onpick(history.revisions.length - 1)}>
+							{t.backToNow}
+						</button>
+					{/if}
+				</div>
 
-			<p class="scars-say">
-				{#if scars}
-					<!-- The legend is a sample, not a description: the two words the
-					     sentence names are drawn the way the layer draws them. It is split
-					     on its own placeholders rather than on the words, so neither
-					     locale's phrasing can break it. -->
-					{#each legend as piece (piece.at)}
-						{#if piece.mark === 'del'}<del>{t.struck}</del>
-						{:else if piece.mark === 'ins'}<ins>{t.added}</ins>
-						{:else}{piece.text}{/if}
-					{/each}
-				{:else}
-					{fill(t.scarsExplainOff, { r: rev.r })}
-				{/if}
-			</p>
-		</div>
+				<p class="scars-say">
+					{#if scars}
+						<!-- The legend is a sample, not a description: the two words the
+						     sentence names are drawn the way the layer draws them. It is
+						     split on its own placeholders rather than on the words, so
+						     neither locale's phrasing can break it. -->
+						{#each legend as piece (piece.at)}
+							{#if piece.mark === 'del'}<del>{t.struck}</del>
+							{:else if piece.mark === 'ins'}<ins>{t.added}</ins>
+							{:else}{piece.text}{/if}
+						{/each}
+					{:else}
+						{fill(t.scarsExplainOff, { r: rev.r })}
+					{/if}
+				</p>
+			</div>
+		{/if}
 	</div>
 
 	<div class="stands">
 		<div class="stands-head">
 			<Tag on>{t.whereItStands}</Tag>
-			{#if travelling}<Tag>{fill(t.asAt, { r: rev.r })}</Tag>{/if}
+			{#if travelling && rev}<Tag>{fill(t.asAt, { r: rev.r })}</Tag>{/if}
 		</div>
 		<SectionStates {sections} />
 		<dl class="facts">
 			<div><dt><Tag>{t.started}</Tag></dt><dd>{started}</dd></div>
-			<div><dt><Tag>{t.edits}</Tag></dt><dd>{rev.n}</dd></div>
+			{#if history && rev}
+				<div><dt><Tag>{t.edits}</Tag></dt><dd>{rev.n}</dd></div>
+			{/if}
 			<div>
 				<dt><Tag>{t.lengthNow}</Tag></dt>
 				<dd>
 					{fill(t.wordsN, { n: words.toLocaleString(i18n.lang === 'vi' ? 'vi-VN' : 'en-US') })}
 				</dd>
 			</div>
-			<div><dt><Tag>{t.finishBy}</Tag></dt><dd>{history.promise ?? t.noPromise}</dd></div>
+			<div><dt><Tag>{t.finishBy}</Tag></dt><dd>{open.promise ?? t.noPromise}</dd></div>
 		</dl>
 	</div>
 </section>
