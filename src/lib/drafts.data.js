@@ -12,10 +12,10 @@
  */
 export const DRAFTS = {
 	"003-pure-joy-vi": {
-		"edits": 5,
+		"edits": 6,
 		"startedAt": "2026-08-16",
 		"promise": "chưa hứa",
-		"current": "r05",
+		"current": "r06",
 		"revisions": [
 			{
 				"r": "r01",
@@ -1102,6 +1102,179 @@ export const DRAFTS = {
 							{
 								"t": "Bây giờ thử nhớ lại lần gần nhất bạn nói với chính mình rằng viết xong cái này thì sẽ có người đọc, chạy đủ tháng này thì sẽ đạt mục tiêu. Câu đó được nói ra trước hay sau khi bạn bắt đầu.",
 								"s": "del"
+							}
+						]
+					}
+				]
+			},
+			{
+				"r": "r06",
+				"n": 6,
+				"sha": "32a2d7a75",
+				"date": "2026-08-17T08:05:43+07:00",
+				"words": 802,
+				"note": "quay câu cuối về phía người đọc. còn mục V — chưa biết nói gì mà không thành lời khuyên.",
+				"sections": [
+					{
+						"label": "I. Ba nhóm trẻ và hộp bút màu",
+						"state": "editing"
+					},
+					{
+						"label": "II. Thứ khác nhau chỉ là một câu nói",
+						"state": "editing"
+					},
+					{
+						"label": "III. Biện minh quá mức",
+						"state": "editing"
+					},
+					{
+						"label": "IV. Nhóm thứ nhất, và mình",
+						"state": "editing"
+					},
+					{
+						"label": "V. Vậy thì làm gì với chuyện này",
+						"state": "notes",
+						"notes": [
+							"Nếu phần thưởng hỏng việc, chẳng lẽ không bao giờ được thưởng ai? Mình không tin thế, nhưng chưa nói được cho gọn.",
+							"Người lớn tự hứa với chính mình thì có tính là hợp đồng không? Thí nghiệm không trả lời chỗ này.",
+							"Cẩn thận: mục này rất dễ trượt thành một bài self-help. Nếu không viết được mà không lên giọng khuyên bảo thì bỏ hẳn."
+						]
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Năm 1973, trong một trường mẫu giáo ở Stanford, ba nhà nghiên cứu ngồi sau tấm kính một chiều, ngầm đếm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem trong giờ chơi tự do, đứa trẻ nào tự tìm tới hộp bút màu. Không ai yêu cầu, không ai chấm điểm, bút màu chỉ nằm đó cùng với đất nặn và mấy thứ khác. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm, tức là những đứa vốn đã thích vẽ."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được gọi ra ngoài, từng đứa một và chia làm ba nhóm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất được cho xem một tấm giấy khen có ngôi sao vàng và dải ruy băng đỏ, được hỏi rằng có muốn vẽ để nhận nó không. Chúng đồng ý, chúng vẽ, chúng nhận giấy khen. Nhóm thứ hai chỉ được mời vẽ, vẽ xong thì bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba chỉ vẽ và không nhận được gì cả."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một hai tuần sau, hộp bút màu quay lại lớp học, ba nhà nghiên cứu quay lại sau tấm kính, tiếp tục đếm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được hứa sẽ được thưởng gì. Những bức tranh chúng vẽ cũng bị chấm là kém hơn trước."
+							}
+						]
+					},
+					{
+						"kind": "aside",
+						"segs": [
+							{
+								"t": "Lepper, M. R., Greene, D., & Nisbett, R. E. (1973). _Undermining children's intrinsic interest with extrinsic reward: A test of the \"overjustification\" hypothesis_. Journal of Personality and Social Psychology, 28(1), 129-137. Trẻ từ 40 đến 64 tháng tuổi, quan sát trong giờ chơi tự do, không có sự hiện diện của người thí nghiệm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ hai thì không sao cả, chúng vẫn vẽ như cũ."
+							}
+						]
+					},
+					{
+						"kind": "fleuron",
+						"segs": [
+							{
+								"t": ""
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Cái khó chịu nằm ở chỗ nhóm thứ nhất và nhóm thứ hai nhận cùng một tấm giấy khen. Thứ duy nhất khác nhau là một lời hứa trước khi chúng chúng cầm bút vẽ."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này có nghĩa là cái gây hại không phải phần thưởng. Mà là lời hứa về phần thưởng đó."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Khi đứa trẻ đồng ý vẽ để lấy giấy khen, nó vừa ký một hợp đồng nhỏ, hợp đồng đó nói rằng vẽ là thứ người ta làm để đổi lấy cái khác. Sau đó nó nhìn lại chính mình đang ngồi vẽ và tự rút ra kết luận về lý do mình ngồi đó. Kết luận ấy không sai theo bất kỳ nghĩa nào. Nó chỉ vừa thay chỗ cho một kết luận khác mà đứa trẻ từng có, thứ mà không ai nói thành lời vì hồi đó chưa cần thành lời."
+							}
+						]
+					},
+					{
+						"kind": "quote",
+						"segs": [
+							{
+								"t": "Phần thưởng không mua thêm động lực. Nó dạy lại đứa trẻ cách xếp loại việc nó đang làm, cách xếp loại đó ở lại sau khi phần thưởng đã biến mất."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Đây là chỗ mà tên gọi của hiện tượng trở nên chính xác một cách hơi tàn nhẫn, biện minh quá mức (overjustification), không phải thiếu lý do, mà do có thừa lý do. _Có thêm một lý do bên ngoài đủ tốt thì lý do bên trong thành ra không cần thiết nữa_ và cái không cần thiết thì sẽ lu mờ dần."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này không có nghĩa là mọi vòng phản hồi đến từ bên ngoài đều độc hại. Một lời nói cho biết bạn vừa làm tốt chỗ nào là thông tin, thông tin không thay chỗ cho lý do. Chỉ có thứ đứng ra làm điều kiện, thứ được hứa trước và được đổi lấy, mới làm việc đó."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Mình nghĩ về nhóm thứ nhất nhiều hơn. Vốn ban đầu chúng thích vẽ và vẽ cũng chỉ vì thích, rồi khi vào thí nghiệm, không ai bắt chúng vẽ, không ai phạt, người lớn chỉ đưa ra một đề nghị nghe rất tử tế và chúng đồng ý. Rồi hai tuần sau, hộp bút màu nằm đó, chúng ít vẽ dần đi. Điều này cũng khá giống chúng ta, ban đầu vốn thích làm cái gì đó bởi vì lý do tự thân bên trong chúng hoặc bên trong chúng ta, nhưng rồi có những lý do khác bên ngoài xuất hiện, rồi thay thế vị trí đó, cụ thể với mình là **code**, từ đầu mình thích code vì chính nó, vì sự tò mò cá nhân, vì cảm giác tự tạo ra cái gì đó của riêng mình. Nhưng rồi vào môi trường chuyên nghiệp, với KPI, đo lường, performance, khen thưởng,...vv, mình ít thích code dần. Có lẽ có một \"lời hứa\" nào đó đã thế chỗ cho lý do nội tại bên trong mình."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Bạn hãy thử nhớ lại lần gần nhất bạn làm một việc gì đó chỉ vì chính nó hoặc chính bản thân bạn, có thể là đọc sách, học đàn, học vẽ, học võ, học bơi, leo núi,...vv."
 							}
 						]
 					}
