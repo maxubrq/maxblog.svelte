@@ -189,4 +189,37 @@ export const TERMS = {
 			],
 		},
 	},
+
+	/**
+	 * The vocabulary of essay 003 â one word, and the essay is named after it.
+	 *
+	 * `appearances` is empty on the English side and that is the honest state:
+	 * the word is defined here, but no English essay says it yet. The Vietnamese
+	 * side carries the appearance, with an empty `section` because the piece runs
+	 * without `##` headings â there is no station to name, and inventing one
+	 * would describe a shape the prose does not have.
+	 */
+	overjustification: {
+		term: 'overjustification',
+		pos: 'noun · psychology',
+		short:
+			'The fading of an interest someone already had, once an external reward is promised for it — the outside reason takes the place of the inside one.',
+		long: 'Named by Lepper, Greene and Nisbett in 1973, who took preschoolers already choosing to draw in free play and split them three ways: promised a certificate before drawing, given one unexpectedly afterwards, or given nothing. Two weeks later only the promised group drew less, and drew worse — and since that group and the surprise group both ended up holding the same certificate, the reward is not what did the damage. The promise is. The name is precise in an uncomfortable way: the problem is not too few reasons but too many. Given an external reason good enough to explain the behaviour, the internal one becomes unnecessary, and what is unnecessary fades.',
+		topic: 'Science',
+		appearances: [],
+		vi: {
+			term: 'biện minh quá mức',
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Sự nhạt đi của một hứng thú vốn đã có, sau khi người ta hứa một phần thưởng cho nó — lý do bên ngoài chiếm chỗ của lý do bên trong.',
+			long: 'Được Lepper, Greene và Nisbett đặt tên năm 1973, từ một thí nghiệm với các bé mẫu giáo vốn đã tự chọn vẽ trong giờ chơi tự do, chia làm ba nhóm: được hứa giấy khen trước khi vẽ, được tặng bất ngờ sau khi vẽ, và không có gì. Hai tuần sau chỉ nhóm được hứa là vẽ ít hẳn đi, và vẽ kém hơn — mà nhóm được hứa với nhóm được tặng bất ngờ đều cầm về cùng một tấm giấy khen, nên thứ gây hại không phải phần thưởng. Là lời hứa. Cái tên chính xác một cách khó chịu: vấn đề không phải thiếu lý do mà là thừa lý do. Có một lý do bên ngoài đủ tốt để giải thích hành vi rồi thì lý do bên trong thành ra không cần thiết nữa, và cái không cần thiết thì mờ dần.',
+			appearances: [
+				{
+					title: 'Niềm vui thuần túy và biện minh quá mức (overjustification)',
+					slug: '003-pure-jou-vi',
+					section: '',
+				},
+			],
+		},
+	},
 };

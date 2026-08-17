@@ -106,6 +106,27 @@ export const RESOURCES = [
 			},
 		],
 	},
+	{
+		id: 'lepper-overjustification-1973',
+		title:
+			'Undermining children’s intrinsic interest with extrinsic reward: A test of the “overjustification” hypothesis',
+		author: 'Lepper, Mark R.; Greene, David; Nisbett, Richard E.',
+		year: '1973',
+		type: 'paper',
+		topic: 'Science',
+		note: 'The experiment that named the effect. Preschoolers who already chose to draw were promised a certificate, surprised with one, or given nothing; two weeks later only the promised group had lost interest. Both rewarded groups held the same certificate, which is what isolates the promise rather than the reward as the thing that did the damage.',
+		url: 'https://www.researchgate.net/publication/281453299_Undermining_children\'s_intrinsic_interest_with_extrinsic_reward_A_test_of_the_overjustification_hypothesis',
+		vi: {
+			note: 'Thí nghiệm đã đặt tên cho hiện tượng. Những đứa trẻ mẫu giáo vốn đã tự chọn vẽ được hứa một tấm giấy khen, được tặng bất ngờ, hoặc không có gì; hai tuần sau chỉ nhóm được hứa là mất hứng thú. Cả hai nhóm có thưởng đều cầm về cùng một tấm giấy khen — đó là chỗ tách bạch được rằng thứ gây hại là lời hứa chứ không phải phần thưởng.',
+		},
+		appearsIn: [
+			{
+				slug: '003-pure-jou-vi',
+				title: 'Niềm vui thuần túy và biện minh quá mức (overjustification)',
+				locale: 'vi',
+			},
+		],
+	},
 ];
 
 /** id → resource, for the inline `<R>` citation mark. */
