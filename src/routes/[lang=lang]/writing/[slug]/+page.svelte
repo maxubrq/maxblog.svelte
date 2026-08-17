@@ -270,6 +270,11 @@
 			<OpenDraftHead
 				{history}
 				index={revIndex}
+				live={{
+					note: meta.openDraft?.note ?? '',
+					sections: meta.openDraft?.sections ?? [],
+					words: meta.words
+				}}
 				{scars}
 				onpick={pickRevision}
 				onscars={(on) => (scars = on)}
@@ -318,7 +323,11 @@
 
 			{#if revision}
 				<!-- What is still only notes, printed as notes. -->
-				<UnwrittenSections sections={revision.sections} at={revision.r} {travelling} />
+				<UnwrittenSections
+					sections={travelling ? revision.sections : (meta.openDraft?.sections ?? [])}
+					at={revision.r}
+					{travelling}
+				/>
 			{/if}
 
 			<!-- Finis. The mark a printed essay ends on, before the apparatus — an

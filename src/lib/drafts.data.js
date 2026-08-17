@@ -20,7 +20,6 @@ export const DRAFTS = {
 			{
 				"r": "r01",
 				"n": 1,
-				"sha": "6fa7e4cd7",
 				"date": "2026-08-16T19:49:27+07:00",
 				"words": 139,
 				"note": "mới chỉ có cái thí nghiệm. chưa biết mình muốn nói gì về nó.",
@@ -93,7 +92,6 @@ export const DRAFTS = {
 			{
 				"r": "r02",
 				"n": 2,
-				"sha": "b558d57c2",
 				"date": "2026-08-16T19:49:52+07:00",
 				"words": 349,
 				"note": "tìm ra rồi: khác nhau chỉ là một câu nói. cái gây hại là lời hứa, không phải phần thưởng.",
@@ -264,7 +262,6 @@ export const DRAFTS = {
 			{
 				"r": "r03",
 				"n": 3,
-				"sha": "9c564c389",
 				"date": "2026-08-16T19:50:26+07:00",
 				"words": 536,
 				"note": "có tên rồi: biện minh quá mức. thêm được câu về phản hồi — sợ người đọc tưởng mình bảo đừng khen ai bao giờ.",
@@ -425,7 +422,6 @@ export const DRAFTS = {
 			{
 				"r": "r04",
 				"n": 4,
-				"sha": "888a3335f",
 				"date": "2026-08-16T19:51:11+07:00",
 				"words": 667,
 				"note": "quay câu cuối về phía người đọc. còn mục V — chưa biết nói gì mà không thành lời khuyên.",
@@ -604,7 +600,6 @@ export const DRAFTS = {
 			{
 				"r": "r05",
 				"n": 5,
-				"sha": "a452647e9",
 				"date": "2026-08-17T08:02:35+07:00",
 				"words": 802,
 				"note": "quay câu cuối về phía người đọc. còn mục V — chưa biết nói gì mà không thành lời khuyên.",
@@ -1110,7 +1105,6 @@ export const DRAFTS = {
 			{
 				"r": "r06",
 				"n": 6,
-				"sha": "32a2d7a75",
 				"date": "2026-08-17T08:05:43+07:00",
 				"words": 802,
 				"note": "quay câu cuối về phía người đọc. còn mục V — chưa biết nói gì mà không thành lời khuyên.",

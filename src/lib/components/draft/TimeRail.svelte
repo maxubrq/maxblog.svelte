@@ -71,7 +71,7 @@
 				onclick={() => onpick(i)}
 				{onkeydown}
 			>
-				{rev.r}
+				{i === history.revisions.length - 1 ? t.now : rev.r}
 			</button>
 		{/each}
 	</div>

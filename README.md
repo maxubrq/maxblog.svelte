@@ -406,6 +406,50 @@ trackers, the reading memory, the nudge, the weather, the fore-edge and the whol
 that no longer exists is measuring the wrong text. The `■` is not printed at all — an open draft
 has not earned it.
 
+### The loop, per revision
+
+The rhythm is: write, pin a note, commit, amend. Nothing else is required, and
+nothing has to be remembered — the hooks are wired by `pnpm install` (`prepare`
+points `core.hooksPath` at `.githooks/`).
+
+1. **Edit the prose** in `content/posts/<slug>.mdx`.
+2. **Say where it stands** in the same file: `openDraft.note` for this save, and
+   move any section whose state changed. Leaving `note` empty is a real choice —
+   the commit still counts as an *edit* (a tick on the rail) but is not a *save*
+   a reader can stand on. Use it for a typo pass.
+3. **Commit.** The post-commit hook regenerates `src/lib/drafts.data.js` and
+   stages it, then asks for one command:
+
+   ```bash
+   git commit --amend --no-edit
+   ```
+
+   The amend fires the hook again, the script produces identical bytes, and it
+   goes quiet. That is why nothing generated keeps the commit's sha — a sha
+   changes under an amend, and the file would never settle.
+4. **Push.** The pre-commit hook refuses any *other* commit while the data module
+   is behind git, so a skipped amend cannot ship. A commit that touches a post is
+   exempt from that check, since its own revision cannot exist yet.
+
+Doing it by hand is the same thing without the hooks: `pnpm drafts` after the
+commit, `pnpm drafts:check` to ask whether the committed file is current.
+
+**What the page reads live, and what it reads from history.** The newest save's
+note, section states and length come from the post's own frontmatter and its
+build-time word count — not from the data module. So an edit in progress is
+already true on the page in `pnpm dev`, and a forgotten amend leaves the rail one
+stop short rather than describing the prose under it wrongly. The data module is
+only ever asked about the past, which is all it knows. The rail labels its last
+stop **now** rather than by id for the same reason: the live prose can be an edit
+or two past the last save that was annotated.
+
+### Finishing one
+
+There is no `done: true`. Set every section to `settled` and the piece stops
+being a draft on its own: `isSettled` lets it into the feed, and the head has
+nothing left to report. Delete the `openDraft` block when you want the furniture
+gone as well — the history stays in git either way.
+
 ### What it costs the rest of the site
 
 - **The archive** lists it with `still being written` where the reading minutes would be.

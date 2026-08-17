@@ -434,7 +434,11 @@ const en = {
 		noPromise: 'no promise',
 		pull: 'Pull the piece back to a moment',
 		railCount: '{edits} edits · {saved} saved',
+		/* The newest stop is labelled "now" rather than by its id: the live prose
+		   can be an edit or two past the last save the author annotated. */
+		now: 'now',
 		notedThen: 'noted while editing',
+		noNote: 'no note pinned to this save',
 		backToNow: 'back to now →',
 		scarsOn: 'scar layer · on',
 		scarsOff: 'scar layer · off',
@@ -1101,7 +1105,9 @@ const vi: typeof en = {
 		noPromise: 'chưa hứa',
 		pull: 'Kéo bài về một thời điểm',
 		railCount: '{edits} lần sửa · {saved} bản được lưu',
+		now: 'hiện tại',
 		notedThen: 'ghi lúc sửa',
+		noNote: 'không ghi chú gì ở bản này',
 		backToNow: 'về hiện tại →',
 		scarsOn: 'lớp vết sửa · đang bật',
 		scarsOff: 'lớp vết sửa · đang tắt',

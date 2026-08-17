@@ -76,8 +76,11 @@ export interface Revision {
 	r: string;
 	/** Which edit of the piece this was, counting every commit. */
 	n: number;
-	sha: string;
-	/** ISO timestamp of the commit that saved it. */
+	/**
+	 * ISO timestamp of the commit that saved it. Deliberately the only thing
+	 * kept from the commit — a sha would change under `git commit --amend`, and
+	 * the post-commit hook amends, so the generated file would never settle.
+	 */
 	date: string;
 	words: number;
 	note: string;

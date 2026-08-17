@@ -9,24 +9,34 @@
 	 * the section table and the word count: standing at an old save and reading
 	 * today's verdict about it would be the one dishonesty this feature exists
 	 * to avoid.
+	 *
+	 * The one exception is the *newest* save, whose note, sections and length are
+	 * taken from `live` — the post's own frontmatter and its build-time word
+	 * count — rather than from the data module. The two agree whenever
+	 * `scripts/drafts.mjs` has been re-run, and when it has not, this is what
+	 * keeps the head from describing the prose printed under it wrongly. The
+	 * history is then only ever asked about the past, which is all it knows.
 	 */
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import DraftFlag from './DraftFlag.svelte';
 	import SectionStates from './SectionStates.svelte';
 	import TimeRail from './TimeRail.svelte';
-	import type { DraftHistory } from '$lib/drafts';
+	import type { DraftHistory, DraftSection } from '$lib/drafts';
 	import { fill, useI18n } from '$lib/i18n';
 	import { lastSeen } from '$lib/reading-memory';
 
 	let {
 		history,
 		index,
+		live,
 		scars,
 		onpick,
 		onscars
 	}: {
 		history: DraftHistory;
 		index: number;
+		/** The piece as it stands in the working tree — see the note above. */
+		live: { note: string; sections: DraftSection[]; words: number };
 		scars: boolean;
 		onpick: (i: number) => void;
 		onscars: (on: boolean) => void;
@@ -37,6 +47,9 @@
 
 	const rev = $derived(history.revisions[index]);
 	const travelling = $derived(rev.r !== history.current);
+	const note = $derived(travelling ? rev.note : live.note);
+	const sections = $derived(travelling ? rev.sections : live.sections);
+	const words = $derived(travelling ? rev.words : live.words);
 	const ago = $derived(lastSeen(Date.parse(rev.date), i18n.t.readingMemory, i18n.lang));
 	const stamp = $derived(
 		new Date(rev.date).toLocaleDateString(i18n.lang === 'vi' ? 'vi-VN' : 'en-US', {
@@ -83,10 +96,16 @@
 					<span class="stamp">{rev.r} · {stamp}</span>
 					<span class="ago">· {ago}</span>
 				</div>
-				<p class="said">
-					“{rev.note}”
-					<span class="said-tag">{t.notedThen}</span>
-				</p>
+				{#if note}
+					<p class="said">
+						“{note}”
+						<span class="said-tag">{t.notedThen}</span>
+					</p>
+				{:else}
+					<!-- An edit the author did not stop to annotate. Saying so is better
+					     than printing an empty pair of quotation marks. -->
+					<p class="unsaid">{t.noNote}</p>
+				{/if}
 			</div>
 
 			<div class="scars">
@@ -123,14 +142,14 @@
 			<Tag on>{t.whereItStands}</Tag>
 			{#if travelling}<Tag>{fill(t.asAt, { r: rev.r })}</Tag>{/if}
 		</div>
-		<SectionStates sections={rev.sections} />
+		<SectionStates {sections} />
 		<dl class="facts">
 			<div><dt><Tag>{t.started}</Tag></dt><dd>{started}</dd></div>
 			<div><dt><Tag>{t.edits}</Tag></dt><dd>{rev.n}</dd></div>
 			<div>
 				<dt><Tag>{t.lengthNow}</Tag></dt>
 				<dd>
-					{fill(t.wordsN, { n: rev.words.toLocaleString(i18n.lang === 'vi' ? 'vi-VN' : 'en-US') })}
+					{fill(t.wordsN, { n: words.toLocaleString(i18n.lang === 'vi' ? 'vi-VN' : 'en-US') })}
 				</dd>
 			</div>
 			<div><dt><Tag>{t.finishBy}</Tag></dt><dd>{history.promise ?? t.noPromise}</dd></div>
@@ -224,6 +243,14 @@
 		line-height: 1.55;
 		color: var(--ink);
 		font-style: italic;
+	}
+	.unsaid {
+		margin: 0;
+		font-family: var(--mono);
+		font-size: 10.5px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--faint);
 	}
 	.said-tag {
 		margin-left: 10px;

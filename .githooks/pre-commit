@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Refuse to ship a stale draft history.
+#
+# `src/lib/drafts.data.js` is generated from git and committed, so it can fall
+# behind — after a revert, a rebase, or a prose commit whose amend was skipped.
+# The head of the draft would then print a rail missing its newest stop.
+#
+# A commit that itself touches a post is exempt: its own revision cannot exist
+# in the history yet, and the post-commit hook regenerates it a moment later.
+
+set -e
+
+git diff --cached --name-only | grep -q '^content/posts/.*\.mdx$' && exit 0
+
+node scripts/drafts.mjs --check >/dev/null 2>&1 && exit 0
+
+printf '\n  src/lib/drafts.data.js is behind git.\n'
+printf '  Run:  pnpm drafts  and include the result in this commit.\n'
+printf '  (Or:  git commit --no-verify  to skip this check.)\n\n'
+exit 1

@@ -4,6 +4,7 @@
  *
  *     node scripts/drafts.mjs            # every post carrying `openDraft:`
  *     node scripts/drafts.mjs 003-pure-joy-vi
+ *     node scripts/drafts.mjs --check    # is the committed data module current?
  *
  * Writes `src/lib/drafts.data.js` and expects the result to be **committed**,
  * exactly like `scripts/halftone.mjs` commits its plates. Reading git at build
@@ -345,7 +346,6 @@ function revisionsOf(slug) {
 		revisions.push({
 			r: `r${String(n).padStart(2, '0')}`,
 			n,
-			sha: sha.slice(0, 9),
 			date,
 			words: words(paras),
 			note: open.note,
@@ -372,7 +372,15 @@ function revisionsOf(slug) {
 
 /* ── run ─────────────────────────────────────────────────────────────────── */
 
-const asked = process.argv.slice(2);
+const argv = process.argv.slice(2);
+/**
+ * `--check` writes nothing and exits non-zero when the data module disagrees
+ * with git. The failure it exists to catch is a quiet one: commit a revision,
+ * forget to re-run this, and the rail is missing a stop nobody notices. Run it
+ * beside `check-anchors.mjs`.
+ */
+const checking = argv.includes('--check');
+const asked = argv.filter((a) => !a.startsWith('--'));
 const slugs = asked.length
 	? asked.map((s) => s.replace(/\.mdx$/, ''))
 	: fs
@@ -406,5 +414,20 @@ const banner = `/**
  */
 `;
 
-fs.writeFileSync(OUT, `${banner}export const DRAFTS = ${JSON.stringify(drafts, null, '\t')};\n`);
-console.log(`→ ${OUT}`);
+const written = `${banner}export const DRAFTS = ${JSON.stringify(drafts, null, '\t')};\n`;
+
+if (checking) {
+	const current = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
+	if (current !== written) {
+		console.error(
+			`\n${OUT} is behind git. Run \`pnpm drafts\` and commit the result.\n` +
+				'Until then the head of the draft and its rail describe an older text\n' +
+				'than the prose printed under them.'
+		);
+		process.exit(1);
+	}
+	console.log(`✓ ${OUT} is current.`);
+} else {
+	fs.writeFileSync(OUT, written);
+	console.log(`→ ${OUT}`);
+}

@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# An open draft's history lives in git, so it can only be read *after* the
+# commit exists — which is why this is a post-commit hook and not a pre-commit
+# one. Commit the prose, and this regenerates `src/lib/drafts.data.js` and
+# stages it; one `git commit --amend --no-edit` folds it into the same commit.
+#
+# It converges: the amend fires this hook again, the script produces the same
+# bytes (nothing generated depends on the sha, and `--amend` keeps the author
+# date), so the second run has nothing to say.
+
+set -e
+
+# Never rewrite anything mid-rebase or mid-merge: the commit being made is not
+# the author's to amend, and staging into it would be a surprise.
+git rev-parse --verify --quiet MERGE_HEAD >/dev/null 2>&1 && exit 0
+[ -d "$(git rev-parse --git-path rebase-merge)" ] && exit 0
+[ -d "$(git rev-parse --git-path rebase-apply)" ] && exit 0
+
+# Only when the commit actually touched a post.
+git diff-tree --no-commit-id --name-only -r HEAD | grep -q '^content/posts/.*\.mdx$' || exit 0
+
+DATA="src/lib/drafts.data.js"
+BEFORE=$(git hash-object "$DATA" 2>/dev/null || echo none)
+
+node scripts/drafts.mjs >/dev/null
+
+AFTER=$(git hash-object "$DATA" 2>/dev/null || echo none)
+[ "$BEFORE" = "$AFTER" ] && exit 0
+
+git add "$DATA"
+printf '\n  drafts.data.js regenerated and staged — the commit does not have it yet.\n'
+printf '  Fold it in:  git commit --amend --no-edit\n\n'
