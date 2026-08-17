@@ -619,6 +619,70 @@ Two things to hold on to:
 - It only depends on `node:zlib`, and only reads 8-bit non-interlaced RGB/RGBA/greyscale PNG (no
   palette). `sips -s format png in.jpg --out in.png` on macOS produces an acceptable input.
 
+## Video
+
+Two plates, one for a Mux stream and one for a YouTube video, both usable in any
+post with no import: `<MuxVideo playbackId="…" />` and `<YouTubeVideo id="…" />`.
+They share `VideoPlate`, which is `DiagramPlate`'s frame, so a video reads as a
+figure in the essay rather than as an embed dropped into it — and the reader's
+`framing` setting spaces them like every other plate.
+
+**Neither fetches anything until the reader asks.** The Mux element carries
+`preload="none"` and no `src`; the YouTube plate is not an iframe at all until it
+is pressed. What a reader who scrolls past pays is one poster image, or nothing.
+
+```mdx
+<MuxVideo playbackId="A3VXy02…" caption="The rig, running" title="A bench test" />
+<YouTubeVideo id="dQw4w9WgXcQ" poster="https://res.cloudinary.com/…" start={42} />
+```
+
+Both take `label`, `hint`, `caption`, `ratio`, `poster` and `title` (the spoken
+description). `MuxVideo` adds `posterTime` and `loop`; `YouTubeVideo` adds
+`start`.
+
+### Mux
+
+`hls.js` is a dependency but not a cost: it is `import()`ed by the first press,
+the same discipline `ReaderMarks` uses for rough.js. Safari and iOS never load it
+— they play HLS themselves.
+
+Two traps are worth knowing, because both fail *silently* and cost an afternoon:
+
+- **`canPlayType` must be compared against `'probably'`.** Chrome answers
+  `'maybe'` for `application/vnd.apple.mpegurl` and then cannot play a playlist
+  at all. Trusting a truthy answer leaves the element at readyState 0 for ever,
+  playing nothing, with no error to report.
+- **A hidden tab will not open a MediaSource.** If you are debugging playback
+  through an automated browser, check `document.visibilityState` before you
+  suspect your own code: in a background tab hls.js parses the manifest, attaches
+  the blob, and then waits for a `sourceopen` that never comes.
+
+The controls are the site's own, because Mux's player brings rounded corners, a
+gradient and a brand hue into a printed object. The scrub rail is deliberately
+the draft's time rail again — a hairline, a blue run, a 9px square where you are
+standing. A fatal hls.js error swaps the stage for a hatch plate that says so,
+and the bar goes away with it.
+
+The poster is `image.mux.com/{playbackId}/thumbnail.jpg` unless `poster` says
+otherwise, and a poster that 404s falls back to the hatch rather than to a broken
+image frame.
+
+### YouTube
+
+The plate you see before pressing play is ours: no iframe, no script, no image
+from a Google host. The embed is built on the press, against
+`youtube-nocookie.com`, and the foot line says which of those two states you are
+in. There is also always a plain link out, for a reader who would rather not load
+the embed at all.
+
+**The poster is a hatch plate, not YouTube's own thumbnail**, and that is the
+whole point: `i.ytimg.com` is a request to Google, which would break the promise
+the facade exists to keep. Pass `poster` to put a real still there — your own
+frame grab, from wherever the rest of the media is served.
+
+Nothing about the player can be styled once the iframe is in. The plate around it
+is what keeps a video looking like part of the essay.
+
 ## i18n
 
 Every page lives under a locale prefix — `/en/…` and `/vi/…`, matched by `src/params/lang.ts`.

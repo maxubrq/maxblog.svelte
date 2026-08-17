@@ -14,6 +14,9 @@ export { default as Sidenote } from './components/article/Sidenote.svelte';
 export { default as Term } from './components/article/Term.svelte';
 export { default as WeatherStrip } from './components/article/WeatherStrip.svelte';
 export { default as Figure } from './components/ink/DuoPhoto.svelte';
+// Video. Both stand in the same plate; neither loads anything until asked.
+export { default as MuxVideo } from './components/media/MuxVideo.svelte';
+export { default as YouTubeVideo } from './components/media/YouTubeVideo.svelte';
 // Live figures. The Float* four are placeholders until the production React
 // sims are rewritten in Svelte.
 export { default as FloatBuilder } from './components/interactive/FloatBuilder.svelte';

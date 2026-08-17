@@ -27,13 +27,15 @@ export const KIT_COMPONENTS = [
 	'FloatVsFixed',
 	'Footnote',
 	'LinkPreview',
+	'MuxVideo',
 	'OneSentence',
 	'PullQuote',
 	'R',
 	'Sidenote',
 	'Term',
 	'Terminal',
-	'WeatherStrip'
+	'WeatherStrip',
+	'YouTubeVideo'
 ];
 
 const IMPORT_LINE = `import { ${KIT_COMPONENTS.join(', ')} } from '${KIT}';`;

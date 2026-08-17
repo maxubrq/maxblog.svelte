@@ -456,6 +456,32 @@ const en = {
 		revisionOf: 'version {r} of {total}'
 	},
 	/** The letter box the apparatus ends on — see `ReflectionPrompt`. */
+	/**
+	 * The two video plates (ink). Neither player exists in the design project —
+	 * the chrome is `DiagramPlate`'s, so a video reads as a figure in the essay.
+	 */
+	video: {
+		mux: 'Video',
+		youtube: 'Video · YouTube',
+		play: 'play',
+		pause: 'pause',
+		mute: 'mute',
+		unmute: 'unmute',
+		/** The sound key's own face — a word, not an icon. */
+		soundOn: 'sound',
+		soundOff: 'muted',
+		seek: 'move through the video',
+		fullscreen: 'full screen',
+		loading: 'loading…',
+		failed: 'this video could not be loaded',
+		/** Said on the plate before the embed is built — see `YouTubeVideo`. */
+		notLoaded: 'not loaded yet',
+		facadePlay: 'play on youtube',
+		facadeNote:
+			'Nothing has been asked of YouTube yet. Press play and the player loads from youtube-nocookie.com.',
+		loadedFrom: 'Playing from youtube-nocookie.com.',
+		watchOn: 'open on youtube →'
+	},
 	reflection: {
 		label: 'a quiet word to the author',
 		/** One per essay, picked by its slug — production's three questions. */
@@ -1120,6 +1146,26 @@ const vi: typeof en = {
 		lastTouched: 'chạm lần cuối {ago}',
 		indexMark: 'đang còn sửa',
 		revisionOf: 'bản {r} trong {total}'
+	},
+	video: {
+		mux: 'Video',
+		youtube: 'Video · YouTube',
+		play: 'phát',
+		pause: 'tạm dừng',
+		mute: 'tắt tiếng',
+		unmute: 'bật tiếng',
+		soundOn: 'có tiếng',
+		soundOff: 'đã tắt',
+		seek: 'di chuyển trong video',
+		fullscreen: 'toàn màn hình',
+		loading: 'đang tải…',
+		failed: 'không tải được video này',
+		notLoaded: 'chưa tải',
+		facadePlay: 'phát trên youtube',
+		facadeNote:
+			'Chưa có gì được hỏi tới YouTube. Bấm phát thì player mới tải từ youtube-nocookie.com.',
+		loadedFrom: 'Đang phát từ youtube-nocookie.com.',
+		watchOn: 'mở trên youtube →'
 	},
 	reflection: {
 		label: 'một lời riêng cho tác giả',
