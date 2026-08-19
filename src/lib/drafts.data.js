@@ -10,4 +10,1921 @@
  *
  * @type {import('./drafts').Drafts}
  */
-export const DRAFTS = {};
+export const DRAFTS = {
+	"003-pure-joy-vi": {
+		"edits": 11,
+		"startedAt": "2026-08-17",
+		"promise": "không hứa",
+		"current": "r11",
+		"revisions": [
+			{
+				"r": "r01",
+				"n": 1,
+				"date": "2026-08-16T19:49:27+07:00",
+				"words": 139,
+				"note": "mới chỉ có cái thí nghiệm. chưa biết mình muốn nói gì về nó.",
+				"sections": [
+					{
+						"label": "I. Ba nhóm trẻ và hộp bút màu",
+						"state": "editing"
+					},
+					{
+						"label": "II. Thứ khác nhau chỉ là một câu nói",
+						"state": "notes"
+					},
+					{
+						"label": "III. Biện minh quá mức",
+						"state": "notes"
+					},
+					{
+						"label": "IV. Nhóm thứ nhất, và mình",
+						"state": "notes"
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Năm 1973, trong một trường mẫu giáo ở Stanford, ba nhà nghiên cứu ngồi sau tấm kính một chiều và đếm.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem đứa trẻ nào tự tìm tới hộp bút màu trong giờ chơi tự do. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được chia làm ba nhóm. Nhóm thứ nhất được hứa một tấm giấy khen nếu chịu vẽ. Nhóm thứ hai vẽ xong mới bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba vẽ, và không có gì cả.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Hai tuần sau, hộp bút màu quay lại lớp học. Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được thưởng gì.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "(ghi chú: đừng kể xong rồi đi giảng bài. tìm cho ra chỗ khó chịu thật sự nằm ở đâu.)",
+								"s": "ins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"r": "r02",
+				"n": 2,
+				"date": "2026-08-16T19:49:52+07:00",
+				"words": 349,
+				"note": "tìm ra rồi: khác nhau chỉ là một câu nói. cái gây hại là lời hứa, không phải phần thưởng.",
+				"sections": [
+					{
+						"label": "I. Ba nhóm trẻ và hộp bút màu",
+						"state": "settled"
+					},
+					{
+						"label": "II. Thứ khác nhau chỉ là một câu nói",
+						"state": "editing"
+					},
+					{
+						"label": "III. Biện minh quá mức",
+						"state": "notes"
+					},
+					{
+						"label": "IV. Nhóm thứ nhất, và mình",
+						"state": "notes"
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Năm 1973, trong một trường mẫu giáo ở Stanford, ba nhà nghiên cứu ngồi sau tấm kính một chiều và đếm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem đứa trẻ nào tự tìm tới hộp bút màu trong giờ chơi tự do. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem trong giờ chơi tự do, đứa trẻ nào tự tìm tới hộp bút màu. Không ai yêu cầu, không ai chấm điểm, bút màu chỉ nằm đó cùng với đất nặn và mấy thứ khác. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm, tức là những đứa vốn đã thích vẽ.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được gọi ra ngoài, từng đứa một, và chia làm ba nhóm.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được chia làm ba nhóm. Nhóm thứ nhất được hứa một tấm giấy khen nếu chịu vẽ. Nhóm thứ hai vẽ xong mới bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba vẽ, và không có gì cả.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất được cho xem một tấm giấy khen có ngôi sao vàng và dải ruy băng đỏ, được hỏi có muốn vẽ để nhận nó không. Chúng đồng ý, chúng vẽ, chúng nhận giấy khen. Nhóm thứ hai chỉ được mời vẽ, vẽ xong thì bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba vẽ, và không có gì cả.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một hai tuần sau, hộp bút màu quay lại lớp học, ba nhà nghiên cứu quay lại sau tấm kính, và đếm tiếp.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Hai tuần sau, hộp bút màu quay lại lớp học. Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được thưởng gì.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được thưởng gì. Những bức chúng vẽ cũng bị chấm là kém hơn trước.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "aside",
+						"segs": [
+							{
+								"t": "Lepper, M. R., Greene, D., & Nisbett, R. E. (1973). _Undermining children's intrinsic interest with extrinsic reward: A test of the \"overjustification\" hypothesis_. Journal of Personality and Social Psychology, 28(1), 129-137. Trẻ từ 40 đến 64 tháng tuổi, quan sát trong giờ chơi tự do, không có sự hiện diện của người thí nghiệm.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ hai thì không sao cả. Vẫn vẽ như cũ.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "fleuron",
+						"segs": [
+							{
+								"t": "",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Chỗ khó chịu nằm ở đây. Nhóm thứ nhất và nhóm thứ hai nhận cùng một tấm giấy khen, cùng ngôi sao vàng, cùng dải ruy băng. Thứ duy nhất khác nhau là một câu nói, và câu đó được nói ra trước khi đứa trẻ cầm bút.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nghĩa là cái gây hại không phải phần thưởng. Là lời hứa.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "(ghi chú: chỗ này cần một cái tên. hiện tượng này chắc chắn có tên rồi.)",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "(ghi chú: đừng kể xong rồi đi giảng bài. tìm cho ra chỗ khó chịu thật sự nằm ở đâu.)",
+								"s": "del"
+							}
+						]
+					}
+				]
+			},
+			{
+				"r": "r03",
+				"n": 3,
+				"date": "2026-08-16T19:50:26+07:00",
+				"words": 536,
+				"note": "có tên rồi: biện minh quá mức. thêm được câu về phản hồi — sợ người đọc tưởng mình bảo đừng khen ai bao giờ.",
+				"sections": [
+					{
+						"label": "I. Ba nhóm trẻ và hộp bút màu",
+						"state": "settled"
+					},
+					{
+						"label": "II. Thứ khác nhau chỉ là một câu nói",
+						"state": "settled"
+					},
+					{
+						"label": "III. Biện minh quá mức",
+						"state": "editing"
+					},
+					{
+						"label": "IV. Nhóm thứ nhất, và mình",
+						"state": "notes"
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Năm 1973, trong một trường mẫu giáo ở Stanford, ba nhà nghiên cứu ngồi sau tấm kính một chiều và đếm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem trong giờ chơi tự do, đứa trẻ nào tự tìm tới hộp bút màu. Không ai yêu cầu, không ai chấm điểm, bút màu chỉ nằm đó cùng với đất nặn và mấy thứ khác. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm, tức là những đứa vốn đã thích vẽ."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được gọi ra ngoài, từng đứa một, và chia làm ba nhóm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất được cho xem một tấm giấy khen có ngôi sao vàng và dải ruy băng đỏ, được hỏi có muốn vẽ để nhận nó không. Chúng đồng ý, chúng vẽ, chúng nhận giấy khen. Nhóm thứ hai chỉ được mời vẽ, vẽ xong thì bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba vẽ, và không có gì cả."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một hai tuần sau, hộp bút màu quay lại lớp học, ba nhà nghiên cứu quay lại sau tấm kính, và đếm tiếp."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được thưởng gì. Những bức chúng vẽ cũng bị chấm là kém hơn trước."
+							}
+						]
+					},
+					{
+						"kind": "aside",
+						"segs": [
+							{
+								"t": "Lepper, M. R., Greene, D., & Nisbett, R. E. (1973). _Undermining children's intrinsic interest with extrinsic reward: A test of the \"overjustification\" hypothesis_. Journal of Personality and Social Psychology, 28(1), 129-137. Trẻ từ 40 đến 64 tháng tuổi, quan sát trong giờ chơi tự do, không có sự hiện diện của người thí nghiệm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ hai thì không sao cả. Vẫn vẽ như cũ."
+							}
+						]
+					},
+					{
+						"kind": "fleuron",
+						"segs": [
+							{
+								"t": ""
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Chỗ khó chịu nằm ở đây. Nhóm thứ nhất và nhóm thứ hai nhận cùng một tấm giấy khen, cùng ngôi sao vàng, cùng dải ruy băng. Thứ duy nhất khác nhau là một câu nói, và câu đó được nói ra trước khi đứa trẻ cầm bút."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nghĩa là cái gây hại không phải phần thưởng. Là lời hứa."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Khi đứa trẻ đồng ý vẽ để lấy giấy khen, nó vừa ký một hợp đồng nhỏ, và hợp đồng đó nói rằng vẽ là thứ người ta làm để đổi lấy cái khác. Sau đó nó nhìn lại chính mình đang ngồi vẽ và tự rút ra kết luận về lý do mình ngồi đó.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "quote",
+						"segs": [
+							{
+								"t": "Phần thưởng không mua thêm động lực. Nó dạy lại đứa trẻ cách xếp loại việc nó đang làm, và cách xếp loại đó ở lại sau khi phần thưởng đã biến mất.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Đây là chỗ mà tên gọi của hiện tượng trở nên chính xác một cách hơi tàn nhẫn. Biện minh quá mức. Không phải thiếu lý do, mà thừa lý do. Có thêm một lý do bên ngoài đủ tốt, thì lý do bên trong thành ra không cần thiết nữa, và cái không cần thiết thì mờ dần.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này không có nghĩa là mọi phản hồi đều độc hại. Một lời nói cho biết bạn vừa làm tốt chỗ nào là thông tin, và thông tin không thay chỗ của lý do. Chỉ có thứ đứng ra làm điều kiện, thứ được hứa trước và được đổi lấy, mới làm việc đó.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "(ghi chú: chỗ này cần một cái tên. hiện tượng này chắc chắn có tên rồi.)",
+								"s": "del"
+							}
+						]
+					}
+				]
+			},
+			{
+				"r": "r04",
+				"n": 4,
+				"date": "2026-08-16T19:51:11+07:00",
+				"words": 667,
+				"note": "quay câu cuối về phía người đọc. còn mục V — chưa biết nói gì mà không thành lời khuyên.",
+				"sections": [
+					{
+						"label": "I. Ba nhóm trẻ và hộp bút màu",
+						"state": "settled"
+					},
+					{
+						"label": "II. Thứ khác nhau chỉ là một câu nói",
+						"state": "settled"
+					},
+					{
+						"label": "III. Biện minh quá mức",
+						"state": "settled"
+					},
+					{
+						"label": "IV. Nhóm thứ nhất, và mình",
+						"state": "editing"
+					},
+					{
+						"label": "V. Vậy thì làm gì với chuyện này",
+						"state": "notes",
+						"notes": [
+							"Nếu phần thưởng hỏng việc, chẳng lẽ không bao giờ được thưởng ai? Mình không tin thế, nhưng chưa nói được cho gọn.",
+							"Người lớn tự hứa với chính mình thì có tính là hợp đồng không? Thí nghiệm không trả lời chỗ này.",
+							"Cẩn thận: mục này rất dễ trượt thành một bài self-help. Nếu không viết được mà không lên giọng khuyên bảo thì bỏ hẳn."
+						]
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Năm 1973, trong một trường mẫu giáo ở Stanford, ba nhà nghiên cứu ngồi sau tấm kính một chiều và đếm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem trong giờ chơi tự do, đứa trẻ nào tự tìm tới hộp bút màu. Không ai yêu cầu, không ai chấm điểm, bút màu chỉ nằm đó cùng với đất nặn và mấy thứ khác. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm, tức là những đứa vốn đã thích vẽ."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được gọi ra ngoài, từng đứa một, và chia làm ba nhóm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất được cho xem một tấm giấy khen có ngôi sao vàng và dải ruy băng đỏ, được hỏi có muốn vẽ để nhận nó không. Chúng đồng ý, chúng vẽ, chúng nhận giấy khen. Nhóm thứ hai chỉ được mời vẽ, vẽ xong thì bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba vẽ, và không có gì cả."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một hai tuần sau, hộp bút màu quay lại lớp học, ba nhà nghiên cứu quay lại sau tấm kính, và đếm tiếp."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được thưởng gì. Những bức chúng vẽ cũng bị chấm là kém hơn trước."
+							}
+						]
+					},
+					{
+						"kind": "aside",
+						"segs": [
+							{
+								"t": "Lepper, M. R., Greene, D., & Nisbett, R. E. (1973). _Undermining children's intrinsic interest with extrinsic reward: A test of the \"overjustification\" hypothesis_. Journal of Personality and Social Psychology, 28(1), 129-137. Trẻ từ 40 đến 64 tháng tuổi, quan sát trong giờ chơi tự do, không có sự hiện diện của người thí nghiệm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ hai thì không sao cả. Vẫn vẽ như cũ."
+							}
+						]
+					},
+					{
+						"kind": "fleuron",
+						"segs": [
+							{
+								"t": ""
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Chỗ khó chịu nằm ở đây. Nhóm thứ nhất và nhóm thứ hai nhận cùng một tấm giấy khen, cùng ngôi sao vàng, cùng dải ruy băng. Thứ duy nhất khác nhau là một câu nói, và câu đó được nói ra trước khi đứa trẻ cầm bút."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nghĩa là cái gây hại không phải phần thưởng. Là lời hứa."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Khi đứa trẻ đồng ý vẽ để lấy giấy khen, nó vừa ký một hợp đồng nhỏ, và hợp đồng đó nói rằng vẽ là thứ người ta làm để đổi lấy cái khác. Sau đó nó nhìn lại chính mình đang ngồi vẽ và tự rút ra kết luận về lý do mình ngồi đó."
+							},
+							{
+								"t": " Kết luận ấy không sai theo bất kỳ nghĩa nào. Nó chỉ vừa thay chỗ cho một kết luận khác mà đứa trẻ từng có, thứ mà không ai nói thành lời vì hồi đó chưa cần thành lời.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "quote",
+						"segs": [
+							{
+								"t": "Phần thưởng không mua thêm động lực. Nó dạy lại đứa trẻ cách xếp loại việc nó đang làm, và cách xếp loại đó ở lại sau khi phần thưởng đã biến mất."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Đây là chỗ mà tên gọi của hiện tượng trở nên chính xác một cách hơi tàn nhẫn. Biện minh quá mức. Không phải thiếu lý do, mà thừa lý do. Có thêm một lý do bên ngoài đủ tốt, thì lý do bên trong thành ra không cần thiết nữa, và cái không cần thiết thì mờ dần."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này không có nghĩa là mọi phản hồi đều độc hại. Một lời nói cho biết bạn vừa làm tốt chỗ nào là thông tin, và thông tin không thay chỗ của lý do. Chỉ có thứ đứng ra làm điều kiện, thứ được hứa trước và được đổi lấy, mới làm việc đó."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Mình nghĩ về nhóm thứ nhất nhiều hơn mình muốn. Không ai bắt chúng vẽ, không ai phạt chúng, người lớn chỉ đưa ra một đề nghị nghe rất tử tế và chúng đồng ý. Rồi hai tuần sau, hộp bút màu nằm đó, và chúng đi qua.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Bây giờ thử nhớ lại lần gần nhất bạn nói với chính mình rằng viết xong cái này thì sẽ có người đọc, chạy đủ tháng này thì sẽ đạt mục tiêu. Câu đó được nói ra trước hay sau khi bạn bắt đầu.",
+								"s": "ins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"r": "r05",
+				"n": 5,
+				"date": "2026-08-17T08:02:35+07:00",
+				"words": 802,
+				"note": "quay câu cuối về phía người đọc. còn mục V — chưa biết nói gì mà không thành lời khuyên.",
+				"sections": [
+					{
+						"label": "I. Ba nhóm trẻ và hộp bút màu",
+						"state": "settled"
+					},
+					{
+						"label": "II. Thứ khác nhau chỉ là một câu nói",
+						"state": "settled"
+					},
+					{
+						"label": "III. Biện minh quá mức",
+						"state": "settled"
+					},
+					{
+						"label": "IV. Nhóm thứ nhất, và mình",
+						"state": "editing"
+					},
+					{
+						"label": "V. Vậy thì làm gì với chuyện này",
+						"state": "notes",
+						"notes": [
+							"Nếu phần thưởng hỏng việc, chẳng lẽ không bao giờ được thưởng ai? Mình không tin thế, nhưng chưa nói được cho gọn.",
+							"Người lớn tự hứa với chính mình thì có tính là hợp đồng không? Thí nghiệm không trả lời chỗ này.",
+							"Cẩn thận: mục này rất dễ trượt thành một bài self-help. Nếu không viết được mà không lên giọng khuyên bảo thì bỏ hẳn."
+						]
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Năm 1973, trong một trường mẫu giáo ở Stanford, ba nhà nghiên cứu ngồi sau tấm kính một "
+							},
+							{
+								"t": "chiều",
+								"s": "del"
+							},
+							{
+								"t": "chiều,",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "và",
+								"s": "del"
+							},
+							{
+								"t": "ngầm",
+								"s": "ins"
+							},
+							{
+								"t": " đếm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem trong giờ chơi tự do, đứa trẻ nào tự tìm tới hộp bút màu. Không ai yêu cầu, không ai chấm điểm, bút màu chỉ nằm đó cùng với đất nặn và mấy thứ khác. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm, tức là những đứa vốn đã thích vẽ."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được gọi ra ngoài, từng đứa "
+							},
+							{
+								"t": "một,",
+								"s": "del"
+							},
+							{
+								"t": "một",
+								"s": "ins"
+							},
+							{
+								"t": " và chia làm ba nhóm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất được cho xem một tấm giấy khen có ngôi sao vàng và dải ruy băng đỏ, được hỏi "
+							},
+							{
+								"t": "rằng ",
+								"s": "ins"
+							},
+							{
+								"t": "có muốn vẽ để nhận nó không. Chúng đồng ý, chúng vẽ, chúng nhận giấy khen. Nhóm thứ hai chỉ được mời vẽ, vẽ xong thì bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba "
+							},
+							{
+								"t": "vẽ,",
+								"s": "del"
+							},
+							{
+								"t": "chỉ",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "vẽ ",
+								"s": "ins"
+							},
+							{
+								"t": "và không "
+							},
+							{
+								"t": "có",
+								"s": "del"
+							},
+							{
+								"t": "nhận",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "được ",
+								"s": "ins"
+							},
+							{
+								"t": "gì cả."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một hai tuần sau, hộp bút màu quay lại lớp học, ba nhà nghiên cứu quay lại sau tấm kính, "
+							},
+							{
+								"t": "và",
+								"s": "del"
+							},
+							{
+								"t": "tiếp",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "đếm",
+								"s": "del"
+							},
+							{
+								"t": "tục",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "tiếp.",
+								"s": "del"
+							},
+							{
+								"t": "đếm.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được "
+							},
+							{
+								"t": "hứa sẽ được ",
+								"s": "ins"
+							},
+							{
+								"t": "thưởng gì. Những bức "
+							},
+							{
+								"t": "tranh ",
+								"s": "ins"
+							},
+							{
+								"t": "chúng vẽ cũng bị chấm là kém hơn trước."
+							}
+						]
+					},
+					{
+						"kind": "aside",
+						"segs": [
+							{
+								"t": "Lepper, M. R., Greene, D., & Nisbett, R. E. (1973). _Undermining children's intrinsic interest with extrinsic reward: A test of the \"overjustification\" hypothesis_. Journal of Personality and Social Psychology, 28(1), 129-137. Trẻ từ 40 đến 64 tháng tuổi, quan sát trong giờ chơi tự do, không có sự hiện diện của người thí nghiệm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ hai thì không sao "
+							},
+							{
+								"t": "cả.",
+								"s": "del"
+							},
+							{
+								"t": "cả,",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "Vẫn",
+								"s": "del"
+							},
+							{
+								"t": "chúng",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "vẫn ",
+								"s": "ins"
+							},
+							{
+								"t": "vẽ như cũ."
+							}
+						]
+					},
+					{
+						"kind": "fleuron",
+						"segs": [
+							{
+								"t": ""
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Chỗ khó chịu nằm ở đây. Nhóm thứ nhất và nhóm thứ hai nhận cùng một tấm giấy khen, cùng ngôi sao vàng, cùng dải ruy băng. Thứ duy nhất khác nhau là một câu nói, và câu đó được nói ra trước khi đứa trẻ cầm bút.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Cái khó chịu nằm ở chỗ nhóm thứ nhất và nhóm thứ hai nhận cùng một tấm giấy khen. Thứ duy nhất khác nhau là một lời hứa trước khi chúng chúng cầm bút vẽ.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nghĩa là cái gây hại không phải phần thưởng. Là lời hứa.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này có nghĩa là cái gây hại không phải phần thưởng. Mà là lời hứa về phần thưởng đó.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Khi đứa trẻ đồng ý vẽ để lấy giấy khen, nó vừa ký một hợp đồng nhỏ, "
+							},
+							{
+								"t": "và ",
+								"s": "del"
+							},
+							{
+								"t": "hợp đồng đó nói rằng vẽ là thứ người ta làm để đổi lấy cái khác. Sau đó nó nhìn lại chính mình đang ngồi vẽ và tự rút ra kết luận về lý do mình ngồi đó. Kết luận ấy không sai theo bất kỳ nghĩa nào. Nó chỉ vừa thay chỗ cho một kết luận khác mà đứa trẻ từng có, thứ mà không ai nói thành lời vì hồi đó chưa cần thành lời."
+							}
+						]
+					},
+					{
+						"kind": "quote",
+						"segs": [
+							{
+								"t": "Phần thưởng không mua thêm động lực. Nó dạy lại đứa trẻ cách xếp loại việc nó đang làm, "
+							},
+							{
+								"t": "và ",
+								"s": "del"
+							},
+							{
+								"t": "cách xếp loại đó ở lại sau khi phần thưởng đã biến mất."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Đây là chỗ mà tên gọi của hiện tượng trở nên chính xác một cách hơi tàn "
+							},
+							{
+								"t": "nhẫn.",
+								"s": "del"
+							},
+							{
+								"t": "nhẫn,",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "Biện",
+								"s": "del"
+							},
+							{
+								"t": "biện",
+								"s": "ins"
+							},
+							{
+								"t": " minh quá "
+							},
+							{
+								"t": "mức.",
+								"s": "del"
+							},
+							{
+								"t": "mức",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "Không",
+								"s": "del"
+							},
+							{
+								"t": "(overjustification),",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "không ",
+								"s": "ins"
+							},
+							{
+								"t": "phải thiếu lý do, mà "
+							},
+							{
+								"t": "do có ",
+								"s": "ins"
+							},
+							{
+								"t": "thừa lý do. "
+							},
+							{
+								"t": "Có",
+								"s": "del"
+							},
+							{
+								"t": "_Có",
+								"s": "ins"
+							},
+							{
+								"t": " thêm một lý do bên ngoài đủ "
+							},
+							{
+								"t": "tốt,",
+								"s": "del"
+							},
+							{
+								"t": "tốt",
+								"s": "ins"
+							},
+							{
+								"t": " thì lý do bên trong thành ra không cần thiết "
+							},
+							{
+								"t": "nữa,",
+								"s": "del"
+							},
+							{
+								"t": "nữa_",
+								"s": "ins"
+							},
+							{
+								"t": " và cái không cần thiết thì "
+							},
+							{
+								"t": "sẽ lu ",
+								"s": "ins"
+							},
+							{
+								"t": "mờ dần."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này không có nghĩa là mọi "
+							},
+							{
+								"t": "vòng ",
+								"s": "ins"
+							},
+							{
+								"t": "phản hồi "
+							},
+							{
+								"t": "đến từ bên ngoài ",
+								"s": "ins"
+							},
+							{
+								"t": "đều độc hại. Một lời nói cho biết bạn vừa làm tốt chỗ nào là thông tin, "
+							},
+							{
+								"t": "và ",
+								"s": "del"
+							},
+							{
+								"t": "thông tin không thay chỗ "
+							},
+							{
+								"t": "của",
+								"s": "del"
+							},
+							{
+								"t": "cho",
+								"s": "ins"
+							},
+							{
+								"t": " lý do. Chỉ có thứ đứng ra làm điều kiện, thứ được hứa trước và được đổi lấy, mới làm việc đó."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Mình nghĩ về nhóm thứ nhất nhiều hơn. Vốn ban đầu chúng thích vẽ và vẽ cũng chỉ vì thích, rồi khi vào thí nghiệm, không ai bắt chúng vẽ, không ai phạt, người lớn chỉ đưa ra một đề nghị nghe rất tử tế và chúng đồng ý. Rồi hai tuần sau, hộp bút màu nằm đó, chúng ít vẽ dần đi. Điều này cũng khá giống chúng ta, ban đầu vốn thích làm cái gì đó bởi vì lý do tự thân bên trong chúng hoặc bên trong chúng ta, nhưng rồi có những lý do khác bên ngoài xuất hiện, rồi thay thế vị trí đó, cụ thể với mình là **code**, từ đầu mình thích code vì chính nó, vì sự tò mò cá nhân, vì cảm giác tự tạo ra cái gì đó của riêng mình. Nhưng rồi vào môi trường chuyên nghiệp, với KPI, đo lường, performance, khen thưởng,...vv, mình ít thích code dần. Có lẽ có một \"lời hứa\" nào đó đã thế chỗ cho lý do nội tại bên trong mình.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Bạn hãy thử nhớ lại lần gần nhất bạn làm một việc gì đó chỉ vì chính nó hoặc chính bản thân bạn, có thể là đọc sách, học đàn, học vẽ, học võ, học bơi, leo núi,...vv.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Mình nghĩ về nhóm thứ nhất nhiều hơn mình muốn. Không ai bắt chúng vẽ, không ai phạt chúng, người lớn chỉ đưa ra một đề nghị nghe rất tử tế và chúng đồng ý. Rồi hai tuần sau, hộp bút màu nằm đó, và chúng đi qua.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Bây giờ thử nhớ lại lần gần nhất bạn nói với chính mình rằng viết xong cái này thì sẽ có người đọc, chạy đủ tháng này thì sẽ đạt mục tiêu. Câu đó được nói ra trước hay sau khi bạn bắt đầu.",
+								"s": "del"
+							}
+						]
+					}
+				]
+			},
+			{
+				"r": "r06",
+				"n": 6,
+				"date": "2026-08-17T08:05:43+07:00",
+				"words": 802,
+				"note": "quay câu cuối về phía người đọc. còn mục V — chưa biết nói gì mà không thành lời khuyên.",
+				"sections": [
+					{
+						"label": "I. Ba nhóm trẻ và hộp bút màu",
+						"state": "editing"
+					},
+					{
+						"label": "II. Thứ khác nhau chỉ là một câu nói",
+						"state": "editing"
+					},
+					{
+						"label": "III. Biện minh quá mức",
+						"state": "editing"
+					},
+					{
+						"label": "IV. Nhóm thứ nhất, và mình",
+						"state": "editing"
+					},
+					{
+						"label": "V. Vậy thì làm gì với chuyện này",
+						"state": "notes",
+						"notes": [
+							"Nếu phần thưởng hỏng việc, chẳng lẽ không bao giờ được thưởng ai? Mình không tin thế, nhưng chưa nói được cho gọn.",
+							"Người lớn tự hứa với chính mình thì có tính là hợp đồng không? Thí nghiệm không trả lời chỗ này.",
+							"Cẩn thận: mục này rất dễ trượt thành một bài self-help. Nếu không viết được mà không lên giọng khuyên bảo thì bỏ hẳn."
+						]
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Năm 1973, trong một trường mẫu giáo ở Stanford, ba nhà nghiên cứu ngồi sau tấm kính một chiều, ngầm đếm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem trong giờ chơi tự do, đứa trẻ nào tự tìm tới hộp bút màu. Không ai yêu cầu, không ai chấm điểm, bút màu chỉ nằm đó cùng với đất nặn và mấy thứ khác. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm, tức là những đứa vốn đã thích vẽ."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được gọi ra ngoài, từng đứa một và chia làm ba nhóm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất được cho xem một tấm giấy khen có ngôi sao vàng và dải ruy băng đỏ, được hỏi rằng có muốn vẽ để nhận nó không. Chúng đồng ý, chúng vẽ, chúng nhận giấy khen. Nhóm thứ hai chỉ được mời vẽ, vẽ xong thì bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba chỉ vẽ và không nhận được gì cả."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một hai tuần sau, hộp bút màu quay lại lớp học, ba nhà nghiên cứu quay lại sau tấm kính, tiếp tục đếm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được hứa sẽ được thưởng gì. Những bức tranh chúng vẽ cũng bị chấm là kém hơn trước."
+							}
+						]
+					},
+					{
+						"kind": "aside",
+						"segs": [
+							{
+								"t": "Lepper, M. R., Greene, D., & Nisbett, R. E. (1973). _Undermining children's intrinsic interest with extrinsic reward: A test of the \"overjustification\" hypothesis_. Journal of Personality and Social Psychology, 28(1), 129-137. Trẻ từ 40 đến 64 tháng tuổi, quan sát trong giờ chơi tự do, không có sự hiện diện của người thí nghiệm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ hai thì không sao cả, chúng vẫn vẽ như cũ."
+							}
+						]
+					},
+					{
+						"kind": "fleuron",
+						"segs": [
+							{
+								"t": ""
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Cái khó chịu nằm ở chỗ nhóm thứ nhất và nhóm thứ hai nhận cùng một tấm giấy khen. Thứ duy nhất khác nhau là một lời hứa trước khi chúng chúng cầm bút vẽ."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này có nghĩa là cái gây hại không phải phần thưởng. Mà là lời hứa về phần thưởng đó."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Khi đứa trẻ đồng ý vẽ để lấy giấy khen, nó vừa ký một hợp đồng nhỏ, hợp đồng đó nói rằng vẽ là thứ người ta làm để đổi lấy cái khác. Sau đó nó nhìn lại chính mình đang ngồi vẽ và tự rút ra kết luận về lý do mình ngồi đó. Kết luận ấy không sai theo bất kỳ nghĩa nào. Nó chỉ vừa thay chỗ cho một kết luận khác mà đứa trẻ từng có, thứ mà không ai nói thành lời vì hồi đó chưa cần thành lời."
+							}
+						]
+					},
+					{
+						"kind": "quote",
+						"segs": [
+							{
+								"t": "Phần thưởng không mua thêm động lực. Nó dạy lại đứa trẻ cách xếp loại việc nó đang làm, cách xếp loại đó ở lại sau khi phần thưởng đã biến mất."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Đây là chỗ mà tên gọi của hiện tượng trở nên chính xác một cách hơi tàn nhẫn, biện minh quá mức (overjustification), không phải thiếu lý do, mà do có thừa lý do. _Có thêm một lý do bên ngoài đủ tốt thì lý do bên trong thành ra không cần thiết nữa_ và cái không cần thiết thì sẽ lu mờ dần."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này không có nghĩa là mọi vòng phản hồi đến từ bên ngoài đều độc hại. Một lời nói cho biết bạn vừa làm tốt chỗ nào là thông tin, thông tin không thay chỗ cho lý do. Chỉ có thứ đứng ra làm điều kiện, thứ được hứa trước và được đổi lấy, mới làm việc đó."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Mình nghĩ về nhóm thứ nhất nhiều hơn. Vốn ban đầu chúng thích vẽ và vẽ cũng chỉ vì thích, rồi khi vào thí nghiệm, không ai bắt chúng vẽ, không ai phạt, người lớn chỉ đưa ra một đề nghị nghe rất tử tế và chúng đồng ý. Rồi hai tuần sau, hộp bút màu nằm đó, chúng ít vẽ dần đi. Điều này cũng khá giống chúng ta, ban đầu vốn thích làm cái gì đó bởi vì lý do tự thân bên trong chúng hoặc bên trong chúng ta, nhưng rồi có những lý do khác bên ngoài xuất hiện, rồi thay thế vị trí đó, cụ thể với mình là **code**, từ đầu mình thích code vì chính nó, vì sự tò mò cá nhân, vì cảm giác tự tạo ra cái gì đó của riêng mình. Nhưng rồi vào môi trường chuyên nghiệp, với KPI, đo lường, performance, khen thưởng,...vv, mình ít thích code dần. Có lẽ có một \"lời hứa\" nào đó đã thế chỗ cho lý do nội tại bên trong mình."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Bạn hãy thử nhớ lại lần gần nhất bạn làm một việc gì đó chỉ vì chính nó hoặc chính bản thân bạn, có thể là đọc sách, học đàn, học vẽ, học võ, học bơi, leo núi,...vv."
+							}
+						]
+					}
+				]
+			},
+			{
+				"r": "r11",
+				"n": 11,
+				"date": "2026-08-19T21:53:06+07:00",
+				"words": 700,
+				"note": "Chưa chốt bản final.",
+				"sections": [
+					{
+						"label": "I. Niềm vui thuần túy",
+						"state": "editing"
+					},
+					{
+						"label": "II. Biện minh quá mức",
+						"state": "editing"
+					},
+					{
+						"label": "III. Vậy phải làm sao?",
+						"state": "editing"
+					},
+					{
+						"label": "IV. Notes",
+						"state": "notes",
+						"notes": [
+							"Còn bỏ ngõ, làm sao để thoát khỏi sự vô vị này.",
+							"À, người lớn có overjustification không? Thí nghiệm không trả lời chỗ này."
+						]
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Hôm nay mình có vài suy nghĩ vu vơ: \"Tại sao code lại không còn vui như trước nữa?\". Cái niềm vui mà mình gọi là _niềm vui thuần túy_.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Niềm vui thuần túy là niềm vui đến từ chính bản thân việc đó. Giống như những ngày đầu mình code, mình làm nó vì vui, vì tò mò, vì cái cảm giác tạo ra cái gì đó của riêng mình từ hư không. Niềm vui này không chỉ đi kèm với sự thành công hay dễ dàng, nó đi kèm cả những khi khó khăn. Như lúc bắt đầu code, mình đâu có kiến thức gì bài bản đâu, chỉ là vài kiến thức góp nhặt từ các khóa học ngắn, rồi thuật toán, công nghệ, bug, có thể nói là vô cùng khó khăn, nhưng mình vẫn vui, rất vui vào lúc đó.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Mình cảm thấy rằng, từ từ mình đang mất đi những niềm vui thuần túy như vậy. Bây giờ làm việc gì cũng cần có thước đo, so sánh, chỉ báo bên ngoài để làm lý do cho nó, làm phải năng suất, phải nhanh, phải tốt. Quay về chuyên môn của mình, code, mình đã vào môi trường chuyên nghiệp của ngành phần mềm này đã hơn bảy năm, tình hình là, code với mình bớt vui dần. Code giờ có KPI, đo story point (một vấn đề vận hành mà mình sẽ nói trong bài khác), performance review, khen thưởng, có cấp bậc, ...vv. Bản thân việc code không khác đi, nhưng có lẽ mình đã lấy lý do nào đó bên ngoài để thay thế cho lý do bên trong nên từ từ cả sự \"thuần túy\" và \"niềm vui\" đều nhạt đi.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Trong lúc mình tìm hiểu rõ về hiện tượng này thì phát hiện ra đây không phải là cái gì đó mới, người ta đã có nghiên cứu về nó cách đây rất lâu và nó cũng có một cái tên \"Biện minh quá mức (Overjustification)\".",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Vào năm 1973, tại một trường mầm non ở Stanford, người ta đã tiến hành một thí nghiệm với các trẻ em thích vẽ, để xem biểu hiện của sự thích vẽ có bị thay đổi với các điều kiện bên ngoài hay không. Các bé từ 40-64 tháng tuổi được chia thành ba nhóm, nhóm 1, được đề nghị là sau khi các bẽ vẽ xong sẽ được nhận một tờ giấy khen (phần thưởng), nhóm 2, được đề nghị là sau khi các bé vẽ xong sẽ có thể nhận được giấy khen hoặc không, nhóm 3, không được đề nghị gì cả.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Năm 1973, trong một trường mẫu giáo ở Stanford, ba nhà nghiên cứu ngồi sau tấm kính một chiều, ngầm đếm.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Họ đếm xem trong giờ chơi tự do, đứa trẻ nào tự tìm tới hộp bút màu. Không ai yêu cầu, không ai chấm điểm, bút màu chỉ nằm đó cùng với đất nặn và mấy thứ khác. Những đứa hay chọn bút màu nhất được đưa vào thí nghiệm, tức là những đứa vốn đã thích vẽ.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Rồi chúng được gọi ra ngoài, từng đứa một và chia làm ba nhóm.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất được cho xem một tấm giấy khen có ngôi sao vàng và dải ruy băng đỏ, được hỏi rằng có muốn vẽ để nhận nó không. Chúng đồng ý, chúng vẽ, chúng nhận giấy khen. Nhóm thứ hai chỉ được mời vẽ, vẽ xong thì bất ngờ được tặng đúng tấm giấy khen đó. Nhóm thứ ba chỉ vẽ và không nhận được gì cả.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một hai tuần sau, hộp bút màu quay lại lớp học, ba nhà nghiên cứu quay lại sau tấm kính, tiếp tục đếm.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ nhất vẽ ít hẳn đi. Ít hơn cả nhóm chưa từng được hứa sẽ được thưởng gì. Những bức tranh chúng vẽ cũng bị chấm là kém hơn trước.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "aside",
+						"segs": [
+							{
+								"t": "Lepper, "
+							},
+							{
+								"t": "M.",
+								"s": "del"
+							},
+							{
+								"t": "Mark",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "R.,",
+								"s": "del"
+							},
+							{
+								"t": "R.;",
+								"s": "ins"
+							},
+							{
+								"t": " Greene, "
+							},
+							{
+								"t": "D., &",
+								"s": "del"
+							},
+							{
+								"t": "David;",
+								"s": "ins"
+							},
+							{
+								"t": " Nisbett, "
+							},
+							{
+								"t": "R.",
+								"s": "del"
+							},
+							{
+								"t": "Richard",
+								"s": "ins"
+							},
+							{
+								"t": " E. "
+							},
+							{
+								"t": "(1973). _Undermining",
+								"s": "del"
+							},
+							{
+								"t": "Undermining",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "children's",
+								"s": "del"
+							},
+							{
+								"t": "children’s",
+								"s": "ins"
+							},
+							{
+								"t": " intrinsic interest with extrinsic reward: A test of the "
+							},
+							{
+								"t": "\"overjustification\"",
+								"s": "del"
+							},
+							{
+								"t": "“overjustification”",
+								"s": "ins"
+							},
+							{
+								"t": " "
+							},
+							{
+								"t": "hypothesis_.",
+								"s": "del"
+							},
+							{
+								"t": "hypothesis.",
+								"s": "ins"
+							},
+							{
+								"t": " Journal of Personality and Social Psychology, 28(1), 129-137. Trẻ từ 40 đến 64 tháng tuổi, quan sát trong giờ chơi tự do, không có sự hiện diện của người thí nghiệm."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Sau hai tuần quan sát, kết quả là nhóm 1 ít vẽ lại hơn hẵn so với ban đầu, và chất lượng bức tranh có vẽ thấp hơn, nhóm 2, 3 giữ nguyên số lượng. Điều đáng chú ý là nhóm 1, 2 đều sẽ có giấy khen, nên thứ tạo ra khác biệt này không phải là phần thưởng mà là lời lứa về phần thưởng đó. Lý do bên ngoài là \"giấy khen\" đã được các bé thay cho lý do bên trong lúc đầu.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Có lẽ mình cũng là một đứa trẻ ở nhóm 1, chỉ khác số tháng tuổi và \"lời hứa\" mình đã nhận vào bên trong.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhưng, vậy thì rồi sao? Nếu cứ để như vậy thì cuộc sống này cuối cùng cũng chỉ còn là những thứ nhàm chán vô vị sao?",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Well, thú thật mình cũng đang đi tìm câu trả lời làm sao để thoát ra khỏi cái này. Có lẽ là một lý do nội tại siêu mạnh để không bị thay thế, cũng có thể chỉ đơn giản là mặc kệ lời hứa được offer. Nhưng vẫn chưa có kết luận cụ thể theo trải nghiệm bản thân, xin phép bỏ ngõ nó ở đây.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nhóm thứ hai thì không sao cả, chúng vẫn vẽ như cũ.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "fleuron",
+						"segs": [
+							{
+								"t": "",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Cái khó chịu nằm ở chỗ nhóm thứ nhất và nhóm thứ hai nhận cùng một tấm giấy khen. Thứ duy nhất khác nhau là một lời hứa trước khi chúng chúng cầm bút vẽ.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này có nghĩa là cái gây hại không phải phần thưởng. Mà là lời hứa về phần thưởng đó.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Khi đứa trẻ đồng ý vẽ để lấy giấy khen, nó vừa ký một hợp đồng nhỏ, hợp đồng đó nói rằng vẽ là thứ người ta làm để đổi lấy cái khác. Sau đó nó nhìn lại chính mình đang ngồi vẽ và tự rút ra kết luận về lý do mình ngồi đó. Kết luận ấy không sai theo bất kỳ nghĩa nào. Nó chỉ vừa thay chỗ cho một kết luận khác mà đứa trẻ từng có, thứ mà không ai nói thành lời vì hồi đó chưa cần thành lời.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "quote",
+						"segs": [
+							{
+								"t": "Phần thưởng không mua thêm động lực. Nó dạy lại đứa trẻ cách xếp loại việc nó đang làm, cách xếp loại đó ở lại sau khi phần thưởng đã biến mất.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Đây là chỗ mà tên gọi của hiện tượng trở nên chính xác một cách hơi tàn nhẫn, biện minh quá mức (overjustification), không phải thiếu lý do, mà do có thừa lý do. _Có thêm một lý do bên ngoài đủ tốt thì lý do bên trong thành ra không cần thiết nữa_ và cái không cần thiết thì sẽ lu mờ dần.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này không có nghĩa là mọi vòng phản hồi đến từ bên ngoài đều độc hại. Một lời nói cho biết bạn vừa làm tốt chỗ nào là thông tin, thông tin không thay chỗ cho lý do. Chỉ có thứ đứng ra làm điều kiện, thứ được hứa trước và được đổi lấy, mới làm việc đó.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Mình nghĩ về nhóm thứ nhất nhiều hơn. Vốn ban đầu chúng thích vẽ và vẽ cũng chỉ vì thích, rồi khi vào thí nghiệm, không ai bắt chúng vẽ, không ai phạt, người lớn chỉ đưa ra một đề nghị nghe rất tử tế và chúng đồng ý. Rồi hai tuần sau, hộp bút màu nằm đó, chúng ít vẽ dần đi. Điều này cũng khá giống chúng ta, ban đầu vốn thích làm cái gì đó bởi vì lý do tự thân bên trong chúng hoặc bên trong chúng ta, nhưng rồi có những lý do khác bên ngoài xuất hiện, rồi thay thế vị trí đó, cụ thể với mình là **code**, từ đầu mình thích code vì chính nó, vì sự tò mò cá nhân, vì cảm giác tự tạo ra cái gì đó của riêng mình. Nhưng rồi vào môi trường chuyên nghiệp, với KPI, đo lường, performance, khen thưởng,...vv, mình ít thích code dần. Có lẽ có một \"lời hứa\" nào đó đã thế chỗ cho lý do nội tại bên trong mình.",
+								"s": "del"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Well, vậy phải làm sao với chuyện này? Nếu cứ để như vậy, chẳng phải mọi thứ rồi sẽ dần mất vui và nhàm chán sao?",
+								"s": "del"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"004-AI-empowerment-counting-by-SP-vi": {
+		"edits": 3,
+		"startedAt": "2026-08-19",
+		"promise": "không hứa",
+		"current": "r03",
+		"revisions": [
+			{
+				"r": "r03",
+				"n": 3,
+				"date": "2026-08-19T21:53:06+07:00",
+				"words": 1220,
+				"note": "Còn phần cần bao lâu và interaction (nếu có)",
+				"sections": [
+					{
+						"label": "I. Velocity và các tính toàn cơ bản",
+						"state": "editing"
+					},
+					{
+						"label": "II. So sánh hai chuỗi số",
+						"state": "editing"
+					},
+					{
+						"label": "III. Vậy cần bao nhiêu để có thể phát hiện và kết luận được?",
+						"state": "editing"
+					},
+					{
+						"label": "IV: Vậy cần bao lâu?",
+						"state": "editing"
+					}
+				],
+				"body": [
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một trong những công ty mình từng làm áp sử dụng AI rất nhiều trong suốt quá trình Software Development Life Cycle (SDLC), bạn biết đó sử dụng AI nhiều cũng là một dạng đầu tư, nên sếp tổng mới yêu cầu là năng suất công việc phải tốt hơn 10% sau mỗi quý, hiện tại năng suất công việc của công ty cho phía R&D (Research and Development) được đo bằng StoryPoint (SP). Chúng ta sẽ không nói về việc sử dụng SP đo năng suất công việc là đúng hay sai trong bài này, giả sử là nó đúng. Câu hỏi là \"Tăng trưởng 10% năng suất qua từng quý\" có được hay không?"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "## Velocity và các tính toàn cơ bản"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Nói về năng suất trong ngành phần mềm, nếu bạn làm trong ngành, từ \"năng suất\" sẽ thường được sử dụng tương đồng với từ \"velocity (vận tốc)\", velocity được đo bằng số lượng SP hoàn thành trong một Sprint. Năng suất trong một quý, nhiều Sprint, làm cho nó không còn là một số cứng, mà là đám mây sô."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Log lại trong quý 1 có chuỗi Velocity như sau:"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "``` 38   45   31   42   36   48 ```"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Vậy chúng ta có thể trích xuất được thông tin gì về chuỗi này?"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Trung bình SP của quý 1 là $\\mu_1=40$ nhưng không có Sprint nào là 40 cả, chênh lệch giữa Sprint năng suất cao nhất và thấp nhất là $48-31=17$ SP trong khi không có gì bên ngoài thực sự thay đổi, vẫn những con người đó, codebase đó trên cùng một cách thức làm việc."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Một sự thật đầu tiên chúng ta phải chấp nhận là **velocity sẽ dao động kể cả khi không có chuyện gì xảy ra**. Ý ở đây là một thay đổi thực sự lớn, nhưng vẫn thay đổi nhỏ như một người nghỉ ốm, một Story làm dễ hơn dự tính hoặc khó hơn dự tính,...vv."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Có thể tính ra độ dao động này từ công thức tính _độ lệch chuẩn mẫu_ $$\\sigma_1 = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N}(x_i - \\mu_1)^2}$$, với $N=6$ và chuỗi như trên chúng ta sẽ có $\\sigma_1=6.32$, với _phương sai mẫu_ là $s_1^2=38.8$. Hơi nhiều con số đúng không :vvv, cơ bản phát biểu là, **dù không có gì thực sự lớn xảy ra, velocity của một Sprint có thể bị lệch khỏi trung bình 6.32 point.**."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Với dữ liệu trên chúng ta có thể tính ra thêm được một con số có ý nghĩa khác, hệ số biến thiên $c$, $$c_1=\\frac{\\sigma_1}{\\mu_1}=\\frac{6.28}{40}=0.157$$. Ý nghĩa của số này nói là, **dao động điển hình của đội này bằng khoảng 15.7% so với mức trung bình**, đây có thể được xem là ổn định."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "## So sánh hai chuỗi số"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Câu hỏi cuối cùng không phải là những con số bên trên, nhưng tin mình đi chúng khá quan trọng đó, mà là so sánh hai chuỗi số."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Ví dụ sau quý hai, log lại chúng ta có hai chuỗi velocity như sau"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "``` Quý 1: 38  45  31  42  36  48   →  avg: 40.0 Quý 2: 41  49  36  47  40  51   →  avg: 44.0 ```"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Trung bình của Quý 2 nhiều hơn quý Quý 1 4 point, đúng 10%, ăn mừng được rồi chứ?"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Tất nhiên là nên ăn mừng trước rồi :vvv, nhưng liệu **nếu không có bất kỳ thứ gì tác động vào kể cả AI, thì chênh lệch 4 point này có thể xảy ra không?**"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Cách thông thường để so sánh hai chuỗi số là so sánh trung bình, như cách chúng ta làm, trung bình cũng có sai số của riêng nó, gọi là _sai số chuẩn của trung bình_, $$SE_1=\\frac{\\sigma_1}{\\sqrt{N}}=\\frac{6.32}{\\sqrt{6}}=2.58$$, con số này nói lên điều gì, nó nói là, nếu bạn có quyền năng chạy lại Quý 1 trong một dòng không thời gian khác với cùng team, cùng điều kiện, thì con số trung bình $\\mu_1$ (40) có thể sai lệch đi 2.58 điểm là chuyện bình thường."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Vậy nếu chúng ta có quyền năng chạy lại hai quý ở một chiều không thời gian khác, thì trung bình Quý 2 và Quý 1 có thể sai khác nhau là bao nhiểu?"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Với $SE_2=\\frac{\\sigma_2}{\\sqrt{N}}=\\frac{5.86}{\\sqrt{6}}=2.39$"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "$$SE=\\sqrt{SE_1^2+SE_2^2}=\\sqrt{2.58^2+2.39^2}=3.52$$"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Điều này có thể cho ra một kết luận, **nếu không có gì thay đổi cả, trung bình hai quý có thể lệch nhau 3.52 point là bình thường**. Chệnh lệch chúng ta quan sát được là 4 point, mà ở đây nhiễu có thể làm cho lệch nhau tới 3.5 point, điều này có thể dẫn tới kết luận nhanh là, không đủ điều kiện để kết luận liệu AI có thật sự tác động tốt đến năng suất hay không vì gần như nó không khác với nhiễu là mấy."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "## Vậy cần bao nhiêu để có thể phát hiện và kết luận được?"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "OK, trước khi đi vào tính toán cho cái này, cần hiểu thêm một chút về số $SE$ mà chúng ta đã tính bên trên, số $SE$ này cũng là độ rộng của hình chuông phân bố nhiễu. Sao nhỉ, như bên trên chúng ta tưởng tượng có khả năng chạy lại cả hai quý ở chiều không thời gian khác, nếu chúng ta làm vậy vô số lần thì sẽ khoảng 70% số lần chênh lệch sẽ nằm trong khoảng -3.52 tới 3.52 point."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "<!--CHART: Thêm chart cụ thể cho phân phối chuẩn của SE-->"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Để có thể phát hiện và kết luận được, chúng ta trước hết phải đề phòng hai loại sai."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "### Sai loại I"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Sai loại I là \"báo động giã\", không có gì thay đổi hết, nhưng nhiễu vô tình tạo ra chênh lệch vượt quá chênh lệch bình thường mà chúng ta vừa tính ban nãy (3.52), để phòng chống loại sai này, chúng ta muốn chỉ 5% khả năng các nhiễu vượt ngưỡng, với phân phối chuẩn hình chuông, giá trị đó nằm xa tâm 1.96 lần độ rộng. Nên giá trị đó sẽ là $1.96x3.52=6.8992=7$, điều này có nghĩa là, nếu chênh lệch dưới 7 vẫn chưa thể kết luận gì."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "### Sai loại II"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Sai loại II là \"bỏ lỡ\", tức là có cải thiện thật, nhưng nhiễu kéo cho con số xuống dưới ngưỡng bình thường dẫn tới kết luận \"bình thường\". Cụ thể, nếu sự cải thiện đúng bằng ngưỡng 7 điểm chúng ta đã tính bên trên, thì trong vô số lần đó chỉ có 50% số lần bắt được, 50% còn lại bị nhiễu kéo xuống. Nếu muốn mức bắt được này lên tới 80% thì cải thiện thật phải hơn 7 một khoảng nữa, với hình chuông, đẩy tâm lên 0.84 lần độ rộng thì 80% phân phối sẽ nằm bên phải ngưỡng."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Vậy cần có $$\\Delta_{min}=(1.96+0.84)\\times SE=2.8\\times 3.52=9.856=10$$"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Vậy cần có **chênh lệch ít nhất 10 point mới có thể xem là có cải thiện**."
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "<!--INTERACTION: Nếu có thể làm interaction cho cái này sẽ tốt, có thể nhìn được trực quan phân phối-->"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "<!-- - AI - SDLC - R&D - StoryPoint (SP) - Velocity - Sprint - Story - Độ lệch chuẩn mẫu - Phương sai mẫu - Sai số chuẩn của trung bình - Sai số loại I - Sai số loại I - Phân phối chuẩn -->"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+};
