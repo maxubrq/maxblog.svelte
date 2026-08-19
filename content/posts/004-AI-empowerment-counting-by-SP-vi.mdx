@@ -37,21 +37,21 @@ là đúng hay sai trong bài này, giả sử là nó đúng. Câu hỏi là "T
 
 ## Velocity và các tính toàn cơ bản
 
-Nói về năng suất trong ngành phần mềm, nếu bạn làm trong ngành, từ "năng suất" sẽ thường được sử dụng tương đồng với từ "velocity (vận tốc)", velocity
-được đo bằng số lượng SP hoàn thành trong một Sprint. Năng suất trong một quý, nhiều Sprint, làm cho nó không còn là một số cứng, mà là đám mây sô.
+Nói về năng suất trong ngành phần mềm, từ "năng suất" sẽ thường được sử dụng tương đồng với từ "velocity (vận tốc)", velocity
+được đo bằng số lượng SP hoàn thành trong một Sprint. Năng suất trong một quý, nhiều Sprint, làm cho nó không còn là một số cứng, mà là một chuỗi sô.
 
-Log lại trong quý 1 có chuỗi Velocity như sau:
+Ghi lại trong Quý 1 có chuỗi Velocity như sau:
 
 ```
 38   45   31   42   36   48
 ```
 
-Vậy chúng ta có thể trích xuất được thông tin gì về chuỗi này?
+Vậy chúng ta có thể trích xuất được thông tin gì từ chuỗi này?
 
-Trung bình SP của quý 1 là $\mu_1=40$ nhưng không có Sprint nào là 40 cả, chênh lệch giữa Sprint năng suất cao nhất và thấp nhất là $48-31=17$ SP trong khi
+Trung bình SP của Quý 1 là $\mu_1=40$ nhưng không có Sprint nào là 40 cả, chênh lệch giữa Sprint năng suất cao nhất và thấp nhất là $48-31=17$ SP trong khi
 không có gì bên ngoài thực sự thay đổi, vẫn những con người đó, codebase đó trên cùng một cách thức làm việc.
 
-Một sự thật đầu tiên chúng ta phải chấp nhận là **velocity sẽ dao động kể cả khi không có chuyện gì xảy ra**. Ý ở đây là một thay đổi thực sự lớn, nhưng vẫn
+Một sự thật đầu tiên phải chấp nhận là **velocity sẽ dao động kể cả khi không có chuyện gì xảy ra**. Ý ở đây là một thay đổi thực sự lớn, nhưng vẫn
 thay đổi nhỏ như một người nghỉ ốm, một Story làm dễ hơn dự tính hoặc khó hơn dự tính,...vv.
 
 Có thể tính ra độ dao động này từ công thức tính _độ lệch chuẩn mẫu_ $$\sigma_1 = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N}(x_i - \mu_1)^2}$$, với $N=6$ và chuỗi như trên chúng ta sẽ có $\sigma_1=6.32$, với _phương sai mẫu_ là $s_1^2=38.8$. Hơi nhiều con số đúng không :vvv, cơ bản phát biểu là, **dù không có gì thực sự lớn
