@@ -1628,33 +1628,37 @@ export const DRAFTS = {
 			}
 		]
 	},
-	"004-AI-empowerment-counting-by-SP-vi": {
-		"edits": 6,
+	"004-AI-empowerment-counting-by-SP-en": {
+		"edits": 1,
 		"startedAt": "2026-08-19",
-		"promise": "không hứa",
-		"current": "r06",
+		"promise": "no promises",
+		"current": "r01",
 		"revisions": [
 			{
-				"r": "r03",
-				"n": 3,
-				"date": "2026-08-19T21:53:06+07:00",
-				"words": 1220,
-				"note": "Còn phần cần bao lâu và interaction (nếu có)",
+				"r": "r01",
+				"n": 1,
+				"date": "2026-08-20T22:30:20+07:00",
+				"words": 2191,
+				"note": "English edition of the Vietnamese piece; section IV and the conclusion are freshly translated",
 				"sections": [
 					{
-						"label": "I. Velocity và các tính toàn cơ bản",
+						"label": "I. Velocity and the basic arithmetic",
 						"state": "editing"
 					},
 					{
-						"label": "II. So sánh hai chuỗi số",
+						"label": "II. Comparing two series",
 						"state": "editing"
 					},
 					{
-						"label": "III. Vậy cần bao nhiêu để có thể phát hiện và kết luận được?",
+						"label": "III. How big does a difference have to be?",
 						"state": "editing"
 					},
 					{
-						"label": "IV: Vậy cần bao lâu?",
+						"label": "IV. So how long does it take?",
+						"state": "editing"
+					},
+					{
+						"label": "V. Conclusion",
 						"state": "editing"
 					}
 				],
@@ -1663,1225 +1667,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Một trong những công ty mình từng làm áp sử dụng AI rất nhiều trong suốt quá trình Software Development Life Cycle (SDLC), bạn biết đó sử dụng AI nhiều cũng là một dạng đầu tư, nên sếp tổng mới yêu cầu là năng suất công việc phải tốt hơn 10% sau mỗi quý, hiện tại năng suất công việc của công ty cho phía R&D (Research and Development) được đo bằng StoryPoint (SP). Chúng ta sẽ không nói về việc sử dụng SP đo năng suất công việc là đúng hay sai trong bài này, giả sử là nó đúng. Câu hỏi là \"Tăng trưởng 10% năng suất qua từng quý\" có được hay không?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## Velocity và các tính toàn cơ bản"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Nói về năng suất trong ngành phần mềm, nếu bạn làm trong ngành, từ \"năng suất\" sẽ thường được sử dụng tương đồng với từ \"velocity (vận tốc)\", velocity được đo bằng số lượng SP hoàn thành trong một Sprint. Năng suất trong một quý, nhiều Sprint, làm cho nó không còn là một số cứng, mà là đám mây sô."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Log lại trong quý 1 có chuỗi Velocity như sau:"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "``` 38   45   31   42   36   48 ```"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy chúng ta có thể trích xuất được thông tin gì về chuỗi này?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Trung bình SP của quý 1 là $\\mu_1=40$ nhưng không có Sprint nào là 40 cả, chênh lệch giữa Sprint năng suất cao nhất và thấp nhất là $48-31=17$ SP trong khi không có gì bên ngoài thực sự thay đổi, vẫn những con người đó, codebase đó trên cùng một cách thức làm việc."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Một sự thật đầu tiên chúng ta phải chấp nhận là **velocity sẽ dao động kể cả khi không có chuyện gì xảy ra**. Ý ở đây là một thay đổi thực sự lớn, nhưng vẫn thay đổi nhỏ như một người nghỉ ốm, một Story làm dễ hơn dự tính hoặc khó hơn dự tính,...vv."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Có thể tính ra độ dao động này từ công thức tính _độ lệch chuẩn mẫu_ $$\\sigma_1 = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N}(x_i - \\mu_1)^2}$$, với $N=6$ và chuỗi như trên chúng ta sẽ có $\\sigma_1=6.32$, với _phương sai mẫu_ là $s_1^2=38.8$. Hơi nhiều con số đúng không :vvv, cơ bản phát biểu là, **dù không có gì thực sự lớn xảy ra, velocity của một Sprint có thể bị lệch khỏi trung bình 6.32 point.**."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Với dữ liệu trên chúng ta có thể tính ra thêm được một con số có ý nghĩa khác, hệ số biến thiên $c$, $$c_1=\\frac{\\sigma_1}{\\mu_1}=\\frac{6.28}{40}=0.157$$. Ý nghĩa của số này nói là, **dao động điển hình của đội này bằng khoảng 15.7% so với mức trung bình**, đây có thể được xem là ổn định."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## So sánh hai chuỗi số"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Câu hỏi cuối cùng không phải là những con số bên trên, nhưng tin mình đi chúng khá quan trọng đó, mà là so sánh hai chuỗi số."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Ví dụ sau quý hai, log lại chúng ta có hai chuỗi velocity như sau"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "``` Quý 1: 38  45  31  42  36  48   →  avg: 40.0 Quý 2: 41  49  36  47  40  51   →  avg: 44.0 ```"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Trung bình của Quý 2 nhiều hơn quý Quý 1 4 point, đúng 10%, ăn mừng được rồi chứ?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Tất nhiên là nên ăn mừng trước rồi :vvv, nhưng liệu **nếu không có bất kỳ thứ gì tác động vào kể cả AI, thì chênh lệch 4 point này có thể xảy ra không?**"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Cách thông thường để so sánh hai chuỗi số là so sánh trung bình, như cách chúng ta làm, trung bình cũng có sai số của riêng nó, gọi là _sai số chuẩn của trung bình_, $$SE_1=\\frac{\\sigma_1}{\\sqrt{N}}=\\frac{6.32}{\\sqrt{6}}=2.58$$, con số này nói lên điều gì, nó nói là, nếu bạn có quyền năng chạy lại Quý 1 trong một dòng không thời gian khác với cùng team, cùng điều kiện, thì con số trung bình $\\mu_1$ (40) có thể sai lệch đi 2.58 điểm là chuyện bình thường."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy nếu chúng ta có quyền năng chạy lại hai quý ở một chiều không thời gian khác, thì trung bình Quý 2 và Quý 1 có thể sai khác nhau là bao nhiểu?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Với $SE_2=\\frac{\\sigma_2}{\\sqrt{N}}=\\frac{5.86}{\\sqrt{6}}=2.39$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "$$SE=\\sqrt{SE_1^2+SE_2^2}=\\sqrt{2.58^2+2.39^2}=3.52$$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Điều này có thể cho ra một kết luận, **nếu không có gì thay đổi cả, trung bình hai quý có thể lệch nhau 3.52 point là bình thường**. Chệnh lệch chúng ta quan sát được là 4 point, mà ở đây nhiễu có thể làm cho lệch nhau tới 3.5 point, điều này có thể dẫn tới kết luận nhanh là, không đủ điều kiện để kết luận liệu AI có thật sự tác động tốt đến năng suất hay không vì gần như nó không khác với nhiễu là mấy."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## Vậy cần bao nhiêu để có thể phát hiện và kết luận được?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "OK, trước khi đi vào tính toán cho cái này, cần hiểu thêm một chút về số $SE$ mà chúng ta đã tính bên trên, số $SE$ này cũng là độ rộng của hình chuông phân bố nhiễu. Sao nhỉ, như bên trên chúng ta tưởng tượng có khả năng chạy lại cả hai quý ở chiều không thời gian khác, nếu chúng ta làm vậy vô số lần thì sẽ khoảng 70% số lần chênh lệch sẽ nằm trong khoảng -3.52 tới 3.52 point."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!--CHART: Thêm chart cụ thể cho phân phối chuẩn của SE-->"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Để có thể phát hiện và kết luận được, chúng ta trước hết phải đề phòng hai loại sai."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "### Sai loại I"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Sai loại I là \"báo động giã\", không có gì thay đổi hết, nhưng nhiễu vô tình tạo ra chênh lệch vượt quá chênh lệch bình thường mà chúng ta vừa tính ban nãy (3.52), để phòng chống loại sai này, chúng ta muốn chỉ 5% khả năng các nhiễu vượt ngưỡng, với phân phối chuẩn hình chuông, giá trị đó nằm xa tâm 1.96 lần độ rộng. Nên giá trị đó sẽ là $1.96x3.52=6.8992=7$, điều này có nghĩa là, nếu chênh lệch dưới 7 vẫn chưa thể kết luận gì."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "### Sai loại II"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Sai loại II là \"bỏ lỡ\", tức là có cải thiện thật, nhưng nhiễu kéo cho con số xuống dưới ngưỡng bình thường dẫn tới kết luận \"bình thường\". Cụ thể, nếu sự cải thiện đúng bằng ngưỡng 7 điểm chúng ta đã tính bên trên, thì trong vô số lần đó chỉ có 50% số lần bắt được, 50% còn lại bị nhiễu kéo xuống. Nếu muốn mức bắt được này lên tới 80% thì cải thiện thật phải hơn 7 một khoảng nữa, với hình chuông, đẩy tâm lên 0.84 lần độ rộng thì 80% phân phối sẽ nằm bên phải ngưỡng."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy cần có $$\\Delta_{min}=(1.96+0.84)\\times SE=2.8\\times 3.52=9.856=10$$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy cần có **chênh lệch ít nhất 10 point mới có thể xem là có cải thiện**."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!--INTERACTION: Nếu có thể làm interaction cho cái này sẽ tốt, có thể nhìn được trực quan phân phối-->"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!-- - AI - SDLC - R&D - StoryPoint (SP) - Velocity - Sprint - Story - Độ lệch chuẩn mẫu - Phương sai mẫu - Sai số chuẩn của trung bình - Sai số loại I - Sai số loại I - Phân phối chuẩn -->"
-							}
-						]
-					}
-				]
-			},
-			{
-				"r": "r04",
-				"n": 4,
-				"date": "2026-08-19T21:56:41+07:00",
-				"words": 1213,
-				"note": "Còn phần cần bao lâu và interaction (nếu có)",
-				"sections": [
-					{
-						"label": "I. Velocity và các tính toàn cơ bản",
-						"state": "editing"
-					},
-					{
-						"label": "II. So sánh hai chuỗi số",
-						"state": "editing"
-					},
-					{
-						"label": "III. Vậy cần bao nhiêu để có thể phát hiện và kết luận được?",
-						"state": "editing"
-					},
-					{
-						"label": "IV: Vậy cần bao lâu?",
-						"state": "editing"
-					}
-				],
-				"body": [
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Một trong những công ty mình từng làm áp sử dụng AI rất nhiều trong suốt quá trình Software Development Life Cycle (SDLC), bạn biết đó sử dụng AI nhiều cũng là một dạng đầu tư, nên sếp tổng mới yêu cầu là năng suất công việc phải tốt hơn 10% sau mỗi quý, hiện tại năng suất công việc của công ty cho phía R&D (Research and Development) được đo bằng StoryPoint (SP). Chúng ta sẽ không nói về việc sử dụng SP đo năng suất công việc là đúng hay sai trong bài này, giả sử là nó đúng. Câu hỏi là \"Tăng trưởng 10% năng suất qua từng quý\" có được hay không?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## Velocity và các tính toàn cơ bản"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Nói về năng suất trong ngành phần mềm, "
-							},
-							{
-								"t": "nếu bạn làm trong ngành, ",
-								"s": "del"
-							},
-							{
-								"t": "từ \"năng suất\" sẽ thường được sử dụng tương đồng với từ \"velocity (vận tốc)\", velocity được đo bằng số lượng SP hoàn thành trong một Sprint. Năng suất trong một quý, nhiều Sprint, làm cho nó không còn là một số cứng, mà là "
-							},
-							{
-								"t": "đám",
-								"s": "del"
-							},
-							{
-								"t": "một",
-								"s": "ins"
-							},
-							{
-								"t": " "
-							},
-							{
-								"t": "mây",
-								"s": "del"
-							},
-							{
-								"t": "chuỗi",
-								"s": "ins"
-							},
-							{
-								"t": " sô."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Log",
-								"s": "del"
-							},
-							{
-								"t": "Ghi",
-								"s": "ins"
-							},
-							{
-								"t": " lại trong "
-							},
-							{
-								"t": "quý",
-								"s": "del"
-							},
-							{
-								"t": "Quý",
-								"s": "ins"
-							},
-							{
-								"t": " 1 có chuỗi Velocity như sau:"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "``` 38   45   31   42   36   48 ```"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy chúng ta có thể trích xuất được thông tin gì "
-							},
-							{
-								"t": "về",
-								"s": "del"
-							},
-							{
-								"t": "từ",
-								"s": "ins"
-							},
-							{
-								"t": " chuỗi này?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Trung bình SP của "
-							},
-							{
-								"t": "quý",
-								"s": "del"
-							},
-							{
-								"t": "Quý",
-								"s": "ins"
-							},
-							{
-								"t": " 1 là $\\mu_1=40$ nhưng không có Sprint nào là 40 cả, chênh lệch giữa Sprint năng suất cao nhất và thấp nhất là $48-31=17$ SP trong khi không có gì bên ngoài thực sự thay đổi, vẫn những con người đó, codebase đó trên cùng một cách thức làm việc."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Một sự thật đầu tiên "
-							},
-							{
-								"t": "chúng ta ",
-								"s": "del"
-							},
-							{
-								"t": "phải chấp nhận là **velocity sẽ dao động kể cả khi không có chuyện gì xảy ra**. Ý ở đây là một thay đổi thực sự lớn, nhưng vẫn thay đổi nhỏ như một người nghỉ ốm, một Story làm dễ hơn dự tính hoặc khó hơn dự tính,...vv."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Có thể tính ra độ dao động này từ công thức tính _độ lệch chuẩn mẫu_ $$\\sigma_1 = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N}(x_i - \\mu_1)^2}$$, với $N=6$ và chuỗi như trên chúng ta sẽ có $\\sigma_1=6.32$, với _phương sai mẫu_ là $s_1^2=38.8$. Hơi nhiều con số đúng không :vvv, cơ bản phát biểu là, **dù không có gì thực sự lớn xảy ra, velocity của một Sprint có thể bị lệch khỏi trung bình 6.32 point.**."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Với dữ liệu trên chúng ta có thể tính ra thêm được một con số có ý nghĩa khác, hệ số biến thiên $c$, $$c_1=\\frac{\\sigma_1}{\\mu_1}=\\frac{6.28}{40}=0.157$$. Ý nghĩa của số này nói là, **dao động điển hình của đội này bằng khoảng 15.7% so với mức trung bình**, đây có thể được xem là ổn định."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## So sánh hai chuỗi số"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Câu hỏi cuối cùng không phải là những con số bên trên, nhưng tin mình đi chúng khá quan trọng đó, mà là so sánh hai chuỗi số."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Ví dụ sau quý hai, log lại chúng ta có hai chuỗi velocity như sau"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "``` Quý 1: 38  45  31  42  36  48   →  avg: 40.0 Quý 2: 41  49  36  47  40  51   →  avg: 44.0 ```"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Trung bình của Quý 2 nhiều hơn quý Quý 1 4 point, đúng 10%, ăn mừng được rồi chứ?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Tất nhiên là nên ăn mừng trước rồi :vvv, nhưng liệu **nếu không có bất kỳ thứ gì tác động vào kể cả AI, thì chênh lệch 4 point này có thể xảy ra không?**"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Cách thông thường để so sánh hai chuỗi số là so sánh trung bình, như cách chúng ta làm, trung bình cũng có sai số của riêng nó, gọi là _sai số chuẩn của trung bình_, $$SE_1=\\frac{\\sigma_1}{\\sqrt{N}}=\\frac{6.32}{\\sqrt{6}}=2.58$$, con số này nói lên điều gì, nó nói là, nếu bạn có quyền năng chạy lại Quý 1 trong một dòng không thời gian khác với cùng team, cùng điều kiện, thì con số trung bình $\\mu_1$ (40) có thể sai lệch đi 2.58 điểm là chuyện bình thường."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy nếu chúng ta có quyền năng chạy lại hai quý ở một chiều không thời gian khác, thì trung bình Quý 2 và Quý 1 có thể sai khác nhau là bao nhiểu?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Với $SE_2=\\frac{\\sigma_2}{\\sqrt{N}}=\\frac{5.86}{\\sqrt{6}}=2.39$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "$$SE=\\sqrt{SE_1^2+SE_2^2}=\\sqrt{2.58^2+2.39^2}=3.52$$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Điều này có thể cho ra một kết luận, **nếu không có gì thay đổi cả, trung bình hai quý có thể lệch nhau 3.52 point là bình thường**. Chệnh lệch chúng ta quan sát được là 4 point, mà ở đây nhiễu có thể làm cho lệch nhau tới 3.5 point, điều này có thể dẫn tới kết luận nhanh là, không đủ điều kiện để kết luận liệu AI có thật sự tác động tốt đến năng suất hay không vì gần như nó không khác với nhiễu là mấy."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## Vậy cần bao nhiêu để có thể phát hiện và kết luận được?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "OK, trước khi đi vào tính toán cho cái này, cần hiểu thêm một chút về số $SE$ mà chúng ta đã tính bên trên, số $SE$ này cũng là độ rộng của hình chuông phân bố nhiễu. Sao nhỉ, như bên trên chúng ta tưởng tượng có khả năng chạy lại cả hai quý ở chiều không thời gian khác, nếu chúng ta làm vậy vô số lần thì sẽ khoảng 70% số lần chênh lệch sẽ nằm trong khoảng -3.52 tới 3.52 point."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!--CHART: Thêm chart cụ thể cho phân phối chuẩn của SE-->"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Để có thể phát hiện và kết luận được, chúng ta trước hết phải đề phòng hai loại sai."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "### Sai loại I"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Sai loại I là \"báo động giã\", không có gì thay đổi hết, nhưng nhiễu vô tình tạo ra chênh lệch vượt quá chênh lệch bình thường mà chúng ta vừa tính ban nãy (3.52), để phòng chống loại sai này, chúng ta muốn chỉ 5% khả năng các nhiễu vượt ngưỡng, với phân phối chuẩn hình chuông, giá trị đó nằm xa tâm 1.96 lần độ rộng. Nên giá trị đó sẽ là $1.96x3.52=6.8992=7$, điều này có nghĩa là, nếu chênh lệch dưới 7 vẫn chưa thể kết luận gì."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "### Sai loại II"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Sai loại II là \"bỏ lỡ\", tức là có cải thiện thật, nhưng nhiễu kéo cho con số xuống dưới ngưỡng bình thường dẫn tới kết luận \"bình thường\". Cụ thể, nếu sự cải thiện đúng bằng ngưỡng 7 điểm chúng ta đã tính bên trên, thì trong vô số lần đó chỉ có 50% số lần bắt được, 50% còn lại bị nhiễu kéo xuống. Nếu muốn mức bắt được này lên tới 80% thì cải thiện thật phải hơn 7 một khoảng nữa, với hình chuông, đẩy tâm lên 0.84 lần độ rộng thì 80% phân phối sẽ nằm bên phải ngưỡng."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy cần có $$\\Delta_{min}=(1.96+0.84)\\times SE=2.8\\times 3.52=9.856=10$$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy cần có **chênh lệch ít nhất 10 point mới có thể xem là có cải thiện**."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!--INTERACTION: Nếu có thể làm interaction cho cái này sẽ tốt, có thể nhìn được trực quan phân phối-->"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!-- - AI - SDLC - R&D - StoryPoint (SP) - Velocity - Sprint - Story - Độ lệch chuẩn mẫu - Phương sai mẫu - Sai số chuẩn của trung bình - Sai số loại I - Sai số loại I - Phân phối chuẩn -->"
-							}
-						]
-					}
-				]
-			},
-			{
-				"r": "r05",
-				"n": 5,
-				"date": "2026-08-19T21:59:59+07:00",
-				"words": 1216,
-				"note": "Còn phần cần bao lâu và interaction (nếu có)",
-				"sections": [
-					{
-						"label": "I. Velocity và các tính toàn cơ bản",
-						"state": "editing"
-					},
-					{
-						"label": "II. So sánh hai chuỗi số",
-						"state": "editing"
-					},
-					{
-						"label": "III. Vậy cần bao nhiêu để có thể phát hiện và kết luận được?",
-						"state": "editing"
-					},
-					{
-						"label": "IV: Vậy cần bao lâu?",
-						"state": "editing"
-					}
-				],
-				"body": [
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Một trong những công ty mình từng làm áp sử dụng AI rất nhiều trong suốt quá trình Software Development Life Cycle (SDLC), bạn biết đó sử dụng AI nhiều cũng là một dạng đầu tư, nên sếp tổng mới yêu cầu là năng suất công việc phải tốt hơn 10% sau mỗi quý, hiện tại năng suất công việc của công ty cho phía R&D (Research and Development) được đo bằng StoryPoint (SP). Chúng ta sẽ không nói về việc sử dụng SP đo năng suất công việc là đúng hay sai trong bài này, giả sử là nó đúng. Câu hỏi là \"Tăng trưởng 10% năng suất qua từng quý\" có được hay không?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## Velocity và các tính toàn cơ bản"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Nói về năng suất trong ngành phần mềm, từ \"năng suất\" sẽ thường được sử dụng tương đồng với từ \"velocity (vận tốc)\", velocity được đo bằng số lượng SP hoàn thành trong một Sprint. Năng suất trong một quý, nhiều Sprint, làm cho nó không còn là một số cứng, mà là một chuỗi sô."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Ghi lại trong Quý 1 có chuỗi Velocity như sau:"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "``` 38   45   31   42   36   48 ```"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy chúng ta có thể trích xuất được thông tin gì từ chuỗi này?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Trung bình SP của Quý 1 là $\\mu_1=40$ nhưng không có Sprint nào là 40 cả, chênh lệch giữa Sprint năng suất cao nhất và thấp nhất là $48-31=17$ SP trong khi không có gì bên ngoài thực sự thay đổi, vẫn những con người đó, codebase đó trên cùng một cách thức làm việc."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Một sự thật đầu tiên phải chấp nhận là **velocity sẽ dao động kể cả khi không có chuyện gì xảy ra**. Ý ở đây là một thay đổi thực sự lớn, nhưng vẫn thay đổi nhỏ như một người nghỉ ốm, một Story làm dễ hơn dự tính hoặc khó hơn dự tính,...vv."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Có thể tính ra độ dao động này từ công thức tính _độ lệch chuẩn mẫu_ $$\\sigma_1 = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N}(x_i - \\mu_1)^2}$$, với $N=6$ và chuỗi như trên chúng ta sẽ có $\\sigma_1=6.32$, với _phương sai mẫu_ là $s_1^2=38.8$. Hơi nhiều con số đúng không :vvv, cơ bản "
-							},
-							{
-								"t": "phát",
-								"s": "del"
-							},
-							{
-								"t": "có",
-								"s": "ins"
-							},
-							{
-								"t": " "
-							},
-							{
-								"t": "biểu",
-								"s": "del"
-							},
-							{
-								"t": "thể",
-								"s": "ins"
-							},
-							{
-								"t": " "
-							},
-							{
-								"t": "nói ",
-								"s": "ins"
-							},
-							{
-								"t": "là, **dù không có gì thực sự lớn xảy ra, velocity của một Sprint có thể bị lệch khỏi trung bình 6.32 point.**."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Với dữ liệu trên chúng ta có thể tính ra thêm được một con số có ý nghĩa khác, hệ số biến thiên $c$, $$c_1=\\frac{\\sigma_1}{\\mu_1}=\\frac{6.28}{40}=0.157$$. Ý nghĩa của số này nói là, **dao động điển hình của đội này bằng khoảng 15.7% so với mức trung bình**, đây có thể được xem là "
-							},
-							{
-								"t": "một đội ",
-								"s": "ins"
-							},
-							{
-								"t": "ổn định."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## So sánh hai chuỗi số"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Câu hỏi cuối cùng không phải là những con số bên trên, nhưng tin mình đi chúng khá quan trọng đó, mà là so sánh hai chuỗi số."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Ví dụ sau quý hai, log lại chúng ta có hai chuỗi velocity như sau"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "``` Quý 1: 38  45  31  42  36  48   →  avg: 40.0 Quý 2: 41  49  36  47  40  51   →  avg: 44.0 ```"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Trung bình của Quý 2 nhiều hơn quý Quý 1 4 point, đúng 10%, ăn mừng được rồi chứ?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Tất nhiên là nên ăn mừng trước rồi :vvv, nhưng liệu **nếu không có bất kỳ thứ gì tác động vào kể cả AI, thì chênh lệch 4 point này có thể xảy ra không?**"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Cách thông thường để so sánh hai chuỗi số là so sánh trung bình, như cách chúng ta làm, trung bình cũng có sai số của riêng nó, gọi là _sai số chuẩn của trung bình_, $$SE_1=\\frac{\\sigma_1}{\\sqrt{N}}=\\frac{6.32}{\\sqrt{6}}=2.58$$, con số này nói lên điều gì, nó nói là, nếu bạn có quyền năng chạy lại Quý 1 trong một dòng không thời gian khác với cùng team, cùng điều kiện, thì con số trung bình $\\mu_1$ (40) có thể sai lệch đi 2.58 điểm là chuyện bình thường."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy nếu chúng ta có quyền năng chạy lại hai quý ở một chiều không thời gian khác, thì trung bình Quý 2 và Quý 1 có thể sai khác nhau là bao nhiểu?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Với $SE_2=\\frac{\\sigma_2}{\\sqrt{N}}=\\frac{5.86}{\\sqrt{6}}=2.39$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "$$SE=\\sqrt{SE_1^2+SE_2^2}=\\sqrt{2.58^2+2.39^2}=3.52$$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Điều này có thể cho ra một kết luận, **nếu không có gì thay đổi cả, trung bình hai quý có thể lệch nhau 3.52 point là bình thường**. Chệnh lệch chúng ta quan sát được là 4 point, mà ở đây nhiễu có thể làm cho lệch nhau tới 3.5 point, điều này có thể dẫn tới kết luận nhanh là, không đủ điều kiện để kết luận liệu AI có thật sự tác động tốt đến năng suất hay không vì gần như nó không khác với nhiễu là mấy."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## Vậy cần bao nhiêu để có thể phát hiện và kết luận được?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "OK, trước khi đi vào tính toán cho cái này, cần hiểu thêm một chút về số $SE$ mà chúng ta đã tính bên trên, số $SE$ này cũng là độ rộng của hình chuông phân bố nhiễu. Sao nhỉ, như bên trên chúng ta tưởng tượng có khả năng chạy lại cả hai quý ở chiều không thời gian khác, nếu chúng ta làm vậy vô số lần thì sẽ khoảng 70% số lần chênh lệch sẽ nằm trong khoảng -3.52 tới 3.52 point."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!--CHART: Thêm chart cụ thể cho phân phối chuẩn của SE-->"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Để có thể phát hiện và kết luận được, chúng ta trước hết phải đề phòng hai loại sai."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "### Sai loại I"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Sai loại I là \"báo động giã\", không có gì thay đổi hết, nhưng nhiễu vô tình tạo ra chênh lệch vượt quá chênh lệch bình thường mà chúng ta vừa tính ban nãy (3.52), để phòng chống loại sai này, chúng ta muốn chỉ 5% khả năng các nhiễu vượt ngưỡng, với phân phối chuẩn hình chuông, giá trị đó nằm xa tâm 1.96 lần độ rộng. Nên giá trị đó sẽ là $1.96x3.52=6.8992=7$, điều này có nghĩa là, nếu chênh lệch dưới 7 vẫn chưa thể kết luận gì."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "### Sai loại II"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Sai loại II là \"bỏ lỡ\", tức là có cải thiện thật, nhưng nhiễu kéo cho con số xuống dưới ngưỡng bình thường dẫn tới kết luận \"bình thường\". Cụ thể, nếu sự cải thiện đúng bằng ngưỡng 7 điểm chúng ta đã tính bên trên, thì trong vô số lần đó chỉ có 50% số lần bắt được, 50% còn lại bị nhiễu kéo xuống. Nếu muốn mức bắt được này lên tới 80% thì cải thiện thật phải hơn 7 một khoảng nữa, với hình chuông, đẩy tâm lên 0.84 lần độ rộng thì 80% phân phối sẽ nằm bên phải ngưỡng."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy cần có $$\\Delta_{min}=(1.96+0.84)\\times SE=2.8\\times 3.52=9.856=10$$"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy cần có **chênh lệch ít nhất 10 point mới có thể xem là có cải thiện**."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!--INTERACTION: Nếu có thể làm interaction cho cái này sẽ tốt, có thể nhìn được trực quan phân phối-->"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!-- - AI - SDLC - R&D - StoryPoint (SP) - Velocity - Sprint - Story - Độ lệch chuẩn mẫu - Phương sai mẫu - Sai số chuẩn của trung bình - Sai số loại I - Sai số loại I - Phân phối chuẩn -->"
-							}
-						]
-					}
-				]
-			},
-			{
-				"r": "r06",
-				"n": 6,
-				"date": "2026-08-20T11:43:27+07:00",
-				"words": 2785,
-				"note": "Còn phần tính bao lâu, đã thêm một số interaction",
-				"sections": [
-					{
-						"label": "I. Velocity và các tính toán cơ bản",
-						"state": "editing"
-					},
-					{
-						"label": "II. So sánh hai chuỗi số",
-						"state": "editing"
-					},
-					{
-						"label": "III. Vậy cần bao nhiêu để có thể phát hiện và kết luận được?",
-						"state": "editing"
-					},
-					{
-						"label": "IV. Vậy cần bao lâu?",
-						"state": "editing"
-					},
-					{
-						"label": "V. Kết luận",
-						"state": "editing"
-					}
-				],
-				"body": [
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Một trong những công ty mình từng làm áp "
-							},
-							{
-								"t": "sử ",
-								"s": "del"
-							},
-							{
-								"t": "dụng AI rất nhiều trong suốt quá trình Software Development Life Cycle (SDLC), bạn biết đó sử dụng AI nhiều cũng là một dạng đầu tư, nên sếp tổng mới yêu cầu là năng suất công việc phải tốt hơn 10% sau mỗi quý, hiện tại năng suất công việc của công ty cho phía R&D (Research and Development) được đo bằng StoryPoint (SP). Chúng ta sẽ không nói về việc sử dụng SP đo năng suất công việc là đúng hay sai trong bài này, giả sử là nó đúng. Câu hỏi là \"Tăng trưởng 10% năng suất qua từng quý\" có được hay không?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## Velocity và các tính "
-							},
-							{
-								"t": "toàn",
-								"s": "del"
-							},
-							{
-								"t": "toán",
-								"s": "ins"
-							},
-							{
-								"t": " cơ bản"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Nói về năng suất trong ngành phần mềm, từ \"năng suất\" sẽ thường được sử dụng tương đồng với từ \"velocity (vận tốc)\", velocity được đo bằng số lượng SP hoàn thành trong một Sprint. Năng suất trong một quý, nhiều Sprint, làm cho nó không còn là một số cứng, mà là một chuỗi sô."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Ghi lại trong Quý 1 có chuỗi Velocity như sau:"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "``` 38   45   31   42   36   48 ```"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy chúng ta có thể trích xuất được thông tin gì từ chuỗi này?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Trung bình SP của Quý 1 là $\\mu_1=40$ nhưng không có Sprint nào là 40 cả, chênh lệch giữa Sprint năng suất cao nhất và thấp nhất là $48-31=17$ SP trong khi không có gì bên ngoài thực sự thay đổi, vẫn những con người đó, codebase đó trên cùng một cách thức làm việc."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Một sự thật đầu tiên phải chấp nhận là **velocity sẽ dao động kể cả khi không có chuyện gì xảy ra**. Ý ở đây là một thay đổi thực sự lớn, nhưng vẫn thay đổi nhỏ như một người nghỉ ốm, một Story làm dễ hơn dự tính hoặc khó hơn dự tính,...vv."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Có thể tính ra độ dao động này từ công thức tính _độ lệch chuẩn mẫu_ $$\\sigma_1 = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N}(x_i - \\mu_1)^2}$$, với $N=6$ và chuỗi như trên chúng ta sẽ có "
-							},
-							{
-								"t": "$\\sigma_1=6.32$,",
-								"s": "del"
-							},
-							{
-								"t": "$\\sigma_1=6.23$,",
-								"s": "ins"
-							},
-							{
-								"t": " với _phương sai mẫu_ là $s_1^2=38.8$. Hơi nhiều con số đúng không :vvv, cơ bản có thể nói là, **dù không có gì thực sự lớn xảy ra, velocity của một Sprint có thể bị lệch khỏi trung bình "
-							},
-							{
-								"t": "6.32",
-								"s": "del"
-							},
-							{
-								"t": "6.23",
-								"s": "ins"
-							},
-							{
-								"t": " point.**."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Với dữ liệu trên chúng ta có thể tính ra thêm được một con số có ý nghĩa khác, hệ số biến thiên $c$, "
-							},
-							{
-								"t": "$$c_1=\\frac{\\sigma_1}{\\mu_1}=\\frac{6.28}{40}=0.157$$.",
-								"s": "del"
-							},
-							{
-								"t": "$$c_1=\\frac{\\sigma_1}{\\mu_1}=\\frac{6.23}{40}=0.156$$.",
-								"s": "ins"
-							},
-							{
-								"t": " Ý nghĩa của số này nói là, **dao động điển hình của đội này bằng khoảng "
-							},
-							{
-								"t": "15.7%",
-								"s": "del"
-							},
-							{
-								"t": "15.6%",
-								"s": "ins"
-							},
-							{
-								"t": " so với mức trung bình**, đây có thể được xem là một đội ổn định."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## So sánh hai chuỗi số"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Câu hỏi cuối cùng không phải là những con số bên trên, nhưng tin mình đi chúng khá quan trọng đó, mà là so sánh hai chuỗi số."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Ví dụ sau quý hai, log lại chúng ta có hai chuỗi velocity như sau"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "``` Quý 1: 38  45  31  42  36  48   →  avg: 40.0 Quý 2: 41  49  36  47  40  51   →  avg: 44.0 ```"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Trung bình của Quý 2 nhiều hơn quý Quý 1 4 point, đúng 10%, ăn mừng được rồi chứ?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Tất nhiên là nên ăn mừng trước rồi :vvv, nhưng liệu **nếu không có bất kỳ thứ gì tác động vào kể cả AI, thì chênh lệch 4 point này có thể xảy ra không?**"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Cách thông thường để so sánh hai chuỗi số là so sánh trung bình, như cách chúng ta làm, trung bình cũng có sai số của riêng nó, gọi là _sai số chuẩn của trung bình_, "
-							},
-							{
-								"t": "$$SE_1=\\frac{\\sigma_1}{\\sqrt{N}}=\\frac{6.32}{\\sqrt{6}}=2.58$$,",
-								"s": "del"
-							},
-							{
-								"t": "$$SE_1=\\frac{\\sigma_1}{\\sqrt{N}}=\\frac{6.23}{\\sqrt{6}}=2.54$$,",
-								"s": "ins"
-							},
-							{
-								"t": " con số này nói lên điều gì, nó nói là, nếu bạn có quyền năng chạy lại Quý 1 trong một dòng không thời gian khác với cùng team, cùng điều kiện, thì con số trung bình $\\mu_1$ (40) có thể sai lệch đi "
-							},
-							{
-								"t": "2.58",
-								"s": "del"
-							},
-							{
-								"t": "2.54",
-								"s": "ins"
-							},
-							{
-								"t": " điểm là chuyện bình thường."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy nếu chúng ta có quyền năng chạy lại hai quý ở một chiều không thời gian khác, thì trung bình Quý 2 và Quý 1 có thể sai khác nhau là bao nhiểu?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<ReRun mu={40} sd={[6.23, 5.87]} n={6} at={4} atLabel=\"+4 — mức chúng ta quan sát được\" axisLabel=\"chênh lệch giữa trung bình hai quý (point)\" readout={\"Bạn đã chạy lại {runs} lần, trong một thế giới mà không có gì thay đổi cả — không AI, không cải tiến, không gì hết. {hits} lần trong số đó cho chênh lệch từ {at} point trở lên.\"} label=\"Hình 2\" hint=\"chạy lại quý\" caption=\"Mỗi chấm là một quý được sống lại: hai chuỗi sáu Sprint rút ra từ cùng một đội, cùng độ dao động, không có bất kỳ cải thiện nào. Những chấm màu cam là các lần nhiễu tự nó dựng lên một 'bằng chứng' lớn ngang cái chúng ta có thật.\" alt=\"Các chấm rơi quanh 0 thành hình chuông; những chấm từ +4 trở lên được tô màu khác.\" />",
+								"t": "One of the companies I worked at leaned on AI heavily across the whole Software Development Life Cycle (SDLC). Using that much AI is a form of investment, so the CEO asked for productivity to improve by 10% every quarter — and productivity, on the R&D (Research and Development) side, was measured in story points (SP). Whether the story point is the right way to measure productivity is a different argument and this piece will not have it; assume it is. The question here is narrower: is \"10% growth every quarter\" something you can actually establish?",
 								"s": "ins"
 							}
 						]
@@ -2890,8 +1676,8 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Với $SE_2=\\frac{\\sigma_2}{\\sqrt{N}}=\\frac{5.86}{\\sqrt{6}}=2.39$",
-								"s": "del"
+								"t": "## Velocity and the basic arithmetic",
+								"s": "ins"
 							}
 						]
 					},
@@ -2899,7 +1685,160 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Với $SE_2=\\frac{\\sigma_2}{\\sqrt{N}}=\\frac{5.87}{\\sqrt{6}}=2.39$",
+								"t": "In software the word \"productivity\" usually turns into the word \"velocity\", and velocity is measured as the number of SP finished in one sprint. Productivity over a quarter, then, is many sprints — which means it is not a single number at all. It is a series.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Here is Q1, as logged:",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "``` 38   45   31   42   36   48 ```",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "What can we pull out of that?",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "The mean is $\\mu_1=40$, and yet not one sprint was 40. The gap between the best sprint and the worst is $48-31=17$ SP, and nothing on the outside changed across those twelve weeks: same people, same codebase, same way of working.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "So the first thing to accept is that **velocity swings even when nothing is happening**. Not big changes — small ones. Somebody was off sick. A story turned out easier than it looked, or harder.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "That swing has a size, and the sample standard deviation is how you get at it: $$\\sigma_1 = \\sqrt{\\frac{1}{N-1} \\sum_{i=1}^{N}(x_i - \\mu_1)^2}$$ With $N=6$ and the series above, $\\sigma_1=6.23$, and the sample variance is $s_1^2=38.8$. A lot of numbers, I know. The short version: **with nothing whatsoever going on, a sprint can land 6.23 points off the mean.**",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "One more number falls out of the same data, the coefficient of variation $c$: $$c_1=\\frac{\\sigma_1}{\\mu_1}=\\frac{6.23}{40}=0.156$$ which says that **this team's ordinary swing is about 15.6% of its own average**. As teams go, that is a steady one.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "## Comparing two series",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "The question at the end is not any of the numbers above — trust me, they matter — it is a comparison between two series.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Q2 comes in, and the log now reads:",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "``` Q1: 38  45  31  42  36  48   →  avg: 40.0 Q2: 41  49  36  47  40  51   →  avg: 44.0 ```",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Q2's average is 4 points above Q1's. Exactly 10%. Time to celebrate?",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "Celebrate first, sure. But then: **if nothing at all had acted on this team, AI included, could a 4-point gap have shown up anyway?**",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "The usual way to compare two series is to compare their means, which is what we just did — and a mean carries an error of its own, the standard error of the mean: $$SE_1=\\frac{\\sigma_1}{\\sqrt{N}}=\\frac{6.23}{\\sqrt{6}}=2.54$$ What that number says is this: if you had the power to re-run Q1 in some other timeline, same team, same conditions, the mean $\\mu_1$ (40) coming out 2.54 points different would be an ordinary Tuesday.",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "So if we could re-run *both* quarters in another timeline, how far apart could the two means land?",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "<ReRun mu={40} sd={[6.23, 5.87]} n={6} at={4} atLabel=\"+4 — what we actually observed\" axisLabel=\"difference between the two quarterly means (points)\" readout={\"You have re-run it {runs} times, in a world where nothing changed at all — no AI, no improvement, nothing. {hits} of those came out {at} points or more.\"} label=\"Figure 2\" hint=\"re-run the quarter\" caption=\"Each dot is a quarter lived again: two runs of six sprints drawn from the same team, the same spread, with no improvement anywhere in it. The orange dots are the times noise alone built 'evidence' as large as the evidence we actually have.\" alt=\"Dots fall around zero in a bell shape; those at +4 and beyond are inked in a second colour.\" />",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "With $SE_2=\\frac{\\sigma_2}{\\sqrt{N}}=\\frac{5.87}{\\sqrt{6}}=2.39$,",
 								"s": "ins"
 							}
 						]
@@ -2917,84 +1856,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "$$SE=\\sqrt{SE_1^2+SE_2^2}=\\sqrt{2.58^2+2.39^2}=3.52$$",
-								"s": "del"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Điều này có thể cho ra một kết luận, **nếu không có gì thay đổi cả, trung bình hai quý có thể lệch nhau "
-							},
-							{
-								"t": "3.52",
-								"s": "del"
-							},
-							{
-								"t": "3.49",
-								"s": "ins"
-							},
-							{
-								"t": " point là bình thường**. "
-							},
-							{
-								"t": "Chệnh",
-								"s": "del"
-							},
-							{
-								"t": "Chênh",
-								"s": "ins"
-							},
-							{
-								"t": " lệch chúng ta quan sát được là 4 point, mà ở đây nhiễu có thể làm cho lệch nhau tới 3.5 point, điều này có thể dẫn tới kết luận nhanh là, không đủ điều kiện để kết luận liệu AI có thật sự tác động tốt đến năng suất hay không vì gần như nó không khác với nhiễu là mấy."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "## Vậy cần bao nhiêu để có thể phát hiện và kết luận được?"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "OK, trước khi đi vào tính toán cho cái này, cần hiểu thêm một chút về số $SE$ mà chúng ta đã tính bên trên, số $SE$ này cũng là độ rộng của hình chuông phân bố nhiễu. Sao nhỉ, như bên trên chúng ta tưởng tượng có khả năng chạy lại cả hai quý ở chiều không thời gian khác, nếu chúng ta làm vậy vô số lần thì sẽ khoảng 70% số lần chênh lệch sẽ nằm trong khoảng "
-							},
-							{
-								"t": "-3.52",
-								"s": "del"
-							},
-							{
-								"t": "-3.49",
-								"s": "ins"
-							},
-							{
-								"t": " tới "
-							},
-							{
-								"t": "3.52",
-								"s": "del"
-							},
-							{
-								"t": "3.49",
-								"s": "ins"
-							},
-							{
-								"t": " point."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<NormalCurve sd={3.49} bandLabel=\"khoảng 70% số lần rơi vào đây\" bandTick=\"±SE = 3.49\" axisLabel=\"chênh lệch giữa trung bình hai quý (point)\" marks={[{ at: 4, label: 'chênh lệch quan sát được: +4' }]} label=\"Hình 1\" hint=\"phân phối nhiễu\" caption=\"Nếu không có gì thay đổi, chênh lệch hai quý vẫn dao động quanh 0 với độ rộng SE = 3.49. Con số +4 chúng ta quan sát được nằm ngay trong đám mây đó.\" alt=\"Đường cong chuẩn tâm tại 0, vùng tô từ -3.49 tới 3.49 point, vạch đánh dấu tại +4 nằm sát mép vùng tô.\" />",
+								"t": "Which gives us something to say: **with nothing changed at all, two quarterly means drifting 3.49 points apart is normal.** The gap we observed is 4 points, and noise alone reaches 3.5. The quick conclusion is the honest one — there is not enough here to say whether AI helped, because what we are holding is barely distinguishable from noise.",
 								"s": "ins"
 							}
 						]
@@ -3003,8 +1865,8 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "<!--CHART: Thêm chart cụ thể cho phân phối chuẩn của SE-->",
-								"s": "del"
+								"t": "## How big does a difference have to be?",
+								"s": "ins"
 							}
 						]
 					},
@@ -3012,7 +1874,8 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Để có thể phát hiện và kết luận được, chúng ta trước hết phải đề phòng hai loại sai."
+								"t": "Before the arithmetic, one more thing about that $SE$: it is also the width of the bell the noise is spread along. Go back to re-running both quarters in another timeline — do that endlessly and about 70% of the time the difference lands between -3.49 and 3.49 points.",
+								"s": "ins"
 							}
 						]
 					},
@@ -3020,7 +1883,8 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "### Sai loại I"
+								"t": "<NormalCurve sd={3.49} bandLabel=\"about 70% of runs land in here\" bandTick=\"±SE = 3.49\" axisLabel=\"difference between the two quarterly means (points)\" marks={[{ at: 4, label: 'observed difference: +4' }]} label=\"Figure 1\" hint=\"the noise distribution\" caption=\"With nothing changed, the gap between two quarters still wanders around zero with a width of SE = 3.49. The +4 we observed sits well inside that cloud.\" alt=\"A normal curve centred on zero, shaded from -3.49 to 3.49 points, with a mark at +4 just past the edge of the shading.\" />",
+								"s": "ins"
 							}
 						]
 					},
@@ -3028,40 +1892,26 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Sai loại I là \"báo động "
-							},
-							{
-								"t": "giã\",",
-								"s": "del"
-							},
-							{
-								"t": "giả\",",
+								"t": "To detect anything and mean it, there are two ways to be wrong, and both have to be guarded against.",
 								"s": "ins"
-							},
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
 							{
-								"t": " không có gì thay đổi hết, nhưng nhiễu vô tình tạo ra chênh lệch vượt quá chênh lệch bình thường mà chúng ta vừa tính ban nãy "
-							},
-							{
-								"t": "(3.52),",
-								"s": "del"
-							},
-							{
-								"t": "(3.49),",
+								"t": "### Type I error",
 								"s": "ins"
-							},
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
 							{
-								"t": " để phòng chống loại sai này, chúng ta muốn chỉ 5% khả năng các nhiễu vượt ngưỡng, với phân phối chuẩn hình chuông, giá trị đó nằm xa tâm 1.96 lần độ rộng. Nên giá trị đó sẽ là "
-							},
-							{
-								"t": "$1.96x3.52=6.8992=7$,",
-								"s": "del"
-							},
-							{
-								"t": "$1.96\\times3.49=6.84\\approx7$,",
+								"t": "A type I error is a false alarm: nothing changed, but noise happened to throw up a gap wider than the ordinary one we just measured (3.49). To guard against it, we allow only a 5% chance of noise clearing the bar — and on a normal curve that point sits 1.96 widths out from the centre. So the bar is $1.96\\times3.49=6.84\\approx7$, which means: **under 7 points, say nothing.**",
 								"s": "ins"
-							},
-							{
-								"t": " điều này có nghĩa là, nếu chênh lệch dưới 7 vẫn chưa thể kết luận gì."
 							}
 						]
 					},
@@ -3078,7 +1928,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Con số 1.96 là của phân phối chuẩn, đúng khi cỡ mẫu đủ lớn. Ở đây mỗi quý chỉ có 6 Sprint, mà $\\sigma$ cũng là ước lượng từ chính 6 con số đó, nên chặt chẽ thì phải dùng phân phối _t_ với bậc tự do Welch, ở đây là 10, và hệ số thành 2.23 thay vì 1.96. Ngưỡng kết luận nhích từ 7 lên 8, và $\\Delta_{min}$ ở phần sau từ 10 lên 11. Bài này giữ 1.96 cho gọn mạch, vì kết luận không đổi: yêu cầu tăng 10% (4 point) nằm dưới cả hai ngưỡng.",
+								"t": "The 1.96 belongs to the normal distribution and holds when the sample is large. Here each quarter is six sprints, and $\\sigma$ is itself estimated from those same six numbers, so strictly this calls for the _t_ distribution with Welch's degrees of freedom — 10 here — and a factor of 2.23 rather than 1.96. The bar moves from 7 to 8, and $\\Delta_{min}$ below from 10 to 11. This piece keeps 1.96 to keep the thread clean, because the conclusion does not move: the 10% being asked for (4 points) sits under both bars.",
 								"s": "ins"
 							}
 						]
@@ -3096,30 +1946,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "### Sai loại II"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Sai loại II là \"bỏ lỡ\", tức là có cải thiện thật, nhưng nhiễu kéo cho con số xuống dưới ngưỡng bình thường dẫn tới kết luận \"bình thường\". Cụ thể, nếu sự cải thiện đúng bằng ngưỡng 7 điểm chúng ta đã tính bên trên, thì trong vô số lần đó chỉ có 50% số lần bắt được, 50% còn lại bị nhiễu kéo xuống. Nếu muốn mức bắt được này lên tới 80% thì cải thiện thật phải hơn 7 một khoảng nữa, với hình chuông, đẩy tâm lên 0.84 lần độ rộng thì 80% phân phối sẽ nằm bên phải ngưỡng."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "Vậy cần có $$\\Delta_{min}=(1.96+0.84)\\times SE=2.8\\times "
-							},
-							{
-								"t": "3.52=9.856=10$$",
-								"s": "del"
-							},
-							{
-								"t": "3.49=9.77\\approx 10$$",
+								"t": "### Type II error",
 								"s": "ins"
 							}
 						]
@@ -3128,15 +1955,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Vậy cần có **chênh lệch ít nhất 10 point mới có thể xem là có cải thiện**."
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<DetectionPower se={3.49} presets={[ { label: 'ngưỡng', at: 6.84 }, { label: '80%', at: 9.77 } ]} thresholdLabel=\"ngưỡng kết luận: 6.84\" axisLabel=\"chênh lệch giữa trung bình hai quý (point)\" readout={\"Nếu cải thiện thật đúng bằng {delta} point, thì trong vô số lần chạy lại, bạn sẽ kết luận được 'có cải thiện' khoảng {power} số lần. Phần tô là chỗ đó.\"} label=\"Hình 3\" hint=\"kéo thử\" caption=\"Chuông xám đứng yên là nhiễu. Chuông xanh là thế giới nơi cải thiện có thật, kéo tới đâu tuỳ bạn. Đặt nó đúng vào ngưỡng thì phần tô còn đúng một nửa — đó là chỗ 50% bị bỏ lỡ.\" alt=\"Hai đường cong chuẩn cùng độ rộng, một tâm tại 0 và một trượt theo thanh kéo, với vạch ngưỡng và phần đuôi được tô.\" />",
+								"t": "A type II error is a miss: the improvement was real, but noise dragged the number below the bar and it got read as \"nothing happened\". Concretely — if the real improvement is exactly the 7 points we just computed, then across endless re-runs you catch it half the time and lose it the other half. To push the catch rate to 80%, the real improvement has to clear 7 by a margin: on a bell, shifting the centre 0.84 widths further puts 80% of the distribution to the right of the bar.",
 								"s": "ins"
 							}
 						]
@@ -3145,7 +1964,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "## Vậy cần bao lâu?",
+								"t": "So what is needed is $$\\Delta_{min}=(1.96+0.84)\\times SE=2.8\\times 3.49=9.77\\approx 10$$",
 								"s": "ins"
 							}
 						]
@@ -3154,7 +1973,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Đặt lại câu hỏi một chút, chúng ta đã tính được, để có thể xác định là \"có cải thiện\" hay không thì phải có chênh lệch ít nhất là 10 point, với mẫu thu thập được $N=6$ cho mỗi quý, câu hỏi mới là **\"Cần bao nhiêu Sprint (N) để có thể kết luận là đội đã cải thiện 10%\"**.",
+								"t": "Which is to say, **a gap of at least 10 points before it counts as improvement.**",
 								"s": "ins"
 							}
 						]
@@ -3163,7 +1982,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "### Tổng quát SE",
+								"t": "<DetectionPower se={3.49} presets={[ { label: 'the bar', at: 6.84 }, { label: '80%', at: 9.77 } ]} thresholdLabel=\"the bar: 6.84\" axisLabel=\"difference between the two quarterly means (points)\" readout={\"If the real improvement is exactly {delta} points, then across endless re-runs you would call it an improvement about {power} of the time. The shaded tail is that share.\"} label=\"Figure 3\" hint=\"drag it\" caption=\"The grey bell standing still is noise. The blue one is a world where the improvement is real — drag it wherever you like. Park it on the bar and the shaded part is exactly half: that is where the 50% goes missing.\" alt=\"Two normal curves of equal width, one centred on zero and one moved by a slider, with a threshold rule and a shaded tail.\" />",
 								"s": "ins"
 							}
 						]
@@ -3172,7 +1991,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Khi nãy chúng ta đã tính được chênh lệch so sánh của hai chuỗi với $n=6$ bên trên là $SE=3.49$, đây là một con số cụ thể, không phải công thức tổng quát so sánh. Giả sử luôn so sánh hai chuỗi có cùng độ dài, công thức tổng quát có thể được viết lại như sau:",
+								"t": "## So how long does it take?",
 								"s": "ins"
 							}
 						]
@@ -3181,7 +2000,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "$$SE=\\sqrt{SE_1^2 + SE_2^2} = \\sqrt{\\frac{\\sigma_1^2}{n} + \\frac{\\sigma_2^2}{n}} = \\sqrt{\\frac{\\sigma_1^2 + \\sigma_2^2}{n}} = \\sqrt{\\frac{2}{n} \\times \\frac{\\sigma_1^2 + \\sigma_2^2}{2}} = \\sigma_{gộp} \\times \\sqrt{\\frac{2}{n}}$$",
+								"t": "Let me restate the question. We know a gap has to reach at least 10 points before it counts, and we collected $N=6$ per quarter. The new question is **\"how many sprints (N) does it take to establish that the team improved by 10%?\"**",
 								"s": "ins"
 							}
 						]
@@ -3190,7 +2009,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Với",
+								"t": "### Generalising SE",
 								"s": "ins"
 							}
 						]
@@ -3199,7 +2018,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "$$\\sigma_{gộp}=\\sqrt{\\frac{\\sigma_1^2 + \\sigma_2^2}{2}} = \\sqrt{\\frac{38.8 + 34.4}{2}} = \\sqrt{36.6} = 6.05$$",
+								"t": "The $SE=3.49$ from earlier is one specific number for $n=6$, not a formula. Assuming the two series are always the same length, it can be written out:",
 								"s": "ins"
 							}
 						]
@@ -3208,7 +2027,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "### Ngưỡng phát hiện cải thiện tính ngược lại",
+								"t": "$$SE=\\sqrt{SE_1^2 + SE_2^2} = \\sqrt{\\frac{\\sigma_1^2}{n} + \\frac{\\sigma_2^2}{n}} = \\sqrt{\\frac{\\sigma_1^2 + \\sigma_2^2}{n}} = \\sqrt{\\frac{2}{n} \\times \\frac{\\sigma_1^2 + \\sigma_2^2}{2}} = \\sigma_{pooled} \\times \\sqrt{\\frac{2}{n}}$$",
 								"s": "ins"
 							}
 						]
@@ -3217,7 +2036,34 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Khi nãy chúng ta cũng tính được $\\Delta_{min}=2.8 \\times SE \\approx 10$, thì mới xem là có cải thiện, ráp lại vào công thức tính cho $\\Delta$ thì sẽ có bất đẳng thức như sau",
+								"t": "where",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "$$\\sigma_{pooled}=\\sqrt{\\frac{\\sigma_1^2 + \\sigma_2^2}{2}} = \\sqrt{\\frac{38.8 + 34.4}{2}} = \\sqrt{36.6} = 6.05$$",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "### Working the threshold backwards",
+								"s": "ins"
+							}
+						]
+					},
+					{
+						"kind": "p",
+						"segs": [
+							{
+								"t": "We also have $\\Delta_{min}=2.8 \\times SE \\approx 10$ as the point where a gap counts. Substituting the formula for $SE$ gives an inequality:",
 								"s": "ins"
 							}
 						]
@@ -3235,7 +2081,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Có nghĩa là, **cải thiện thật phải lớn hơn hoặc bằng 2.8 lần độ ồn nhiễu của phép so sánh**.",
+								"t": "In words: **a real improvement has to be at least 2.8 times the noise of the comparison.**",
 								"s": "ins"
 							}
 						]
@@ -3244,7 +2090,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "OK, tới đây cần phải biến đổi bất đẳng thức để có thể tìm ra công thức của $n$.",
+								"t": "Now rearrange it for $n$.",
 								"s": "ins"
 							}
 						]
@@ -3262,7 +2108,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Đã có công thức của $n$ nhưng ý nghĩa hiện tại của nó không phải là \"phần trăm\", để có thể có ý nghĩa đó, phải chia cả tử số và mẫu số cho $\\mu^2$ (bình phương trung bình của chuỗi)",
+								"t": "That is a formula for $n$, but not yet one in percentages. To get there, divide top and bottom by $\\mu^2$ — the square of the series' mean.",
 								"s": "ins"
 							}
 						]
@@ -3316,7 +2162,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Chúng ta có $\\sigma/\\mu=c$ _hệ số biến thiên_ của đội nhóm. Vậy công thức trên nói lên điều gì?",
+								"t": "And $\\sigma/\\mu=c$ is the team's coefficient of variation. So what does the formula say?",
 								"s": "ins"
 							}
 						]
@@ -3325,7 +2171,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Tử số nói là _đội này đem lại bao nhiêu phần trăm nhiễu_, mẫu số nói là _muốn bắt được bao nhiêu phần trăm cải thiện_.",
+								"t": "The numerator says _how much noise, in percent, this team brings_. The denominator says _how much improvement, in percent, you want to catch_.",
 								"s": "ins"
 							}
 						]
@@ -3334,7 +2180,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Với $c$ gộp được tính lại cho cả hai Quý là $c=\\frac{\\sigma_{gộp}}{\\mu_{gộp}}=\\frac{6.05}{42}=0.144$ và mong muốn bắt được 10% cải thiện, tức $\\Delta/\\mu=0.1$, thì $n$ phải",
+								"t": "With the pooled $c$ across both quarters, $c=\\frac{\\sigma_{pooled}}{\\mu_{pooled}}=\\frac{6.05}{42}=0.144$, and a 10% improvement to catch, so $\\Delta/\\mu=0.1$, $n$ has to be",
 								"s": "ins"
 							}
 						]
@@ -3352,7 +2198,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "#### Kiểm tra lại một tí",
+								"t": "#### A quick check",
 								"s": "ins"
 							}
 						]
@@ -3361,7 +2207,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Thay $n=33$ vào công thức tính SE ta sẽ có: $SE=\\sigma\\times\\sqrt{\\frac{2}{n}}=6.05\\times\\sqrt{\\frac{2}{33}}\\approx1.49$ Từ đó suy ra $\\Delta_{min}=2.8 \\times SE=2.8\\times1.49=4.17$, mà $4.17/\\mu_{gộp}=4.17/42=0.099=9.9\\%$. Yeah, vậy là tính toán đã đúng.",
+								"t": "Put $n=33$ back into the formula for SE: $SE=\\sigma\\times\\sqrt{\\frac{2}{n}}=6.05\\times\\sqrt{\\frac{2}{33}}\\approx1.49$. That gives $\\Delta_{min}=2.8 \\times SE=2.8\\times1.49=4.17$, and $4.17/\\mu_{pooled}=4.17/42=0.099=9.9\\%$. Good — the arithmetic holds.",
 								"s": "ins"
 							}
 						]
@@ -3370,7 +2216,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Vậy cần ít nhất phải theo dõi **33 Sprint mỗi nhánh**, tức là **66 Sprint** mới có thể bắt được liệu một tác nhân nào đó có thể giúp tăng năng suất lên 10% hay không.",
+								"t": "So it takes at least **33 sprints per arm**, meaning **66 sprints**, before you can catch whether something has lifted productivity by 10%.",
 								"s": "ins"
 							}
 						]
@@ -3379,7 +2225,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "## Kết luận",
+								"t": "## Conclusion",
 								"s": "ins"
 							}
 						]
@@ -3388,7 +2234,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Quay lại câu hỏi của sếp tổng: \"năng suất phải tốt hơn 10% sau mỗi quý\". Trả lời cho câu hỏi này không phải \"được\" hay \"không được\", mà là một trả lời khó chịu hơn: **với dữ liệu của một quý, câu hỏi đó không có câu trả lời.**",
+								"t": "Back to the CEO's question: \"productivity has to improve 10% every quarter\". The answer is not \"yes\" or \"no\". It is something more uncomfortable: **with one quarter of data, that question has no answer at all.**",
 								"s": "ins"
 							}
 						]
@@ -3397,7 +2243,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Ba con số của bài này xếp cạnh nhau đã nói:",
+								"t": "Three numbers from this piece, side by side, say the whole thing:",
 								"s": "ins"
 							}
 						]
@@ -3406,7 +2252,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "- Đội này cơ bản dao động sẵn **15%** quanh mức trung bình của chính nó kể cả khi không có gì xảy ra cả. - Chênh lệch cần đạt là **4 point** còn nhiễu của phép so sánh là **3.49 point**. Cái cần đo gần như không khác với nhiễu thuần túy là mấy. - Muốn phân biệt được hai thứ đó, cần **33 Sprint mỗi nhánh**, với Sprint hai tuần, đó là hai năm rưỡi dữ liệu cho **một lần** kết luận.",
+								"t": "- The team already swings **15%** around its own average when nothing is happening. - The gap to reach is **4 points**; the noise of the comparison is **3.49 points**. What we need to measure is barely distinguishable from pure noise. - To tell those two apart takes **33 sprints per arm** — with two-week sprints, two and a half years of data for **one** conclusion.",
 								"s": "ins"
 							}
 						]
@@ -3415,7 +2261,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Nghịch lý nằm ở chỗ này: chu kỳ đánh giá là một quý, sáu Sprint, trong khi chính thước đo được dùng để đánh giá cần gấp mười lần chừng đó mới có thể kết luận được. Yêu cầu \"10% mỗi quý\" không sai về mặt kỳ vọng. Nó chỉ **không kiểm chứng được bằng StoryPoint** và một yêu cầu không kiểm chứng được thì mỗi quý sẽ được trả lời bằng cảm tính, bằng một con số vô tình đẹp hoặc bằng một buổi họp mà ai to tiếng hơn thì đúng.",
+								"t": "Here is the paradox. The review cycle is a quarter, six sprints, while the measure being used to do the reviewing needs ten times that before it can conclude anything. Asking for \"10% a quarter\" is not wrong as an expectation. It is just **not verifiable in story points** — and an unverifiable demand gets answered each quarter by instinct, by a number that happened to look good, or by whoever was loudest in the meeting.",
 								"s": "ins"
 							}
 						]
@@ -3424,7 +2270,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Nếu vẫn muốn đo, chúng ta có công thức $n \\geq \\frac{15.7 \\times c^2}{(\\Delta/\\mu)^2}$ cho ba núm vặn để xoay:",
+								"t": "If you still want to measure it, the formula $n \\geq \\frac{15.7 \\times c^2}{(\\Delta/\\mu)^2}$ leaves exactly three knobs:",
 								"s": "ins"
 							}
 						]
@@ -3433,7 +2279,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "1. **Giảm $c$, bớt nhiễu đi: ** $n$ tỉ lệ với $c^2$, nên đội nào có dao động càng nhỏ thì thời gian đo sẽ cần càng ít, ví dụ kéo từ 15% xuống 7.5% thì thời gian cần thiết rút xuống chỉ còn **một phần tư**. Story cần được chia nhỏ, đều tay, ước lượng nhất quán, đừng đổi thang điểm giữa chừng. Hoá ra đây mới là việc đáng làm nhất và nó chẳng liên quan gì tới AI là mấy. 2. **Chấp nhận mục tiêu lớn hơn: ** $n$ tỉ lệ nghịch với $(\\Delta/\\mu)^2$, đi tìm mức cải thiện 20% thì chỉ tốn một phần tư thời gian so với đi tìm 10%. Một tác động thật sự lớn thì dễ chứng minh hơn đòi bằng chứng cho một tác động nhỏ. 3. **Kéo dài cửa sổ quan sát: ** Đừng hỏi \"quý này có tăng 10% không\", hỏi \"sau một năm rưỡi, xu hướng có chuyển đổi không\".",
+								"t": "1. **Cut $c$ — make the team less noisy.** $n$ scales with $c^2$, so the steadier the team the less time it takes: pull the swing from 15% down to 7.5% and the wait drops to **a quarter** of what it was. Stories split small and evenly, estimates kept consistent, no changing the scale halfway through. This turns out to be the most valuable work on the list, and it has almost nothing to do with AI. 2. **Accept a bigger target.** $n$ scales inversely with $(\\Delta/\\mu)^2$, so hunting a 20% improvement costs a quarter of what hunting 10% costs. A genuinely large effect is easier to prove than a small one is to evidence. 3. **Widen the observation window.** Stop asking \"did we grow 10% this quarter\"; ask \"after a year and a half, has the trend actually turned\".",
 								"s": "ins"
 							}
 						]
@@ -3442,7 +2288,7 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "Và điều cuối, cũng là điều quan trọng nhất, những con số bên trên **không kết luận AI vô dụng hay không**. Chúng nói StoryPoint không đủ nhạy để làm bằng chứng cho câu hỏi đang được hỏi. Đó là hai chuyện hoàn toàn khác nhau nhưng trong một buổi review cuối quý, chúng rất hay bị đánh đồng làm một.",
+								"t": "And the last one, which matters most: none of the numbers above **conclude anything about whether AI is useful**. They say story points are not sensitive enough to serve as evidence for the question being asked. Those are two entirely different statements — and in an end-of-quarter review they get treated as one.",
 								"s": "ins"
 							}
 						]
@@ -3451,36 +2297,8 @@ export const DRAFTS = {
 						"kind": "p",
 						"segs": [
 							{
-								"t": "<SampleSizeGrid first=\"38 45 31 42 36 48\" second=\"41 49 36 47 40 51\" unitLabel=\"số Sprint cần theo dõi cho mỗi nhánh\" readoutEnough={\"Đội của bạn dao động {c} quanh trung bình. Chênh lệch quan sát được là {diff} point, ngưỡng kết luận là {thr} point — đủ để nói là có cải thiện. Còn để bắt được mức bạn chọn, cần {n} Sprint mỗi nhánh, tức khoảng {months} tháng.\"} readoutShort={\"Đội của bạn dao động {c} quanh trung bình. Chênh lệch quan sát được là {diff} point, trong khi ngưỡng kết luận là {thr} point — chưa đủ để nói gì cả. Muốn bắt được mức bạn chọn, cần {n} Sprint mỗi nhánh, tức khoảng {months} tháng.\"} label=\"Hình 4\" hint=\"số của đội bạn\" caption=\"Hai đòn bẩy, cả hai đều bình phương: đội bớt dao động một nửa, hoặc mức cải thiện cần bắt lớn gấp đôi — mỗi cái đều cắt thời gian chờ xuống còn một phần tư. Ô được tô là chỗ đội trong bài đứng.\" alt=\"Bảng số Sprint cần theo dõi: hàng là mức cải thiện muốn bắt, cột là độ dao động của đội.\" />",
+								"t": "<SampleSizeGrid first=\"38 45 31 42 36 48\" second=\"41 49 36 47 40 51\" unitLabel=\"sprints to observe, per arm\" readoutEnough={\"Your team swings {c} around its mean. The observed difference is {diff} points against a bar of {thr} points — enough to call it an improvement. To catch the level you picked, you need {n} sprints per arm, about {months} months.\"} readoutShort={\"Your team swings {c} around its mean. The observed difference is {diff} points against a bar of {thr} points — not enough to say anything yet. To catch the level you picked, you need {n} sprints per arm, about {months} months.\"} label=\"Figure 4\" hint=\"your team's numbers\" caption=\"Two levers, both squared: halve the team's swing, or double the improvement you need to catch, and either one cuts the wait to a quarter. The filled cell is where the team in this piece stands.\" alt=\"A table of sprints to observe: rows are the improvement you want to catch, columns are how much the team varies.\" />",
 								"s": "ins"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!--INTERACTION: Nếu có thể làm interaction cho cái này sẽ tốt, có thể nhìn được trực quan phân phối-->",
-								"s": "del"
-							}
-						]
-					},
-					{
-						"kind": "p",
-						"segs": [
-							{
-								"t": "<!-- - AI - SDLC - R&D - StoryPoint (SP) - Velocity - Sprint - Story - Độ lệch chuẩn mẫu - Phương sai mẫu - Sai số chuẩn của trung bình - Sai số loại I - Sai số loại "
-							},
-							{
-								"t": "I",
-								"s": "del"
-							},
-							{
-								"t": "II",
-								"s": "ins"
-							},
-							{
-								"t": " - Phân phối chuẩn -->"
 							}
 						]
 					}

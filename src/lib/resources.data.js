@@ -145,6 +145,11 @@ export const RESOURCES = [
 				title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
 				locale: 'vi',
 			},
+			{
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				title: 'Can story points measure the growth AI gives you?',
+				locale: 'en',
+			},
 		],
 	},
 ];

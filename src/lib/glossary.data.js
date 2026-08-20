@@ -230,7 +230,13 @@ export const TERMS = {
 			'How many story points a team finishes in one sprint — a rate, and therefore a series rather than a single number.',
 		long: 'Velocity is measured after the fact, not planned: it is whatever the team actually closed. Because it is a count over a fixed window it fluctuates for reasons that have nothing to do with capability — someone off sick, a story that turned out easier than it looked, a sprint that swallowed an incident. That fluctuation is the reason a quarter is a *series* and not a figure, and the reason any claim about velocity going up has to clear the noise before it means anything.',
 		topic: 'Software',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'Velocity and the basic arithmetic',
+			},
+		],
 		vi: {
 			term: 'velocity',
 			pos: 'danh từ · agile',
@@ -254,7 +260,13 @@ export const TERMS = {
 			'The fixed-length window a team plans and delivers in — the unit that turns work into a countable series.',
 		long: 'A sprint is short and, crucially, always the same length, which is what makes the counts from different sprints comparable at all. It is also the sample size of every argument built on velocity: a quarter of six sprints is six data points, and six is a small number to reason from. Any question of the form "did we get faster?" is really a question about how many sprints have been observed.',
 		topic: 'Software',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'Velocity and the basic arithmetic',
+			},
+		],
 		vi: {
 			term: 'Sprint',
 			pos: 'danh từ · agile',
@@ -278,7 +290,13 @@ export const TERMS = {
 			'A unit of estimated effort, agreed by the team rather than measured — relative size, not hours.',
 		long: 'Story points are deliberately not a unit of time: the team compares a piece of work against work it has done before and assigns a number, so the scale is local to that team and means nothing across teams. The trouble starts when the number is lifted out of planning, where it does useful work, and into performance measurement, where it becomes a target the same people who assign it can move. Even setting that aside, a points total is a noisy measurement, which is the subject of the essay below.',
 		topic: 'Software',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: '',
+			},
+		],
 		vi: {
 			term: 'StoryPoint',
 			pos: 'danh từ · agile',
@@ -307,7 +325,13 @@ export const TERMS = {
 			'The average squared distance from the mean, divided by n−1 rather than n because the mean was estimated from the same data.',
 		long: 'Squaring is what makes the deviations stop cancelling out, and it is also why the result is in squared units — points squared, which nothing in the world is measured in. That is the only real reason the standard deviation exists: it is the square root, taken to get back to the unit you started in. The n−1 is not a fudge; using n would understate the spread, because the sample mean sits closer to its own data than the true mean does.',
 		topic: 'Science',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'Velocity and the basic arithmetic',
+			},
+		],
 		vi: {
 			term: 'phương sai mẫu',
 			pos: 'danh từ · thống kê',
@@ -331,7 +355,13 @@ export const TERMS = {
 			'How far a single observation typically falls from the mean, in the same unit as the observations.',
 		long: 'It is the square root of the sample variance, and it answers the question the variance cannot: how far off is a normal reading. For the team in the essay below it is 6.23 points against a mean of 40, which says that a sprint landing six points away from average is not an event — it is Tuesday. Everything downstream depends on it: the standard error, the detection threshold, and the number of sprints an experiment needs.',
 		topic: 'Science',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'Velocity and the basic arithmetic',
+			},
+		],
 		vi: {
 			term: 'độ lệch chuẩn mẫu',
 			pos: 'danh từ · thống kê',
@@ -355,7 +385,13 @@ export const TERMS = {
 			'How far the *average* of a sample typically falls from the true average — the standard deviation divided by the square root of the sample size.',
 		long: 'The distinction from the standard deviation is the one people skip and then get wrong: the standard deviation describes how scattered the individual readings are, while the standard error describes how unreliable their average is. Averaging steadies things, but only as fast as √n — four times the data for half the wobble, which is why measuring a small effect gets expensive so quickly. It is the number that decides whether a difference between two averages means anything.',
 		topic: 'Science',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'Comparing two series',
+			},
+		],
 		vi: {
 			term: 'sai số chuẩn của trung bình',
 			pos: 'danh từ · thống kê',
@@ -379,7 +415,13 @@ export const TERMS = {
 			'The standard deviation as a fraction of the mean — spread with the unit divided out, so two things measured differently can be compared.',
 		long: 'A standard deviation of 6 means nothing until you know whether the mean is 40 or 4,000. Dividing by the mean turns it into a percentage and makes it portable: the team in the essay below runs at about 15%, and that number can be set beside a team scoring on a completely different scale. It is also the term that carries the whole cost of an experiment — the required sample size grows with its *square*, so halving a team\u2019s variability cuts the wait to a quarter.',
 		topic: 'Science',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'Velocity and the basic arithmetic',
+			},
+		],
 		vi: {
 			term: 'hệ số biến thiên',
 			pos: 'danh từ · thống kê',
@@ -403,7 +445,13 @@ export const TERMS = {
 			'The bell-shaped spread that averages tend towards — symmetric, and fully described by a centre and a width.',
 		long: 'Its usefulness here is not that velocity is bell-shaped; it is that *averages* are, near enough, almost regardless of what they average. Two numbers then describe the whole picture, and distances read off in widths: about 68% of the bell lies within one width of the centre, 95% within 1.96 of them. That second number is where a detection threshold comes from, and it is the only reason a rule like "under 7 points, say nothing" can be derived rather than guessed.',
 		topic: 'Science',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'How big does a difference have to be?',
+			},
+		],
 		vi: {
 			term: 'phân phối chuẩn',
 			pos: 'danh từ · thống kê',
@@ -427,7 +475,13 @@ export const TERMS = {
 			'A false alarm — calling a difference real when nothing changed and the noise simply landed high.',
 		long: 'You cannot drive the risk to zero, only choose it: setting it at 5% is what puts the threshold 1.96 widths out from the centre, and demanding 1% pushes the threshold further still. Every threshold is therefore a decision about how often you are willing to be fooled, made before the data arrives. Guarding against this error alone is not enough — pushing the threshold out to be safe makes the opposite mistake more likely.',
 		topic: 'Science',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'How big does a difference have to be?',
+			},
+		],
 		vi: {
 			term: 'sai loại I',
 			pos: 'danh từ · thống kê',
@@ -451,7 +505,13 @@ export const TERMS = {
 			'A miss — an improvement that was real, but landed under the threshold because the noise happened to pull it down.',
 		long: 'The two errors trade against each other: a threshold set far out to avoid false alarms is exactly a threshold a real effect struggles to clear. An effect sitting precisely on the threshold is caught half the time, which is the uncomfortable fact that makes "we hit the number" so weak a statement. Deciding to catch a real effect 80% of the time — the usual choice — is what pushes the required difference well past the threshold, and with it the amount of data an honest answer needs.',
 		topic: 'Science',
-		appearances: [],
+		appearances: [
+			{
+				title: 'Can story points measure the growth AI gives you?',
+				slug: '004-AI-empowerment-counting-by-SP-en',
+				section: 'How big does a difference have to be?',
+			},
+		],
 		vi: {
 			term: 'sai loại II',
 			pos: 'danh từ · thống kê',

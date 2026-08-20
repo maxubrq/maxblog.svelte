@@ -16,6 +16,21 @@ import { TERMS } from '../glossary.data.js';
  * what it is going to mark.
  */
 
+const escapeRe = (/** @type {string} */ s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/**
+ * A term's spaces become `\s+`, because prose wraps.
+ *
+ * Without this, `standard error of the mean` broken across two source lines is
+ * simply not the term any more — the mark disappears and nothing says so. The
+ * matched text is kept verbatim in the output, so the sentence still reads as
+ * the author typed it; only the *lookup* collapses whitespace, via `key()`.
+ */
+const patternFor = (/** @type {string} */ term) => escapeRe(term).replace(/ +/g, '\\s+');
+
+/** The form a matched run is looked up under: lowercased, whitespace collapsed. */
+const key = (/** @type {string} */ text) => text.toLowerCase().replace(/\s+/g, ' ');
+
 /** Every spelling that resolves to an entry: the English term, and the Vietnamese one when it differs. */
 const spellings = [];
 for (const [id, entry] of Object.entries(TERMS)) {
@@ -29,9 +44,7 @@ spellings.sort((a, b) => b.term.length - a.term.length);
 
 /** @type {Record<string, string>} */
 const idBySpelling = {};
-for (const { id, term } of spellings) idBySpelling[term.toLowerCase()] = id;
-
-const escapeRe = (/** @type {string} */ s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+for (const { id, term } of spellings) idBySpelling[key(term)] = id;
 
 /**
  * `\b` is ASCII-only, which breaks on Vietnamese terms — `\bgóc\b` will not
@@ -39,7 +52,7 @@ const escapeRe = (/** @type {string} */ s) => s.replace(/[.*+?^${}()|[\]\\]/g, '
  * across scripts.
  */
 const PATTERN = spellings.length
-	? `(?<![\\p{L}\\p{N}])(?:${spellings.map((s) => escapeRe(s.term)).join('|')})(?![\\p{L}\\p{N}])`
+	? `(?<![\\p{L}\\p{N}])(?:${spellings.map((s) => patternFor(s.term)).join('|')})(?![\\p{L}\\p{N}])`
 	: null;
 
 /**
@@ -100,12 +113,12 @@ function walk(node, seen, pattern) {
 		if (child.type === 'text' && !skip(node)) {
 			const re = new RegExp(pattern, 'giu');
 			const match = [...child.value.matchAll(re)].find((m) => {
-				const id = idBySpelling[m[0].toLowerCase()];
+				const id = idBySpelling[key(m[0])];
 				return id && !seen.has(id);
 			});
 
 			if (match) {
-				const id = idBySpelling[match[0].toLowerCase()];
+				const id = idBySpelling[key(match[0])];
 				seen.add(id);
 				const start = match.index;
 				const end = start + match[0].length;

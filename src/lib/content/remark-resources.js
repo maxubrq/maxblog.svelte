@@ -68,6 +68,13 @@ function patternsFor(r) {
 
 const escapeRe = (/** @type {string} */ s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+/** Spaces become `\s+`: a long title wraps in the source, and a wrapped title
+ * is still the title. Lookups collapse whitespace to match — see `key`. */
+const patternFor = (/** @type {string} */ text) => escapeRe(text).replace(/ +/g, '\\s+');
+
+/** The form a matched run is looked up under: lowercased, whitespace collapsed. */
+const key = (/** @type {string} */ text) => text.toLowerCase().replace(/\s+/g, ' ');
+
 /** Whole-word across scripts — `\b` is ASCII-only and fails on Vietnamese titles. */
 const boundary = (/** @type {string} */ body) => new RegExp(`(?<![\\p{L}\\p{N}])(?:${body})(?![\\p{L}\\p{N}])`, 'giu');
 
@@ -114,11 +121,11 @@ function walk(node, regex, idByText, seen) {
 		if (child.type === 'text' && !SKIP_TYPES.has(node.type)) {
 			const re = new RegExp(regex.source, regex.flags);
 			const match = [...child.value.matchAll(re)].find((m) => {
-				const id = idByText.get(m[0].toLowerCase());
+				const id = idByText.get(key(m[0]));
 				return id && !seen.has(id);
 			});
 
-			const id = match && idByText.get(match[0].toLowerCase());
+			const id = match && idByText.get(key(match[0]));
 			if (match && id) {
 				seen.add(id);
 				const end = match.index + match[0].length;
@@ -168,8 +175,8 @@ export function remarkResources() {
 			.sort((a, b) => b.text.length - a.text.length);
 
 		if (patterns.length > 0) {
-			const idByText = new Map(patterns.map((p) => [p.text.toLowerCase(), p.id]));
-			walk(tree, boundary(patterns.map((p) => escapeRe(p.text)).join('|')), idByText, seen);
+			const idByText = new Map(patterns.map((p) => [key(p.text), p.id]));
+			walk(tree, boundary(patterns.map((p) => patternFor(p.text)).join('|')), idByText, seen);
 		}
 
 		// Re-read the finished tree rather than trusting the order things were
