@@ -21,7 +21,7 @@
 	{/if}
 	<div class="code">{@render children()}</div>
 	{#if caption}
-		<div class="caption"><Tag>{caption}</Tag></div>
+		<div class="caption"><Tag wrap>{caption}</Tag></div>
 	{/if}
 </div>
 

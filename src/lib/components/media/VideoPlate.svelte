@@ -42,7 +42,7 @@
 		<div class="foot">{@render foot()}</div>
 	{/if}
 	{#if caption}
-		<figcaption><Tag>{caption}</Tag></figcaption>
+		<figcaption><Tag wrap>{caption}</Tag></figcaption>
 	{/if}
 </figure>
 

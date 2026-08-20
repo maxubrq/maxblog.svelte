@@ -216,8 +216,253 @@ export const TERMS = {
 			appearances: [
 				{
 					title: 'Niềm vui thuần túy và biện minh quá mức (overjustification)',
-					slug: '003-pure-jou-vi',
+					slug: '003-pure-joy-vi',
 					section: '',
+				},
+			],
+		},
+	},
+
+	velocity: {
+		term: 'velocity',
+		pos: 'noun · agile',
+		short:
+			'How many story points a team finishes in one sprint — a rate, and therefore a series rather than a single number.',
+		long: 'Velocity is measured after the fact, not planned: it is whatever the team actually closed. Because it is a count over a fixed window it fluctuates for reasons that have nothing to do with capability — someone off sick, a story that turned out easier than it looked, a sprint that swallowed an incident. That fluctuation is the reason a quarter is a *series* and not a figure, and the reason any claim about velocity going up has to clear the noise before it means anything.',
+		topic: 'Software',
+		appearances: [],
+		vi: {
+			term: 'velocity',
+			pos: 'danh từ · agile',
+			short:
+				'Số story point một đội hoàn thành trong một Sprint — một tốc độ, nên nó là một chuỗi số chứ không phải một con số.',
+			long: 'Velocity được đo sau khi làm xong chứ không phải được lên kế hoạch: nó là những gì đội thực sự đóng lại được. Vì là phép đếm trên một cửa sổ cố định, nó dao động vì những lý do chẳng liên quan gì tới năng lực — một người nghỉ ốm, một Story hoá ra dễ hơn tưởng, một Sprint bị một sự cố nuốt mất. Chính dao động đó khiến một quý là một *chuỗi* chứ không phải một con số, và khiến mọi tuyên bố \"velocity đã tăng\" phải vượt qua được nhiễu trước khi có nghĩa.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'Velocity và các tính toán cơ bản',
+				},
+			],
+		},
+	},
+
+	sprint: {
+		term: 'sprint',
+		pos: 'noun · agile',
+		short:
+			'The fixed-length window a team plans and delivers in — the unit that turns work into a countable series.',
+		long: 'A sprint is short and, crucially, always the same length, which is what makes the counts from different sprints comparable at all. It is also the sample size of every argument built on velocity: a quarter of six sprints is six data points, and six is a small number to reason from. Any question of the form "did we get faster?" is really a question about how many sprints have been observed.',
+		topic: 'Software',
+		appearances: [],
+		vi: {
+			term: 'Sprint',
+			pos: 'danh từ · agile',
+			short:
+				'Cửa sổ thời gian cố định mà đội lên kế hoạch và bàn giao trong đó — đơn vị biến công việc thành một chuỗi đếm được.',
+			long: 'Một Sprint thì ngắn, và quan trọng hơn, luôn dài bằng nhau — chính điều đó mới làm cho các con số của những Sprint khác nhau so được với nhau. Nó cũng là cỡ mẫu của mọi lập luận dựng trên velocity: một quý sáu Sprint là sáu điểm dữ liệu, và sáu là một con số nhỏ để suy luận. Mọi câu hỏi dạng \"đội có nhanh hơn không?\" thật ra là câu hỏi đã quan sát được bao nhiêu Sprint.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'Velocity và các tính toán cơ bản',
+				},
+			],
+		},
+	},
+
+	'story-point': {
+		term: 'story point',
+		pos: 'noun · agile',
+		short:
+			'A unit of estimated effort, agreed by the team rather than measured — relative size, not hours.',
+		long: 'Story points are deliberately not a unit of time: the team compares a piece of work against work it has done before and assigns a number, so the scale is local to that team and means nothing across teams. The trouble starts when the number is lifted out of planning, where it does useful work, and into performance measurement, where it becomes a target the same people who assign it can move. Even setting that aside, a points total is a noisy measurement, which is the subject of the essay below.',
+		topic: 'Software',
+		appearances: [],
+		vi: {
+			term: 'StoryPoint',
+			pos: 'danh từ · agile',
+			short:
+				'Đơn vị ước lượng công sức, do đội tự thống nhất chứ không đo được — kích cỡ tương đối, không phải số giờ.',
+			long: 'Story point cố tình không phải đơn vị thời gian: đội so một việc với những việc đã từng làm rồi gán cho nó một con số, nên thang điểm là của riêng đội đó và không có nghĩa gì khi đem so giữa các đội. Rắc rối bắt đầu khi con số này bị nhấc ra khỏi việc lập kế hoạch — chỗ nó có ích — và đặt vào việc đo năng suất, nơi nó thành một chỉ tiêu mà chính những người gán điểm có thể xê dịch. Kể cả bỏ qua chuyện đó, tổng điểm vẫn là một phép đo đầy nhiễu, và đó là nội dung của bài dưới đây.',
+			appearances: [
+				{
+					title: 'Niềm vui thuần túy và biện minh quá mức (overjustification)',
+					slug: '003-pure-joy-vi',
+					section: '',
+				},
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: '',
+				},
+			],
+		},
+	},
+
+	'sample-variance': {
+		term: 'sample variance',
+		pos: 'noun · statistics',
+		short:
+			'The average squared distance from the mean, divided by n−1 rather than n because the mean was estimated from the same data.',
+		long: 'Squaring is what makes the deviations stop cancelling out, and it is also why the result is in squared units — points squared, which nothing in the world is measured in. That is the only real reason the standard deviation exists: it is the square root, taken to get back to the unit you started in. The n−1 is not a fudge; using n would understate the spread, because the sample mean sits closer to its own data than the true mean does.',
+		topic: 'Science',
+		appearances: [],
+		vi: {
+			term: 'phương sai mẫu',
+			pos: 'danh từ · thống kê',
+			short:
+				'Trung bình bình phương khoảng cách tới giá trị trung bình, chia cho n−1 thay vì n, vì chính giá trị trung bình cũng được ước lượng từ dữ liệu đó.',
+			long: 'Bình phương là thứ khiến các độ lệch không triệt tiêu lẫn nhau, và cũng là lý do kết quả mang đơn vị bình phương — point bình phương, thứ chẳng có gì trên đời được đo bằng. Đó là lý do duy nhất khiến độ lệch chuẩn tồn tại: nó là căn bậc hai, lấy để quay về đúng đơn vị ban đầu. Con số n−1 không phải mẹo vặt: nếu chia cho n thì độ phân tán sẽ bị khai thấp, bởi trung bình mẫu nằm gần chính dữ liệu của nó hơn là trung bình thật.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'Velocity và các tính toán cơ bản',
+				},
+			],
+		},
+	},
+
+	'sample-standard-deviation': {
+		term: 'sample standard deviation',
+		pos: 'noun · statistics',
+		short:
+			'How far a single observation typically falls from the mean, in the same unit as the observations.',
+		long: 'It is the square root of the sample variance, and it answers the question the variance cannot: how far off is a normal reading. For the team in the essay below it is 6.23 points against a mean of 40, which says that a sprint landing six points away from average is not an event — it is Tuesday. Everything downstream depends on it: the standard error, the detection threshold, and the number of sprints an experiment needs.',
+		topic: 'Science',
+		appearances: [],
+		vi: {
+			term: 'độ lệch chuẩn mẫu',
+			pos: 'danh từ · thống kê',
+			short:
+				'Một quan sát đơn lẻ thường lệch khỏi trung bình bao xa, tính bằng đúng đơn vị của các quan sát.',
+			long: 'Nó là căn bậc hai của phương sai mẫu, và trả lời được câu mà phương sai không trả lời nổi: lệch bao nhiêu thì vẫn là bình thường. Với đội trong bài dưới đây, con số là 6.23 point trên nền trung bình 40, tức một Sprint lệch sáu point khỏi trung bình không phải là biến cố — đó là chuyện thường ngày. Mọi thứ phía sau đều dựa vào nó: sai số chuẩn, ngưỡng phát hiện, và số Sprint mà một phép thử cần.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'Velocity và các tính toán cơ bản',
+				},
+			],
+		},
+	},
+
+	'standard-error': {
+		term: 'standard error of the mean',
+		pos: 'noun · statistics',
+		short:
+			'How far the *average* of a sample typically falls from the true average — the standard deviation divided by the square root of the sample size.',
+		long: 'The distinction from the standard deviation is the one people skip and then get wrong: the standard deviation describes how scattered the individual readings are, while the standard error describes how unreliable their average is. Averaging steadies things, but only as fast as √n — four times the data for half the wobble, which is why measuring a small effect gets expensive so quickly. It is the number that decides whether a difference between two averages means anything.',
+		topic: 'Science',
+		appearances: [],
+		vi: {
+			term: 'sai số chuẩn của trung bình',
+			pos: 'danh từ · thống kê',
+			short:
+				'Giá trị *trung bình* của một mẫu thường lệch khỏi trung bình thật bao xa — độ lệch chuẩn chia cho căn bậc hai của cỡ mẫu.',
+			long: 'Chỗ khác biệt với độ lệch chuẩn là chỗ người ta hay bỏ qua rồi hiểu sai: độ lệch chuẩn nói các quan sát riêng lẻ tản mát ra sao, còn sai số chuẩn nói cái trung bình của chúng đáng tin tới đâu. Lấy trung bình thì ổn định hơn thật, nhưng chỉ nhanh bằng √n — gấp bốn lần dữ liệu mới giảm được một nửa độ lung lay, và đó là lý do đo một tác động nhỏ đắt lên rất nhanh. Đây chính là con số quyết định chênh lệch giữa hai trung bình có nghĩa gì hay không.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'So sánh hai chuỗi số',
+				},
+			],
+		},
+	},
+
+	'coefficient-of-variation': {
+		term: 'coefficient of variation',
+		pos: 'noun · statistics',
+		short:
+			'The standard deviation as a fraction of the mean — spread with the unit divided out, so two things measured differently can be compared.',
+		long: 'A standard deviation of 6 means nothing until you know whether the mean is 40 or 4,000. Dividing by the mean turns it into a percentage and makes it portable: the team in the essay below runs at about 15%, and that number can be set beside a team scoring on a completely different scale. It is also the term that carries the whole cost of an experiment — the required sample size grows with its *square*, so halving a team\u2019s variability cuts the wait to a quarter.',
+		topic: 'Science',
+		appearances: [],
+		vi: {
+			term: 'hệ số biến thiên',
+			pos: 'danh từ · thống kê',
+			short:
+				'Độ lệch chuẩn tính theo tỉ lệ phần trăm của trung bình — độ phân tán đã bỏ đơn vị đi, nên hai thứ đo bằng thang khác nhau vẫn so được.',
+			long: 'Độ lệch chuẩn bằng 6 chẳng nói lên điều gì cho tới khi biết trung bình là 40 hay 4.000. Chia cho trung bình biến nó thành phần trăm và mang đi đâu cũng dùng được: đội trong bài dưới đây dao động khoảng 15%, và con số đó đặt cạnh được một đội chấm điểm trên thang hoàn toàn khác. Nó cũng là thứ gánh toàn bộ chi phí của một phép thử — cỡ mẫu cần thiết tăng theo *bình phương* của nó, nên giảm dao động của đội đi một nửa thì thời gian chờ còn một phần tư.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'Velocity và các tính toán cơ bản',
+				},
+			],
+		},
+	},
+
+	'normal-distribution': {
+		term: 'normal distribution',
+		pos: 'noun · statistics',
+		short:
+			'The bell-shaped spread that averages tend towards — symmetric, and fully described by a centre and a width.',
+		long: 'Its usefulness here is not that velocity is bell-shaped; it is that *averages* are, near enough, almost regardless of what they average. Two numbers then describe the whole picture, and distances read off in widths: about 68% of the bell lies within one width of the centre, 95% within 1.96 of them. That second number is where a detection threshold comes from, and it is the only reason a rule like "under 7 points, say nothing" can be derived rather than guessed.',
+		topic: 'Science',
+		appearances: [],
+		vi: {
+			term: 'phân phối chuẩn',
+			pos: 'danh từ · thống kê',
+			short:
+				'Hình chuông mà các giá trị trung bình có xu hướng tiến về — đối xứng, và được mô tả trọn vẹn bằng một tâm và một độ rộng.',
+			long: 'Chỗ hữu dụng của nó ở đây không phải là velocity có hình chuông, mà là *giá trị trung bình* thì gần như luôn có, bất kể nó lấy trung bình của thứ gì. Khi đó hai con số mô tả trọn bức tranh, và khoảng cách được đọc bằng đơn vị độ rộng: khoảng 68% hình chuông nằm trong một độ rộng quanh tâm, 95% nằm trong 1.96 độ rộng. Con số thứ hai chính là nơi ngưỡng phát hiện sinh ra, và là lý do duy nhất khiến một quy tắc kiểu \"dưới 7 point thì đừng nói gì\" có thể suy ra được thay vì đoán.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'Vậy cần bao nhiêu để có thể phát hiện và kết luận được?',
+				},
+			],
+		},
+	},
+
+	'type-i-error': {
+		term: 'type I error',
+		pos: 'noun · statistics',
+		short:
+			'A false alarm — calling a difference real when nothing changed and the noise simply landed high.',
+		long: 'You cannot drive the risk to zero, only choose it: setting it at 5% is what puts the threshold 1.96 widths out from the centre, and demanding 1% pushes the threshold further still. Every threshold is therefore a decision about how often you are willing to be fooled, made before the data arrives. Guarding against this error alone is not enough — pushing the threshold out to be safe makes the opposite mistake more likely.',
+		topic: 'Science',
+		appearances: [],
+		vi: {
+			term: 'sai loại I',
+			pos: 'danh từ · thống kê',
+			short:
+				'Báo động giả — kết luận là có thay đổi thật trong khi chẳng có gì xảy ra, chỉ là nhiễu vô tình rơi cao.',
+			long: 'Không thể đưa rủi ro này về 0, chỉ có thể chọn nó: đặt ở mức 5% chính là thứ đẩy ngưỡng ra xa tâm 1.96 độ rộng, còn đòi 1% thì ngưỡng còn xa hơn nữa. Vậy nên mọi ngưỡng đều là một quyết định về việc bạn chấp nhận bị đánh lừa bao nhiêu lần, đưa ra trước khi có dữ liệu. Chỉ đề phòng loại sai này thôi thì chưa đủ — đẩy ngưỡng ra xa cho chắc lại làm loại sai còn lại dễ xảy ra hơn.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'Vậy cần bao nhiêu để có thể phát hiện và kết luận được?',
+				},
+			],
+		},
+	},
+
+	'type-ii-error': {
+		term: 'type II error',
+		pos: 'noun · statistics',
+		short:
+			'A miss — an improvement that was real, but landed under the threshold because the noise happened to pull it down.',
+		long: 'The two errors trade against each other: a threshold set far out to avoid false alarms is exactly a threshold a real effect struggles to clear. An effect sitting precisely on the threshold is caught half the time, which is the uncomfortable fact that makes "we hit the number" so weak a statement. Deciding to catch a real effect 80% of the time — the usual choice — is what pushes the required difference well past the threshold, and with it the amount of data an honest answer needs.',
+		topic: 'Science',
+		appearances: [],
+		vi: {
+			term: 'sai loại II',
+			pos: 'danh từ · thống kê',
+			short:
+				'Bỏ lỡ — cải thiện là thật, nhưng rơi xuống dưới ngưỡng vì nhiễu tình cờ kéo nó xuống.',
+			long: 'Hai loại sai đánh đổi lẫn nhau: một ngưỡng đặt thật xa để tránh báo động giả cũng đúng là ngưỡng mà một tác động thật khó lòng vượt qua. Một tác động nằm đúng ngay trên ngưỡng thì chỉ bắt được một nửa số lần — sự thật khó chịu này là thứ làm cho câu \"chúng ta đạt chỉ tiêu rồi\" trở nên yếu ớt. Chọn bắt được tác động thật 80% số lần — lựa chọn thông thường — chính là thứ đẩy mức chênh lệch cần có vượt xa ngưỡng, và kéo theo nó là lượng dữ liệu mà một câu trả lời trung thực đòi hỏi.',
+			appearances: [
+				{
+					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
+					slug: '004-AI-empowerment-counting-by-SP-vi',
+					section: 'Vậy cần bao nhiêu để có thể phát hiện và kết luận được?',
 				},
 			],
 		},

@@ -121,8 +121,28 @@ export const RESOURCES = [
 		},
 		appearsIn: [
 			{
-				slug: '003-pure-jou-vi',
+				slug: '003-pure-joy-vi',
 				title: 'Niềm vui thuần túy và biện minh quá mức (overjustification)',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'welch-1947',
+		title: "The generalization of 'Student's' problem when several different population variances are involved",
+		author: 'Welch, B. L.',
+		year: '1947',
+		type: 'paper',
+		topic: 'Science',
+		note: "The correction the sidenote leans on. Student's t-test assumes the two groups share a spread; Welch drops that assumption and pays for it with fractional degrees of freedom, computed from the two variances rather than counted from the two sample sizes. It is the honest default whenever two samples are small and there is no reason to believe their scatter is identical — two quarters of a team's sprints, for instance.",
+		url: 'https://doi.org/10.1093/biomet/34.1-2.28',
+		vi: {
+			note: 'Phép hiệu chỉnh mà phần ghi chú bên lề dựa vào. Kiểm định t của Student giả định hai nhóm có cùng độ phân tán; Welch bỏ giả định đó đi và trả giá bằng bậc tự do lẻ, tính ra từ hai phương sai chứ không đếm từ hai cỡ mẫu. Đây là lựa chọn trung thực mỗi khi hai mẫu đều nhỏ và không có lý do gì để tin rằng chúng tản mát như nhau — chẳng hạn hai quý Sprint của một đội.',
+		},
+		appearsIn: [
+			{
+				slug: '004-AI-empowerment-counting-by-SP-vi',
+				title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
 				locale: 'vi',
 			},
 		],

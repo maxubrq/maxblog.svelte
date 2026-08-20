@@ -23,6 +23,12 @@ export { default as FloatBuilder } from './components/interactive/FloatBuilder.s
 export { default as FloatExplorer } from './components/interactive/FloatExplorer.svelte';
 export { default as FloatSpacing } from './components/interactive/FloatSpacing.svelte';
 export { default as FloatVsFixed } from './components/interactive/FloatVsFixed.svelte';
+// Plotted figures. `NormalCurve` is static — it computes its geometry, not
+// its state; the other two are live and earn the post its `interactive` tag.
+export { default as NormalCurve } from './components/viz/NormalCurve.svelte';
+export { default as DetectionPower } from './components/viz/DetectionPower.svelte';
+export { default as ReRun } from './components/viz/ReRun.svelte';
+export { default as SampleSizeGrid } from './components/viz/SampleSizeGrid.svelte';
 export { default as CodeBlock } from './components/tech/CodeBlock.svelte';
 export { default as DiagramPlate } from './components/tech/DiagramPlate.svelte';
 export { default as Terminal } from './components/tech/Terminal.svelte';

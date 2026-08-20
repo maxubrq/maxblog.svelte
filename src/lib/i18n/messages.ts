@@ -601,6 +601,45 @@ const en = {
 		outOfRange:
 			'out of range. Q16.16 stops at 65,536, so at this magnitude it has nothing to compare with.'
 	},
+	/**
+	 * The plotted figures in `$lib/components/viz`.
+	 *
+	 * Chrome only: button faces, legend keys, and the sentence a figure says
+	 * about itself in the general case. What a figure *measures* — its axis
+	 * name, its caption, the words for the thing being counted — belongs to the
+	 * post that draws it and arrives as a prop, which also overrides anything
+	 * here when the post wants its own phrasing.
+	 */
+	viz: {
+		figure: 'Figure',
+		liveFigure: 'Live figure',
+		reRun: {
+			once: 'run it again',
+			ten: 'run 10 times',
+			clear: 'clear',
+			readout:
+				'You have re-run it {runs} times, in a world where nothing changed at all. {hits} of those came out {at} or more.'
+		},
+		power: {
+			slider: 'Suppose the real improvement is:',
+			legendNoise: 'noise, when nothing has changed',
+			legendEffect: 'if the improvement is real',
+			readout:
+				'If the real improvement is exactly {delta}, then across countless re-runs you would call it an improvement about {power} of the time. The shaded tail is that share.'
+		},
+		grid: {
+			first: 'Series 1:',
+			second: 'Series 2:',
+			target: 'Improvement to catch:',
+			unit: 'samples needed per arm',
+			variability: 'variability',
+			enough:
+				'Your team varies by {c} around its mean. The observed difference is {diff}, against a threshold of {thr} — enough to call it an improvement. To catch the level you picked, you need {n} per arm, about {months} months.',
+			short:
+				'Your team varies by {c} around its mean. The observed difference is {diff}, against a threshold of {thr} — not enough to say anything yet. To catch the level you picked, you need {n} per arm, about {months} months.',
+			invalid: 'Enter two series, at least two numbers each, separated by spaces.'
+		}
+	},
 	weather: {
 		readTime: '◔ read time',
 		oneSitting: 'one sitting',
@@ -1275,6 +1314,36 @@ const vi: typeof en = {
 		coarser: 'thô hơn',
 		readRatio: 'float32 {word} khoảng {ratio}.',
 		outOfRange: 'ngoài dải. Q16.16 dừng ở 65.536, nên ở độ lớn này nó không có gì để so.'
+	},
+	viz: {
+		figure: 'Hình',
+		liveFigure: 'Hình động',
+		reRun: {
+			once: 'chạy lại một lần',
+			ten: 'chạy 10 lần',
+			clear: 'xoá',
+			readout:
+				'Bạn đã chạy lại {runs} lần, trong một thế giới mà không có gì thay đổi cả. {hits} lần trong số đó cho chênh lệch từ {at} trở lên.'
+		},
+		power: {
+			slider: 'Giả sử cải thiện thật là:',
+			legendNoise: 'nhiễu, khi không có gì thay đổi',
+			legendEffect: 'nếu cải thiện là thật',
+			readout:
+				'Nếu cải thiện thật đúng bằng {delta}, thì trong vô số lần chạy lại, bạn sẽ kết luận được là có cải thiện khoảng {power} số lần. Phần tô là chỗ đó.'
+		},
+		grid: {
+			first: 'Chuỗi 1:',
+			second: 'Chuỗi 2:',
+			target: 'Muốn bắt được mức cải thiện:',
+			unit: 'số mẫu cần cho mỗi nhánh',
+			variability: 'độ dao động',
+			enough:
+				'Đội của bạn dao động {c} quanh trung bình. Chênh lệch quan sát được là {diff}, ngưỡng kết luận là {thr} — đủ để nói là có cải thiện. Còn để bắt được mức bạn chọn, cần {n} mẫu mỗi nhánh, tức khoảng {months} tháng.',
+			short:
+				'Đội của bạn dao động {c} quanh trung bình. Chênh lệch quan sát được là {diff}, trong khi ngưỡng kết luận là {thr} — chưa đủ để nói gì cả. Muốn bắt được mức bạn chọn, cần {n} mẫu mỗi nhánh, tức khoảng {months} tháng.',
+			invalid: 'Nhập hai chuỗi, mỗi chuỗi ít nhất hai số, cách nhau bằng khoảng trắng.'
+		}
 	},
 	weather: {
 		readTime: '◔ thời gian đọc',

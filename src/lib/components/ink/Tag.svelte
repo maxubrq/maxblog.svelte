@@ -4,12 +4,23 @@
 
 	let {
 		on = false,
+		wrap = false,
 		children,
 		...rest
-	}: { on?: boolean; children: Snippet; [key: string]: unknown } = $props();
+	}: {
+		on?: boolean;
+		/**
+		 * A tag is a micro-label and never breaks — except in a caption slot,
+		 * where the "tag" is a whole sentence and nowrap would run it out past
+		 * the plate's border.
+		 */
+		wrap?: boolean;
+		children: Snippet;
+		[key: string]: unknown;
+	} = $props();
 </script>
 
-<span class="tag" class:on {...rest}>{@render children()}</span>
+<span class="tag" class:on class:wrap {...rest}>{@render children()}</span>
 
 <style>
 	.tag {
@@ -22,5 +33,9 @@
 	}
 	.on {
 		color: var(--blue);
+	}
+	.wrap {
+		white-space: normal;
+		line-height: 1.85;
 	}
 </style>

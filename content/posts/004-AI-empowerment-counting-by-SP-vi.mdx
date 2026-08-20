@@ -4,7 +4,7 @@ subtitle: 'Nếu được thì mất bao lâu?'
 date: '2026-08-19'
 topic: 'Tech'
 lang: vi
-interactive: false
+interactive: true
 chapter: 'Chương IV'
 description: ''
 weather:
@@ -18,24 +18,26 @@ rememberAttribution: 'Sử dụng StoryPoint để tính tăng trưởng do AI t
 openDraft:
   startedAt: '2026-08-19'
   promise: 'không hứa'
-  note: 'Còn phần cần bao lâu và interaction (nếu có)'
+  note: 'Còn phần tính bao lâu, đã thêm một số interaction'
   sections:
-    - label: 'I. Velocity và các tính toàn cơ bản'
+    - label: 'I. Velocity và các tính toán cơ bản'
       state: 'editing'
     - label: 'II. So sánh hai chuỗi số'
       state: 'editing'
     - label: 'III. Vậy cần bao nhiêu để có thể phát hiện và kết luận được?'
       state: 'editing'
-    - label: 'IV: Vậy cần bao lâu?'
+    - label: 'IV. Vậy cần bao lâu?'
+      state: 'editing'
+    - label: 'V. Kết luận'
       state: 'editing'
 ---
 
-Một trong những công ty mình từng làm áp sử dụng AI rất nhiều trong suốt quá trình Software Development Life Cycle (SDLC), bạn biết đó
+Một trong những công ty mình từng làm áp dụng AI rất nhiều trong suốt quá trình Software Development Life Cycle (SDLC), bạn biết đó
 sử dụng AI nhiều cũng là một dạng đầu tư, nên sếp tổng mới yêu cầu là năng suất công việc phải tốt hơn 10% sau mỗi quý, hiện tại năng suất công việc
 của công ty cho phía R&D (Research and Development) được đo bằng StoryPoint (SP). Chúng ta sẽ không nói về việc sử dụng SP đo năng suất công việc
 là đúng hay sai trong bài này, giả sử là nó đúng. Câu hỏi là "Tăng trưởng 10% năng suất qua từng quý" có được hay không?
 
-## Velocity và các tính toàn cơ bản
+## Velocity và các tính toán cơ bản
 
 Nói về năng suất trong ngành phần mềm, từ "năng suất" sẽ thường được sử dụng tương đồng với từ "velocity (vận tốc)", velocity
 được đo bằng số lượng SP hoàn thành trong một Sprint. Năng suất trong một quý, nhiều Sprint, làm cho nó không còn là một số cứng, mà là một chuỗi sô.
@@ -54,11 +56,11 @@ không có gì bên ngoài thực sự thay đổi, vẫn những con người �
 Một sự thật đầu tiên phải chấp nhận là **velocity sẽ dao động kể cả khi không có chuyện gì xảy ra**. Ý ở đây là một thay đổi thực sự lớn, nhưng vẫn
 thay đổi nhỏ như một người nghỉ ốm, một Story làm dễ hơn dự tính hoặc khó hơn dự tính,...vv.
 
-Có thể tính ra độ dao động này từ công thức tính _độ lệch chuẩn mẫu_ $$\sigma_1 = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N}(x_i - \mu_1)^2}$$, với $N=6$ và chuỗi như trên chúng ta sẽ có $\sigma_1=6.32$, với _phương sai mẫu_ là $s_1^2=38.8$. Hơi nhiều con số đúng không :vvv, cơ bản có thể nói là, **dù không có gì thực sự lớn
-xảy ra, velocity của một Sprint có thể bị lệch khỏi trung bình 6.32 point.**.
+Có thể tính ra độ dao động này từ công thức tính _độ lệch chuẩn mẫu_ $$\sigma_1 = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N}(x_i - \mu_1)^2}$$, với $N=6$ và chuỗi như trên chúng ta sẽ có $\sigma_1=6.23$, với _phương sai mẫu_ là $s_1^2=38.8$. Hơi nhiều con số đúng không :vvv, cơ bản có thể nói là, **dù không có gì thực sự lớn
+xảy ra, velocity của một Sprint có thể bị lệch khỏi trung bình 6.23 point.**.
 
-Với dữ liệu trên chúng ta có thể tính ra thêm được một con số có ý nghĩa khác, hệ số biến thiên $c$, $$c_1=\frac{\sigma_1}{\mu_1}=\frac{6.28}{40}=0.157$$. Ý
-nghĩa của số này nói là, **dao động điển hình của đội này bằng khoảng 15.7% so với mức trung bình**, đây có thể được xem là một đội ổn định.
+Với dữ liệu trên chúng ta có thể tính ra thêm được một con số có ý nghĩa khác, hệ số biến thiên $c$, $$c_1=\frac{\sigma_1}{\mu_1}=\frac{6.23}{40}=0.156$$. Ý
+nghĩa của số này nói là, **dao động điển hình của đội này bằng khoảng 15.6% so với mức trung bình**, đây có thể được xem là một đội ổn định.
 
 ## So sánh hai chuỗi số
 
@@ -75,38 +77,185 @@ Trung bình của Quý 2 nhiều hơn quý Quý 1 4 point, đúng 10%, ăn mừn
 
 Tất nhiên là nên ăn mừng trước rồi :vvv, nhưng liệu **nếu không có bất kỳ thứ gì tác động vào kể cả AI, thì chênh lệch 4 point này có thể xảy ra không?**
 
-Cách thông thường để so sánh hai chuỗi số là so sánh trung bình, như cách chúng ta làm, trung bình cũng có sai số của riêng nó, gọi là _sai số chuẩn của trung bình_, $$SE_1=\frac{\sigma_1}{\sqrt{N}}=\frac{6.32}{\sqrt{6}}=2.58$$, con số này nói lên điều gì, nó nói là, nếu bạn có quyền năng chạy lại Quý 1 trong một dòng không thời gian khác với cùng team, cùng điều kiện, thì con số trung bình $\mu_1$ (40) có thể sai lệch đi 2.58 điểm là chuyện bình thường.
+Cách thông thường để so sánh hai chuỗi số là so sánh trung bình, như cách chúng ta làm, trung bình cũng có sai số của riêng nó, gọi là _sai số chuẩn của trung bình_, $$SE_1=\frac{\sigma_1}{\sqrt{N}}=\frac{6.23}{\sqrt{6}}=2.54$$, con số này nói lên điều gì, nó nói là, nếu bạn có quyền năng chạy lại Quý 1 trong một dòng không thời gian khác với cùng team, cùng điều kiện, thì con số trung bình $\mu_1$ (40) có thể sai lệch đi 2.54 điểm là chuyện bình thường.
 
 Vậy nếu chúng ta có quyền năng chạy lại hai quý ở một chiều không thời gian khác, thì trung bình Quý 2 và Quý 1 có thể sai khác nhau là bao nhiểu?
 
-Với $SE_2=\frac{\sigma_2}{\sqrt{N}}=\frac{5.86}{\sqrt{6}}=2.39$
+<ReRun
+	mu={40}
+	sd={[6.23, 5.87]}
+	n={6}
+	at={4}
+	atLabel="+4 — mức chúng ta quan sát được"
+	axisLabel="chênh lệch giữa trung bình hai quý (point)"
+	readout={"Bạn đã chạy lại {runs} lần, trong một thế giới mà không có gì thay đổi cả — không AI, không cải tiến, không gì hết. {hits} lần trong số đó cho chênh lệch từ {at} point trở lên."}
+	label="Hình 2"
+	hint="chạy lại quý"
+	caption="Mỗi chấm là một quý được sống lại: hai chuỗi sáu Sprint rút ra từ cùng một đội, cùng độ dao động, không có bất kỳ cải thiện nào. Những chấm màu cam là các lần nhiễu tự nó dựng lên một 'bằng chứng' lớn ngang cái chúng ta có thật."
+	alt="Các chấm rơi quanh 0 thành hình chuông; những chấm từ +4 trở lên được tô màu khác."
+/>
 
-$$SE=\sqrt{SE_1^2+SE_2^2}=\sqrt{2.58^2+2.39^2}=3.52$$
+Với $SE_2=\frac{\sigma_2}{\sqrt{N}}=\frac{5.87}{\sqrt{6}}=2.39$
 
-Điều này có thể cho ra một kết luận, **nếu không có gì thay đổi cả, trung bình hai quý có thể lệch nhau 3.52 point là bình thường**. Chệnh lệch chúng ta quan sát được là 4 point, mà ở đây nhiễu có thể làm cho lệch nhau tới 3.5 point, điều này có thể dẫn tới kết luận nhanh là, không đủ điều kiện để kết luận liệu AI có thật sự tác động tốt đến năng suất hay không vì gần như nó không khác với nhiễu là mấy.
+$$SE=\sqrt{SE_1^2+SE_2^2}=\sqrt{2.54^2+2.39^2}=3.49$$
+
+Điều này có thể cho ra một kết luận, **nếu không có gì thay đổi cả, trung bình hai quý có thể lệch nhau 3.49 point là bình thường**. Chênh lệch chúng ta quan sát được là 4 point, mà ở đây nhiễu có thể làm cho lệch nhau tới 3.5 point, điều này có thể dẫn tới kết luận nhanh là, không đủ điều kiện để kết luận liệu AI có thật sự tác động tốt đến năng suất hay không vì gần như nó không khác với nhiễu là mấy.
 
 ## Vậy cần bao nhiêu để có thể phát hiện và kết luận được?
 
-OK, trước khi đi vào tính toán cho cái này, cần hiểu thêm một chút về số $SE$ mà chúng ta đã tính bên trên, số $SE$ này cũng là độ rộng của hình chuông phân bố nhiễu. Sao nhỉ, như bên trên chúng ta tưởng tượng có khả năng chạy lại cả hai quý ở chiều không thời gian khác, nếu chúng ta làm vậy vô số lần thì sẽ khoảng 70% số lần chênh lệch sẽ nằm trong khoảng -3.52 tới 3.52 point.
+OK, trước khi đi vào tính toán cho cái này, cần hiểu thêm một chút về số $SE$ mà chúng ta đã tính bên trên, số $SE$ này cũng là độ rộng của hình chuông phân bố nhiễu. Sao nhỉ, như bên trên chúng ta tưởng tượng có khả năng chạy lại cả hai quý ở chiều không thời gian khác, nếu chúng ta làm vậy vô số lần thì sẽ khoảng 70% số lần chênh lệch sẽ nằm trong khoảng -3.49 tới 3.49 point.
 
-<!--CHART: Thêm chart cụ thể cho phân phối chuẩn của SE-->
+<NormalCurve
+	sd={3.49}
+	bandLabel="khoảng 70% số lần rơi vào đây"
+	bandTick="±SE = 3.49"
+	axisLabel="chênh lệch giữa trung bình hai quý (point)"
+	marks={[{ at: 4, label: 'chênh lệch quan sát được: +4' }]}
+	label="Hình 1"
+	hint="phân phối nhiễu"
+	caption="Nếu không có gì thay đổi, chênh lệch hai quý vẫn dao động quanh 0 với độ rộng SE = 3.49. Con số +4 chúng ta quan sát được nằm ngay trong đám mây đó."
+	alt="Đường cong chuẩn tâm tại 0, vùng tô từ -3.49 tới 3.49 point, vạch đánh dấu tại +4 nằm sát mép vùng tô."
+/>
 
 Để có thể phát hiện và kết luận được, chúng ta trước hết phải đề phòng hai loại sai.
 
 ### Sai loại I
 
-Sai loại I là "báo động giã", không có gì thay đổi hết, nhưng nhiễu vô tình tạo ra chênh lệch vượt quá chênh lệch bình thường mà chúng ta vừa tính ban nãy (3.52), để phòng chống loại sai này, chúng ta muốn chỉ 5% khả năng các nhiễu vượt ngưỡng, với phân phối chuẩn hình chuông, giá trị đó nằm xa tâm 1.96 lần độ rộng. Nên giá trị đó sẽ là $1.96x3.52=6.8992=7$, điều này có nghĩa là, nếu chênh lệch dưới 7 vẫn chưa thể kết luận gì.
+Sai loại I là "báo động giả", không có gì thay đổi hết, nhưng nhiễu vô tình tạo ra chênh lệch vượt quá chênh lệch bình thường mà chúng ta vừa tính ban nãy (3.49), để phòng chống loại sai này, chúng ta muốn chỉ 5% khả năng các nhiễu vượt ngưỡng, với phân phối chuẩn hình chuông, giá trị đó nằm xa tâm 1.96 lần độ rộng. Nên giá trị đó sẽ là $1.96\times3.49=6.84\approx7$, điều này có nghĩa là, nếu chênh lệch dưới 7 vẫn chưa thể kết luận gì.
+
+<Sidenote>
+
+  Con số 1.96 là của phân phối chuẩn, đúng khi cỡ mẫu đủ lớn. Ở đây mỗi quý chỉ
+  có 6 Sprint, mà $\sigma$ cũng là ước lượng từ chính 6 con số đó, nên chặt chẽ
+  thì phải dùng phân phối _t_ với bậc tự do Welch, ở đây là 10, và hệ số thành
+  2.23 thay vì 1.96. Ngưỡng kết luận nhích từ 7 lên 8, và $\Delta_{min}$ ở phần
+  sau từ 10 lên 11. Bài này giữ 1.96 cho gọn mạch, vì kết luận không đổi: yêu
+  cầu tăng 10% (4 point) nằm dưới cả hai ngưỡng.
+
+</Sidenote>
 
 ### Sai loại II
 
 Sai loại II là "bỏ lỡ", tức là có cải thiện thật, nhưng nhiễu kéo cho con số xuống dưới ngưỡng bình thường dẫn tới kết luận "bình thường". Cụ thể, nếu sự cải thiện đúng bằng ngưỡng 7 điểm chúng ta đã tính bên trên, thì trong vô số lần đó chỉ có 50% số lần bắt được, 50% còn lại bị nhiễu kéo xuống. Nếu muốn mức bắt
 được này lên tới 80% thì cải thiện thật phải hơn 7 một khoảng nữa, với hình chuông, đẩy tâm lên 0.84 lần độ rộng thì 80% phân phối sẽ nằm bên phải ngưỡng.
 
-Vậy cần có $$\Delta_{min}=(1.96+0.84)\times SE=2.8\times 3.52=9.856=10$$
+Vậy cần có $$\Delta_{min}=(1.96+0.84)\times SE=2.8\times 3.49=9.77\approx 10$$
 
 Vậy cần có **chênh lệch ít nhất 10 point mới có thể xem là có cải thiện**.
 
-<!--INTERACTION: Nếu có thể làm interaction cho cái này sẽ tốt, có thể nhìn được trực quan phân phối-->
+<DetectionPower
+	se={3.49}
+	presets={[
+		{ label: 'ngưỡng', at: 6.84 },
+		{ label: '80%', at: 9.77 }
+	]}
+	thresholdLabel="ngưỡng kết luận: 6.84"
+	axisLabel="chênh lệch giữa trung bình hai quý (point)"
+	readout={"Nếu cải thiện thật đúng bằng {delta} point, thì trong vô số lần chạy lại, bạn sẽ kết luận được 'có cải thiện' khoảng {power} số lần. Phần tô là chỗ đó."}
+	label="Hình 3"
+	hint="kéo thử"
+	caption="Chuông xám đứng yên là nhiễu. Chuông xanh là thế giới nơi cải thiện có thật, kéo tới đâu tuỳ bạn. Đặt nó đúng vào ngưỡng thì phần tô còn đúng một nửa — đó là chỗ 50% bị bỏ lỡ."
+	alt="Hai đường cong chuẩn cùng độ rộng, một tâm tại 0 và một trượt theo thanh kéo, với vạch ngưỡng và phần đuôi được tô."
+/>
+
+## Vậy cần bao lâu?
+
+Đặt lại câu hỏi một chút, chúng ta đã tính được, để có thể xác định là "có cải thiện" hay không thì phải có chênh lệch ít nhất là 10 point, với mẫu thu thập được $N=6$ cho mỗi quý, câu hỏi mới là **"Cần bao nhiêu Sprint (N) để có thể kết luận là đội đã cải thiện 10%"**.
+
+### Tổng quát SE
+
+Khi nãy chúng ta đã tính được chênh lệch so sánh của hai chuỗi với $n=6$ bên trên là $SE=3.49$, đây là một con số cụ thể, không phải công thức tổng quát so sánh. Giả sử luôn so sánh hai chuỗi có cùng độ dài, công thức tổng quát có thể được viết lại như sau:
+
+$$SE=\sqrt{SE_1^2 + SE_2^2} = \sqrt{\frac{\sigma_1^2}{n} + \frac{\sigma_2^2}{n}} = \sqrt{\frac{\sigma_1^2 + \sigma_2^2}{n}} = \sqrt{\frac{2}{n} \times \frac{\sigma_1^2 + \sigma_2^2}{2}} = \sigma_{gộp} \times \sqrt{\frac{2}{n}}$$
+
+Với
+
+$$\sigma_{gộp}=\sqrt{\frac{\sigma_1^2 + \sigma_2^2}{2}} = \sqrt{\frac{38.8 + 34.4}{2}} = \sqrt{36.6} = 6.05$$
+
+### Ngưỡng phát hiện cải thiện tính ngược lại
+
+Khi nãy chúng ta cũng tính được $\Delta_{min}=2.8 \times SE \approx 10$, thì mới xem là có cải thiện, ráp lại vào công thức tính cho $\Delta$ thì sẽ có 
+bất đẳng thức như sau
+
+$$\Delta \geq 2.8 \times SE = 2.8 \times \sigma\sqrt{\frac{2}{n}}$$
+
+Có nghĩa là, **cải thiện thật phải lớn hơn hoặc bằng 2.8 lần độ ồn nhiễu của phép so sánh**.
+
+OK, tới đây cần phải biến đổi bất đẳng thức để có thể tìm ra công thức của $n$.
+
+$$\Delta\geq2.8\times\sigma\times\sqrt{\frac{2}{n}} \Leftrightarrow \Delta^2\geq2.8^2\times\sigma^2\times\frac{2}{n} \Leftrightarrow \Delta^2\geq\frac{15.7\times\sigma^2}{n} \Leftrightarrow n \geq \frac{15.7\times\sigma^2}{\Delta^2}$$
+
+Đã có công thức của $n$ nhưng ý nghĩa hiện tại của nó không phải là "phần trăm", để có thể có ý nghĩa đó, phải chia cả tử số và mẫu số cho $\mu^2$ (bình phương trung bình của chuỗi)
+
+$$
+
+n \geq \frac{15.7\times\left(\frac{\sigma^2}{\mu^2}\right)}{\left(\frac{\Delta^2}{\mu^2}\right)}
+
+\Leftrightarrow n \geq \frac{15.7\times(\sigma/\mu)^2}{\Delta^2/\mu^2}
+
+\Leftrightarrow n \geq \frac{15.7\times c^2}{(\Delta/\mu)^2}
+
+$$
+
+Chúng ta có $\sigma/\mu=c$ _hệ số biến thiên_ của đội nhóm. Vậy công thức trên nói lên điều gì?
+
+Tử số nói là _đội này đem lại bao nhiêu phần trăm nhiễu_, mẫu số nói là _muốn bắt được bao nhiêu phần trăm cải thiện_.
+
+Với $c$ gộp được tính lại cho cả hai Quý là $c=\frac{\sigma_{gộp}}{\mu_{gộp}}=\frac{6.05}{42}=0.144$ và mong muốn bắt được 10% cải thiện, tức $\Delta/\mu=0.1$, thì $n$ phải
+
+$$
+n \geq \frac{15.7 \times 0.144^2}{0.1^2} \approx 32.5
+$$
+
+#### Kiểm tra lại một tí
+
+Thay $n=33$ vào công thức tính SE ta sẽ có: $SE=\sigma\times\sqrt{\frac{2}{n}}=6.05\times\sqrt{\frac{2}{33}}\approx1.49$
+Từ đó suy ra $\Delta_{min}=2.8 \times SE=2.8\times1.49=4.17$, mà $4.17/\mu_{gộp}=4.17/42=0.099=9.9\%$. Yeah, vậy là tính toán đã đúng.
+
+Vậy cần ít nhất phải theo dõi **33 Sprint mỗi nhánh**, tức là **66 Sprint** mới có thể bắt được liệu một tác nhân nào đó có thể giúp tăng năng suất lên 10%
+hay không.
+
+## Kết luận
+
+Quay lại câu hỏi của sếp tổng: "năng suất phải tốt hơn 10% sau mỗi quý". Trả lời cho câu hỏi này không phải "được" hay
+"không được", mà là một trả lời khó chịu hơn: **với dữ liệu của một quý, câu hỏi đó không có câu trả lời.**
+
+Ba con số của bài này xếp cạnh nhau đã nói:
+
+- Đội này cơ bản dao động sẵn **15%** quanh mức trung bình của chính nó kể cả khi không có gì xảy ra cả.
+- Chênh lệch cần đạt là **4 point** còn nhiễu của phép so sánh là **3.49 point**. Cái cần đo gần như không khác với nhiễu thuần túy là mấy.
+- Muốn phân biệt được hai thứ đó, cần **33 Sprint mỗi nhánh**, với Sprint hai tuần, đó là hai năm rưỡi dữ
+  liệu cho **một lần** kết luận.
+
+Nghịch lý nằm ở chỗ này: chu kỳ đánh giá là một quý, sáu Sprint, trong khi chính thước đo được dùng để
+đánh giá cần gấp mười lần chừng đó mới có thể kết luận được. Yêu cầu "10% mỗi quý" không sai về mặt kỳ
+vọng. Nó chỉ **không kiểm chứng được bằng StoryPoint** và một yêu cầu không kiểm chứng được thì mỗi quý sẽ
+được trả lời bằng cảm tính, bằng một con số vô tình đẹp hoặc bằng một buổi họp mà ai to tiếng hơn thì đúng.
+
+Nếu vẫn muốn đo, chúng ta có công thức $n \geq \frac{15.7 \times c^2}{(\Delta/\mu)^2}$ cho ba núm vặn để xoay:
+
+1. **Giảm $c$, bớt nhiễu đi: ** $n$ tỉ lệ với $c^2$, nên đội nào có dao động càng nhỏ thì thời gian đo sẽ cần càng ít, ví dụ kéo từ 15% xuống 7.5% thì thời
+   gian cần thiết rút xuống chỉ còn **một phần tư**. Story cần được chia nhỏ, đều tay, ước lượng nhất quán, đừng đổi thang điểm
+   giữa chừng. Hoá ra đây mới là việc đáng làm nhất và nó chẳng liên quan gì tới AI là mấy.
+2. **Chấp nhận mục tiêu lớn hơn: ** $n$ tỉ lệ nghịch với $(\Delta/\mu)^2$, đi tìm mức cải thiện 20% thì chỉ
+   tốn một phần tư thời gian so với đi tìm 10%. Một tác động thật sự lớn thì dễ chứng minh hơn đòi bằng chứng
+   cho một tác động nhỏ.
+3. **Kéo dài cửa sổ quan sát: ** Đừng hỏi "quý này có tăng 10% không", hỏi "sau một năm rưỡi, xu hướng có
+   chuyển đổi không".
+
+Và điều cuối, cũng là điều quan trọng nhất, những con số bên trên **không kết luận AI vô dụng hay không**. Chúng nói StoryPoint không đủ nhạy để làm bằng chứng cho câu hỏi đang được hỏi. Đó là hai chuyện hoàn toàn khác nhau nhưng trong một buổi review cuối quý, chúng rất hay bị đánh đồng làm một.
+
+<SampleSizeGrid
+	first="38 45 31 42 36 48"
+	second="41 49 36 47 40 51"
+	unitLabel="số Sprint cần theo dõi cho mỗi nhánh"
+	readoutEnough={"Đội của bạn dao động {c} quanh trung bình. Chênh lệch quan sát được là {diff} point, ngưỡng kết luận là {thr} point — đủ để nói là có cải thiện. Còn để bắt được mức bạn chọn, cần {n} Sprint mỗi nhánh, tức khoảng {months} tháng."}
+	readoutShort={"Đội của bạn dao động {c} quanh trung bình. Chênh lệch quan sát được là {diff} point, trong khi ngưỡng kết luận là {thr} point — chưa đủ để nói gì cả. Muốn bắt được mức bạn chọn, cần {n} Sprint mỗi nhánh, tức khoảng {months} tháng."}
+	label="Hình 4"
+	hint="số của đội bạn"
+	caption="Hai đòn bẩy, cả hai đều bình phương: đội bớt dao động một nửa, hoặc mức cải thiện cần bắt lớn gấp đôi — mỗi cái đều cắt thời gian chờ xuống còn một phần tư. Ô được tô là chỗ đội trong bài đứng."
+	alt="Bảng số Sprint cần theo dõi: hàng là mức cải thiện muốn bắt, cột là độ dao động của đội."
+/>
 
 <!--
 - AI
@@ -120,6 +269,6 @@ Vậy cần có **chênh lệch ít nhất 10 point mới có thể xem là có 
 - Phương sai mẫu
 - Sai số chuẩn của trung bình
 - Sai số loại I
-- Sai số loại I
+- Sai số loại II
 - Phân phối chuẩn
 -->
