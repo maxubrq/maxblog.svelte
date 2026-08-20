@@ -36,7 +36,7 @@
     "drizzle-kit": "^0.31.10",
     "github-slugger": "^2.0.0",
     "jstat": "^1.9.6",
-    "katex": "^0.13.24",
+    "katex": "^0.16.21",
     "mdsvex": "^0.12.3",
     "minisearch": "^7.2.0",
     "rehype-katex": "^4.0.0",
