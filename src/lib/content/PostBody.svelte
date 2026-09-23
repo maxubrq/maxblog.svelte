@@ -199,7 +199,9 @@
 		font-size: 1.02em;
 	}
 
-	/* Wide tables scroll inside their own box — the page never scrolls sideways. */
+	/* Prose cells wrap: a table of sentences has to fit the column, and only a
+	   table that still cannot (many short columns) scrolls in its own box —
+	   the page never scrolls sideways either way. */
 	.prose :global(table) {
 		width: 100%;
 		border-collapse: collapse;
@@ -207,7 +209,11 @@
 		font-size: 15px;
 		display: block;
 		overflow-x: auto;
-		white-space: nowrap;
+	}
+	.prose :global(th),
+	.prose :global(td) {
+		white-space: normal;
+		overflow-wrap: break-word;
 	}
 	.prose :global(th) {
 		font-family: var(--mono);

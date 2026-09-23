@@ -1,0 +1,244 @@
+---
+title: 'Từ vựng trường dùng trong hệ thống phân tán'
+subtitle: 'Và cũng thường nhầm lẫn'
+date: '2026-09-22'
+topic: 'Tech'
+lang: vi
+interactive: false
+chapter: 'Chương V'
+description: ''
+weather:
+  time: '10–15 phút'
+  oneSitting: true
+  load: 1
+  needFirst: 'Vài hiểu biết trước về hệ thống phân tán sẽ có ích.'
+  bestWhen: 'lúc rảnh hoặc đọc thiết kế cho hệ thống phân tán'
+rememberSentence: '???'
+rememberAttribution: '???'
+---
+
+
+## Linearizability
+**Linearizability (tính tuyến tính)** là một đặc tính nhất quán mạnh (strong consistency), đảm bảo mọi thao tác trên một đối tượng được thực hiện 
+giống như tức thời giữa lúc gọi và trả về. Tôn trọng thứ tự trong thời gian thực.
+
+Để dễ hiễu hơn, hệ thống đáp ứng được tính chất này đảm bảo rằng, nếu thao tác tại thời điểm $t_1$ được xác nhận là thành công, thì thao tác tại mọi thời điểm $t_2 (t_2>t_1)$ phải thấy được kết quả của thao tác trước đó.
+
+### Tính chất
+
+- **Tập trung vào một đối tượng (single-object focus)**: phát biểu của tính chất này chỉ nói đến một đối tượng
+- **Ảo giác tức thời (Illusion of Instantaneity)**: mặc dù giữa lúc đọc và ghi tồn tại một khoảng thời gian để thực hiện, linearizabiliity tạo cảm giác như thao tác đó xảy ra tại một thời điểm duy nhất (single point in time) nằm giữa lúc gọi (invocation) và lúc trả về (response/return).
+- **Tôn trọng thứ tự trong thời gian thực (respect real-time ordering)**
+
+### Dễ sai khi
+
+- Dùng nhầm với các tính chất khác không phải trên một đối tượng, nhiều đối tượng hoặc giao dịch (transaction) ví dụ: _[Serializability](#serializability)_
+
+## Serializability
+
+**Serializability (tính tuần tự)** đảm bảo rằng các giao dịch đồng thời trên nhiều tiến trình sẽ cho ra kết quả cuối cùng giống như là
+chạy trên một máy theo một thứ tự tuần tự nhất định nào đó. Không tôn trọng thứ tự trong thời gian thực.
+
+Ví dụ: có hai giao dịch đồng thời $T_1$, $T_2$, hệ thống đảm bảo rằng kết quả cuối cùng sẽ theo một thứ tự tuần tự $T_1 \to T_2$ hoặc $T_2 \to T_1$. Với Account $A$ ban đầu có giá trị là $1$
+
+- $T_1$: ADD A 5
+- $T_2$: MUL A 2
+
+Kết quả hợp lệ hệ thống chấp nhận là $12=(1+5)\times2$ hoặc $7=(1\times2)+5$ Không chấp nhận chồng chập, ghi đè thành $6$ hoặc $2$.
+
+### Dễ sai khi
+
+- Dùng nhầm với [linearizability](#linearizability)
+
+## Strict Serializability
+
+Là *[serializability](#serializability)* cộng tôn trọng thời gian thực.
+
+### Dễ sai khi
+
+- Dùng nhầm với [serializability](#serializability) đơn thuần
+
+## Eventual Consistency
+
+**Eventual Consistency (nhất quán cuối cùng/hội tụ cuối cùng)** nói rằng, nếu không còn thay đổi nào đến dữ liệu, thì mọi bản sao (copies/replicas) của nó sẽ được đồng bộ và tiến về một trạng thái sau cùng như nhau.
+
+### Tính chất
+
+- **Hội tụ sau cùng**: mọi bản sao của dữ liệu tới cuối cùng sẽ được hội tụ về một trạng thái như nhau.
+- **Không cam kết thời gian**: tính chất này không cam kết thời gian để tiến về trạng thái hội tụ cuối cùng đó, mỗi hệ thống sẽ có cam kết khác nhau và cần kiểm chứng, không mặc định vài milli giây hay vài giây.
+
+### Dễ sai khi
+
+- Dùng nó mà không biết cam kết về thời gian đồng bộ.
+
+## Monotonic Reads / Monotonic Writes
+
+**Monotonic reads (đọc đơn điệu)** đảm bảo rằng một client/session/tiến trình nếu đã đọc được một giá trị cụ thể hoặc một phiên bản cụ thể của dữ liệu sẽ không bao giờ đọc lại được giá trị cũ hơn của dữ liệu đó.
+
+Tương tự với **Monotonic writes (ghi đơn điện)** đảm bảo rằng một client/session/tiến trình sẽ không thể ghi một version cũ của dữ liệu đè lên hiện tại được.
+
+## Read-your-writes
+
+**Read-your-writes** đảm bảo nếu client/session/tiến trình đã thực hiện thao tác thay đổi lên đối tượng sẽ thấy được những thay đổi đó ngay lập tức.
+
+Hầu hết (90%) các ca yêu cầu "nhất quán mạnh" có thể giải quyết bằng tính chất này mà không cần phải bỏ nhiều chi phí để lên linearizability.
+
+### Dễ sai khi
+
+- Nhảy thẳng lên [linearizability](#linearizability)
+
+## Causal Consistency
+
+**Causal Consistency (nhất quán nhân quả)** đảm bảo những thao tác có mối quan hệ nhân-quả sẽ được quan sát cùng một thứ tự tại mọi nút trong hệ thống, còn những thao tác khác, không liên quan, có thể quan sát được ở bất kì thứ tự nào.
+
+Ví dụ: Thao tác "bình luận" vào bài viết, A viết một bài viết, B bình luận lên bài viết đó, hành động viết bài của A phải xảy ra trước hành đồng bình luận lên bài viết của A của B, nên hệ thống sẽ thấy tuần tự tại mọi nút rằng A viết bài $\to$ B bình luận lên bài. Còn các hành động khác như B thích một bài viết của C, hay D đăng một bài viết khác không liên quan đến thao tác viết bài của A, có thể theo bất kì thứ tự nào.
+
+Tính chất này hầu hết là đáp ứng đủ cho các mạng xã hội.
+
+## Happens-before
+
+**Happens-before** là thứ tự có phạm vi ở một phần /bộ phận/cục bộ do tính chất nhân quả tạo ra, không phải là thứ tự toàn cục.
+
+Happens-before thể hiện mối quan hệ nhân quả $A \to B$, mối quan hệ này được xác nhận chỉ khi $A$, $B$ rơi vào một trong ba trường hợp sau:
+
+1. **Trong cùng một tiến trình**: Sự kiện $A$ xảy ra trước sự kiện $B$ trong cùng một tiến trình
+2. **Mối quan hệ gửi-nhận**: khi $A$ là hành động gửi tin nhắn từ tiến trình 1, và $B$ là hành động nhận đúng tin nhắn đó ở tiến trình 2.
+3. **Tính chất bắc cầu**: nếu $A \to B$ và $B \to C$ thì $A \to C$
+
+## Phân biệt và sắp xếp các dạng nhất quán
+
+Các mô hình nhất quán trong hệ thống phân tán có thể sắp xếp từ **mạnh $\to$ yếu** theo bảng sau:
+
+| Bậc | Model | Ràng buộc thứ tự | Đạt được bằng |
+|---|---|---|---|
+| 1 | Strict consistency | Real-time tuyệt đối, đồng hồ toàn cục | Không hiện thực được, chỉ là trần lý thuyết |
+| 2 | Linearizability (strong) | Real-time + một thứ tự toàn cục duy nhất | Raft/Paxos + quorum, TrueTime (Spanner chấp nhận uncertainty window) |
+| 3 | Sequential consistency | Một thứ tự toàn cục, khớp program order, **không cần khớp real-time** | Hiếm dùng độc lập trong DB thực tế, hay xuất hiện trong shared-memory model |
+| 4 | Causal consistency | Chỉ thao tác có quan hệ nhân quả mới bị buộc thứ tự; thao tác đồng thời thấy khác nhau ở replica khác nhau cũng được | Vector clock, COPS, CRDT có causal delivery |
+| 5 | PRAM / FIFO consistency | Chỉ per-writer FIFO, không bắc cầu qua tiến trình khác | Ghi log theo tiến trình, không cần vector clock đầy đủ |
+| 5.5 | Session guarantees (read-your-writes, monotonic reads, monotonic writes, writes-follow-reads) | Từng ràng buộc cục bộ, cấp độc lập theo session/client | Sticky session, version vector theo client, read-your-writes token |
+| 6 | Eventual consistency | Chỉ cam kết hội tụ sau cùng nếu ngừng ghi, không cam kết thứ tự nào giữa chừng, không nói về thời gian hội tụ | Anti-entropy, gossip, CRDT (nửa dàn đảm bảo hội tụ đúng nhưng không đảm bảo *khi nào* thấy gì) |
+
+## Quorum
+
+**Quorum** số lượng nhỏ nhất/tối thiểu của các máy/nút phải đồng thuận về một thao tác đọc hoặc ghi.
+
+Thường là $R+W>N$ trong đó
+- $R$ (Read quorum): là số lượng tối thiểu các nút phải phản hồi khi thực hiện thao tác ghi
+- $W$ (Write quorum): là số lượng tối thiểu các nút phải xác nhận ghi thành công cho thao tác ghi
+- $N$: là tổng số bản sao (replicas)
+
+Có công thức này là vì theo nguyên lý **Dirichlet (Pigeonhole Principle)**, khi $R + W > N$, tập hợp các node thực hiện đọc ($R$) và tập hợp các node thực hiện ghi ($W$) chắc chắn sẽ giao nhau tại ít nhất 1 node. Node giao nhau này sẽ giữ phiên bản dữ liệu mới nhất, giúp hệ thống không bao giờ trả về dữ liệu cũ.
+
+### Dễ sai khi
+
+- Nhầm với *Majority (đa số)*, quorum bản chất không nói về đồng thuận đa số.
+
+## Split-brain
+
+**Split-brain** là trường hợp sai khi có hai nút hay nhiều hơn đều nghĩ mình là **leader** từ đó dẫn đến tình trạng chấp nhận ghi xung đột.
+
+Hiện tượng này có thể xảy ra bởi nhiều nguyên nhân, thường là do **phân mảnh mạng (network partition)** hoặc do **Garbage Collection Pause (GC Pause)**.
+
+## Lease
+
+**Lease** là quyền/khóa/token được cấp cho phép một tiến trình thao tác trên đối tượng dữ liệu, có giới hạn về thời gian Time-to-live (TTL).
+
+Sau khi hết TTL, lease sẽ tự động hết hạn, tiến trình không được phép thao tác trên đối tượng dữ liệu nữa. Tiến trình cũng có thể nhả lease sớm hoặc gia hạn thêm nếu cần.
+
+Được sử dụng để tránh một tiến trình block sử sụng đối tượng liệu mãi không cho người khác dùng.
+
+### Dễ sai khi
+
+- Nghĩ chỉ cần với lease là đủ, thực chất lease là nữa đầu của câu chuyện, sau đó người đang giữ lease vẫn có thể không biết lease của mình đã hết hạn dẫn tới tình trạng ghi xung đột với người thực sự đang giữ lease mới.
+
+## Fencing token
+
+**Fencing token** là token được cấp dùng để ngăn chặn việc một tiến trình đang giữ lease cũ. Thường là một số tăng đơn điệu.
+
+Là cặp bài trùng với [lease](#lease).
+
+## Idempotent
+
+**Idempotent (lũy đẵng)** là tính chất thể hiện một thao tác có thể thực hiện nhiều lần mà kết quả cuối cùng thu được giống hệt như nó thực hiện một lần.
+
+Ví dụ: Thao tác SET A 5, sẽ luôn cho kết quả A bằng 5 dù có thực hiện nó bao nhiêu lần, nhưng ADD A 5 thì không.
+
+Tính chất này là nền tảng của mọi cơ chế retry an toàn.
+
+Trong *HTTP* các phương thức như *GET*, *PUT*, *DELETE* là idempotent ở mức độ giao thức (protocol). Lưu ý, idempotent ở mức độ protocol không tự nhiên đem lại tính chất idempotent cho toàn hệ thống.
+
+### Dễ sai khi
+
+- Nhầm lẫn với tình chất [commutative (giao hoán)](#commutative)
+- Hoặc được dùng với *an toàn khi gọi lại* chung chung
+
+## Commutative
+
+**Commutative (giao hoán)** là tính chất đảm bảo thứ tự của các thao tác không làm ảnh hưởng đến kết quả cuối cùng.
+
+Ví dụ: ADD A 5, rồi ADD A 2, hay ADD A 2 rồi ADD A 5, thì kết quả cuối cùng đều cho ra A + 7, không phụ thuộc thứ tự thao tác. Nhưng MUL A 2 với ADD A 3 thì khác, thứ tự có ảnh hưởng đến kế quả cuối cùng.
+
+Đây là tính chất nền tảng của các **CRDT (Conflict-free Replicated Data type)**.
+
+## Associative
+
+**Associative (kết hợp)** là tính chất mà một thao tác gộp dữ liệu đảm bảo sơ đồ chia nhỏ và đóng gói các gói tin để gộp không làm thay đổi kết quả cuối cùng.
+
+$$\text{Merge}(\text{Merge}(A, B), C) = \text{Merge}(A, \text{Merge}(B, C))$$
+
+Một hệ thống/cấu trúc mà đám ứng đủ $\text{Associative} + \text{Commutative} + \text{Idempotent} = \text{Bounded Semi-lacttice}$ là một nền tảng hoàn hảo cho đồng bộ dữ liệu phân tán.
+
+## Monotonic
+
+**Monotonic (đơn điệu)** chỉ giá trị/trạng thái chỉ tiến về trước, theo một chiều thường là chỉ tăng/mới hơn, không bao giờ đi ngược lại hoặc sử dụng lại giá trị/trạng thái trong quá khứ.
+
+Đây là tính chất nền tảng của **CALM (Consistency As Logical Monotonicity)**, nói rằng một chương trình/hệ thống có thể đạt được Nhất quán kết quả (Eventual Consistency) mà *KHÔNG CẦN* sự phối hợp (Coordination-free) giữa các nút nếu và chỉ nếu logic của chương trình đó là Đơn điệu (Monotonic).
+
+## At-least-once / At-most-once / Exactly-once / Effectively-once
+
+- *At-least-once (ít nhất một)*: đảm bảo không bị mất tin nhắn (No Data Loss), chấp nhận có thể bị xử lý trùng lặp (Duplicates).
+- *At-most-once (nhiều nhất một)*: đảm bảo không bị trùng lặp (No Duplicates), chấp nhận tin nhắn có thể bị mất mát (Data Loss).
+- *Exactly-once (chính xác một)*: đảm bảo tin nhắn được xử lý hiệu quả đúng 1 lần (không mất mát, không trùng lặp).
+
+Người ta luôn hướng về *Exactly-once* trong toàn hệ thống, nhưng nó đòi hỏi chi phí và độ phức tạp rất cao. Do đó, thực tế thường áp dụng *Effectively-once* bằng cách kết hợp giữa *At-least-once* và *khử trùng/lũy đẳng (Deduplication / Idempotence)* để đảm bảo trạng thái hệ thống thay đổi đúng một lần kể cả khi tin nhắn bị lặp lại. Với các *tác dụng phụ (Side Effects)* ra bên ngoài như gửi Email hay gọi API bên thứ 3, bản thân các tác dụng phụ đó cũng cần tích hợp cơ chế khử trùng riêng để tránh bị thực hiện nhiều lần.
+
+### Dễ sai khi
+
+- Sử dụng **Kafka** và nghĩ rằng sẽ tự nhiên có tính chất *Exactly-once* ở toàn bộ hệ thống. Đây là niềm tin sai lầm phổ biến, tính năng *Exactly-Once Semantics (EOS)* của Kafka thực chất chỉ đảm bảo cho luồng xử lý nội bộ (Stream-to-Stream processing giữa các Topic). Consumer vẫn hoàn toàn có khả năng nhận và xử lý lại một message hai lần (ví dụ do crash trước khi commit offset). Nếu tầng ứng dụng không có cơ chế khử trùng/lũy đẳng (Deduplication / Idempotence), hệ thống vẫn sẽ bị xử lý trùng lặp.
+- Nhầm lẫn **effectively-once** với **exactly-once** thực thụ: Exactly-once tuyệt đối trên toàn hệ thống mạng phân tán (End-to-End) là điều bất khả thi về mặt lý thuyết. Thực tế mọi hệ thống hoạt động chính xác đều là nhờ đạt được Effectively-once (kết hợp At-least-once + Idempotence).
+
+## Byzantine
+
+**Byzantine/Byzantine Fraud** là tình trạng sai của hệ thống khi các nút gửi thông tin sai, ác ý, xung đột tới các phần khác nhau trong mạng.
+
+Khái niệm liên quan là **Byzantine Fault Tolerance (BFT)**, khả năng chịu lỗi Byzantine Fault của hệ thống, thường theo công thức $N \ge 3f + 1$. Tức là để chịu được $1$ nút bị Byzantine, thì hệ thống cần $3(1) + 1 = 4$ nút.
+
+Với $f$ là số nút bị Byzantine, còn $N$ là tổng số nút cần có.
+
+### Dễ sai khi
+
+- Dùng cho lỗi thường, thông thường là crash-stop.
+
+## Safety / Liveness
+
+### Safety
+
+**Safety (an toàn)** là tính chất thể hiện cho câu *"không có gì xấu xảy ra hết"*, đảm bảo rằng hệ thống không rơi vào trạng thái sai (incorrect) hoặc không hợp lệ (invalid).
+
+### Liveness
+
+**Liveness (sống sót)** là tính chất thể hiện cho câu *"cuối cùng sẽ có điều gì đó tốt xảy ra"*, đảm bảo rằng, hệ thống tiếp tục hoạt động, xử lý, chứ không chết, không đứng vô hạn.
+
+
+Đây là cặp tính chất dùng để phân tích hệ thống chứ không dùng để đánh đổi, một hệ thống tốt bắt buộc phải thỏa mãn cả hai tính chất trên.
+
+## Grey failure
+
+**grey failure** là tình trạng sai khi nút bị giảm performance, hoặc trả về lỗi, nhưng vẫn vượt qua được những bài kiểm tra sức khỏe (health-check).
+
+## Static Stability
+
+**Static Stability (ổn định tĩnh)** là tính chất đảm bảo hệ thống phục vụ người dùng tiếp tục vận hành khi có sự cố mà không cần sự can thiệp chủ động từ hệ thống điều khiển, cấu hình.
+
+Nó thường được tạo ra bằng sự chuẩn bị trước và thiết kế để Control Plane và Data Plane độc lập.

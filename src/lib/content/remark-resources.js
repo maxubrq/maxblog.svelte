@@ -81,6 +81,23 @@ const boundary = (/** @type {string} */ body) => new RegExp(`(?<![\\p{L}\\p{N}])
 const SKIP_TYPES = new Set(['heading', 'code', 'inlineCode', 'html', 'link', 'linkReference']);
 
 /**
+ * Open and close tags of a mark the glossary pass already placed.
+ *
+ * The ordering note in `svelte.config.js` states the invariant this enforces —
+ * a citation is never marked inside a `<Term>` — but running second is not by
+ * itself enough to get it. `remarkGlossary` emits its mark as three *siblings*
+ * (`html(<Term …>)`, the matched text, `html(</Term>)`), so the words it just
+ * claimed are still a plain `text` node to this pass, and `SKIP_TYPES` skips
+ * only the html nodes either side of them. Without tracking the region between
+ * the two tags, a resource whose title is also a dictionary term — `Linearizability:
+ * A Correctness Condition…` against `linearizability` — lands its numeral
+ * inside the term's button, and a `<button>` nested in a `<button>` is neither
+ * valid HTML nor operable.
+ */
+const TERM_OPEN = /^<\s*Term\b/i;
+const TERM_CLOSE = /^<\s*\/\s*Term\s*>/i;
+
+/**
  * `…/content/posts/001-float-memory-en.mdx` → `001-float-memory-en`.
  *
  * @param {string | undefined} filename @returns {string}
@@ -115,10 +132,19 @@ function collectMarks(node, into) {
 function walk(node, regex, idByText, seen) {
 	if (!Array.isArray(node.children)) return;
 
+	// Depth of the `<Term>` region the cursor stands in, counted across the
+	// sibling list rather than down the tree — see TERM_OPEN.
+	let inTerm = 0;
+
 	for (let i = 0; i < node.children.length; ) {
 		const child = node.children[i];
 
-		if (child.type === 'text' && !SKIP_TYPES.has(node.type)) {
+		if (child.type === 'html' && typeof child.value === 'string') {
+			if (TERM_OPEN.test(child.value)) inTerm++;
+			else if (TERM_CLOSE.test(child.value)) inTerm = Math.max(0, inTerm - 1);
+		}
+
+		if (child.type === 'text' && !inTerm && !SKIP_TYPES.has(node.type)) {
 			const re = new RegExp(regex.source, regex.flags);
 			const match = [...child.value.matchAll(re)].find((m) => {
 				const id = idByText.get(key(m[0]));

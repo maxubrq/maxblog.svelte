@@ -527,4 +527,723 @@ export const TERMS = {
 			],
 		},
 	},
+
+	/**
+	 * The vocabulary of essay 005 — a dictionary entry per term the essay
+	 * defines, which is most of its `##` headings. The essay is itself a
+	 * glossary, so the division of labour matters: the essay says what the word
+	 * means and where it is misused, and `long` here says what follows from that
+	 * in a design. `section` is the heading the term is defined under, in each
+	 * edition's own wording.
+	 *
+	 * `vi.term` is set only where the Vietnamese term is a distinctive phrase.
+	 * Where the natural gloss is an ordinary Vietnamese word — `an toàn` for
+	 * safety, `kết hợp` for associative — it is left unset, so the auto-marking
+	 * pass does not underline that word in unrelated prose; the entry still reads
+	 * in Vietnamese, it just answers to the English spelling.
+	 */
+
+	linearizability: {
+		term: 'linearizability',
+		pos: 'noun · distributed systems',
+		short:
+			'The guarantee that every operation on one object appears to take effect at a single instant between its call and its return, in real-time order.',
+		long: 'The strongest consistency property you can actually build, and the most over-bought. Two words in the definition carry the cost: *one object*, and *real time*. Because it is per-object, it says nothing about two objects changed together — that is the transactional question, and reaching for linearizability to answer it buys the wrong guarantee at the higher price. Because it respects real time, an acknowledged write must be visible to every later reader, which forces a consensus round or a bounded clock onto the critical path. Most requests that arrive asking for "strong consistency" are satisfied by read-your-writes, which costs a sticky route.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Linearizability',
+			},
+		],
+		vi: {
+			term: 'tính tuyến tính',
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Bảo đảm rằng mọi thao tác trên một đối tượng đều trông như xảy ra tại một thời điểm duy nhất nằm giữa lúc gọi và lúc trả về, theo đúng thứ tự thời gian thực.',
+			long: 'Là tính chất nhất quán mạnh nhất mà bạn thực sự xây được, và cũng là thứ bị mua quá nhiều nhất. Hai chỗ trong định nghĩa gánh toàn bộ cái giá: *một đối tượng*, và *thời gian thực*. Vì nó theo từng đối tượng, nó không nói gì về hai đối tượng cùng đổi một lượt — đó là câu hỏi giao dịch, và viện tới linearizability để trả lời là mua sai bảo đảm với giá đắt hơn. Vì nó tôn trọng thời gian thực, một lần ghi đã xác nhận buộc phải thấy được với mọi người đọc sau đó, thứ đẩy một vòng đồng thuận hoặc một đồng hồ có biên vào đường đi tới hạn. Phần lớn yêu cầu "nhất quán mạnh" thực ra được thỏa bằng read-your-writes, thứ chỉ tốn một đường đi sticky.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Linearizability',
+				},
+			],
+		},
+	},
+
+	serializability: {
+		term: 'serializability',
+		pos: 'noun · distributed systems',
+		short:
+			'The guarantee that concurrent transactions end with the same result as running them one at a time in some serial order — any serial order.',
+		long: 'The database half of the pair, and the word "some" is the whole of it. Serializability fixes the *outcome* to a serial order without fixing *which* one, so it never appeals to a clock: two transactions that ran concurrently may be serialised in either direction and both answers are correct. That is why it composes across many objects where linearizability does not, and why it cannot on its own tell you whether a transaction that committed a second ago is visible now. Adding that real-time requirement back is a separate, stronger property with its own name.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Serializability',
+			},
+		],
+		vi: {
+			term: 'tính tuần tự',
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Bảo đảm rằng các giao dịch đồng thời kết thúc với cùng kết quả như khi chạy lần lượt theo một thứ tự tuần tự nào đó — thứ tự nào cũng được.',
+			long: 'Nửa phía cơ sở dữ liệu của cặp khái niệm, và chữ "nào đó" chính là toàn bộ câu chuyện. Serializability chốt *kết quả* vào một thứ tự tuần tự mà không chốt *thứ tự nào*, nên nó không bao giờ phải viện đến đồng hồ: hai giao dịch chạy đồng thời có thể được tuần tự hóa theo chiều nào cũng được và cả hai đáp án đều đúng. Đó là lý do nó ghép được trên nhiều đối tượng, chỗ mà linearizability không làm được, và cũng là lý do một mình nó không cho bạn biết một giao dịch commit một giây trước giờ có thấy được hay chưa. Cộng lại yêu cầu thời gian thực đó là một tính chất khác, mạnh hơn, và có tên riêng.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Serializability',
+				},
+			],
+		},
+	},
+
+	'strict-serializability': {
+		term: 'strict serializability',
+		pos: 'noun · distributed systems',
+		short:
+			'Serializability plus real time: the serial order the system picks must also agree with the order things actually happened in.',
+		long: 'The name exists because the two properties it joins are independent, and a system can hold either one alone. Strict serializability is what a reader usually *means* by "the database is consistent": transactions are atomic across many objects, and a commit you have been told about is visible to everything that starts afterwards. It is also the most expensive point on the map, since it inherits the consensus round from the real-time half and the multi-object machinery from the other. Spanner is the reference implementation, and the uncertainty window it waits out is the price printed on the label.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Strict Serializability',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Serializability cộng thời gian thực: thứ tự tuần tự mà hệ thống chọn còn phải khớp với thứ tự mà mọi việc thực sự đã xảy ra.',
+			long: 'Cái tên tồn tại vì hai tính chất nó ghép lại là độc lập với nhau, và một hệ thống có thể chỉ giữ một trong hai. Strict serializability là thứ mà người đọc thường *muốn nói* khi bảo "cơ sở dữ liệu này nhất quán": giao dịch là nguyên tử trên nhiều đối tượng, và một lần commit đã được thông báo thì thấy được với mọi thứ bắt đầu sau đó. Nó cũng là điểm đắt nhất trên bản đồ, vì thừa hưởng vòng đồng thuận từ nửa thời gian thực và bộ máy nhiều đối tượng từ nửa còn lại. Spanner là bản hiện thực tham chiếu, và cửa sổ bất định mà nó phải chờ hết chính là cái giá in trên nhãn.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Strict Serializability',
+				},
+			],
+		},
+	},
+
+	'sequential-consistency': {
+		term: 'sequential consistency',
+		pos: 'noun · distributed systems',
+		short:
+			'One global order that every node agrees on and that matches each process’s own program order — but need not match real time.',
+		long: 'The row people skip, and the one that shows the map has two axes rather than one. Sequential consistency keeps the single global order and drops only the real-time tie: everyone sees the same sequence, but a write acknowledged a moment ago may sit later in it than a read that began afterwards. That makes it strictly weaker than linearizability and strictly stronger than causal — and it is the reason "causal is sequential minus real time" is wrong. Causal drops the single global order too, which is a different relaxation entirely. Its home is shared-memory models, not databases.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Telling the consistency models apart, and ranking them',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Một thứ tự toàn cục duy nhất mà mọi nút đều thống nhất và khớp với program order của từng tiến trình — nhưng không cần khớp thời gian thực.',
+			long: 'Dòng mà người ta hay bỏ qua, và cũng là dòng cho thấy tấm bản đồ này có hai trục chứ không phải một. Sequential consistency giữ nguyên thứ tự toàn cục duy nhất và chỉ bỏ ràng buộc thời gian thực: mọi người thấy cùng một chuỗi, nhưng một lần ghi vừa được xác nhận có thể nằm sau một lần đọc bắt đầu muộn hơn nó. Điều đó làm nó yếu hơn hẳn linearizability và mạnh hơn hẳn causal — và là lý do câu "causal là sequential trừ thời gian thực" là sai. Causal bỏ luôn cả cái thứ tự toàn cục duy nhất, một sự thả lỏng hoàn toàn khác. Chỗ ở của nó là các mô hình shared-memory, không phải cơ sở dữ liệu.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Phân biệt và sắp xếp các dạng nhất quán',
+				},
+			],
+		},
+	},
+
+	'causal-consistency': {
+		term: 'causal consistency',
+		pos: 'noun · distributed systems',
+		short:
+			'Operations that are causally related are seen in the same order everywhere; unrelated ones may be seen in any order, differently at different replicas.',
+		long: 'The model that matches how people actually read a system, which is why it is enough for most social products: a reply never appears before the thing it replies to, and nobody notices or cares which of two unrelated posts landed first. What it gives up is the single global order, and that is a real forfeit rather than a technicality — two replicas can disagree about concurrent writes forever and both be correct. The machinery is a version vector or a vector clock per replica, no leader and no quorum round, which is why it survives a partition while linearizability does not.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Causal Consistency',
+			},
+		],
+		vi: {
+			term: 'nhất quán nhân quả',
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Các thao tác có quan hệ nhân quả được thấy theo cùng một thứ tự ở mọi nơi; các thao tác không liên quan có thể thấy theo thứ tự nào cũng được, và khác nhau ở các bản sao khác nhau.',
+			long: 'Mô hình khớp với cách con người thực sự đọc một hệ thống, nên nó đủ cho phần lớn sản phẩm mạng xã hội: một bình luận không bao giờ xuất hiện trước thứ nó bình luận, và không ai để ý hay quan tâm trong hai bài không liên quan thì bài nào về trước. Cái nó nhường lại là thứ tự toàn cục duy nhất, và đây là một sự nhường thật chứ không phải chuyện câu chữ — hai bản sao có thể mãi mãi không đồng ý với nhau về các lần ghi đồng thời mà cả hai vẫn đúng. Bộ máy của nó là version vector hoặc vector clock theo từng bản sao, không leader và không vòng quorum, nên nó sống sót qua một lần phân mảnh mạng trong khi linearizability thì không.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Causal Consistency',
+				},
+			],
+		},
+	},
+
+	'eventual-consistency': {
+		term: 'eventual consistency',
+		pos: 'noun · distributed systems',
+		short:
+			'The promise that if writing stops, every replica converges on the same state — and no promise about anything else.',
+		long: 'Read the definition for what it does not say. It does not order the writes on the way there, and it does not bound how long "eventually" is; both are left to the implementation, and both have to be asked about by name rather than assumed to be milliseconds. The conditional matters too: convergence is promised *if writes stop*, and a system under continuous write load has no moment at which the guarantee is testable. It is the right floor for a shopping cart or a like count, and the wrong one for anything a second reader will make a decision on.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Eventual Consistency',
+			},
+		],
+		vi: {
+			term: 'nhất quán cuối cùng',
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Lời hứa rằng nếu ngừng ghi thì mọi bản sao sẽ hội tụ về cùng một trạng thái — và không hứa gì thêm nữa.',
+			long: 'Hãy đọc định nghĩa để thấy nó *không* nói gì. Nó không xếp thứ tự các lần ghi trên đường đi, và nó không chặn biên cho chữ "cuối cùng" là bao lâu; cả hai đều để cho bản hiện thực quyết, và cả hai đều phải hỏi thẳng tên ra chứ đừng mặc định là vài milli giây. Cái điều kiện cũng quan trọng: hội tụ được hứa *nếu ngừng ghi*, còn một hệ thống đang chịu tải ghi liên tục thì không có thời điểm nào để kiểm chứng được bảo đảm đó. Đây là mức sàn đúng cho giỏ hàng hay số lượt thích, và là mức sai cho bất cứ thứ gì mà một người đọc thứ hai sẽ dựa vào để ra quyết định.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Eventual Consistency',
+				},
+			],
+		},
+	},
+
+	'monotonic-reads': {
+		term: 'monotonic reads',
+		pos: 'noun · distributed systems',
+		short:
+			'A session guarantee: once you have read a version of the data, you never read an older one.',
+		long: 'The guarantee that stops time going backwards for one reader. Without it, two reads a second apart can land on different replicas and the second can be staler than the first — the refresh that loses the comment you just saw. It is a promise about one session, not about the system, so two clients may still disagree; that narrowness is what makes it cheap. A sticky route to one replica delivers it almost for free, and a per-client version floor delivers it without pinning the route.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Monotonic Reads / Monotonic Writes',
+			},
+		],
+		vi: {
+			term: 'đọc đơn điệu',
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Một bảo đảm theo session: khi đã đọc được một phiên bản của dữ liệu, bạn không bao giờ đọc lại một phiên bản cũ hơn.',
+			long: 'Bảo đảm ngăn thời gian chạy ngược với một người đọc. Không có nó, hai lần đọc cách nhau một giây có thể rơi vào hai bản sao khác nhau và lần sau cũ hơn lần trước — đúng cái lần refresh làm mất đi bình luận bạn vừa thấy. Đây là lời hứa về một session, không phải về cả hệ thống, nên hai client vẫn có thể không khớp nhau; chính sự hẹp đó làm nó rẻ. Một đường đi sticky về một bản sao cho nó gần như miễn phí, còn một mức sàn phiên bản theo từng client cho nó mà không cần ghim đường đi.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Monotonic Reads / Monotonic Writes',
+				},
+			],
+		},
+	},
+
+	'monotonic-writes': {
+		term: 'monotonic writes',
+		pos: 'noun · distributed systems',
+		short:
+			'A session guarantee: your own writes are applied in the order you issued them, never out of order.',
+		long: 'The write-side twin, and the one that makes a sequence of edits from one client behave like a sequence rather than a set. Without it, two writes issued in order can reach a replica in the other order and the earlier one wins, so an edit silently reverts to the value before it. Like every session guarantee it is scoped to one writer: it says nothing about interleaving with another client, and buying the per-writer version of the property is far cheaper than buying a global order to get it.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Monotonic Reads / Monotonic Writes',
+			},
+		],
+		vi: {
+			term: 'ghi đơn điệu',
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Một bảo đảm theo session: các lần ghi của chính bạn được áp dụng theo đúng thứ tự bạn phát ra, không bao giờ đảo.',
+			long: 'Người song sinh ở phía ghi, và là thứ làm cho một chuỗi thao tác sửa từ một client hành xử như một chuỗi chứ không phải một tập. Không có nó, hai lần ghi phát ra theo thứ tự có thể tới một bản sao theo thứ tự ngược lại và lần trước thắng, nên một lần sửa âm thầm lùi về giá trị trước đó. Như mọi bảo đảm theo session, nó chỉ có phạm vi trong một người ghi: nó không nói gì về việc xen kẽ với một client khác, và mua phiên bản theo-từng-người-ghi của tính chất này rẻ hơn rất nhiều so với mua một thứ tự toàn cục để có nó.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Monotonic Reads / Monotonic Writes',
+				},
+			],
+		},
+	},
+
+	'read-your-writes': {
+		term: 'read-your-writes',
+		pos: 'noun · distributed systems',
+		short:
+			'A session guarantee: a client that has written something sees its own change on the next read.',
+		long: 'The cheapest guarantee with the highest ratio of complaints solved, and the essay puts the number at nine out of ten. Almost every report that reads as "the system is inconsistent" is really this one property missing: the user saved, the page reloaded off a follower replica, and the change was not there. Note what it does not promise — nobody else is guaranteed to see the write yet, and there is no global order. That is the trade that keeps it to a sticky session or a version token in the client rather than a consensus round.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Read-your-writes',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Một bảo đảm theo session: một client vừa ghi thứ gì thì thấy được thay đổi của chính mình ở lần đọc kế tiếp.',
+			long: 'Bảo đảm rẻ nhất với tỉ lệ khiếu nại được giải quyết cao nhất, và bài viết đặt con số ở chín trên mười. Gần như mọi báo lỗi đọc lên thành "hệ thống không nhất quán" thực chất chỉ là thiếu đúng tính chất này: người dùng lưu, trang tải lại từ một bản sao follower, và thay đổi không có ở đó. Để ý điều nó *không* hứa — chưa ai khác được bảo đảm là thấy lần ghi đó, và không có thứ tự toàn cục nào. Đó là sự đánh đổi giữ nó ở mức một session sticky hoặc một token phiên bản nằm trong client, chứ không phải một vòng đồng thuận.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Read-your-writes',
+				},
+			],
+		},
+	},
+
+	'happens-before': {
+		term: 'happens-before',
+		pos: 'noun · distributed systems',
+		short:
+			'The partial order causality gives you: within a process, from a send to its receive, and transitively through both.',
+		long: 'Lamport’s answer to having no global clock. Notice that the relation is defined by three rules and nothing else, which means most pairs of events in a real system are simply unordered — not simultaneous, not tied, but *concurrent*, with no fact of the matter about which came first. That is the point rather than a gap in the definition: a system that has not exchanged a message has no way to know, and any order you print for such a pair is invented. Every causal mechanism downstream — vector clocks, version vectors, CRDT delivery — is an encoding of exactly these three rules.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Happens-before',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Thứ tự bộ phận mà tính nhân quả cho: trong cùng một tiến trình, từ một lần gửi tới lần nhận tương ứng, và bắc cầu qua cả hai.',
+			long: 'Câu trả lời của Lamport cho việc không có đồng hồ toàn cục. Để ý rằng quan hệ này được định nghĩa bằng ba quy tắc và không gì khác, nghĩa là phần lớn các cặp sự kiện trong một hệ thống thật đơn giản là không xếp được thứ tự — không phải đồng thời, không phải bằng nhau, mà là *đồng thời xảy ra (concurrent)*, và không có sự thật nào về việc cái nào trước. Đó là chủ ý chứ không phải một lỗ hở của định nghĩa: một hệ thống chưa trao đổi tin nhắn nào thì không có cách nào biết được, và mọi thứ tự bạn in ra cho một cặp như thế đều là bịa. Mọi cơ chế nhân quả phía sau — vector clock, version vector, CRDT delivery — đều là một cách mã hóa đúng ba quy tắc này.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Happens-before',
+				},
+			],
+		},
+	},
+
+	quorum: {
+		term: 'quorum',
+		pos: 'noun · distributed systems',
+		short:
+			'The minimum number of nodes that must take part in an operation for it to count — usually sized so reads and writes must overlap.',
+		long: 'The whole mechanism is the pigeonhole principle wearing a system-design hat: if R + W > N then the read set and the write set cannot be disjoint, so at least one node in every read has seen the newest write. Two things follow that people miss. First, a quorum is not a majority — majority is one convenient way to pick R and W, not the definition, and R=1, W=N is a perfectly good quorum with very different performance. Second, the overlap guarantees a fresh *copy is present*, not that the reader picks it; that still takes versioning or read repair.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Quorum',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Số lượng nút tối thiểu phải tham gia vào một thao tác để nó được tính — thường được chọn sao cho tập đọc và tập ghi buộc phải giao nhau.',
+			long: 'Toàn bộ cơ chế chỉ là nguyên lý Dirichlet khoác áo thiết kế hệ thống: nếu R + W > N thì tập đọc và tập ghi không thể rời nhau, nên ít nhất một nút trong mỗi lần đọc đã thấy lần ghi mới nhất. Có hai điều theo sau mà người ta hay bỏ qua. Thứ nhất, quorum không phải đa số — đa số chỉ là một cách tiện để chọn R và W, không phải định nghĩa, và R=1, W=N là một quorum hoàn toàn hợp lệ với đặc tính hiệu năng rất khác. Thứ hai, phần giao bảo đảm rằng *có mặt* một bản sao mới, chứ không bảo đảm người đọc chọn đúng nó; chuyện đó vẫn cần đánh số phiên bản hoặc read repair.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Quorum',
+				},
+			],
+		},
+	},
+
+	'split-brain': {
+		term: 'split-brain',
+		pos: 'noun · distributed systems',
+		short:
+			'The failure where two or more nodes each believe they are the leader, and each accepts writes.',
+		long: 'The canonical way a replicated system corrupts itself rather than merely stopping, which is why it is worth more fear than an outage. The trigger is rarely exotic: a network partition cuts the old leader off, or a garbage collection pause freezes it long enough for an election, and it wakes up still believing it holds the role. Nothing the old leader can check about itself detects this — it has no way to know time passed. The fix is therefore never "elect more carefully"; it is to make the storage layer refuse writes carrying a stale fencing token.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Split-brain',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Dạng lỗi khi hai nút hoặc nhiều hơn đều tin mình là leader, và mỗi nút đều nhận ghi.',
+			long: 'Đây là cách kinh điển để một hệ thống có sao bản tự làm hỏng dữ liệu của mình thay vì chỉ đơn giản dừng lại, nên nó đáng sợ hơn một lần sập hẳn. Nguyên nhân kích hoạt thường chẳng lạ lùng gì: một lần phân mảnh mạng cắt leader cũ ra, hoặc một lần GC pause đóng băng nó đủ lâu để diễn ra một cuộc bầu chọn, rồi nó tỉnh lại và vẫn tin mình đang giữ vai. Không có gì leader cũ tự kiểm tra được mà phát hiện ra chuyện này — nó không có cách nào biết thời gian đã trôi qua. Vậy nên cách sửa không bao giờ là "bầu chọn cẩn thận hơn"; mà là làm cho tầng lưu trữ từ chối những lần ghi mang theo fencing token đã cũ.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Split-brain',
+				},
+			],
+		},
+	},
+
+	lease: {
+		term: 'lease',
+		pos: 'noun · distributed systems',
+		short:
+			'A permission to act on something, granted with an expiry — a lock with a TTL rather than a lock held until released.',
+		long: 'The TTL is there to solve one problem: a holder that dies while holding a plain lock blocks the resource forever, and no third party can safely take it away. An expiry makes the grant self-healing without anyone having to judge whether the holder is really dead. What it does not solve is the holder’s own view of time. A process paused past its expiry has no way to notice, so it wakes up and acts on a lease that has already been reissued — which is why a lease alone is half a design, and the other half lives at the storage layer.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Lease',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Quyền được thao tác lên một thứ, cấp kèm thời điểm hết hạn — một cái khóa có TTL, chứ không phải khóa giữ tới khi nào nhả.',
+			long: 'Cái TTL có ở đó để giải một bài toán: một người giữ khóa thường mà chết trong lúc đang giữ thì chặn tài nguyên đó mãi mãi, và không bên thứ ba nào lấy lại được một cách an toàn. Một thời điểm hết hạn làm cho việc cấp quyền tự lành lại mà không cần ai phải phán xét xem người giữ có thật là đã chết hay chưa. Cái nó *không* giải được là cách nhìn thời gian của chính người giữ. Một tiến trình bị dừng quá hạn không có cách nào nhận ra, nên nó tỉnh lại và hành động trên một lease đã được cấp lại cho người khác — đó là lý do một mình lease chỉ là nửa thiết kế, và nửa còn lại nằm ở tầng lưu trữ.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Lease',
+				},
+			],
+		},
+	},
+
+	'fencing-token': {
+		term: 'fencing token',
+		pos: 'noun · distributed systems',
+		short:
+			'A monotonically increasing number handed out with a lease, which the storage layer uses to reject anyone holding an older one.',
+		long: 'The other half of the lease, and the reason the pair works where either alone does not. The insight is that the check has to move: the lock service cannot stop a paused client from writing, but the *resource* can refuse a write whose token is below the highest it has seen. Monotonicity is doing all the work — the storage layer needs no clock, no membership view and no opinion about who should be leader, only the ability to compare two integers. This is why "we have a distributed lock" is not yet an answer to split-brain.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Fencing token',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Một con số tăng đơn điệu được cấp kèm với lease, để tầng lưu trữ dùng mà từ chối bất cứ ai đang giữ con số cũ hơn.',
+			long: 'Nửa còn lại của lease, và là lý do cặp này hoạt động trong khi từng cái một thì không. Điểm sáng là chỗ kiểm tra phải dịch đi: dịch vụ khóa không ngăn được một client đang bị dừng ghi dữ liệu, nhưng *chính tài nguyên* thì từ chối được một lần ghi có token nhỏ hơn con số lớn nhất nó từng thấy. Tính đơn điệu gánh toàn bộ công việc — tầng lưu trữ không cần đồng hồ, không cần biết thành viên trong cụm, cũng không cần có ý kiến về việc ai nên làm leader, chỉ cần so sánh được hai số nguyên. Đây là lý do câu "bọn mình có khóa phân tán rồi" vẫn chưa phải một câu trả lời cho split-brain.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Fencing token',
+				},
+			],
+		},
+	},
+
+	idempotent: {
+		term: 'idempotent',
+		pos: 'adjective · distributed systems',
+		short:
+			'An operation whose result after many applications is the same as after one.',
+		long: 'The property that makes retrying safe, and therefore the property every at-least-once pipeline is silently built on. The test is the operation’s *effect*, not its shape: SET A 5 qualifies and ADD A 5 does not, and no amount of careful retry logic converts the second into the first. The common mistake is to inherit it from a layer that cannot give it — HTTP calls PUT and DELETE idempotent at the protocol level, which says nothing about whether your handler writes a row per call. It is also not commutativity: idempotence is about repetition, commutativity about order, and a system replaying out-of-order messages needs both.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Idempotent',
+			},
+		],
+		vi: {
+			term: 'lũy đẳng',
+			pos: 'tính từ · hệ phân tán',
+			short:
+				'Một thao tác mà kết quả sau khi thực hiện nhiều lần giống hệt như sau khi thực hiện một lần.',
+			long: 'Tính chất làm cho việc thử lại trở nên an toàn, và vì thế là tính chất mà mọi đường ống at-least-once âm thầm dựa lên. Phép thử là *hiệu ứng* của thao tác, không phải hình dạng của nó: SET A 5 đạt còn ADD A 5 thì không, và không có lượng logic retry cẩn thận nào biến cái sau thành cái trước. Sai lầm thường gặp là thừa hưởng nó từ một tầng không cho được nó — HTTP gọi PUT và DELETE là idempotent ở mức giao thức, điều đó chẳng nói gì về việc handler của bạn có ghi thêm một dòng mỗi lần gọi hay không. Nó cũng không phải tính giao hoán: lũy đẳng nói về sự lặp lại, giao hoán nói về thứ tự, và một hệ thống phát lại tin nhắn không theo thứ tự thì cần cả hai.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Idempotent',
+				},
+			],
+		},
+	},
+
+	commutative: {
+		term: 'commutative',
+		pos: 'adjective · distributed systems',
+		short:
+			'An operation where the order of application does not change the final result.',
+		long: 'The property that lets replicas apply the same set of updates in whatever order they receive them and still agree. Counters and set-unions have it; a multiply mixed in with an add does not, and a single non-commutative operation in the mix is enough to force ordering back onto the system — which means coordination, which means latency and a leader. This is the first of the three properties behind CRDTs, and the one that most often fails quietly: an operation that looks like an increment but reads the current value before writing is not commutative at all.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Commutative',
+			},
+		],
+		vi: {
+			term: 'giao hoán',
+			pos: 'tính từ · hệ phân tán',
+			short:
+				'Một thao tác mà thứ tự thực hiện không làm thay đổi kết quả cuối cùng.',
+			long: 'Tính chất cho phép các bản sao áp dụng cùng một tập cập nhật theo thứ tự nào chúng nhận được cũng được mà vẫn đồng ý với nhau. Bộ đếm và phép hợp tập có tính này; một phép nhân trộn lẫn với một phép cộng thì không, và chỉ một thao tác phi giao hoán trong hỗn hợp đó là đủ để buộc thứ tự quay lại với hệ thống — nghĩa là cần phối hợp, nghĩa là độ trễ và một leader. Đây là tính chất đầu tiên trong ba tính chất nằm sau CRDT, và là tính chất hay hỏng một cách im lặng nhất: một thao tác trông như phép tăng nhưng lại đọc giá trị hiện tại trước khi ghi thì hoàn toàn không giao hoán.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Commutative',
+				},
+			],
+		},
+	},
+
+	associative: {
+		term: 'associative',
+		pos: 'adjective · distributed systems',
+		short:
+			'A merge where the grouping does not matter: merging A with B then C equals merging A with the merge of B and C.',
+		long: 'The property that makes batching free. If a merge is associative, a replica can fold updates in whatever bundles the network happened to deliver — one at a time, or a thousand at once after a partition heals — and land on the same state, so the sync protocol is allowed to be an implementation detail rather than part of the correctness argument. Associative, commutative and idempotent together give a bounded semilattice, and that structure is the actual theorem behind "converges without coordination": order-free, grouping-free, duplicate-free, in that order.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Associative',
+			},
+		],
+		vi: {
+			pos: 'tính từ · hệ phân tán',
+			short:
+				'Một phép gộp mà cách nhóm không quan trọng: gộp A với B rồi với C bằng gộp A với kết quả gộp của B và C.',
+			long: 'Tính chất làm cho việc gom lô trở nên miễn phí. Nếu một phép gộp có tính kết hợp, một bản sao có thể gấp các cập nhật lại theo bất cứ bó nào mà mạng tình cờ chuyển tới — từng cái một, hay cả nghìn cái một lượt sau khi phân mảnh mạng lành lại — và vẫn về đúng một trạng thái, nên giao thức đồng bộ được phép chỉ là chi tiết hiện thực chứ không phải một phần của lập luận về tính đúng. Kết hợp, giao hoán và lũy đẳng cộng lại cho một nửa dàn có biên, và cấu trúc đó mới là định lý thật nằm sau câu "hội tụ mà không cần phối hợp": không cần thứ tự, không cần cách nhóm, không sợ trùng lặp, theo đúng thứ tự đó.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Associative',
+				},
+			],
+		},
+	},
+
+	monotonic: {
+		term: 'monotonic',
+		pos: 'adjective · distributed systems',
+		short:
+			'A value or state that only ever moves one way — forward, newer, larger — and never revisits or reuses what it has passed.',
+		long: 'A small word carrying a large theorem. CALM states the equivalence in both directions: a program has a coordination-free distributed implementation if and only if its logic is monotonic. The direction that changes decisions is the second one — non-monotonic logic does not merely benefit from coordination, it provably requires it, so an operation that has to observe an absence (a count, a minimum, "nobody else has claimed this") is where the latency comes from and no amount of engineering removes it. The practical move is to redesign toward monotone forms, not to optimise the barrier.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Monotonic',
+			},
+		],
+		vi: {
+			pos: 'tính từ · hệ phân tán',
+			short:
+				'Một giá trị hay trạng thái chỉ đi theo một chiều — về trước, mới hơn, lớn hơn — và không bao giờ quay lại hay dùng lại thứ nó đã đi qua.',
+			long: 'Một từ nhỏ chở theo một định lý lớn. CALM phát biểu sự tương đương theo cả hai chiều: một chương trình có cách hiện thực phân tán không cần phối hợp nếu và chỉ nếu logic của nó là đơn điệu. Chiều làm thay đổi quyết định là chiều thứ hai — logic phi đơn điệu không chỉ *được lợi* từ việc phối hợp, nó *chứng minh được* là đòi hỏi phối hợp, nên một thao tác buộc phải quan sát sự vắng mặt (một phép đếm, một giá trị nhỏ nhất, "chưa ai khác giành chỗ này") chính là chỗ độ trễ sinh ra và không lượng kỹ thuật nào bỏ được nó. Nước đi thực tế là thiết kế lại về dạng đơn điệu, không phải tối ưu cái rào chắn.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Monotonic',
+				},
+			],
+		},
+	},
+
+	'effectively-once': {
+		term: 'effectively-once',
+		pos: 'noun · distributed systems',
+		short:
+			'At-least-once delivery plus idempotence at the receiver: the message may arrive twice, but the state changes once.',
+		long: 'The honest name for what working systems actually have, and the reason the essay spends its warning on Kafka rather than on theory. End-to-end exactly-once is not a feature to switch on; a sender that cannot tell a lost message from a lost acknowledgement must choose between losing and duplicating, and every real pipeline chooses duplicating. What makes the duplicate harmless is deduplication in the consumer, which means the guarantee lives in your handler and not in the broker. Side effects that leave the system — an email, a third-party charge — each need their own idempotency key, because the broker’s transaction cannot reach them.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'At-least-once / At-most-once / Exactly-once / Effectively-once',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Giao nhận at-least-once cộng tính lũy đẳng ở phía nhận: tin nhắn có thể tới hai lần, nhưng trạng thái chỉ đổi một lần.',
+			long: 'Cái tên trung thực cho những gì các hệ thống đang chạy được thực sự có, và là lý do bài viết dành lời cảnh báo cho Kafka chứ không cho lý thuyết. Exactly-once đầu-cuối không phải một tính năng để bật lên; một bên gửi không phân biệt được tin nhắn bị mất với phản hồi bị mất thì buộc phải chọn giữa làm mất và làm trùng, và mọi đường ống thật đều chọn làm trùng. Thứ làm cho bản trùng trở nên vô hại là việc khử trùng ở phía consumer, nghĩa là bảo đảm đó nằm trong handler của bạn chứ không nằm trong broker. Những tác dụng phụ đi ra khỏi hệ thống — một email, một lần trừ tiền qua bên thứ ba — mỗi thứ cần khóa lũy đẳng riêng, vì giao dịch của broker không vươn tới được chúng.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'At-least-once / At-most-once / Exactly-once / Effectively-once',
+				},
+			],
+		},
+	},
+
+	'byzantine-fault': {
+		term: 'Byzantine fault',
+		pos: 'noun · distributed systems',
+		short:
+			'A node that does not merely stop but lies — and may tell different lies to different neighbours.',
+		long: 'The strongest fault model, and the one whose cost is easy to under-read from the formula. N ≥ 3f + 1 says three nodes cannot survive one traitor, and the reason is worth holding onto: the two honest nodes each receive a different story and have no way, from inside, to tell which of the other two is the liar. Everything expensive about BFT protocols follows from needing to distinguish that. The practical point is the diagnostic one — ordinary production failures are crash-stop or grey, not malicious, and paying Byzantine prices for them buys nothing.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Byzantine',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Một nút không chỉ dừng lại mà nói dối — và có thể nói những lời dối khác nhau với những láng giềng khác nhau.',
+			long: 'Mô hình lỗi mạnh nhất, và là mô hình mà cái giá của nó rất dễ bị đọc nhẹ đi từ công thức. N ≥ 3f + 1 nói rằng ba nút không sống sót nổi một kẻ phản bội, và lý do đáng nhớ: hai nút trung thực mỗi nút nhận một câu chuyện khác nhau và từ bên trong không có cách nào biết ai trong hai nút còn lại mới là kẻ dối. Mọi thứ đắt đỏ trong các giao thức BFT đều sinh ra từ việc phải phân biệt cho được chuyện đó. Điểm thực dụng là điểm chẩn đoán — lỗi thường gặp trên production là crash-stop hoặc grey, không phải ác ý, và trả giá Byzantine cho chúng thì không mua được gì.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Byzantine',
+				},
+			],
+		},
+	},
+
+	safety: {
+		term: 'safety',
+		pos: 'noun · distributed systems',
+		short:
+			'The class of property saying nothing bad ever happens — the system never enters an incorrect or invalid state.',
+		long: 'Half of the pair a system is analysed with, and formally the half that can be violated by a finite prefix of an execution: one bad step is proof, forever. That is what makes safety testable and what makes a counterexample so useful. Its twin is not its opposite, and the two are not a dial to trade between — a system that never does anything wrong because it never does anything satisfies safety completely and is still broken. Both have to hold; any design that claims a trade-off between them has renamed something else.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Safety / Liveness',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Lớp tính chất nói rằng không có gì xấu xảy ra — hệ thống không bao giờ rơi vào một trạng thái sai hoặc không hợp lệ.',
+			long: 'Một nửa của cặp dùng để phân tích một hệ thống, và về mặt hình thức là nửa có thể bị vi phạm bởi một đoạn đầu hữu hạn của một lần thực thi: một bước sai là bằng chứng, vĩnh viễn. Đó là điều làm cho safety kiểm chứng được và làm cho một phản ví dụ trở nên hữu dụng. Người song sinh của nó không phải đối nghịch của nó, và hai cái không phải một cái núm để đánh đổi — một hệ thống không bao giờ làm gì sai vì nó không bao giờ làm gì cả thì thỏa mãn safety hoàn toàn mà vẫn là hỏng. Cả hai đều phải đúng; bất cứ thiết kế nào tuyên bố có đánh đổi giữa chúng thì đã gọi sai tên một thứ khác.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Safety / Liveness',
+				},
+			],
+		},
+	},
+
+	liveness: {
+		term: 'liveness',
+		pos: 'noun · distributed systems',
+		short:
+			'The class of property saying something good eventually happens — the system keeps making progress rather than stalling.',
+		long: 'The half that cannot be disproved by any finite run: no matter how long you watch nothing happen, "eventually" has not yet failed, which is why liveness is the hard one to test and the easy one to lose. Almost every guarantee with "eventual" in its name is a liveness claim, and almost none of them come with a bound — that missing bound is the same gap the essay flags under eventual consistency. Pair it with safety to read a design honestly: safety says the system will not be wrong, liveness says it will not be useless.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Safety / Liveness',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Lớp tính chất nói rằng cuối cùng sẽ có điều gì tốt xảy ra — hệ thống tiếp tục tiến triển chứ không đứng lại.',
+			long: 'Nửa không thể bị phản chứng bởi bất cứ lần chạy hữu hạn nào: bạn ngồi xem bao lâu mà không có gì xảy ra thì chữ "cuối cùng" vẫn chưa sai, nên liveness là nửa khó kiểm chứng và dễ mất. Gần như mọi bảo đảm có chữ "cuối cùng" trong tên đều là một tuyên bố về liveness, và gần như không cái nào kèm theo một cái biên — đúng cái khoảng trống mà bài viết chỉ ra ở phần eventual consistency. Ghép nó với safety để đọc một thiết kế một cách trung thực: safety nói hệ thống sẽ không sai, liveness nói hệ thống sẽ không vô dụng.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Safety / Liveness',
+				},
+			],
+		},
+	},
+
+	'grey-failure': {
+		term: 'grey failure',
+		pos: 'noun · distributed systems',
+		short:
+			'A node that has degraded or is returning errors, but still passes its own health checks.',
+		long: 'The failure mode that outlasts the outage it should have been, because every automatic remedy is waiting for a signal that never arrives. The mechanism is a gap in observation: the system judges its own health with a different measurement than the one its clients experience, and grey failure is exactly the region where those two disagree. The design consequence is specific — a health check that answers for the node rather than for the request is not a detector, and adding more such checks does not make one. Measure the thing the caller actually waits on.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Grey failure',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Một nút đã suy giảm hoặc đang trả về lỗi, nhưng vẫn vượt qua chính những bài kiểm tra sức khỏe của nó.',
+			long: 'Dạng lỗi sống lâu hơn cả lần sập mà đúng ra nó nên trở thành, vì mọi cơ chế xử lý tự động đều đang chờ một tín hiệu không bao giờ tới. Cơ chế của nó là một khoảng lệch trong quan sát: hệ thống tự phán sức khỏe của mình bằng một phép đo khác với phép đo mà client trải nghiệm, và grey failure đúng là vùng mà hai phép đo đó không khớp. Hệ quả thiết kế rất cụ thể — một health-check trả lời thay cho nút chứ không trả lời thay cho yêu cầu thì không phải một bộ phát hiện, và thêm nhiều cái như thế nữa cũng không thành. Hãy đo đúng thứ mà người gọi thực sự đang phải chờ.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Grey failure',
+				},
+			],
+		},
+	},
+
+	'static-stability': {
+		term: 'static stability',
+		pos: 'noun · distributed systems',
+		short:
+			'The property that the serving path keeps working through an incident without needing the control plane to act.',
+		long: 'Stated as a property it sounds mild; stated as a rule it is demanding — the data plane must keep serving on what it already knows, so nothing in the recovery path may depend on something that has to succeed *during* the incident. That rules out scaling up when the failure starts, fetching fresh config, and calling the API that is itself degraded. The price is paid in advance and looks like waste on a normal day: capacity provisioned and not used, state cached before it is needed. That is the shape of the bargain, and it is why the control plane and the data plane have to be independent.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'The vocabulary of distributed systems',
+				slug: '005-distributed-system-vocabulary-en',
+				section: 'Static Stability',
+			},
+		],
+		vi: {
+			pos: 'danh từ · hệ phân tán',
+			short:
+				'Tính chất mà đường phục vụ vẫn chạy được suốt một sự cố mà không cần control plane phải làm gì.',
+			long: 'Phát biểu như một tính chất thì nghe nhẹ; phát biểu như một nguyên tắc thì rất khắt khe — data plane phải tiếp tục phục vụ bằng những gì nó đã biết, nên không thứ gì trên đường phục hồi được phép phụ thuộc vào một việc phải thành công *ngay trong lúc* sự cố. Điều đó loại bỏ chuyện mở rộng dung lượng khi lỗi vừa xảy ra, chuyện đi lấy cấu hình mới, và chuyện gọi đúng cái API đang suy giảm. Cái giá được trả trước và trông như lãng phí trong một ngày bình thường: dung lượng cấp sẵn mà không dùng, trạng thái cache lại trước khi cần. Đó là hình dạng của thỏa thuận này, và là lý do control plane với data plane buộc phải độc lập với nhau.',
+			appearances: [
+				{
+					title: 'Từ vựng trường dùng trong hệ thống phân tán',
+					slug: '005-distributed-system-vocabulary-vi',
+					section: 'Static Stability',
+				},
+			],
+		},
+	},
 };

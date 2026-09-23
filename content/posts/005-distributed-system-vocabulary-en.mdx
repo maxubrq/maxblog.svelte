@@ -1,0 +1,317 @@
+---
+title: 'The vocabulary of distributed systems'
+subtitle: 'And the places it gets confused'
+date: '2026-09-22'
+topic: 'Tech'
+lang: en
+interactive: false
+chapter: 'Chapter V'
+description: 'A working dictionary for the words distributed systems are designed in — consistency models, quorums, leases, delivery semantics — written around the specific confusions each one invites. Linearizability is not serializability, a quorum is not a majority, and exactly-once is not a thing you buy from Kafka.'
+weather:
+  time: '10–15 min'
+  oneSitting: true
+  load: 1
+  needFirst: 'some background in distributed systems will help'
+  bestWhen: 'freetime, or while reading a distributed design'
+rememberSentence: 'Linearizability is a promise about one object in real time; serializability is a promise about many objects in some order. Most designs pay for the first while needing neither.'
+rememberAttribution: 'from The vocabulary of distributed systems'
+---
+
+
+## Linearizability
+
+**Linearizability** is a strong consistency property. It guarantees that every operation on a
+single object appears to take effect instantaneously at some point between the call and the
+return. It respects real-time ordering.
+
+Put more plainly: in a system with this property, if an operation at time $t_1$ has been
+acknowledged as successful, then an operation at any time $t_2 (t_2>t_1)$ must see the result of
+that earlier operation.
+
+### Properties
+
+- **Single-object focus**: the statement of the property talks about one object only.
+- **Illusion of instantaneity**: although real time passes between the call and the return,
+  linearizability makes the operation look as though it happened at a single point in time,
+  somewhere between the invocation and the response/return.
+- **Respects real-time ordering**.
+
+### Easy to get wrong when
+
+- It is used for properties that are not about a single object — several objects, or a
+  transaction. For instance: _[Serializability](#serializability)_.
+
+## Serializability
+
+**Serializability** guarantees that concurrent transactions running across several processes
+produce a final result identical to running them on one machine in *some* serial order. It does
+not respect real-time ordering.
+
+For example: two concurrent transactions $T_1$, $T_2$. The system guarantees the final result
+follows a serial order, either $T_1 \to T_2$ or $T_2 \to T_1$. With an account $A$ starting at $1$:
+
+- $T_1$: ADD A 5
+- $T_2$: MUL A 2
+
+The valid results are $12=(1+5)\times2$ or $7=(1\times2)+5$. What it rules out is the interleaved
+case, the lost write that leaves $6$ or $2$.
+
+### Easy to get wrong when
+
+- It is confused with [linearizability](#linearizability).
+
+## Strict Serializability
+
+Strict serializability is *[serializability](#serializability)* plus respect for real time.
+
+### Easy to get wrong when
+
+- It is confused with plain [serializability](#serializability).
+
+## Eventual Consistency
+
+**Eventual Consistency** says that if no further changes are made to the data, every copy
+(replica) of it will synchronise and converge to the same final state.
+
+### Properties
+
+- **Eventual convergence**: every copy of the data will, in the end, converge to the same state.
+- **No commitment about time**: the property makes no promise about how long convergence takes.
+  Every system has its own commitment there, and that commitment has to be checked — do not
+  assume a few milliseconds, or a few seconds.
+
+### Easy to get wrong when
+
+- It is used without knowing the system's actual commitment about synchronisation time.
+
+## Monotonic Reads / Monotonic Writes
+
+**Monotonic reads** guarantees that once a client/session/process has read a particular value or
+a particular version of the data, it will never read an older value of that data again.
+
+Likewise, **monotonic writes** guarantees that a client/session/process cannot write an older
+version of the data over the current one.
+
+## Read-your-writes
+
+**Read-your-writes** guarantees that if a client/session/process has made a change to an object,
+it sees that change immediately.
+
+Most of the cases (90%) that arrive asking for "strong consistency" can be settled with this
+property, without paying the price of going all the way to linearizability.
+
+### Easy to get wrong when
+
+- Jumping straight to [linearizability](#linearizability).
+
+## Causal Consistency
+
+**Causal Consistency** guarantees that operations with a cause-and-effect relationship are
+observed in the same order at every node in the system, while other operations — the unrelated
+ones — may be observed in any order.
+
+For example, commenting on a post: A writes a post, B comments on it. A writing the post must
+happen before B commenting on A's post, so every node sees the sequence A writes $\to$ B comments.
+Other actions — B liking a post of C's, or D publishing an unrelated post — may come in any
+order.
+
+For most social networks, this property is enough.
+
+## Happens-before
+
+**Happens-before** is a partial, local order produced by causality. It is not a global order.
+
+Happens-before expresses a causal relation $A \to B$, and that relation holds only when $A$, $B$
+fall into one of three cases:
+
+1. **Within the same process**: event $A$ occurs before event $B$ in the same process.
+2. **A send-receive pair**: $A$ is the sending of a message from process 1, and $B$ is the
+   receiving of that same message at process 2.
+3. **Transitivity**: if $A \to B$ and $B \to C$ then $A \to C$.
+
+## Telling the consistency models apart, and ranking them
+
+The consistency models in distributed systems can be ordered from **strong $\to$ weak** as follows:
+
+| Rank | Model | Ordering constraint | Achieved by |
+|---|---|---|---|
+| 1 | Strict consistency | Absolute real time, a global clock | Not implementable; a theoretical ceiling only |
+| 2 | Linearizability (strong) | Real time + one single global order | Raft/Paxos + quorum, TrueTime (Spanner accepts an uncertainty window) |
+| 3 | Sequential consistency | One global order, matching program order, **need not match real time** | Rarely used on its own in real databases; shows up in shared-memory models |
+| 4 | Causal consistency | Only causally related operations are forced into an order; concurrent operations may be seen differently at different replicas | Vector clocks, COPS, CRDTs with causal delivery |
+| 5 | PRAM / FIFO consistency | Per-writer FIFO only, no transitivity across other processes | Per-process logs; no need for full vector clocks |
+| 5.5 | Session guarantees (read-your-writes, monotonic reads, monotonic writes, writes-follow-reads) | Individual local constraints, granted independently per session/client | Sticky sessions, per-client version vectors, read-your-writes tokens |
+| 6 | Eventual consistency | Commits only to eventual convergence once writes stop; no ordering in the meantime, and nothing about when convergence happens | Anti-entropy, gossip, CRDTs (the semilattice guarantees correct convergence, but not *when* you see what) |
+
+## Quorum
+
+**Quorum** is the smallest/minimum number of machines/nodes that must agree on a read or a write
+operation.
+
+Usually $R+W>N$, where
+
+- $R$ (read quorum): the minimum number of nodes that must respond for a read operation
+- $W$ (write quorum): the minimum number of nodes that must acknowledge success for a write
+  operation
+- $N$: the total number of replicas
+
+The formula holds because of the **pigeonhole principle**: when $R + W > N$, the set of nodes
+serving the read ($R$) and the set of nodes serving the write ($W$) must intersect in at least
+one node. That intersecting node holds the newest version of the data, which is what keeps the
+system from ever returning a stale value.
+
+### Easy to get wrong when
+
+- It is confused with *majority*. A quorum is not, in essence, a statement about majority
+  agreement.
+
+## Split-brain
+
+**Split-brain** is the failure mode where two or more nodes each believe they are the **leader**,
+which leads to conflicting writes being accepted.
+
+It can happen for many reasons, most often a **network partition** or a **garbage collection
+pause (GC pause)**.
+
+## Lease
+
+A **lease** is a right/lock/token granted to a process, permitting it to operate on a data
+object, with a time limit: a time-to-live (TTL).
+
+Once the TTL expires the lease expires automatically and the process is no longer permitted to
+operate on the object. The process may also release the lease early, or extend it if it needs to.
+
+It is used to stop one process from blocking a data object forever and never letting anyone else
+use it.
+
+### Easy to get wrong when
+
+- Thinking the lease alone is enough. The lease is really only the first half of the story:
+  afterwards, the holder may still not know its lease has expired, which leads to it writing in
+  conflict with whoever actually holds the new lease.
+
+## Fencing token
+
+A **fencing token** is a token granted in order to block a process that is holding a stale lease.
+It is usually a monotonically increasing number.
+
+It is the other half of the pair with [lease](#lease).
+
+## Idempotent
+
+**Idempotent** describes an operation that can be performed many times and still leave the same
+final result as performing it once.
+
+For example: SET A 5 always leaves A equal to 5 no matter how many times it runs, but ADD A 5
+does not.
+
+This property is the foundation of every safe retry mechanism.
+
+In *HTTP*, methods such as *GET*, *PUT* and *DELETE* are idempotent at the protocol level. Note
+that protocol-level idempotence does not automatically confer idempotence on the system as a
+whole.
+
+### Easy to get wrong when
+
+- It is confused with [commutativity](#commutative).
+- Or used to mean *safe to call again* in some vague, general sense.
+
+## Commutative
+
+**Commutative** is the property that the order of operations does not affect the final result.
+
+For example: ADD A 5 then ADD A 2, or ADD A 2 then ADD A 5 — the final result is A + 7 either
+way, independent of order. MUL A 2 and ADD A 3 are a different matter: there, order does affect
+the final result.
+
+This is the foundational property of **CRDTs (Conflict-free Replicated Data Types)**.
+
+## Associative
+
+**Associative** is the property where a merge operation guarantees that how the data is split up
+and packaged for merging does not change the final result.
+
+$$\text{Merge}(\text{Merge}(A, B), C) = \text{Merge}(A, \text{Merge}(B, C))$$
+
+A system or structure satisfying $\text{Associative} + \text{Commutative} + \text{Idempotent} =
+\text{Bounded Semi-lattice}$ is a perfect foundation for distributed data synchronisation.
+
+## Monotonic
+
+**Monotonic** describes a value/state that only moves forward, in one direction — usually only
+increasing, or only getting newer — and never goes backwards or reuses a value/state from the
+past.
+
+This is the foundational property behind **CALM (Consistency As Logical Monotonicity)**, which
+says a program/system can achieve eventual consistency *WITHOUT* coordination between nodes if
+and only if the program's logic is monotonic.
+
+## At-least-once / At-most-once / Exactly-once / Effectively-once
+
+- *At-least-once*: guarantees no message loss, and accepts that processing may be duplicated.
+- *At-most-once*: guarantees no duplicates, and accepts that messages may be lost.
+- *Exactly-once*: guarantees a message is processed effectively exactly once — nothing lost,
+  nothing duplicated.
+
+People always aim for *exactly-once* across the whole system, but it demands very high cost and
+complexity. In practice, what gets applied is *effectively-once*: combining *at-least-once* with
+*deduplication / idempotence* so that the system's state changes exactly once even when the
+message arrives twice. For *side effects* that reach outside — sending an email, calling a
+third-party API — those side effects need deduplication built into them as well, or they will be
+performed more than once.
+
+### Easy to get wrong when
+
+- Using **Kafka** and thinking *exactly-once* falls out of it for the whole system. This is a
+  common and mistaken belief: Kafka's *Exactly-Once Semantics (EOS)* really only covers its
+  internal processing path (stream-to-stream processing between topics). A consumer remains
+  perfectly capable of receiving and processing a message twice — after a crash before the offset
+  is committed, for example. If the application layer has no deduplication/idempotence
+  mechanism, the system will still process duplicates.
+- Confusing **effectively-once** with true **exactly-once**. Absolute end-to-end exactly-once
+  across a distributed network is theoretically impossible. In practice, every system that works
+  correctly does so because it achieves effectively-once (at-least-once + idempotence).
+
+## Byzantine
+
+**Byzantine fault** is the failure mode where nodes send wrong, malicious, or mutually
+contradictory information to different parts of the network.
+
+The related concept is **Byzantine Fault Tolerance (BFT)**, a system's ability to tolerate
+Byzantine faults, usually following $N \ge 3f + 1$. That is: to tolerate $1$ Byzantine node, the
+system needs $3(1) + 1 = 4$ nodes.
+
+Where $f$ is the number of Byzantine nodes and $N$ is the total number of nodes required.
+
+### Easy to get wrong when
+
+- It is used for ordinary faults, which are normally crash-stop.
+
+## Safety / Liveness
+
+### Safety
+
+**Safety** is the property standing for *"nothing bad ever happens"*. It guarantees the system
+never enters an incorrect or invalid state.
+
+### Liveness
+
+**Liveness** is the property standing for *"something good eventually happens"*. It guarantees
+the system keeps operating and making progress, rather than dying or stalling forever.
+
+
+These two are a pair for analysing a system, not a trade-off to make. A good system has to
+satisfy both.
+
+## Grey failure
+
+**Grey failure** is the failure mode where a node degrades in performance, or returns errors, but
+still passes its health checks.
+
+## Static Stability
+
+**Static Stability** is the property guaranteeing that the system serving users keeps running
+during an incident, without needing active intervention from the control or configuration plane.
+
+It is usually produced by preparing in advance, and by designing the control plane and the data
+plane to be independent.
