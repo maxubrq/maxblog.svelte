@@ -20,13 +20,10 @@
  * moves across without an edit; the visual treatment follows
  * `maxubrq/project/pages/InkSeries.jsx` — contract · arc · bridge · threads.
  *
- * ## `SERIES` is empty on purpose
+ * ## Adding a series
  *
- * Nothing is finished yet, so there is no arc to describe. Everything below is
- * the machinery, and it is all written and wired: add one object to `SERIES`
- * and `/series`, `/series/[id]` and the ribbon in the article all light up
- * together. Until then every one of those surfaces renders its empty state,
- * which is the honest thing for a shelf with nothing on it.
+ * Add one object to `SERIES` and `/series`, `/series/[id]` and the ribbon in
+ * the article all light up together.
  */
 
 import { long } from './format';
@@ -115,7 +112,52 @@ export interface ResolvedChapter {
 /** What a chapter is to *this* reader. Device-local; see `seriesProgress`. */
 export type ChapterState = 'read' | 'current' | 'ahead';
 
-export const SERIES: SeriesData[] = [];
+export const SERIES: SeriesData[] = [
+	{
+		id: 'distributed-system',
+		title: 'Distributed System',
+		subtitle: 'Everything about distributed systems.',
+		topic: 'tech',
+		state: 'in-progress',
+		volume: 'Vol. I',
+		started: '2026-09-22',
+		chapterCount: 'open-ended',
+		letter: [
+			'Everything about distributed systems'
+		],
+		chapters: [
+			{
+				num: 'I',
+				slug: '005-distributed-system-vocabulary-en',
+				viSlug: '005-distributed-system-vocabulary-vi',
+				fallbackTitle: 'The vocabulary of distributed systems',
+				fallbackDate: 'Sep 22, 2026',
+				vi: {
+					fallbackTitle: 'Từ vựng thường dùng trong hệ thống phân tán',
+					fallbackDate: '22 tháng 9, 2026'
+				}
+			},
+			{
+				num: 'II',
+				slug: '006-tail-latency-tail-amplification-en',
+				viSlug: '006-tail-latency-tail-amplification-vi',
+				fallbackTitle: 'Tail latency and tail amplification',
+				fallbackDate: 'Upcoming',
+				vi: {
+					fallbackTitle: 'Tail latency và tail amplification',
+					fallbackDate: 'Sắp ra mắt'
+				}
+			}
+		],
+		vi: {
+			title: 'Hệ thống phân tán',
+			subtitle: 'Mọi thứ về hệ thống phân tán.',
+			letter: [
+				'Mọi thứ về hệ thống phân tán.'
+			]
+		}
+	}
+];
 
 export function getAllSeries(): SeriesData[] {
 	return SERIES;
