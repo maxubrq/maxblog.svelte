@@ -4,7 +4,7 @@ subtitle: 'hiểu rõ về độ trễ đuôi'
 date: '2026-09-25'
 topic: 'Tech'
 lang: vi
-interactive: false
+interactive: true
 draft: true
 chapter: 'Chương VI'
 description: 'Chi tiết về tail latency và tail amplification'
@@ -17,7 +17,77 @@ weather:
 rememberSentence: 'Khi một yêu cầu phải chờ nhiều máy cùng trả lời, độ trễ đuôi của từng máy trở thành độ trễ thường ngày của cả hệ thống.'
 rememberAttribution: 'trích từ Tail latency & Tail Amplification'
 ---
+<script>
+	// Hình 1 — 2000 request tới một service có độ trễ log-normal: trung vị 20 ms,
+	// σ = 0.6. Random có seed, để hình lần nào cũng như lần nào.
+	const median = 20;
+	const sigma = 0.6;
+	let seed = 6;
+	const rand = () => {
+		seed = (seed * 16807) % 2147483647;
+		return seed / 2147483647;
+	};
+	const gauss = () => Math.sqrt(-2 * Math.log(rand())) * Math.cos(2 * Math.PI * rand());
+	const ms = Array.from({ length: 2000 }, () => median * Math.exp(sigma * gauss()));
+	const sorted = [...ms].sort((a, b) => a - b);
+	const p50 = sorted[999];
+	const p99 = sorted[1979];
+	const ids = ms.map((_, i) => i + 1);
+	const body = ids.filter((i) => ms[i - 1] <= p99);
+	const tail = ids.filter((i) => ms[i - 1] > p99);
+
+	const marker = (y, text) => ({
+		shape: { type: 'line', xref: 'paper', x0: 0, x1: 1, y0: y, y1: y, line: { color: 'var(--muted)', width: 1, dash: 'dot' } },
+		note: { xref: 'paper', x: 1, y, text, showarrow: false, xanchor: 'right', yanchor: 'bottom', bgcolor: 'var(--paper)', font: { family: 'var(--mono)', size: 11, color: 'var(--muted)' } }
+	});
+	const marks = [marker(p50, `p50 · ${p50.toFixed(0)} ms`), marker(p99, `p99 · ${p99.toFixed(0)} ms`)];
+
+	const latency = [
+		{ x: body, y: body.map((i) => ms[i - 1]), mode: 'markers', name: '99% request', marker: { color: 'var(--viz-blue)', size: 3, opacity: 0.45 }, hovertemplate: 'request #%{x}<br>%{y:.0f} ms<extra></extra>' },
+		{ x: tail, y: tail.map((i) => ms[i - 1]), mode: 'markers', name: '1% chậm nhất — cái đuôi', marker: { color: 'var(--viz-clay)', size: 6 }, hovertemplate: 'request #%{x}<br>%{y:.0f} ms<extra>đuôi</extra>' }
+	];
+	const latencyLayout = {
+		shapes: marks.map((m) => m.shape),
+		annotations: marks.map((m) => m.note),
+		xaxis: { title: { text: 'request, theo thứ tự đến' }, showgrid: false, zeroline: false },
+		yaxis: { title: { text: 'độ trễ (ms)' }, rangemode: 'tozero' }
+	};
+
+	// Hình 2 — xác suất một request fan-out ra n service gặp ít nhất một cái đuôi.
+	const ns = Array.from({ length: 100 }, (_, i) => i + 1);
+	const hit = (p) => ns.map((n) => 1 - (1 - p) ** n);
+	const amplification = [
+		{ x: ns, y: hit(0.01), mode: 'lines', name: 'mỗi service chậm 1% (p99)', line: { color: 'var(--viz-clay)', width: 2 }, hovertemplate: '%{y:.0%}<extra>p99</extra>' },
+		{ x: ns, y: hit(0.001), mode: 'lines', name: 'mỗi service chậm 0.1% (p99.9)', line: { color: 'var(--viz-blue)', width: 2 }, hovertemplate: '%{y:.1%}<extra>p99.9</extra>' }
+	];
+	const amplificationLayout = {
+		hovermode: 'x unified',
+		xaxis: { title: { text: 'số service một request phải chờ (fan-out)' }, range: [1, 100], spikecolor: 'var(--muted)', spikethickness: 1, spikedash: 'dot' },
+		yaxis: { title: { text: 'P(request bị chậm)' }, tickformat: '.0%', range: [0, 1] },
+		annotations: [
+			{ x: 100, y: 1 - 0.99 ** 100, text: `n = 100 → ${((1 - 0.99 ** 100) * 100).toFixed(0)}%`, showarrow: true, arrowcolor: 'var(--muted)', ax: -60, ay: -30, font: { family: 'var(--mono)', size: 11, color: 'var(--ink)' } }
+		]
+	};
+</script>
 
 ## Tail latency
 
+<PlotlyFigure
+  label="Hình 1"
+  hint="một service"
+  caption="2000 request tới cùng một service: đa số xong quanh 20 ms, nhưng cứ 100 request lại có một cái chậm gấp bốn lần trở lên."
+  alt="Biểu đồ chấm: 2000 request, phần lớn dồn quanh 20 ms; khoảng 20 chấm màu cam nằm rải rác trên vạch p99 (khoảng 88 ms), cái chậm nhất hơn 200 ms."
+  data={latency}
+  layout={latencyLayout}
+/>
+
 ## Tail Amplification
+
+<PlotlyFigure
+  label="Hình 2"
+  hint="fan-out"
+  caption="Chờ càng nhiều service, cái đuôi hiếm của từng service càng thành chuyện thường: 100 service p99 thì 63% request dính ít nhất một cái đuôi."
+  alt="Hai đường cong tăng dần theo số service; với p99 đường đạt 63% ở n = 100, với p99.9 chỉ khoảng 10%."
+  data={amplification}
+  layout={amplificationLayout}
+/>

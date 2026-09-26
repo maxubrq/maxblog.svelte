@@ -3,11 +3,12 @@
 	// Element styling lives here (h2/p/ul/code…) so posts stay plain markdown.
 	import type { Snippet } from 'svelte';
 
-	let { children }: { children: Snippet } = $props();
+	// A draft can be frontmatter only; mdsvex then passes no body at all.
+	let { children }: { children?: Snippet } = $props();
 </script>
 
 <div class="prose">
-	{@render children()}
+	{@render children?.()}
 </div>
 
 <style>

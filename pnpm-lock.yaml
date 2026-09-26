@@ -29,6 +29,12 @@ importers:
       hls.js:
         specifier: ^1.7.0
         version: 1.7.0
+      plotly.js-basic-dist-min:
+        specifier: ^4.1.1
+        version: 4.1.1
+      plotly.js-dist-min:
+        specifier: ^4.1.1
+        version: 4.1.1
       postgres:
         specifier: ^3.4.9
         version: 3.4.9
@@ -54,6 +60,9 @@ importers:
       '@types/d3-shape':
         specifier: ^3.1.8
         version: 3.1.8
+      '@types/plotly.js':
+        specifier: ^3.0.14
+        version: 3.0.14
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
@@ -813,6 +822,9 @@ packages:
   '@types/parse5@5.0.3':
     resolution: {integrity: sha512-kUNnecmtkunAoQ3CnjmMkzNU/gtxG8guhi+Fk2U/kOpIKjIMKnXGp4IJCgQJrXSgMsWYimYG4TGjz/UzbGEBTw==}
 
+  '@types/plotly.js@3.0.14':
+    resolution: {integrity: sha512-3JZH20UBXQ8rZFPeV40fKinx5Le0T2cuz6kM8LEYkkAuDrljzezlwvZuXnXQhyBost7YwgKxEDg7SVTIBbA6eg==}
+
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
@@ -1463,6 +1475,12 @@ packages:
   picomatch@4.0.5:
     resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
     engines: {node: '>=12'}
+
+  plotly.js-basic-dist-min@4.1.1:
+    resolution: {integrity: sha512-1oNF8PeQx2hv/y7tqEVWKD3JGwn/MGEMQ8mL9HUwsaqG9FGy/OU5FHUHvzqbqxN4mnwZGI9abTiE775C4kkjMQ==}
+
+  plotly.js-dist-min@4.1.1:
+    resolution: {integrity: sha512-4Jg6n9FKcn5WBuqHESZmueEBYOLjGlsz8ivzMCl03WCX+GAAOgIALvdONwIi54JDMq0tkxbu+vs5Yj7QSPQtgg==}
 
   points-on-curve@0.2.0:
     resolution: {integrity: sha512-0mYKnYYe9ZcqMCWhUjItv/oHjvgEsfKvnUTg8sAtnHr3GVy7rGkXCb6d5cSyqrWqL4k81b9CPg3urd+T7aop3A==}
@@ -2179,6 +2197,8 @@ snapshots:
 
   '@types/parse5@5.0.3': {}
 
+  '@types/plotly.js@3.0.14': {}
+
   '@types/trusted-types@2.0.7': {}
 
   '@types/unist@2.0.11': {}
@@ -2850,6 +2870,10 @@ snapshots:
   picocolors@1.1.1: {}
 
   picomatch@4.0.5: {}
+
+  plotly.js-basic-dist-min@4.1.1: {}
+
+  plotly.js-dist-min@4.1.1: {}
 
   points-on-curve@0.2.0: {}
 

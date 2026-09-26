@@ -147,6 +147,39 @@ export const SERIES: SeriesData[] = [
 					fallbackTitle: 'Tail latency và tail amplification',
 					fallbackDate: 'Sắp ra mắt'
 				}
+			},
+			{
+				num: 'III',
+				slug: '007-littles-law-en',
+				viSlug: '007-littles-law-vi',
+				fallbackTitle: "Little's Law",
+				fallbackDate: 'Upcoming',
+				vi: {
+					fallbackTitle: "Little's Law",
+					fallbackDate: 'Sắp ra mắt'
+				}
+			},
+			{
+				num: 'IV',
+				slug: '008-kingman-en',
+				viSlug: '008-kingman-vi',
+				fallbackTitle: "Kingman's formula in distributed systems",
+				fallbackDate: 'Upcoming',
+				vi: {
+					fallbackTitle: 'Kingman trong hệ thống phân tán',
+					fallbackDate: 'Sắp ra mắt'
+				}
+			},
+			{
+				num: 'V',
+				slug: '009-usl-en',
+				viSlug: '009-usl-vi',
+				fallbackTitle: 'The Universal Scalability Law (USL)',
+				fallbackDate: 'Upcoming',
+				vi: {
+					fallbackTitle: 'Universal Scalability Law (USL)',
+					fallbackDate: 'Sắp ra mắt'
+				}
 			}
 		],
 		vi: {

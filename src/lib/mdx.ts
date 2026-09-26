@@ -28,6 +28,8 @@ export { default as FloatVsFixed } from './components/interactive/FloatVsFixed.s
 export { default as NormalCurve } from './components/viz/NormalCurve.svelte';
 export { default as DetectionPower } from './components/viz/DetectionPower.svelte';
 export { default as ReRun } from './components/viz/ReRun.svelte';
+// Plotly, for charts the house kit does not draw. Loads on scroll, not on page load.
+export { default as PlotlyFigure } from './components/viz/PlotlyFigure.svelte';
 export { default as SampleSizeGrid } from './components/viz/SampleSizeGrid.svelte';
 export { default as CodeBlock } from './components/tech/CodeBlock.svelte';
 export { default as DiagramPlate } from './components/tech/DiagramPlate.svelte';

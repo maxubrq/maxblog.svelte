@@ -31,6 +31,7 @@ export const KIT_COMPONENTS = [
 	'MuxVideo',
 	'NormalCurve',
 	'OneSentence',
+	'PlotlyFigure',
 	'PullQuote',
 	'R',
 	'ReRun',
