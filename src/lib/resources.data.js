@@ -451,6 +451,303 @@ export const RESOURCES = [
 			},
 		],
 	},
+	{
+		id: 'tepper-abusive-supervision-2000',
+		title: 'Consequences of Abusive Supervision',
+		author: 'Tepper, Bennett J.',
+		year: '2000',
+		type: 'paper',
+		topic: 'Science',
+		note: 'The paper that gave abusive supervision its measure. Employees under managers who belittled and ridiculed them reported more emotional exhaustion, more conflict between work and home, and lower commitment — and the damage showed up in how they judged themselves, not only in how they felt about the job.',
+		url: 'https://doi.org/10.2307/1556375',
+		vi: {
+			note: 'Bài báo đặt thước đo cho abusive supervision. Những nhân viên làm dưới quyền các quản lý hay hạ thấp, chế giễu họ báo cáo kiệt sức cảm xúc nhiều hơn, xung đột giữa công việc và gia đình nhiều hơn, gắn bó thấp hơn — và thiệt hại hiện ra trong cách họ đánh giá chính mình, không chỉ trong cảm giác về công việc.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'bandura-self-efficacy-1977',
+		title: 'Self-efficacy: Toward a unifying theory of behavioral change',
+		author: 'Bandura, Albert',
+		year: '1977',
+		type: 'paper',
+		topic: 'Science',
+		note: 'Where self-efficacy comes from, not just what it is. Bandura names four sources — doing it yourself, watching someone like you do it, being told you can, and the state of your body while you try — and ranks the first as the strongest. The ranking is the useful part: it says which kind of evidence a person can actually build on.',
+		url: 'https://doi.org/10.1037/0033-295X.84.2.191',
+		vi: {
+			note: 'Self-efficacy đến từ đâu, chứ không chỉ nó là gì. Bandura chỉ ra bốn nguồn — tự mình làm được, thấy người giống mình làm được, được người khác bảo là làm được, và trạng thái cơ thể khi bắt tay vào — và xếp nguồn đầu tiên là mạnh nhất. Chính thứ tự đó là phần hữu ích: nó cho biết loại bằng chứng nào một người thật sự có thể dựa vào.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'bartlett-remembering-1932',
+		title: 'Remembering: A Study in Experimental and Social Psychology',
+		author: 'Bartlett, Frederic C.',
+		year: '1932',
+		type: 'book',
+		topic: 'Science',
+		note: 'The book that argued memory is reconstruction, not retrieval. Bartlett had people retell an unfamiliar folk tale over and over and watched it drift toward what already made sense to them. Every act of remembering is a rebuild from fragments, and the present supplies the glue.',
+		vi: {
+			note: 'Cuốn sách lập luận rằng trí nhớ là tái dựng chứ không phải truy xuất. Bartlett cho người ta kể lại một câu chuyện dân gian xa lạ nhiều lần và thấy nó trôi dần về phía những gì vốn đã hợp lý với họ. Mỗi lần nhớ là một lần dựng lại từ các mảnh vụn, và hiện tại là thứ lấp vào chỗ trống.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'loftus-palmer-1974',
+		title: 'Reconstruction of automobile destruction: An example of the interaction between language and memory',
+		author: 'Loftus, Elizabeth F.; Palmer, John C.',
+		year: '1974',
+		type: 'paper',
+		topic: 'Science',
+		note: 'The car-crash experiment. People who watched the same film estimated higher speeds when asked how fast the cars "smashed" rather than "hit" each other — and a week later more of them remembered broken glass that was never there. One verb in the question was enough to change the memory.',
+		url: 'https://doi.org/10.1016/S0022-5371(74)80011-3',
+		vi: {
+			note: 'Thí nghiệm va chạm xe. Những người xem cùng một đoạn phim ước lượng tốc độ cao hơn khi được hỏi hai xe "đâm sầm" vào nhau thay vì "va" vào nhau — và một tuần sau, nhiều người trong số đó nhớ ra có kính vỡ, dù trong phim không hề có. Chỉ một động từ trong câu hỏi là đủ để đổi ký ức.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'kahneman-thinking-fast-and-slow',
+		title: 'Thinking, Fast and Slow',
+		author: 'Kahneman, Daniel',
+		year: '2011',
+		type: 'book',
+		topic: 'Science',
+		note: 'Part V is the one this essay leans on: the experiencing self that lives through a period and the remembering self that keeps score of it afterwards, and the peak-end rule by which the second judges the first. The remembering self is the one that fills in a job application.',
+		vi: {
+			note: 'Phần V là phần bài viết dựa vào: experiencing self sống qua một giai đoạn, còn remembering self chấm điểm nó về sau, bằng quy tắc peak-end. Và remembering self mới là người ngồi điền form ứng tuyển.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'reilly-being-glue',
+		title: 'Being Glue',
+		author: 'Reilly, Tanya',
+		year: '2019',
+		type: 'talk',
+		topic: 'Software',
+		note: 'The talk that named glue work: the reviewing, unblocking, documenting and noticing that makes a team ship, and that a promotion packet cannot see. Its warning is aimed at the people doing it — the work is real, and it will not be counted unless someone makes it legible.',
+		url: 'https://noidea.dog/glue',
+		vi: {
+			note: 'Bài nói đặt tên cho glue work: review, gỡ block, viết tài liệu, nhận ra vấn đề sớm — những việc giúp cả team ship được nhưng hồ sơ thăng tiến thì không nhìn thấy. Lời cảnh báo của nó dành cho chính người làm: việc đó là thật, nhưng sẽ không được tính nếu không ai làm cho nó đọc được.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'scott-seeing-like-a-state',
+		title: 'Seeing Like a State: How Certain Schemes to Improve the Human Condition Have Failed',
+		author: 'Scott, James C.',
+		year: '1998',
+		type: 'book',
+		topic: 'Philosophy',
+		note: 'Where legibility comes from. A state can only manage what it can read — surnames, cadastral maps, standard measures — so it reshapes the world into readable forms and treats whatever resists as absent. Scott writes about forests and villages; the same eye reads a résumé.',
+		vi: {
+			note: 'Nguồn gốc của khái niệm legibility. Nhà nước chỉ quản lý được những gì nó đọc được — họ tên, bản đồ địa chính, đơn vị đo chuẩn — nên nó nắn thế giới thành những dạng đọc được và coi những gì cưỡng lại là không tồn tại. Scott viết về rừng và làng mạc; con mắt ấy cũng là con mắt đọc một bản CV.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'carney-power-posing-2010',
+		title: 'Power posing: Brief nonverbal displays affect neuroendocrine levels and risk tolerance',
+		author: 'Carney, Dana R.; Cuddy, Amy J. C.; Yap, Andy J.',
+		year: '2010',
+		type: 'paper',
+		topic: 'Science',
+		note: 'The original power-posing claim: two minutes in an expansive posture raised testosterone, lowered cortisol and increased risk-taking. It is cited here as the cautionary case — the hormonal and behavioural effects did not survive replication, and the first author later said publicly that she no longer believes them.',
+		url: 'https://doi.org/10.1177/0956797610383437',
+		vi: {
+			note: 'Tuyên bố gốc về power posing: hai phút trong một tư thế mở rộng làm tăng testosterone, giảm cortisol và tăng mức chấp nhận rủi ro. Nó được dẫn ở đây như một ví dụ cảnh báo — các hiệu ứng về hormone và hành vi không đứng vững khi được lặp lại, và chính tác giả đầu sau đó đã công khai nói bà không còn tin vào chúng.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'ranehill-power-posing-2015',
+		title: 'Assessing the robustness of power posing: No effect on hormones and risk tolerance in a large sample of men and women',
+		author: 'Ranehill, Eva; Dreber, Anna; Johannesson, Magnus; Leiberg, Susanne; Sul, Sunhae; Weber, Roberto A.',
+		year: '2015',
+		type: 'paper',
+		topic: 'Science',
+		note: 'The replication. About two hundred participants instead of forty-two, and no effect on testosterone, cortisol or risk-taking — only people reporting that they felt more powerful. Confidence produced by posture changes how it feels, not what happens.',
+		url: 'https://doi.org/10.1177/0956797614553946',
+		vi: {
+			note: 'Nghiên cứu lặp lại. Khoảng hai trăm người thay vì bốn mươi hai, và không có tác động nào lên testosterone, cortisol hay mức chấp nhận rủi ro — chỉ có việc người tham gia tự báo cáo là thấy mình mạnh mẽ hơn. Sự tự tin sinh ra từ tư thế thay đổi cảm giác, không thay đổi điều thực sự xảy ra.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'bem-self-perception-1972',
+		title: 'Self-perception theory',
+		author: 'Bem, Daryl J.',
+		year: '1972',
+		type: 'paper',
+		topic: 'Science',
+		note: 'The claim that we learn our own attitudes the way we learn other people\'s: by watching what we do. When the inner signal is weak, behaviour is the evidence. It is why a test that could have failed and did not is worth more than any amount of telling yourself you are ready.',
+		url: 'https://doi.org/10.1016/S0065-2601(08)60024-6',
+		vi: {
+			note: 'Luận điểm rằng ta biết thái độ của chính mình theo cách ta biết thái độ của người khác: bằng cách nhìn xem mình làm gì. Khi tín hiệu bên trong yếu, hành vi chính là bằng chứng. Đó là lý do một phép thử có thể thất bại mà không thất bại đáng giá hơn mọi lời tự nhủ rằng mình đã sẵn sàng.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'evans-brag-document-2019',
+		title: 'Get your work recognized: write a brag document',
+		author: 'Evans, Julia',
+		year: '2019',
+		type: 'article',
+		topic: 'Software',
+		note: 'The short, practical version of keeping your own record: one document, updated as you go, listing what you did and why it mattered — including the invisible work. Written for performance reviews, and at least as useful the day you leave.',
+		url: 'https://jvns.ca/blog/brag-documents/',
+		vi: {
+			note: 'Phiên bản ngắn và thực dụng của việc tự giữ hồ sơ cho mình: một tài liệu, cập nhật dần, ghi những gì mình đã làm và vì sao nó quan trọng — kể cả những việc vô hình. Được viết cho kỳ đánh giá hiệu suất, nhưng ít nhất cũng hữu ích như vậy vào ngày bạn rời đi.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
+	{
+		id: 'edmondson-psychological-safety-1999',
+		title: 'Psychological Safety and Learning Behavior in Work Teams',
+		author: 'Edmondson, Amy C.',
+		year: '1999',
+		type: 'paper',
+		topic: 'Science',
+		note: 'The study that made psychological safety measurable: teams whose members believed they would not be punished for speaking up asked more questions, admitted more mistakes and learned faster. Safety is what lets people take on the hard work that mastery comes from.',
+		url: 'https://doi.org/10.2307/2666999',
+		vi: {
+			note: 'Nghiên cứu biến psychological safety thành thứ đo được: những team mà thành viên tin rằng mình không bị trừng phạt khi lên tiếng thì hỏi nhiều hơn, nhận lỗi nhiều hơn và học nhanh hơn. An toàn là thứ cho phép người ta nhận những việc khó — nơi mastery được tạo ra.',
+		},
+		appearsIn: [
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				title: 'Where Confidence Is Stored',
+				locale: 'en',
+			},
+			{
+				slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+				title: 'Sự tự tin được lưu ở đâu',
+				locale: 'vi',
+			},
+		],
+	},
 ];
 
 /** id → resource, for the inline `<R>` citation mark. */

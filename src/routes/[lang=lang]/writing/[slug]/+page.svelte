@@ -359,7 +359,7 @@
 				     apparatus of a printed book, in its order: glossary, then
 				     bibliography. The first is what the prose used, the second is
 				     what it stands on. -->
-				<GlossaryFootnote terms={meta.terms} />
+				<GlossaryFootnote terms={meta.terms} draft={meta.draft} />
 
 				<!-- The sources this essay cites. Built from `appearsIn`, so it needs
 				     no marks in the prose — see $lib/resources. -->

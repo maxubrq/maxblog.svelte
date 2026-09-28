@@ -1246,4 +1246,377 @@ export const TERMS = {
 			],
 		},
 	},
+
+	/**
+	 * The vocabulary of essay 007 — a Vietnamese-only piece, so every English
+	 * `appearances` is empty (the overjustification convention). The prose
+	 * keeps these terms in English, so `vi.term` is left unset and each entry
+	 * answers to the English spelling; `peak-end rule` also answers to the bare
+	 * `peak-end`, which is how the essay first says it.
+	 */
+	'abusive-supervision': {
+		term: 'abusive supervision',
+		pos: 'noun · organisational psychology',
+		short:
+			'Sustained hostile behaviour from a manager toward the people who report to them — belittling, ridicule, public blame, taking credit — short of physical contact.',
+		long: 'Defined and measured by Bennett Tepper in 2000. The word that matters is *sustained*: one bad meeting is not abusive supervision, a pattern is. Its effects are well documented — emotional exhaustion, conflict between work and home, lower commitment — and they reach into how people rate their own ability, which is why they do not simply end when the job does.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'First diagnosis: the company took it',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học tổ chức',
+			short:
+				'Hành vi thù địch kéo dài của một người quản lý đối với cấp dưới — hạ thấp, chế giễu, đổ lỗi công khai, nhận công của người khác — không kể tiếp xúc thân thể.',
+			long: 'Được Bennett Tepper định nghĩa và đo lường năm 2000. Chữ quan trọng là *kéo dài*: một buổi họp tệ không phải abusive supervision, một khuôn mẫu lặp lại mới là. Tác động của nó được ghi nhận rõ — kiệt sức cảm xúc, xung đột giữa công việc và gia đình, gắn bó thấp — và lan vào cả cách người ta đánh giá năng lực của chính mình, nên nó không tự dừng lại khi công việc kết thúc.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Chẩn đoán đầu tiên: công ty đã lấy nó đi',
+				},
+			],
+		},
+	},
+	'self-efficacy': {
+		term: 'self-efficacy',
+		pos: 'noun · psychology',
+		short:
+			'A person\'s belief that they can carry out a specific task successfully — not a general feeling of worth, but confidence about one thing.',
+		long: 'Introduced by Albert Bandura in 1977. It is deliberately narrow: someone can have high self-efficacy for debugging a production outage and low self-efficacy for a system design interview. Bandura\'s real contribution is the question of what feeds it — mastery experience, vicarious experience, verbal persuasion and physiological state — because that turns confidence from a mood into something with inputs that can be tended or lost.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'Confidence is not a feeling, it is a record',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Niềm tin của một người rằng mình có thể thực hiện thành công một việc cụ thể — không phải cảm giác về giá trị bản thân nói chung, mà là sự tự tin về một việc.',
+			long: 'Được Albert Bandura đưa ra năm 1977. Nó hẹp một cách có chủ đích: một người có thể có self-efficacy cao khi debug sự cố production và thấp khi vào phỏng vấn system design. Đóng góp thật sự của Bandura là câu hỏi cái gì nuôi nó — mastery experience, vicarious experience, verbal persuasion và trạng thái cơ thể — vì điều đó biến sự tự tin từ một tâm trạng thành một thứ có nguồn cấp, có thể được chăm hoặc bị mất.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Tự tin không phải cảm giác, mà là một hồ sơ',
+				},
+			],
+		},
+	},
+	'mastery-experience': {
+		term: 'mastery experience',
+		pos: 'noun · psychology',
+		short:
+			'Having done the thing yourself and succeeded — the strongest of the four sources of self-efficacy.',
+		long: 'It is strongest because it is the hardest to argue with: a success you produced is evidence, not an opinion. But it only feeds belief when it is registered as *yours*. Work absorbed into a team\'s output, or a success attributed to luck or to tooling, counts for much less — which is why the essay cares where the record of that success is kept.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'Confidence is not a feeling, it is a record',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Tự mình làm được một việc — nguồn mạnh nhất trong bốn nguồn của self-efficacy.',
+			long: 'Nó mạnh nhất vì khó cãi nhất: một thành công do chính mình tạo ra là bằng chứng, không phải ý kiến. Nhưng nó chỉ nuôi được niềm tin khi được ghi nhận là *của mình*. Công việc bị hòa vào output của cả team, hay một thành công bị quy cho may mắn hoặc cho công cụ, thì được tính ít hơn nhiều — đó là lý do bài viết quan tâm hồ sơ về thành công ấy được lưu ở đâu.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Tự tin không phải cảm giác, mà là một hồ sơ',
+				},
+			],
+		},
+	},
+	'vicarious-experience': {
+		term: 'vicarious experience',
+		pos: 'noun · psychology',
+		short:
+			'Watching someone similar to yourself succeed at a task, and inferring that you could too.',
+		long: 'The second source of self-efficacy in Bandura\'s list. The key word is *similar*: seeing an expert do something says little about you, seeing a peer do it says a lot. Weaker than doing it yourself, but available when you cannot yet — which is why reading how others handled a problem, before reading their answer, can build it.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'Confidence is not a feeling, it is a record',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Thấy một người giống mình làm được một việc, và suy ra rằng mình cũng làm được.',
+			long: 'Nguồn thứ hai của self-efficacy trong danh sách của Bandura. Chữ then chốt là *giống mình*: thấy một chuyên gia làm được thì chẳng nói lên mấy về bạn, thấy một người ngang hàng làm được thì nói lên nhiều. Yếu hơn tự mình làm, nhưng dùng được khi mình chưa thể tự làm — đó là lý do đọc cách người khác xử lý một vấn đề, trước khi đọc lời giải của họ, có thể xây được nó.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Tự tin không phải cảm giác, mà là một hồ sơ',
+				},
+			],
+		},
+	},
+	'verbal-persuasion': {
+		term: 'verbal persuasion',
+		pos: 'noun · psychology',
+		short:
+			'Being told by others that you are capable — the third source of self-efficacy, and one of the weaker ones.',
+		long: 'Weak on its own because words are cheap and easily discounted, especially by someone already doubting themselves. It works best when it is specific and comes from someone who saw the work. In a job, most of it comes from managers and colleagues — the people who stay behind when you leave.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'Confidence is not a feeling, it is a record',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Được người khác nói rằng mình có năng lực — nguồn thứ ba của self-efficacy, và là một trong những nguồn yếu hơn.',
+			long: 'Tự nó thì yếu, vì lời nói rẻ và dễ bị gạt đi, nhất là bởi một người vốn đang nghi ngờ bản thân. Nó hiệu quả nhất khi cụ thể và đến từ người đã tận mắt thấy công việc. Trong một công ty, phần lớn nguồn này đến từ quản lý và đồng nghiệp — những người ở lại khi bạn rời đi.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Tự tin không phải cảm giác, mà là một hồ sơ',
+				},
+			],
+		},
+	},
+	'experiencing-self': {
+		term: 'experiencing self',
+		pos: 'noun · psychology',
+		short:
+			'In Kahneman\'s account, the self that lives through each moment as it happens — as opposed to the one that remembers it later.',
+		long: 'The experiencing self has no say in the story told afterwards. Months of ordinary competence, lived one day at a time, leave little trace on their own; what survives is what the remembering self chooses to keep.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'Memory is not a recording',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Theo Kahneman, cái tôi sống qua từng khoảnh khắc khi nó đang diễn ra — đối lập với cái tôi nhớ lại nó về sau.',
+			long: 'Experiencing self không có tiếng nói trong câu chuyện được kể về sau. Nhiều tháng làm việc tốt một cách bình thường, sống qua từng ngày một, tự chúng để lại rất ít dấu vết; thứ còn sót lại là những gì remembering self chọn giữ.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Trí nhớ không phải bản ghi',
+				},
+			],
+		},
+	},
+	'remembering-self': {
+		term: 'remembering self',
+		pos: 'noun · psychology',
+		short:
+			'In Kahneman\'s account, the self that looks back, keeps score and makes decisions — judging a period by a few moments rather than by its whole length.',
+		long: 'It is the remembering self that fills in a job application, decides whether a job was good, and answers the question \'am I any good?\'. It works by reconstruction, and by the peak-end rule, so its verdict can differ sharply from what was actually lived — and with no outside record to check it against, its verdict stands.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'Memory is not a recording',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Theo Kahneman, cái tôi nhìn lại, chấm điểm và ra quyết định — đánh giá một giai đoạn bằng vài khoảnh khắc chứ không bằng toàn bộ độ dài của nó.',
+			long: 'Chính remembering self là người điền form ứng tuyển, quyết định một công việc tốt hay tệ, và trả lời câu hỏi "mình có giỏi không?". Nó hoạt động bằng tái dựng và bằng quy tắc peak-end, nên phán quyết của nó có thể lệch xa những gì thực sự đã sống qua — và khi không có hồ sơ bên ngoài để đối chiếu, phán quyết đó được giữ nguyên.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Trí nhớ không phải bản ghi',
+				},
+			],
+		},
+	},
+	'peak-end-rule': {
+		term: 'peak-end rule',
+		pos: 'noun · psychology',
+		short:
+			'The tendency to judge an experience mostly by its most intense moment and by how it ended, rather than by its total or average.',
+		long: 'Shown by Kahneman and colleagues in studies of short, uncomfortable experiences, where people preferred a longer episode with a gentler ending over a shorter one that ended badly. How far it extends to periods lasting years is still debated; used carefully, it suggests why the last few bad months of a job can colour every year before them.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'Memory is not a recording',
+			},
+		],
+		vi: {
+			term: 'peak-end',
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Xu hướng đánh giá một trải nghiệm chủ yếu qua khoảnh khắc mãnh liệt nhất và cách nó kết thúc, thay vì qua tổng thể hay trung bình.',
+			long: 'Được Kahneman và cộng sự chỉ ra trong các nghiên cứu về trải nghiệm ngắn và khó chịu, nơi người ta thích một đợt dài hơn nhưng kết thúc nhẹ hơn, hơn là một đợt ngắn hơn nhưng kết thúc tệ. Mức độ áp dụng cho những giai đoạn kéo dài nhiều năm vẫn đang được tranh luận; dùng cẩn thận, nó gợi ý vì sao vài tháng tệ cuối cùng của một công việc có thể nhuộm màu tất cả những năm trước đó.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Trí nhớ không phải bản ghi',
+				},
+			],
+		},
+	},
+	'glue-work': {
+		term: 'glue work',
+		pos: 'noun · software engineering',
+		short:
+			'The work that makes a team succeed but is not a feature — reviewing, unblocking, documenting, onboarding, noticing problems early.',
+		long: 'Named by Tanya Reilly in the talk *Being Glue*. It is often the most valuable thing a senior engineer does and the least visible: it leaves no commit with their name and rarely shows up in a promotion packet. The best of it is a failure that never happens, which leaves nothing to point at at all.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'The senior paradox',
+			},
+		],
+		vi: {
+			pos: 'danh từ · kỹ thuật phần mềm',
+			short:
+				'Những việc giúp một team thành công nhưng không phải là feature — review, gỡ block, viết tài liệu, onboard người mới, phát hiện vấn đề sớm.',
+			long: 'Được Tanya Reilly đặt tên trong bài nói *Being Glue*. Đó thường là việc giá trị nhất mà một senior làm, và cũng vô hình nhất: nó không để lại commit nào mang tên họ và hiếm khi xuất hiện trong hồ sơ thăng tiến. Phần tốt nhất của nó là một sự cố không bao giờ xảy ra — không để lại gì để chỉ vào cả.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Nghịch lý của người senior',
+				},
+			],
+		},
+	},
+	legibility: {
+		term: 'legibility',
+		pos: 'noun · political science',
+		short:
+			'How far something has been made readable to a system that wants to see it — and the tendency of such systems to treat whatever is not readable as absent.',
+		long: 'From James C. Scott\'s *Seeing Like a State*: a state manages land through the cadastral map, not the field, and a village with no records is a blank to it. The same holds for a career. A recruiter, or the person themselves on a bad day, sees only what was written down; work that was never made legible does not argue for anyone.',
+		topic: 'Philosophy',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'The senior paradox',
+			},
+		],
+		vi: {
+			pos: 'danh từ · khoa học chính trị',
+			short:
+				'Mức độ một thứ đã được làm cho đọc được với một hệ thống muốn nhìn thấy nó — và xu hướng của các hệ thống ấy coi những gì không đọc được là không tồn tại.',
+			long: 'Từ *Seeing Like a State* của James C. Scott: nhà nước quản lý đất đai qua bản đồ địa chính chứ không qua cánh đồng, và một ngôi làng không có sổ sách là một khoảng trống với nó. Sự nghiệp cũng vậy. Nhà tuyển dụng, hay chính mình trong một ngày tệ, chỉ nhìn thấy những gì đã được ghi ra; công việc chưa bao giờ được làm cho đọc được thì không lên tiếng bênh vực ai cả.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Nghịch lý của người senior',
+				},
+			],
+		},
+	},
+	calibration: {
+		term: 'calibration',
+		pos: 'noun · psychology',
+		short:
+			'How well a person\'s confidence matches how often they are actually right — neither higher (overconfidence) nor lower (underconfidence).',
+		long: 'The goal the essay sets for confidence is calibration, not height. A well-calibrated engineer who says \'I am 80% sure\' is right about 80% of the time. Confidence built on evidence is not a weaker kind than confidence that needs none; it is the more accurate kind, and accuracy is what holds when it is tested.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'The objections I have to answer',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học',
+			short:
+				'Mức độ khớp giữa sự tự tin của một người và tần suất họ thực sự đúng — không cao hơn (tự tin thái quá), không thấp hơn (thiếu tự tin).',
+			long: 'Mục tiêu bài viết đặt cho sự tự tin là calibration, không phải độ cao. Một kỹ sư được calibrate tốt nói "mình chắc 80%" thì đúng khoảng 80% số lần. Tự tin dựa trên bằng chứng không phải loại yếu hơn tự tin không cần bằng chứng; nó là loại chính xác hơn, và sự chính xác là thứ đứng vững khi bị thử thách.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Những phản biện mình phải trả lời',
+				},
+			],
+		},
+	},
+	'brag-document': {
+		term: 'brag document',
+		pos: 'noun · software engineering',
+		short:
+			'A running document of what you have done at work and why it mattered, kept by you and updated as you go.',
+		long: 'Popularised by Julia Evans in 2019. Its value is that it is written close to the event, before memory reconstructs it, and that it records the invisible work along with the visible. The essay\'s addition is where it lives: somewhere you own, not somewhere that employs you.',
+		topic: 'Software',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'From repair to infrastructure',
+			},
+		],
+		vi: {
+			pos: 'danh từ · kỹ thuật phần mềm',
+			short:
+				'Một tài liệu ghi liên tục những gì bạn đã làm trong công việc và vì sao nó quan trọng, do chính bạn giữ và cập nhật dần.',
+			long: 'Được Julia Evans phổ biến năm 2019. Giá trị của nó là được viết gần thời điểm sự việc, trước khi trí nhớ kịp tái dựng lại, và ghi cả những việc vô hình lẫn hữu hình. Điều bài viết bổ sung là nơi nó được lưu: ở chỗ bạn sở hữu, không phải chỗ đang thuê bạn.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Từ khắc phục đến hạ tầng',
+				},
+			],
+		},
+	},
+	'psychological-safety': {
+		term: 'psychological safety',
+		pos: 'noun · organisational psychology',
+		short:
+			'A shared belief in a team that it is safe to take interpersonal risks — to ask, to admit a mistake, to disagree — without being punished or humiliated.',
+		long: 'Measured by Amy Edmondson in 1999, who found that teams with more of it learned faster. It matters to confidence indirectly: it is what lets people take on hard work, and hard work is where mastery experience is made. A team without it produces fewer of the successes that confidence is built from.',
+		topic: 'Science',
+		appearances: [
+			{
+				title: 'Where Confidence Is Stored',
+				slug: '007-su-tu-tin-duoc-luu-o-dau-en',
+				section: 'From repair to infrastructure',
+			},
+		],
+		vi: {
+			pos: 'danh từ · tâm lý học tổ chức',
+			short:
+				'Niềm tin chung trong một team rằng việc chấp nhận rủi ro giữa người với người — hỏi, nhận lỗi, phản đối — là an toàn, không bị trừng phạt hay bẽ mặt.',
+			long: 'Được Amy Edmondson đo lường năm 1999, bà thấy những team có nhiều psychological safety hơn thì học nhanh hơn. Nó tác động lên sự tự tin một cách gián tiếp: nó cho phép người ta nhận việc khó, và việc khó là nơi mastery experience được tạo ra. Một team thiếu nó tạo ra ít hơn những thành công mà sự tự tin được xây từ đó.',
+			appearances: [
+				{
+					title: 'Sự tự tin được lưu ở đâu',
+					slug: '007-su-tu-tin-duoc-luu-o-dau-vi',
+					section: 'Từ khắc phục đến hạ tầng',
+				},
+			],
+		},
+	},
 };

@@ -27,7 +27,13 @@
 	import { TERMS, getGlossaryLocale } from '$lib/glossary';
 	import { href, useI18n } from '$lib/i18n';
 
-	let { terms }: { terms?: string[] } = $props();
+	/**
+	 * `draft`: `/glossary` leaves out a word whose every use is still a draft, so
+	 * a draft's own words may have no letter to link to yet. Printed unlinked
+	 * until the essay publishes, rather than pointing at an anchor that is not
+	 * there.
+	 */
+	let { terms, draft = false }: { terms?: string[]; draft?: boolean } = $props();
 
 	const i18n = useI18n();
 	const t = $derived(i18n.t.glossary);
@@ -68,7 +74,11 @@
 			{#each list as entry (entry.id)}
 				<div class="row">
 					<dt>
-						<a href={letterHref(entry.term)}>{entry.term}</a>
+						{#if draft}
+							<span class="word">{entry.term}</span>
+						{:else}
+							<a href={letterHref(entry.term)}>{entry.term}</a>
+						{/if}
 						<span class="pos">{entry.pos}</span>
 					</dt>
 					<dd>{entry.short}</dd>
@@ -123,16 +133,19 @@
 	dt {
 		min-width: 0;
 	}
-	dt a {
+	dt a,
+	.word {
 		font-family: var(--display);
 		font-weight: 700;
 		font-size: 17px;
 		letter-spacing: -0.02em;
 		line-height: 1.2;
-		/* The dotted rule of the inline mark, so the foot and the sentence are
-		   visibly the same object. */
-		border-bottom: 2px dotted var(--blue);
 		color: var(--blue);
+	}
+	/* The dotted rule of the inline mark, so the foot and the sentence are
+	   visibly the same object. Only on a link: in a draft there is nowhere to go. */
+	dt a {
+		border-bottom: 2px dotted var(--blue);
 	}
 	dt a:hover {
 		text-decoration: none;
