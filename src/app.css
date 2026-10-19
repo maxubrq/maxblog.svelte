@@ -8,7 +8,7 @@
 	--paper: #fafaf7;
 	--paper2: #f2f2ef;
 	--ink: #24242c;
-	--muted: #77777f;
+	--muted: #6b6b73; /* 5.05:1 on paper, 4.71:1 on paper2 — AA for small text */
 	--faint: #a7a7ad;
 	/* Bold running text. On paper, weight alone carries emphasis — `inherit`,
 	   not `--ink`, so a bold word inside a blue panel keeps the panel's white.
@@ -127,7 +127,7 @@
 	--paper: #f4f1ea;
 	--paper2: #eae6dc;
 	--ink: #2a2620;
-	--muted: #7d766a;
+	--muted: #6b6458; /* 5.19:1 on paper, 4.70:1 on paper2 */
 	--faint: #a9a294;
 	--rule: rgba(42, 38, 32, 0.16);
 	--rule-hard: #2a2620;

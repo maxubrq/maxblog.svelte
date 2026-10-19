@@ -34,12 +34,15 @@
 <section class="split">
 	<div class="cell">
 		<Tag>{t.about.label}</Tag>
+		<!-- Underline, not scribble: the ellipse was tuned for "public" and
+		     struck through "công khai" (225px wide against a 210px lasso). The
+		     underline is sized to the accent in CSS below, so it fits either
+		     locale at any headline size. -->
 		<Headline
 			text={t.about.heading}
 			accent={t.about.headingAccent}
-			mark="scribble"
+			mark="underline"
 			size={52}
-			markWidth={210}
 		/>
 	</div>
 	<div class="ink-screen portrait">
@@ -66,8 +69,10 @@
 		<ul class="subjects">
 			{#each rooms as room (room.id)}
 				<li>
-					<a href={href(i18n.lang, `/topics/${room.id}`)}><Tag on>{room.name}</Tag></a>
-					<div class="blurb">{room.tagline}</div>
+					<a href={href(i18n.lang, `/topics/${room.id}`)}>
+						<Tag on>{room.name}</Tag>
+						<span class="blurb">{room.tagline}</span>
+					</a>
 				</li>
 			{/each}
 		</ul>
@@ -113,29 +118,43 @@
 	.cell :global(h1) {
 		margin-top: 14px;
 	}
+	/* The underline spans the accent exactly, in either locale, at 52px or at
+	   the 34px the headline clamps to on a phone. */
+	.cell :global(.accent svg) {
+		width: 100%;
+		height: auto;
+	}
 	.portrait {
 		min-height: 260px;
 	}
 
 	/**
-	 * Wider than an essay, and deliberately not tied to `--measure`. That token
-	 * is the *reader's* article width (700/820/940 by preference), and letting
-	 * it govern here made a colophon obey a setting meant for prose — the page
-	 * got narrower because someone chose a narrow measure for reading essays.
-	 * The proportions are production's: a 270px rail and the rest, at 90% of the
-	 * page, which lands the content around three-quarters of the screen.
+	 * The body sits on the same two halves as the split above it: the rail
+	 * under the headline, flush with it at `--pad-chrome`; the text under the
+	 * portrait, flush with its edge at the 50% line. Two left edges for the
+	 * whole page instead of four.
+	 *
+	 * Still deliberately not tied to `--measure`. That token is the *reader's*
+	 * article width (700/820/940 by preference), and letting it govern here
+	 * made a colophon obey a setting meant for prose. The cap is the page's
+	 * own: 58ch, which measures out at ~70 characters of real Vietnamese (`ch`
+	 * is the zero, wider than the average letter — 66ch printed 80). Without
+	 * it the bio ran to ~97 characters at 1440px and ~131 at 1800px.
 	 */
 	.body {
 		display: grid;
-		grid-template-columns: 270px minmax(0, 1.2fr);
-		gap: 34px;
-		max-width: 90%;
-		margin: 0 auto;
+		grid-template-columns: 1fr 1fr;
 		/* The page ends on real air, not on the last rule. */
-		padding: 36px var(--pad-measure) 120px;
+		padding: 36px 0 120px;
+	}
+	.body > :global(aside) {
+		max-width: calc(270px + var(--pad-chrome));
+		padding-left: var(--pad-chrome);
 	}
 	.measure {
 		min-width: 0;
+		max-width: 58ch;
+		padding-right: var(--pad-chrome);
 	}
 	.measure p {
 		font-size: 18px;
@@ -161,15 +180,28 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
+	/* The whole cell is the door, name and tagline both — the tag alone was a
+	   62×22px target. Hover only blues the rule: the vault below stays the one
+	   cell that inverts. */
 	.subjects li {
 		border-top: 1.5px solid var(--rule-hard);
+		transition: border-color 0.14s ease;
+	}
+	.subjects li:hover {
+		border-top-color: var(--blue);
+	}
+	.subjects a {
+		display: block;
+		min-height: 44px;
 		padding: 12px 16px 16px 0;
+		color: var(--ink);
 	}
 	.subjects a:hover {
 		text-decoration: none;
 	}
 	.blurb {
-		font-size: 14.5px;
+		display: block;
+		font-size: 18px;
 		line-height: 1.45;
 		margin-top: 6px;
 	}
@@ -205,17 +237,19 @@
 		display: block;
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: 30px;
+		font-size: 24px;
 		letter-spacing: -0.03em;
 		text-transform: lowercase;
 		line-height: 1;
 		color: var(--blue);
 	}
+	/* Ink, not `--muted`: muted is 4.25:1 on light paper and 3.99:1 on sepia,
+	   under AA for text this size. */
 	.door-blurb {
 		display: block;
-		font-size: 14px;
+		font-size: 18px;
 		line-height: 1.5;
-		color: var(--muted);
+		color: var(--ink);
 		margin-top: 8px;
 		max-width: 44ch;
 	}
@@ -247,9 +281,9 @@
 	   margin below used to need `!important` to be heard at all. */
 	.measure p.thanks {
 		font-family: var(--mono);
-		font-size: 12px;
+		font-size: 13px;
 		line-height: 1.6;
-		color: var(--muted);
+		color: var(--ink);
 		border-top: 1.5px solid var(--rule-hard);
 		padding-top: 16px;
 		margin: 30px 0 0;
@@ -267,9 +301,17 @@
 		.body {
 			grid-template-columns: 1fr;
 			gap: 20px;
-			/* 90% of a phone is two useless 5% gutters. */
-			max-width: none;
 			padding: 26px 18px 80px;
+		}
+		/* The bio first: before this the portrait and the rail pushed its first
+		   line to y≈804 on an 812px phone. The rail is colophon, so it closes. */
+		.body > :global(aside) {
+			order: 2;
+			max-width: none;
+			padding-left: 0;
+		}
+		.measure {
+			padding-right: 0;
 		}
 		.subjects {
 			grid-template-columns: 1fr;

@@ -57,8 +57,8 @@
 	 * use of it.
 	 */
 	const PAPERS: Record<ThemePref, { bg: string; fg: string; muted: string; rule: string }> = {
-		light: { bg: '#fafaf7', fg: '#24242c', muted: '#77777f', rule: 'rgba(13,13,17,.14)' },
-		dusk: { bg: '#f4f1ea', fg: '#2a2620', muted: '#7d766a', rule: 'rgba(42,38,32,.16)' },
+		light: { bg: '#fafaf7', fg: '#24242c', muted: '#6b6b73', rule: 'rgba(13,13,17,.14)' },
+		dusk: { bg: '#f4f1ea', fg: '#2a2620', muted: '#6b6458', rule: 'rgba(42,38,32,.16)' },
 		dark: { bg: '#0d0d11', fg: '#d8d8dd', muted: '#8f8f97', rule: 'rgba(233,233,236,.16)' }
 	};
 	const paper = $derived(PAPERS[reading.theme]);
