@@ -114,69 +114,36 @@ export type ChapterState = 'read' | 'current' | 'ahead';
 
 export const SERIES: SeriesData[] = [
 	{
-		id: 'distributed-system',
-		title: 'Distributed System',
-		subtitle: 'Everything about distributed systems.',
+		id: 'toi-biet-nodejs-ma',
+		title: 'But I Know NodeJS',
+		subtitle: 'Going back over the NodeJS I thought I knew, down to the foundations.',
 		topic: 'tech',
 		state: 'in-progress',
 		volume: 'Vol. I',
-		started: '2026-09-22',
+		started: '2026-10-26',
 		chapterCount: 'open-ended',
 		letter: [
-			'Everything about distributed systems'
-		],
-		chapters: [
-			{
-				num: 'I',
-				slug: '005-distributed-system-vocabulary-en',
-				viSlug: '005-distributed-system-vocabulary-vi',
-				fallbackTitle: 'The vocabulary of distributed systems',
-				fallbackDate: 'Sep 22, 2026',
-				vi: {
-					fallbackTitle: 'Từ vựng thường dùng trong hệ thống phân tán',
-					fallbackDate: '22 tháng 9, 2026'
-				}
-			}
-		],
-		vi: {
-			title: 'Hệ thống phân tán',
-			subtitle: 'Mọi thứ về hệ thống phân tán.',
-			letter: [
-				'Mọi thứ về hệ thống phân tán.'
-			]
-		}
-	},
-	{
-		id: 'luyen-tay-dsa',
-		title: 'Hands-on: DSA',
-		subtitle: 'Working through data structures and algorithms problems, one at a time.',
-		topic: 'tech',
-		state: 'in-progress',
-		volume: 'Vol. I',
-		started: '2026-09-28',
-		chapterCount: 'open-ended',
-		letter: [
-			'Working through data structures and algorithms problems, one at a time.'
+			'Going back over the NodeJS I thought I knew, down to the foundations.'
 		],
 		chapters: [
 			{
 				num: 'I',
 				// Vietnamese-only for now; the English edition prints as a promise.
-				slug: '008-luyen-tay-dsa-1-vi',
-				viSlug: '008-luyen-tay-dsa-1-vi',
-				fallbackTitle: 'DSA: Set Mismatch',
-				fallbackDate: 'Sep 28, 2026',
+				slug: 'tbnm-001-vi',
+				viSlug: 'tbnm-001-vi',
+				fallbackTitle: 'But I Know NodeJS',
+				fallbackDate: 'Oct 26, 2026',
 				vi: {
-					fallbackTitle: 'DSA: Set Mismatch',
-					fallbackDate: '28 tháng 9, 2026'
+					fallbackTitle: 'Tôi biết NodeJS mà',
+					fallbackDate: '26 tháng 10, 2026'
 				}
 			}
 		],
 		vi: {
-			title: 'Luyện tay: DSA',
-			subtitle: 'Luyện các bài cấu trúc dữ liệu và giải thuật, từng bài một.',
+			title: 'Tôi biết NodeJS mà',
+			subtitle: 'Học lại NodeJS mà tôi tưởng mình đã biết, từ những điều nền tảng.',
 			letter: [
-				'Luyện các bài cấu trúc dữ liệu và giải thuật, từng bài một.'
+				'Học lại NodeJS mà tôi tưởng mình đã biết, từ những điều nền tảng.'
 			]
 		}
 	}
