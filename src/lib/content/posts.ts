@@ -1,3 +1,4 @@
+import { dev } from '$app/environment';
 import type { OpenDraft } from '$lib/drafts';
 import { isUnlistedTopic } from '$lib/topics';
 import type { Component } from 'svelte';
@@ -178,6 +179,8 @@ export async function loadPost(slug: string) {
 	const entry = modules[`/content/posts/${slug}.mdx`];
 	if (!entry) return null;
 	const { metadata, default: content } = await entry();
+	// A draft is previewable in dev only; a production build never ships one.
+	if (metadata.draft && !dev) return null;
 	return { content, meta: normalize(metadata, slug) };
 }
 

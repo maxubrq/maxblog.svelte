@@ -1,3 +1,4 @@
+import { dev } from '$app/environment';
 import { listPosts, loadPost, translationOf } from '$lib/content/posts';
 import type { Lang } from '$lib/i18n';
 import { error } from '@sveltejs/kit';
@@ -6,10 +7,10 @@ import type { EntryGenerator, PageLoad } from './$types';
 /**
  * One page per post, under the locale the post is written in — an English essay
  * has no /vi/… URL, its Vietnamese twin is a separate file with its own slug.
- * Drafts are included so the author can preview them by URL.
+ * Drafts are included in dev only, so the author can preview them by URL.
  */
 export const entries: EntryGenerator = async () =>
-	(await listPosts({ includeDrafts: true })).map((p) => ({ lang: p.lang, slug: p.slug }));
+	(await listPosts({ includeDrafts: dev })).map((p) => ({ lang: p.lang, slug: p.slug }));
 
 export const load: PageLoad = async ({ params }) => {
 	const post = await loadPost(params.slug);

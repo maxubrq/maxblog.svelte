@@ -1,3 +1,4 @@
+import { dev } from '$app/environment';
 import { listPosts } from '$lib/content/posts';
 import { langs, type Lang } from '$lib/i18n';
 import { SERIES, resolveChapters, type ChapterPost } from '$lib/series';
@@ -12,7 +13,7 @@ export const entries: EntryGenerator = () => langs.map((lang) => ({ lang }));
 export const load: PageLoad = async ({ params }) => {
 	const lang = params.lang as Lang;
 	const posts = new Map<string, ChapterPost>(
-		(await listPosts({ includeDrafts: true })).map((p) => [
+		(await listPosts({ includeDrafts: dev })).map((p) => [
 			p.slug,
 			{
 				slug: p.slug,
