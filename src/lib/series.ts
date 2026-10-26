@@ -131,10 +131,10 @@ export const SERIES: SeriesData[] = [
 				// Vietnamese-only for now; the English edition prints as a promise.
 				slug: 'tbnm-001-vi',
 				viSlug: 'tbnm-001-vi',
-				fallbackTitle: 'But I Know NodeJS',
+				fallbackTitle: 'Three Seconds',
 				fallbackDate: 'Oct 26, 2026',
 				vi: {
-					fallbackTitle: 'Tôi biết NodeJS mà',
+					fallbackTitle: 'Ba giây',
 					fallbackDate: '26 tháng 10, 2026'
 				}
 			}
