@@ -26,33 +26,33 @@
  * the article all light up together.
  */
 
-import { long } from './format';
-import type { Lang } from './i18n';
+import { long } from "./format";
+import type { Lang } from "./i18n";
 
 export interface SeriesChapterLocale {
-	fallbackTitle?: string;
-	fallbackDate?: string;
-	/** The handoff into this chapter, in Vietnamese. */
-	bridge?: string;
+  fallbackTitle?: string;
+  fallbackDate?: string;
+  /** The handoff into this chapter, in Vietnamese. */
+  bridge?: string;
 }
 
 export interface SeriesChapterRef {
-	/** The roman numeral printed on the arc — I · II · III. */
-	num: string;
-	/**
-	 * What a reader should carry into this chapter from the last one — the
-	 * author's own handoff, written per chapter. A series is a bigger contract
-	 * than one piece, and a "next" button is not a bridge.
-	 */
-	bridge?: string;
-	slug: string;
-	viSlug?: string;
-	/** Stands in until the post exists. An unwritten chapter still has a title. */
-	fallbackTitle: string;
-	fallbackDate: string;
-	fallbackMin?: number;
-	draft?: boolean;
-	vi?: SeriesChapterLocale;
+  /** The roman numeral printed on the arc — I · II · III. */
+  num: string;
+  /**
+   * What a reader should carry into this chapter from the last one — the
+   * author's own handoff, written per chapter. A series is a bigger contract
+   * than one piece, and a "next" button is not a bridge.
+   */
+  bridge?: string;
+  slug: string;
+  viSlug?: string;
+  /** Stands in until the post exists. An unwritten chapter still has a title. */
+  fallbackTitle: string;
+  fallbackDate: string;
+  fallbackMin?: number;
+  draft?: boolean;
+  vi?: SeriesChapterLocale;
 }
 
 /**
@@ -61,145 +61,117 @@ export interface SeriesChapterRef {
  * still lands where it should. `parts` holds 1-based chapter positions.
  */
 export interface SeriesThread {
-	label: string;
-	parts: number[];
+  label: string;
+  parts: number[];
 }
 
 export interface SeriesLocale {
-	title?: string;
-	subtitle?: string;
-	letter?: string[];
-	threads?: SeriesThread[];
+  title?: string;
+  subtitle?: string;
+  letter?: string[];
+  threads?: SeriesThread[];
 }
 
 export interface SeriesData {
-	id: string;
-	title: string;
-	subtitle: string;
-	topic: string;
-	state: 'in-progress' | 'complete';
-	volume: string;
-	started: string;
-	completed?: string;
-	/** `'open-ended'` when the author does not yet know how long the arc is. */
-	chapterCount: number | 'open-ended';
-	/** The editor's letter — why this is a series and not several posts. */
-	letter: string[];
-	chapters: SeriesChapterRef[];
-	threads?: SeriesThread[];
-	/** A plain Cloudinary delivery URL; `$lib/images` adds the transformations. */
-	coverImage?: string;
-	vi?: SeriesLocale;
+  id: string;
+  title: string;
+  subtitle: string;
+  topic: string;
+  state: "in-progress" | "complete";
+  volume: string;
+  started: string;
+  completed?: string;
+  /** `'open-ended'` when the author does not yet know how long the arc is. */
+  chapterCount: number | "open-ended";
+  /** The editor's letter — why this is a series and not several posts. */
+  letter: string[];
+  chapters: SeriesChapterRef[];
+  threads?: SeriesThread[];
+  /** A plain Cloudinary delivery URL; `$lib/images` adds the transformations. */
+  coverImage?: string;
+  vi?: SeriesLocale;
 }
 
 /** A chapter with its post joined in — or with the promise still standing. */
 export interface ResolvedChapter {
-	num: string;
-	slug: string;
-	title: string;
-	min: number;
-	date: string;
-	draft?: boolean;
-	/** Is there a post behind this chapter yet? Unwritten chapters do not link. */
-	exists: boolean;
-	description?: string;
-	/** The chapter's own difficulty, from its weather. Undefined when unwritten. */
-	load?: number;
-	remember?: string;
-	bridge?: string;
+  num: string;
+  slug: string;
+  title: string;
+  min: number;
+  date: string;
+  draft?: boolean;
+  /** Is there a post behind this chapter yet? Unwritten chapters do not link. */
+  exists: boolean;
+  description?: string;
+  /** The chapter's own difficulty, from its weather. Undefined when unwritten. */
+  load?: number;
+  remember?: string;
+  bridge?: string;
 }
 
 /** What a chapter is to *this* reader. Device-local; see `seriesProgress`. */
-export type ChapterState = 'read' | 'current' | 'ahead';
+export type ChapterState = "read" | "current" | "ahead";
 
-export const SERIES: SeriesData[] = [
-	{
-		id: 'toi-biet-nodejs-ma',
-		title: 'But I Know NodeJS',
-		subtitle: 'Going back over the NodeJS I thought I knew, down to the foundations.',
-		topic: 'tech',
-		state: 'in-progress',
-		volume: 'Vol. I',
-		started: '2026-10-26',
-		chapterCount: 'open-ended',
-		letter: [
-			'Going back over the NodeJS I thought I knew, down to the foundations.'
-		],
-		chapters: [
-			{
-				num: 'I',
-				// Vietnamese-only for now; the English edition prints as a promise.
-				slug: 'tbnm-001-vi',
-				viSlug: 'tbnm-001-vi',
-				fallbackTitle: 'Three Seconds',
-				fallbackDate: 'Oct 26, 2026',
-				vi: {
-					fallbackTitle: 'Ba giây',
-					fallbackDate: '26 tháng 10, 2026'
-				}
-			}
-		],
-		vi: {
-			title: 'Tôi biết NodeJS mà',
-			subtitle: 'Học lại NodeJS mà tôi tưởng mình đã biết, từ những điều nền tảng.',
-			letter: [
-				'Học lại NodeJS mà tôi tưởng mình đã biết, từ những điều nền tảng.'
-			]
-		}
-	}
-];
+export const SERIES: SeriesData[] = [];
 
 export function getAllSeries(): SeriesData[] {
-	return SERIES;
+  return SERIES;
 }
 
 export function getSeries(id: string): SeriesData | null {
-	return SERIES.find((s) => s.id === id) ?? null;
+  return SERIES.find((s) => s.id === id) ?? null;
 }
 
 /** The arc a post belongs to, found by slug in either locale. */
 export function getSeriesForPost(
-	slug: string
+  slug: string,
 ): { series: SeriesData; chapter: SeriesChapterRef; index: number } | null {
-	for (const series of SERIES) {
-		const index = series.chapters.findIndex((c) => c.slug === slug || c.viSlug === slug);
-		if (index >= 0) return { series, chapter: series.chapters[index], index };
-	}
-	return null;
+  for (const series of SERIES) {
+    const index = series.chapters.findIndex(
+      (c) => c.slug === slug || c.viSlug === slug,
+    );
+    if (index >= 0) return { series, chapter: series.chapters[index], index };
+  }
+  return null;
 }
 
 /** One arc in one locale, with the English text as the fallback per field. */
 export function getSeriesLocale(
-	series: SeriesData,
-	lang: string
-): { title: string; subtitle: string; letter: string[]; threads: SeriesThread[] } {
-	if (lang === 'vi' && series.vi) {
-		return {
-			title: series.vi.title ?? series.title,
-			subtitle: series.vi.subtitle ?? series.subtitle,
-			letter: series.vi.letter ?? series.letter,
-			threads: series.vi.threads ?? series.threads ?? []
-		};
-	}
-	return {
-		title: series.title,
-		subtitle: series.subtitle,
-		letter: series.letter,
-		threads: series.threads ?? []
-	};
+  series: SeriesData,
+  lang: string,
+): {
+  title: string;
+  subtitle: string;
+  letter: string[];
+  threads: SeriesThread[];
+} {
+  if (lang === "vi" && series.vi) {
+    return {
+      title: series.vi.title ?? series.title,
+      subtitle: series.vi.subtitle ?? series.subtitle,
+      letter: series.vi.letter ?? series.letter,
+      threads: series.vi.threads ?? series.threads ?? [],
+    };
+  }
+  return {
+    title: series.title,
+    subtitle: series.subtitle,
+    letter: series.letter,
+    threads: series.threads ?? [],
+  };
 }
 
 /** The minimum a chapter needs from a post to stop being a promise. */
 export interface ChapterPost {
-	slug: string;
-	/** The locale the post publishes under — an essay belongs to exactly one. */
-	lang: Lang;
-	title: string;
-	date: string;
-	reading: number;
-	description?: string;
-	load?: number;
-	remember?: string;
+  slug: string;
+  /** The locale the post publishes under — an essay belongs to exactly one. */
+  lang: Lang;
+  title: string;
+  date: string;
+  reading: number;
+  description?: string;
+  load?: number;
+  remember?: string;
 }
 
 /**
@@ -211,51 +183,51 @@ export interface ChapterPost {
  * the catalogue.
  */
 export function resolveChapters(
-	series: SeriesData,
-	lang: Lang,
-	posts: Map<string, ChapterPost>
+  series: SeriesData,
+  lang: Lang,
+  posts: Map<string, ChapterPost>,
 ): ResolvedChapter[] {
-	return series.chapters.map((c) => {
-		const slug = lang === 'vi' && c.viSlug ? c.viSlug : c.slug;
-		const found = posts.get(slug);
-		/**
-		 * A post only counts in the locale it publishes under. Without this a
-		 * chapter with no `viSlug` falls back to the English slug, finds the
-		 * English post, and links to `/vi/writing/<en-slug>` — which 404s, because
-		 * an essay lives at exactly one locale. An untranslated chapter is simply
-		 * a chapter that does not exist here yet, and prints as the promise it
-		 * still is.
-		 */
-		const post = found?.lang === lang ? found : undefined;
-		const bridge = (lang === 'vi' && c.vi?.bridge) || c.bridge;
+  return series.chapters.map((c) => {
+    const slug = lang === "vi" && c.viSlug ? c.viSlug : c.slug;
+    const found = posts.get(slug);
+    /**
+     * A post only counts in the locale it publishes under. Without this a
+     * chapter with no `viSlug` falls back to the English slug, finds the
+     * English post, and links to `/vi/writing/<en-slug>` — which 404s, because
+     * an essay lives at exactly one locale. An untranslated chapter is simply
+     * a chapter that does not exist here yet, and prints as the promise it
+     * still is.
+     */
+    const post = found?.lang === lang ? found : undefined;
+    const bridge = (lang === "vi" && c.vi?.bridge) || c.bridge;
 
-		if (post) {
-			return {
-				num: c.num,
-				slug,
-				title: post.title,
-				min: post.reading,
-				date: long(post.date, lang),
-				draft: c.draft,
-				exists: true,
-				description: post.description,
-				load: post.load,
-				remember: post.remember,
-				bridge
-			};
-		}
+    if (post) {
+      return {
+        num: c.num,
+        slug,
+        title: post.title,
+        min: post.reading,
+        date: long(post.date, lang),
+        draft: c.draft,
+        exists: true,
+        description: post.description,
+        load: post.load,
+        remember: post.remember,
+        bridge,
+      };
+    }
 
-		return {
-			num: c.num,
-			slug,
-			title: (lang === 'vi' && c.vi?.fallbackTitle) || c.fallbackTitle,
-			min: c.fallbackMin ?? 0,
-			date: (lang === 'vi' && c.vi?.fallbackDate) || c.fallbackDate,
-			draft: c.draft,
-			exists: false,
-			bridge
-		};
-	});
+    return {
+      num: c.num,
+      slug,
+      title: (lang === "vi" && c.vi?.fallbackTitle) || c.fallbackTitle,
+      min: c.fallbackMin ?? 0,
+      date: (lang === "vi" && c.vi?.fallbackDate) || c.fallbackDate,
+      draft: c.draft,
+      exists: false,
+      bridge,
+    };
+  });
 }
 
 /**
@@ -268,18 +240,26 @@ export function resolveChapters(
  * first door still shut.
  */
 export function seriesProgress(
-	chapters: ResolvedChapter[],
-	finished: Set<string>
-): { states: ChapterState[]; currentIndex: number; readMin: number; totalMin: number } {
-	const currentIndex = chapters.findIndex((c) => !finished.has(c.slug));
-	const states = chapters.map((c, i): ChapterState => {
-		if (finished.has(c.slug)) return 'read';
-		return i === currentIndex ? 'current' : 'ahead';
-	});
-	return {
-		states,
-		currentIndex,
-		readMin: chapters.reduce((sum, c, i) => sum + (states[i] === 'read' ? c.min : 0), 0),
-		totalMin: chapters.reduce((sum, c) => sum + c.min, 0)
-	};
+  chapters: ResolvedChapter[],
+  finished: Set<string>,
+): {
+  states: ChapterState[];
+  currentIndex: number;
+  readMin: number;
+  totalMin: number;
+} {
+  const currentIndex = chapters.findIndex((c) => !finished.has(c.slug));
+  const states = chapters.map((c, i): ChapterState => {
+    if (finished.has(c.slug)) return "read";
+    return i === currentIndex ? "current" : "ahead";
+  });
+  return {
+    states,
+    currentIndex,
+    readMin: chapters.reduce(
+      (sum, c, i) => sum + (states[i] === "read" ? c.min : 0),
+      0,
+    ),
+    totalMin: chapters.reduce((sum, c) => sum + c.min, 0),
+  };
 }
