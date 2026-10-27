@@ -14,7 +14,7 @@ export const site = {
 	license: 'CC BY-NC 4.0',
 	elsewhere: [
 		['GitHub', '@maxubrq', 'https://github.com/maxubrq'],
-		['Email', 'max @ maxubrq.com', 'mailto:max@maxubrq.com'],
+		['Email', 'maxubrq @ gmail.com', 'mailto:maxubrq@gmail.com'],
 		['RSS', '/feed.xml', '/feed.xml']
 	] as const
 };
