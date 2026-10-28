@@ -1,6 +1,6 @@
 <script lang="ts">
-	// Full-width row of equal MONO buttons divided by hairlines;
-	// active = solid blue fill (§7, §8).
+	// The topic filter as a line of words (DESIGN.md §7.2): the chosen one is
+	// in ink with a blue rule under it. No cells, no filled field.
 	// `value` stays canonical; `label` translates it for display only.
 	let {
 		options,
@@ -17,8 +17,11 @@
 
 <div class="bar">
 	{#each options as opt (opt)}
-		<button type="button" class:active={opt === value} onclick={() => onchange(opt)}
-			>{label(opt)}</button
+		<button
+			type="button"
+			class:active={opt === value}
+			aria-pressed={opt === value}
+			onclick={() => onchange(opt)}>{label(opt)}</button
 		>
 	{/each}
 </div>
@@ -26,30 +29,24 @@
 <style>
 	.bar {
 		display: flex;
-		border-bottom: 1.5px solid var(--rule-hard);
+		flex-wrap: wrap;
+		gap: var(--s-1) var(--s-2);
 	}
 	button {
-		flex: 1;
 		border: none;
-		border-right: 1px solid var(--rule);
+		border-bottom: 1.5px solid transparent;
 		background: transparent;
-		color: var(--ink);
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		padding: 14px 4px;
+		color: var(--muted);
+		font-size: var(--t-meta);
+		padding: 2px 0;
 		cursor: pointer;
-	}
-	button:last-child {
-		border-right: none;
 	}
 	button:hover {
 		color: var(--blue);
 	}
 	.active,
 	.active:hover {
-		background: var(--panel-blue);
-		color: var(--on-blue);
+		color: var(--ink);
+		border-bottom-color: var(--blue);
 	}
 </style>

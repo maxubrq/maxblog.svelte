@@ -442,9 +442,8 @@
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 	.glyph {
-		font-family: var(--mono);
-		font-size: 16px;
-		letter-spacing: 0.1em;
+		font-family: var(--body);
+		font-size: var(--t-body);
 		color: var(--blue);
 	}
 	.field {
@@ -455,22 +454,19 @@
 		background: transparent;
 		font-family: var(--display);
 		font-weight: 500;
-		font-size: clamp(24px, 3.4vw, 40px);
-		letter-spacing: -0.03em;
+		font-size: var(--t-title);
 		color: var(--ink);
 	}
 	.field::placeholder {
-		color: var(--faint);
+		color: var(--muted);
 	}
 	.esc {
 		flex-shrink: 0;
 		background: transparent;
 		border: 1px solid var(--rule);
 		padding: 4px 9px;
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		cursor: pointer;
 	}
@@ -503,9 +499,8 @@
 		border: none;
 		cursor: pointer;
 		text-align: left;
-		font-family: var(--mono);
-		font-size: 12px;
-		letter-spacing: 0.05em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--ink);
 	}
 	.scope:hover {
@@ -517,7 +512,7 @@
 	}
 	.count {
 		opacity: 0.6;
-		font-size: 11px;
+		font-size: var(--t-meta);
 	}
 
 	.topics {
@@ -532,9 +527,8 @@
 		margin-top: 12px;
 	}
 	.chip {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.06em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		border: 1px solid var(--rule);
 		background: transparent;
 		color: var(--muted);
@@ -551,7 +545,7 @@
 		color: var(--on-blue);
 	}
 	.chip.big {
-		font-size: 12px;
+		font-size: var(--t-meta);
 		padding: 7px 14px;
 		color: var(--ink);
 	}
@@ -562,19 +556,17 @@
 	.notice,
 	.none {
 		padding: 60px var(--pad-chrome);
-		font-family: var(--mono);
-		font-size: 12px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.none {
 		text-align: center;
 	}
 	.none-title {
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 500;
-		font-size: 24px;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
+		font-size: var(--t-h2);
 		color: var(--muted);
 		margin: 0 0 18px;
 	}
@@ -582,10 +574,8 @@
 		background: transparent;
 		border: none;
 		padding: 0;
-		font-family: var(--mono);
-		font-size: 12px;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		cursor: pointer;
 	}
@@ -620,15 +610,14 @@
 		color: var(--blue);
 	}
 	.num {
-		font-family: var(--mono);
-		font-size: 12px;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 	}
 	.all-title {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 500;
-		font-size: 18px;
-		letter-spacing: -0.02em;
+		font-size: var(--t-body);
 		color: var(--ink);
 	}
 
@@ -654,10 +643,9 @@
 		margin-bottom: 8px;
 	}
 	.row h3 {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 600;
-		font-size: 20px;
-		letter-spacing: -0.02em;
+		font-size: var(--t-body);
 		line-height: 1.1;
 		text-transform: none;
 		margin: 0 0 6px;
@@ -667,17 +655,16 @@
 		margin-right: 8px;
 	}
 	.excerpt {
-		font-size: 13.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		max-width: 62ch;
 		margin: 0 0 8px;
 	}
 	.meta {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.06em;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 		margin: 0;
 	}
 	.section-row {
@@ -687,19 +674,19 @@
 		gap: 20px;
 	}
 	.section-row h3 {
-		font-size: 18px;
+		font-size: var(--t-body);
 		margin-bottom: 4px;
 	}
 	.arrow {
-		font-family: var(--mono);
-		font-size: 14px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 	blockquote {
 		margin: 0 0 8px;
 		border-left: 2px solid var(--blue);
 		padding-left: 14px;
-		font-size: 15px;
+		font-size: var(--t-meta);
 		line-height: 1.55;
 		color: var(--ink);
 	}
@@ -731,8 +718,8 @@
 	}
 	kbd {
 		display: inline-block;
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		border: 1px solid var(--rule);
 		padding: 2px 7px;
 		min-width: 14px;

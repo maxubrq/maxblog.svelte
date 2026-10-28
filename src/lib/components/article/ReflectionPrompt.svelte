@@ -11,7 +11,6 @@
 	 * the same sum over the same slug.
 	 */
 	import { dev } from '$app/environment';
-	import Tag from '$lib/components/ink/Tag.svelte';
 	import { useI18n } from '$lib/i18n';
 	import { sessionId } from '$lib/session';
 
@@ -64,11 +63,11 @@
 {#if status === 'sent'}
 	<p class="received">{t.sent}</p>
 {:else}
-	<section class="plate">
-		<div class="head">
-			<Tag on>{t.label}</Tag>
-			<Tag>{t.privacy}</Tag>
-		</div>
+	<!-- Folded by default (DESIGN.md §6.7): the essay has finished, and asking
+	     the reader for something is an offer, not the last thing on the page. -->
+	<details class="appendix plate">
+		<summary>{t.label}</summary>
+		<p class="privacy">{t.privacy}</p>
 		<p class="prompt">{prompt}</p>
 		<div class="say">
 			<textarea
@@ -89,39 +88,27 @@
 				</button>
 			</div>
 		</div>
-	</section>
+	</details>
 {/if}
 
 <style>
-	/* The plate the apparatus ends on — same frame as "one sentence", so the
-	   author's last word and the reader's first sit in the same kind of box. */
-	.plate {
-		border: 1.5px solid var(--rule-hard);
-		margin: 38px 0 34px;
-	}
-	.head {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 16px;
-		flex-wrap: wrap;
-		padding: 10px 16px;
-		border-bottom: 1px solid var(--rule);
+	.privacy {
+		font-size: var(--t-meta);
+		color: var(--muted);
+		margin: var(--s-2) 0 0;
 	}
 	.prompt {
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 500;
-		font-size: 24px;
+		font-size: var(--t-h2);
 		line-height: 1.15;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
 		color: var(--ink);
 		margin: 0;
-		padding: 22px 22px 0;
+		padding: var(--s-2) 0 0;
 		text-wrap: pretty;
 	}
 	.say {
-		padding: 16px 22px 20px;
+		padding: var(--s-2) 0 0;
 	}
 
 	textarea {
@@ -132,8 +119,8 @@
 		border: 1px solid var(--rule);
 		border-radius: 0;
 		padding: 12px 14px;
-		font-family: var(--reading-font);
-		font-size: 15px;
+		font-family: var(--body);
+		font-size: var(--t-body);
 		line-height: 1.6;
 		color: var(--ink);
 		resize: vertical;
@@ -160,10 +147,8 @@
 		border: 1.5px solid var(--ink);
 		border-radius: 0;
 		padding: 7px 16px;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--ink);
 		cursor: pointer;
 		transition:
@@ -179,9 +164,8 @@
 		cursor: default;
 	}
 	.failed {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.06em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 
@@ -190,17 +174,15 @@
 		margin: 38px 0 34px;
 		padding: 22px 0;
 		border-top: 1px solid var(--rule);
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		text-align: center;
 	}
 
 	@media (max-width: 720px) {
 		.prompt {
-			font-size: 20px;
+			font-size: var(--t-body);
 			padding: 18px 16px 0;
 		}
 		.say {

@@ -30,7 +30,7 @@
 	.body {
 		padding: 18px 16px 20px;
 		font-family: var(--body);
-		font-size: 16px;
+		font-size: var(--t-body);
 		line-height: 1.6;
 	}
 	.body :global(> :first-child) {

@@ -28,20 +28,16 @@
 	// cartoon apologising for it would be the wrong register.
 	const lost = $derived(page.status === 404);
 
-	// The underline is drawn at a fixed aspect, so it has to be told how wide the
-	// accented word actually is — 'here' and 'ở đây' are not the same lasso.
-	const markWidth = $derived(Math.round(t.error.lost.titleAccent.length * 21));
-
 	const doors = $derived([
 		{
-			path: '/writing',
+			path: '',
 			kind: t.nav.writing,
 			title: t.error.lost.doorWriting,
 			meta: t.error.lost.doorWritingMeta
 		},
 		{
-			path: '/series',
-			kind: t.nav.series,
+			path: '/topics',
+			kind: t.nav.topics,
 			title: t.error.lost.doorSeries,
 			meta: t.error.lost.doorSeriesMeta
 		},
@@ -73,10 +69,6 @@
 						<span class="numeral" aria-hidden="true">404</span>
 						<Headline
 							text={t.error.lost.title}
-							accent={t.error.lost.titleAccent}
-							mark="underline"
-							{markWidth}
-							size={44}
 						/>
 					</div>
 
@@ -86,9 +78,8 @@
 						<div class="head">
 							<Tag>{t.error.lost.doors}</Tag>
 						</div>
-						{#each doors as door, i (door.path)}
+						{#each doors as door (door.path)}
 							<a class="door" href={href(lang, door.path)}>
-								<span class="n">{String(i + 1).padStart(2, '0')}</span>
 								<Tag>{door.kind}</Tag>
 								<span class="title">{door.title}</span>
 								<span class="meta">{door.meta}</span>
@@ -121,18 +112,16 @@
 	{:else}
 		<main class="plain">
 			<Tag on>{fill(t.error.status, { status: page.status })}</Tag>
-			<Headline text={t.error.title} accent={t.error.titleAccent} size={52} />
+			<Headline text={t.error.title} />
 			{#if page.error?.message}
 				<p class="message">{page.error.message}</p>
 			{/if}
-			<a class="back" href={href(lang, '/writing')}>{t.error.back}</a>
+			<a class="back" href={href(lang)}>{t.error.back}</a>
 		</main>
 	{/if}
 
 	<footer>
-		<Tag>{site.domain} / {page.status}</Tag>
-		<Tag>{t.footer.tagline}</Tag>
-		<Tag>{site.copyright}</Tag>
+		<Tag>{site.copyright} {site.name}</Tag>
 	</footer>
 </div>
 
@@ -156,10 +145,9 @@
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 	.wordmark {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 700;
-		font-size: 19px;
-		letter-spacing: -0.03em;
+		font-size: var(--t-body);
 		color: var(--ink);
 		text-decoration: none;
 	}
@@ -205,9 +193,8 @@
 	.numeral {
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: clamp(72px, 11vw, 128px);
+		font-size: var(--t-title);
 		line-height: 0.82;
-		letter-spacing: -0.055em;
 	}
 	.statement :global(h1) {
 		padding-top: 6px;
@@ -218,7 +205,7 @@
 		margin: 40px 0 0;
 		max-width: 520px;
 		font-family: var(--body);
-		font-size: 17px;
+		font-size: var(--t-body);
 		line-height: 1.64;
 	}
 	.doors {
@@ -233,7 +220,7 @@
 	   blue, nothing moves (§3, §8). */
 	.door {
 		display: grid;
-		grid-template-columns: 44px 112px 1fr auto;
+		grid-template-columns: 112px 1fr auto;
 		align-items: baseline;
 		gap: 14px;
 		padding: 13px 0;
@@ -246,27 +233,18 @@
 		text-decoration: none;
 	}
 	.door:hover :global(.tag),
-	.door:hover .n,
 	.door:hover .meta {
 		color: inherit;
 	}
-	.n {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.12em;
-		color: var(--faint);
-	}
 	.title {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 500;
-		font-size: 20px;
-		letter-spacing: -0.02em;
+		font-size: var(--t-body);
 		line-height: 1.15;
 	}
 	.meta {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.08em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		white-space: nowrap;
 	}
@@ -282,10 +260,8 @@
 		gap: 12px;
 	}
 	.button {
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--on-blue);
 		background: var(--panel-blue);
 		padding: 11px 18px;
@@ -296,9 +272,8 @@
 		background: var(--blue-deep);
 	}
 	.hint {
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.08em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 
@@ -328,16 +303,14 @@
 		margin-top: 14px;
 	}
 	.message {
-		font-family: var(--mono);
-		font-size: 12.5px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		margin: 24px 0 20px;
 	}
 	.back {
-		font-family: var(--mono);
-		font-size: 11.5px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 
 	footer {
@@ -387,7 +360,7 @@
 		}
 		.title {
 			grid-column: 1 / -1;
-			font-size: 19px;
+			font-size: var(--t-body);
 		}
 	}
 </style>

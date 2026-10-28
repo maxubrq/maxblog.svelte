@@ -171,25 +171,22 @@
 
 	.host {
 		display: block;
-		font-family: var(--mono);
-		font-size: 9.5px;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		margin-bottom: 9px;
 	}
 	.title {
 		display: block;
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 600;
-		font-size: 14.5px;
+		font-size: var(--t-meta);
 		line-height: 1.35;
-		letter-spacing: -0.01em;
 		margin-bottom: 7px;
 	}
 	.desc {
 		display: block;
-		font-size: 12.5px;
+		font-size: var(--t-meta);
 		line-height: 1.55;
 		color: var(--muted);
 		margin-bottom: 9px;
@@ -205,10 +202,8 @@
 		gap: 10px;
 		border-top: 1px solid var(--rule);
 		padding-top: 8px;
-		font-family: var(--mono);
-		font-size: 9.5px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 	.kind {
 		color: var(--muted);

@@ -75,18 +75,14 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--on-blue);
 		opacity: 0.7;
 	}
 	figcaption {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		margin-top: 7px;
 	}

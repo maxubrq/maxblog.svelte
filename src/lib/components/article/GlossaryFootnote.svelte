@@ -23,7 +23,6 @@
 	 * to look. Never the long gloss — that is what `/glossary` is for, and each
 	 * row goes there, to its own letter.
 	 */
-	import Tag from '$lib/components/ink/Tag.svelte';
 	import { TERMS, getGlossaryLocale } from '$lib/glossary';
 	import { href, useI18n } from '$lib/i18n';
 
@@ -64,11 +63,8 @@
 </script>
 
 {#if list.length > 0}
-	<section class="terms">
-		<div class="head">
-			<h3><Tag on>{t.postHeading}</Tag></h3>
-			<Tag>{t.postSubhead}</Tag>
-		</div>
+	<details class="appendix terms">
+		<summary>{t.postHeading} <span class="count">({list.length})</span></summary>
 
 		<dl>
 			{#each list as entry (entry.id)}
@@ -90,27 +86,12 @@
 			{t.fullGlossaryPre}
 			<a href={href(i18n.lang, '/glossary')}>{t.fullGlossaryLink}</a>
 		</div>
-	</section>
+	</details>
 {/if}
 
 <style>
-	/* One rule lighter than the bibliography's: the sources are the essay's
-	   evidence, the words are only its vocabulary. */
-	.terms {
-		margin-top: 3em;
-		padding-top: 20px;
-		border-top: 1px solid var(--rule-hard);
-	}
-	.head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 12px;
-		flex-wrap: wrap;
-		margin-bottom: 18px;
-	}
-	h3 {
-		margin: 0;
+	dl {
+		margin-top: var(--s-2);
 	}
 
 	dl {
@@ -135,10 +116,9 @@
 	}
 	dt a,
 	.word {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 700;
-		font-size: 17px;
-		letter-spacing: -0.02em;
+		font-size: var(--t-body);
 		line-height: 1.2;
 		color: var(--blue);
 	}
@@ -153,16 +133,15 @@
 	}
 	.pos {
 		display: block;
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.06em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		margin-top: 7px;
 	}
 
 	dd {
 		margin: 0;
-		font-size: 13.5px;
+		font-size: var(--t-meta);
 		line-height: 1.55;
 		color: var(--muted);
 		max-width: 64ch;
@@ -173,10 +152,8 @@
 		padding-top: 12px;
 		border-top: 1px solid var(--rule);
 		text-align: center;
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.all a {

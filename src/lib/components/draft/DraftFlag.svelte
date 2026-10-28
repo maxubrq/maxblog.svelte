@@ -39,10 +39,8 @@
 		border-left: 1.5px solid var(--blue);
 	}
 	.label {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		font-weight: 500;
 	}
@@ -50,7 +48,7 @@
 		margin: 6px 0 0;
 		max-width: 56ch;
 		font-family: var(--body);
-		font-size: 14.5px;
+		font-size: var(--t-meta);
 		line-height: 1.55;
 		color: var(--ink);
 	}

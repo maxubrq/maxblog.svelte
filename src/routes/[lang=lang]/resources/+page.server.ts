@@ -11,5 +11,4 @@ export const entries: EntryGenerator = () => langs.map((lang) => ({ lang }));
  */
 export const load: PageServerLoad = async ({ params }) => ({
 	slugs: (await listPosts()).filter((p) => p.lang === (params.lang as Lang)).map((p) => p.slug),
-	foot: 'maxubrq.space / resources'
 });

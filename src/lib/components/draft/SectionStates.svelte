@@ -49,7 +49,7 @@
 	}
 	.label {
 		font-family: var(--body);
-		font-size: 15px;
+		font-size: var(--t-meta);
 		color: var(--ink);
 	}
 	.bar {
@@ -61,10 +61,8 @@
 		background: var(--blue);
 	}
 	.state {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 
@@ -74,11 +72,11 @@
 		color: var(--muted);
 	}
 	.notes .bar {
-		border-color: var(--faint);
+		border-color: var(--muted);
 		opacity: 0.55;
 	}
 	.notes .state {
-		color: var(--faint);
+		color: var(--muted);
 	}
 
 	@media (max-width: 480px) {

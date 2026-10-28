@@ -137,11 +137,9 @@
 		border: none;
 		background: transparent;
 		cursor: pointer;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 		white-space: nowrap;
 	}
 	/* The two ends pull inside the rail rather than off the page. */

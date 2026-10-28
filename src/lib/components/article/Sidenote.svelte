@@ -21,7 +21,7 @@
 <style>
 	.sidenote {
 		font-family: var(--body);
-		font-size: 13.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		border-top: 1px solid var(--rule);
@@ -38,31 +38,29 @@
 		margin-bottom: 0;
 	}
 	.n {
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		margin-right: 6px;
 	}
 	.label {
 		display: block;
-		font-family: var(--mono);
-		font-size: 9.5px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		margin-bottom: 4px;
 	}
-	/* Wide, and only if the reader wants notes in the margin: hang it there
-	   without disturbing the measure. `layout: single` keeps it in the column,
-	   which is also what every narrow screen gets. The attribute is on <html>,
-	   outside this component, hence :global. */
-	@media (min-width: 1180px) {
-		:global([data-layout='sidenote']) .sidenote {
+	/* Wide enough: hang it in the margin without disturbing the measure.
+	   Narrower screens keep it in the column. The screen decides, not a
+	   setting (DESIGN.md §4). */
+	@media (min-width: 1280px) {
+		.sidenote {
 			float: right;
 			clear: right;
-			width: 240px;
-			margin-right: -284px;
-			margin-bottom: 18px;
+			/* The grid's outer column: 176px, one 32px gutter past the text. */
+			width: 176px;
+			margin-right: -208px;
+			margin-bottom: var(--s-2);
 		}
 	}
 </style>

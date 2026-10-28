@@ -26,6 +26,18 @@ export function dots(iso: string) {
 	return `${y} · ${pad(m)} · ${pad(d)}`;
 }
 
+/** `22.09.2026` — the date on an essay's meta line. */
+export function dmy(iso: string) {
+	const { y, m, d } = parts(iso);
+	return `${pad(d)}.${pad(m)}.${y}`;
+}
+
+/** `22.09` — the date when the year is already said above it. */
+export function dm(iso: string) {
+	const { m, d } = parts(iso);
+	return `${pad(d)}.${pad(m)}`;
+}
+
 /** `04·14` — the archive-row date, year comes from the section head. */
 export function short(iso: string) {
 	const { m, d } = parts(iso);

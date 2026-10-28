@@ -1,7 +1,7 @@
 <script lang="ts">
-	// One archive/index row: grid, hairline top-border, hover flips to blue (§3, §8).
-	import Tag from './Tag.svelte';
-
+	// One archive row (DESIGN.md §7.1): date · title · topic and minutes. A
+	// hairline above; hover turns the title blue. No ordinal — the newest essay
+	// is not "01 of" anything.
 	let {
 		href,
 		lead,
@@ -23,66 +23,57 @@
 
 <a {href} class="row" style="--lead-w: {leadWidth}">
 	<span class="lead">{lead}</span>
-	<Tag>{topic}</Tag>
-	<span class="title"
-		>{title}{#if interactive}<span class="dot" title="interactive"> ●</span>{/if}</span
-	>
-	<span class="meta">{meta}</span>
+	<span class="title">{title}{#if interactive}<span class="dot" title="interactive"></span>{/if}</span>
+	<span class="meta">{[topic, meta].filter(Boolean).join(' · ')}</span>
 </a>
 
 <style>
 	.row {
 		display: grid;
-		grid-template-columns: var(--lead-w) 118px 1fr auto;
+		grid-template-columns: var(--lead-w) 1fr auto;
 		align-items: baseline;
-		gap: 20px;
-		padding: 15px 0;
+		gap: var(--s-2);
+		padding: var(--s-2) 0;
 		border-top: 1px solid var(--rule);
 		color: var(--ink);
 		text-decoration: none;
 	}
 	.row:hover {
-		color: var(--blue);
 		text-decoration: none;
 	}
-	.lead {
-		font-family: var(--mono);
-		font-size: 12.5px;
-		color: var(--faint);
+	.row:hover .title {
+		color: var(--blue);
 	}
-	.row:hover .lead,
-	.row:hover .meta {
-		color: inherit;
+	.lead,
+	.meta {
+		font-size: var(--t-meta);
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
 	}
 	.title {
-		font-family: var(--display);
-		font-size: 21px;
-		font-weight: 500;
-		letter-spacing: -0.02em;
-		line-height: 1.15;
+		font-size: var(--t-body);
+		font-weight: 600;
+		line-height: 1.3;
 	}
+	/* The interactive mark: a 6px dot drawn, not typed — the text face has no ● */
 	.dot {
-		color: var(--blue);
-		font-size: 13px;
-	}
-	.meta {
-		font-family: var(--mono);
-		font-size: 11px;
-		color: var(--muted);
-		white-space: nowrap;
+		display: inline-block;
+		width: 6px;
+		height: 6px;
+		margin-left: 8px;
+		vertical-align: middle;
+		background: var(--blue);
+		border-radius: 50%;
 	}
 	@media (max-width: 780px) {
 		.row {
 			grid-template-columns: 1fr auto;
-			gap: 4px 14px;
-			padding: 14px 0;
-		}
-		.lead {
-			grid-row: 1;
+			gap: 4px var(--s-2);
 		}
 		.title {
 			grid-column: 1 / -1;
-			font-size: 19px;
+			grid-row: 2;
 		}
 	}
 </style>

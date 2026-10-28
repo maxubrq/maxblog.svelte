@@ -104,24 +104,20 @@
 		box-shadow: 0 10px 30px rgba(13, 13, 17, 0.16);
 	}
 	.kind {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 	.term {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 700;
-		font-size: 18px;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
+		font-size: var(--t-body);
 		display: block;
 		margin: 5px 0 7px;
 	}
 	.def {
 		font-family: var(--body);
-		font-size: 13px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--ink);
 		display: block;
@@ -135,10 +131,8 @@
 	}
 	.count,
 	.foot a {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.foot a {

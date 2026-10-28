@@ -1,8 +1,9 @@
 <script lang="ts">
 	/**
-	 * The header's `search ⌘K` trigger. Only opens the thing — the overlay and
-	 * the hotkey live in the locale layout, so search can also be opened from
-	 * anywhere else that imports `$lib/search.svelte`.
+	 * The header's search trigger — a magnifier in a 32px square (DESIGN.md
+	 * §7.7). The ⌘K hint lives in the tooltip, not on the button: it is noise on
+	 * a phone and wrong on anything that is not a Mac. Only opens the thing —
+	 * the overlay and the hotkey live in the locale layout.
 	 */
 	import { useI18n } from '$lib/i18n';
 	import { search } from '$lib/search.svelte';
@@ -12,34 +13,25 @@
 </script>
 
 <button class="trigger" onclick={() => search.show()} aria-label={t.open} title={t.hint}>
-	<span>{t.label}</span>
-	<span class="kbd">⌘K</span>
+	<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+		<circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.5" />
+		<line x1="10.2" y1="10.2" x2="15" y2="15" stroke="currentColor" stroke-width="1.5" />
+	</svg>
 </button>
 
 <style>
 	.trigger {
-		display: flex;
-		align-items: center;
-		gap: 6px;
+		display: grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
 		background: transparent;
-		border: 1px solid var(--rule);
-		color: var(--muted);
-		font-family: var(--body);
-		font-size: 13px;
-		line-height: 1;
-		padding: 4px 10px;
+		border: none;
+		color: var(--ink);
+		padding: 0;
 		cursor: pointer;
-		transition:
-			color 0.15s,
-			border-color 0.15s;
 	}
 	.trigger:hover {
-		color: var(--ink);
-		border-color: var(--rule-hard);
-	}
-	.kbd {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.05em;
+		color: var(--blue);
 	}
 </style>

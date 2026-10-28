@@ -30,6 +30,5 @@ export const load: PageLoad = async ({ params }) => {
 
 	return {
 		shelf: SERIES.map((s) => ({ id: s.id, chapters: resolveChapters(s, lang, posts) })),
-		foot: 'maxubrq.space / series'
 	};
 };

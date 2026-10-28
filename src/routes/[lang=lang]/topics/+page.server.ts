@@ -24,6 +24,5 @@ export const load: PageServerLoad = async ({ params }) => {
 				count: posts.filter((p) => accepted.includes(p.topic?.toLowerCase() ?? '')).length
 			};
 		}),
-		foot: 'maxubrq.space / topics'
 	};
 };

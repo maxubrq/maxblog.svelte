@@ -1,0 +1,236 @@
+/* Cut from src/app.css on 2026-10-28 (DESIGN.md §10.1, §4).
+   Fore-edge, reading cursor, flow mode, reading-memory pin, reader marks,
+   and the three interactive framings. Restore alongside the components in
+   archived/lib/components. */
+
+/* ── The fore-edge — remaining weight instead of a progress bar ─────
+   Two homes for the same instrument: a rail beside the reading column where
+   there is room for it, a thin strip at the edge of the screen where there is
+   not. Never both at once.
+
+   These live here rather than in ForeEdge.svelte because the band, its wash
+   and its flag are one composite whose parts are positioned against each
+   other, and because `--fore-edge-gap` is a page measurement, not a component
+   one: it is the air between the rail and the first word of a line. */
+.fore-edge-rail {
+	/* Fixed against the left edge of the centred 940px column. Production
+	   makes this a sticky cell in a three-column grid; this edition centres
+	   the article in a container, so the rail is anchored to the same seam by
+	   hand — and to `--article-w`, so it moves with the reader's measure
+	   instead of standing where the column used to be. */
+	--fore-edge-gap: clamp(52px, calc((100vw - var(--article-w)) / 2 - 60px), 190px);
+	position: fixed;
+	top: 120px;
+	right: calc(50% + var(--article-w) / 2 + var(--fore-edge-gap));
+	display: flex;
+	align-items: center;
+	z-index: 20;
+}
+.fore-edge-mobile {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 16px;
+	display: none;
+	align-items: flex-end;
+	justify-content: flex-start;
+	padding: 24px 4px 0 0;
+	z-index: 40;
+	pointer-events: none;
+}
+@media (max-width: 1180px) {
+	/* By here the gutter has run out — the strip takes over. */
+	.fore-edge-rail {
+		display: none;
+	}
+	.fore-edge-mobile {
+		display: flex;
+	}
+}
+
+/* One hit band per section: the fore-edge is the table of contents. The band
+   itself is invisible — what shows is the wash over its leaves and the flag
+   with its name. */
+.fore-edge-band {
+	position: absolute;
+	left: 0;
+	right: 0;
+	display: block;
+	text-decoration: none;
+	cursor: pointer;
+}
+.fore-edge-band:hover {
+	text-decoration: none;
+}
+.fore-edge-band-wash {
+	position: absolute;
+	inset: 0 7px;
+	background: var(--blue);
+	transition: opacity 0.14s ease;
+	pointer-events: none;
+}
+
+/* The name, set in the air between the rail and the text column so the eye
+   travels one way — toward the page, never off the left of the screen and
+   never over the first words of a line. A long title wraps down the margin the
+   way a hand-written note does, rather than reaching into the text. */
+.fore-edge-flag {
+	position: absolute;
+	left: calc(100% + 10px);
+	top: 50%;
+	transform: translateY(-50%);
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: baseline;
+	gap: 3px 8px;
+	width: max-content;
+	/* Never wider than the air it sits in, so it cannot reach the text — with a
+	   floor, since a flag too narrow to read is worse than no flag. */
+	max-width: max(112px, calc(var(--fore-edge-gap, 140px) - 22px));
+	padding: 6px 10px;
+	background: var(--paper);
+	border: 1.5px solid var(--rule-hard);
+	font-family: var(--body);
+	font-size: var(--t-meta);
+	line-height: 1.3;
+	color: var(--ink);
+	transition: opacity 0.14s ease;
+	pointer-events: none;
+	z-index: 3;
+}
+.fore-edge-flag-num {
+	grid-area: 1 / 1;
+	font-family: var(--body);
+	font-size: var(--t-meta);
+	color: var(--blue);
+}
+/* Three lines, then the title is cut — a flag, not a summary. */
+.fore-edge-flag-text {
+	grid-area: 2 / 1 / 2 / -1;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	overflow: hidden;
+	overflow-wrap: anywhere;
+}
+.fore-edge-flag-min {
+	grid-area: 1 / 2;
+	justify-self: end;
+	font-family: var(--body);
+	font-size: var(--t-meta);
+	color: var(--muted);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ── Reading cursor (con trỏ đọc) ───────────────────────────────── */
+/* A band of attention, never a line laid across the text: the block you are
+   reading holds full contrast and the rest fall back by a breath. Enabled per
+   reader via data-ruler on <html>; data-ruler-live is added by ReadingRuler
+   only while the reader is moving, so standing still restores the whole page.
+   Blocks are opted in with .ruler-block by the same component. */
+[data-ruler='on'] .ruler-block {
+	transition: opacity 0.32s ease;
+}
+[data-ruler='on'][data-ruler-live='on'] .ruler-block {
+	opacity: 0.34;
+}
+[data-ruler='on'][data-ruler-live='on'] .ruler-block.ruler-focus {
+	opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+	[data-ruler='on'] .ruler-block {
+		transition: none;
+	}
+}
+
+/* ── Flow mode ──────────────────────────────────────────────────── */
+/* Study is the page with its apparatus; flow is the prose, wider and alone.
+   It is a CSS switch rather than a different tree, so changing your mind
+   mid-essay does not rebuild the article under you — and does not lose your
+   place. */
+/* `!important` for the same reason the glossary rules above need it: a
+   component's own scoped rule (`.tags.s-hash { display: flex }`) matches with
+   the same specificity as this one and is injected later, so without it the tag
+   row would keep its display and flow would only half happen. */
+[data-reading-mode='flow'] .flow-hide {
+	display: none !important;
+}
+
+/* ── Reading memory ─────────────────────────────────────────────── */
+/* The section a reader stopped at, marked at its head. The heading comes from
+   the post's markdown, so `ReadingMemoryGutter` can only put a class on it —
+   which is the right seam anyway: the look belongs here with the other rules. */
+.memory-resume {
+	border-top: 2px solid var(--blue);
+	padding-top: 14px;
+}
+
+/* ── The reader's own marks ─────────────────────────────────────── */
+/* A passage the reader marked, built in script and spliced into mdsvex output
+   by `ReaderMarks` — so, like `.memory-resume`, the component can only name it
+   and the look lives here.
+
+   The stroke itself is drawn by rough.js on an SVG layer above the text; what
+   is left for CSS is the faint field some gestures sit on, and the numeral. */
+.mk {
+	padding-bottom: 1px;
+}
+.mk-dissent {
+	background: color-mix(in srgb, var(--ink) 5%, transparent);
+}
+.mk-snag {
+	background: color-mix(in srgb, var(--muted) 8%, transparent);
+}
+.mk-ask {
+	background: color-mix(in srgb, var(--blue) 7%, transparent);
+}
+/* A note is bracketed in the margin instead, so the prose stays unmarked. */
+.mk-note {
+	padding-left: 7px;
+	margin-left: -2px;
+}
+.mk-idx {
+	font-family: var(--body);
+	font-size: var(--t-meta);
+	color: var(--blue);
+	vertical-align: super;
+	margin-left: 3px;
+	/* An annotation of the passage, never part of it — so a later selection of
+	   the same words does not swallow the numeral. */
+	user-select: none;
+}
+
+/* The pen drawing itself on, once per mark. */
+@keyframes mk-draw {
+	from {
+		stroke-dashoffset: var(--len);
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
+/* ── Interactive framing ────────────────────────────────────────── */
+/* How a diagram or a live figure sits in the column, per `data-framing` on
+   <html>. `.interactive-plate` goes on the <figure> of each such component. */
+.interactive-plate {
+	margin: 2.6em 0;
+}
+[data-framing='bleed'] .interactive-plate {
+	margin: 2.6em -80px;
+}
+[data-framing='card'] .interactive-plate {
+	margin: 2.6em -20px;
+	padding: 4px 24px;
+	background: var(--paper2);
+}
+/* The bleed reaches outside the measure, which there is no room for once the
+   column is the width of the screen. */
+@media (max-width: 900px) {
+	[data-framing='bleed'] .interactive-plate {
+		margin: 2.6em 0;
+	}
+}
+

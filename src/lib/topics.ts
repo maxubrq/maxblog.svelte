@@ -141,14 +141,15 @@ export function getTopicLocale(data: TopicData, lang: string): TopicLocale {
 	return lang === 'vi' && data.vi ? { ...base, ...data.vi } : base;
 }
 
-export const TONE_STYLES: Record<
-	TopicTone,
-	{ size: number; lh: number; italic: boolean; align: 'left' | 'center'; maxW: string }
-> = {
-	'clinical-warm': { size: 18, lh: 1.7, italic: false, align: 'left', maxW: '54ch' },
-	plainspoken: { size: 17.5, lh: 1.7, italic: false, align: 'left', maxW: '54ch' },
-	literary: { size: 19, lh: 1.75, italic: true, align: 'left', maxW: '48ch' },
-	sparse: { size: 21, lh: 1.6, italic: false, align: 'center', maxW: '34ch' }
+export const TONE_STYLES: Record<TopicTone, { italic: boolean; maxW: string }> = {
+	// The voice of an editor's note, kept to what does not break the type
+	// scale: italic or not, and how wide the note runs. Size, leading and
+	// centring were cut (DIGITAL_EDITORIAL_DESIGN.md §7) — every note is set
+	// at the body size, flush left, like the essays it introduces.
+	'clinical-warm': { italic: false, maxW: '54ch' },
+	plainspoken: { italic: false, maxW: '54ch' },
+	literary: { italic: true, maxW: '48ch' },
+	sparse: { italic: false, maxW: '34ch' }
 };
 
 /** The order on the hub, and the numbering that goes with it. */
