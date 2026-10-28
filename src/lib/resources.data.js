@@ -120,11 +120,6 @@ export const RESOURCES = [
 			note: 'Thí nghiệm đã đặt tên cho hiện tượng. Những đứa trẻ mẫu giáo vốn đã tự chọn vẽ được hứa một tấm giấy khen, được tặng bất ngờ, hoặc không có gì; hai tuần sau chỉ nhóm được hứa là mất hứng thú. Cả hai nhóm có thưởng đều cầm về cùng một tấm giấy khen — đó là chỗ tách bạch được rằng thứ gây hại là lời hứa chứ không phải phần thưởng.',
 		},
 		appearsIn: [
-			{
-				slug: '003-pure-joy-vi',
-				title: 'Niềm vui thuần túy và biện minh quá mức (overjustification)',
-				locale: 'vi',
-			},
 		],
 	},
 	{

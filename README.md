@@ -357,7 +357,7 @@ generated, and **committed**, exactly as `scripts/halftone.mjs` commits its plat
 
 ```bash
 node scripts/drafts.mjs              # every post carrying openDraft:
-node scripts/drafts.mjs 003-pure-joy-vi
+node scripts/drafts.mjs 004-AI-empowerment-counting-by-SP-vi
 ```
 
 Reading git at build time is the obvious alternative and it is a trap: Vercel clones shallow, the

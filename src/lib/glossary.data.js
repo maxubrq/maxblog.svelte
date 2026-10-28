@@ -214,11 +214,6 @@ export const TERMS = {
 				'Sự nhạt đi của một hứng thú vốn đã có, sau khi người ta hứa một phần thưởng cho nó — lý do bên ngoài chiếm chỗ của lý do bên trong.',
 			long: 'Được Lepper, Greene và Nisbett đặt tên năm 1973, từ một thí nghiệm với các bé mẫu giáo vốn đã tự chọn vẽ trong giờ chơi tự do, chia làm ba nhóm: được hứa giấy khen trước khi vẽ, được tặng bất ngờ sau khi vẽ, và không có gì. Hai tuần sau chỉ nhóm được hứa là vẽ ít hẳn đi, và vẽ kém hơn — mà nhóm được hứa với nhóm được tặng bất ngờ đều cầm về cùng một tấm giấy khen, nên thứ gây hại không phải phần thưởng. Là lời hứa. Cái tên chính xác một cách khó chịu: vấn đề không phải thiếu lý do mà là thừa lý do. Có một lý do bên ngoài đủ tốt để giải thích hành vi rồi thì lý do bên trong thành ra không cần thiết nữa, và cái không cần thiết thì mờ dần.',
 			appearances: [
-				{
-					title: 'Niềm vui thuần túy và biện minh quá mức (overjustification)',
-					slug: '003-pure-joy-vi',
-					section: '',
-				},
 			],
 		},
 	},
@@ -304,11 +299,6 @@ export const TERMS = {
 				'Đơn vị ước lượng công sức, do đội tự thống nhất chứ không đo được — kích cỡ tương đối, không phải số giờ.',
 			long: 'Story point cố tình không phải đơn vị thời gian: đội so một việc với những việc đã từng làm rồi gán cho nó một con số, nên thang điểm là của riêng đội đó và không có nghĩa gì khi đem so giữa các đội. Rắc rối bắt đầu khi con số này bị nhấc ra khỏi việc lập kế hoạch — chỗ nó có ích — và đặt vào việc đo năng suất, nơi nó thành một chỉ tiêu mà chính những người gán điểm có thể xê dịch. Kể cả bỏ qua chuyện đó, tổng điểm vẫn là một phép đo đầy nhiễu, và đó là nội dung của bài dưới đây.',
 			appearances: [
-				{
-					title: 'Niềm vui thuần túy và biện minh quá mức (overjustification)',
-					slug: '003-pure-joy-vi',
-					section: '',
-				},
 				{
 					title: 'Sử dụng StoryPoint để tính tăng trưởng do AI tạo nên được hay không?',
 					slug: '004-AI-empowerment-counting-by-SP-vi',

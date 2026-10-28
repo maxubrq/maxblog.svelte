@@ -3,7 +3,7 @@
  * The open draft's revisions, read out of git.
  *
  *     node scripts/drafts.mjs            # every post carrying `openDraft:`
- *     node scripts/drafts.mjs 003-pure-joy-vi
+ *     node scripts/drafts.mjs 004-AI-empowerment-counting-by-SP-vi
  *     node scripts/drafts.mjs --check    # is the committed data module current?
  *
  * Writes `src/lib/drafts.data.js` and expects the result to be **committed**,
