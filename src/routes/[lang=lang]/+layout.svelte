@@ -3,8 +3,9 @@
 	import { page } from '$app/state';
 	import DisplaySettings from '$lib/components/chrome/DisplaySettings.svelte';
 	import SearchButton from '$lib/components/chrome/SearchButton.svelte';
-	import { LANG_COOKIE, LANG_COOKIE_MAX_AGE, href, setI18n, swapLocale } from '$lib/i18n';
+	import { LANG_COOKIE, LANG_COOKIE_MAX_AGE, fill, href, setI18n, swapLocale } from '$lib/i18n';
 	import { reading as prefs } from '$lib/reading.svelte';
+	import { runningHead } from '$lib/running-head.svelte';
 	import { search, searchHotkey } from '$lib/search.svelte';
 	import { site } from '$lib/site';
 	import type { Snippet } from 'svelte';
@@ -107,16 +108,30 @@
 <div class="root">
 	<header class:tucked>
 		<a class="wordmark" href={href(data.lang)}>{site.name}<span class="dot">.</span></a>
-		<nav>
-			{#each nav as item (item.key)}
-				<a
-					href={href(data.lang, item.path)}
-					class="navlink"
-					class:active={current === item.key}
-					aria-current={current === item.key ? 'page' : undefined}>{item.label}</a
-				>
-			{/each}
-		</nav>
+		<!-- On an essay, past its opener, the header is the running head
+		     (DIGITAL_EDITORIAL_DESIGN.md §4, §12.3): the essay and the section
+		     you are in. The doors are one scroll away, and in the footer. -->
+		{#if runningHead.active}
+			<p class="running" aria-live="off">
+				<span class="rh-title">{runningHead.title}</span>
+				{#if runningHead.of > 0 && runningHead.section > 0}
+					<span class="rh-section"
+						>{fill(i18n.t.article.sectionOf, { n: runningHead.section, of: runningHead.of })}</span
+					>
+				{/if}
+			</p>
+		{:else}
+			<nav>
+				{#each nav as item (item.key)}
+					<a
+						href={href(data.lang, item.path)}
+						class="navlink"
+						class:active={current === item.key}
+						aria-current={current === item.key ? 'page' : undefined}>{item.label}</a
+					>
+				{/each}
+			</nav>
+		{/if}
 		<div class="tools">
 			<SearchButton />
 			<a
@@ -143,8 +158,10 @@
 		{/await}
 	{/if}
 
+	<!-- The imprint (§4): who publishes this, and in what type. -->
 	<footer>
 		<span>{site.copyright} {site.name}</span>
+		<span>{i18n.t.footer.type}: CDA Independence, Monaspace Xenon</span>
 		<a href={href(data.lang, '/glossary')}>{i18n.t.nav.glossary}</a>
 		<a href={href(data.lang, '/resources')}>{i18n.t.nav.resources}</a>
 		<a href={href(data.lang, '/reading-room')}>{i18n.t.nav.readingRoom}</a>
@@ -253,6 +270,28 @@
 	.locale:hover {
 		color: var(--blue);
 		text-decoration: none;
+	}
+
+	.running {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		align-items: baseline;
+		gap: var(--s-2);
+		margin: 0;
+		font-size: var(--t-meta);
+	}
+	.rh-title {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-weight: 600;
+	}
+	.rh-section {
+		flex: none;
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
 	}
 
 	main {

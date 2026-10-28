@@ -53,12 +53,13 @@
 	/* Wide enough: hang it in the margin without disturbing the measure.
 	   Narrower screens keep it in the column. The screen decides, not a
 	   setting (DESIGN.md §4). */
-	@media (min-width: 1180px) {
+	@media (min-width: 1280px) {
 		.sidenote {
 			float: right;
 			clear: right;
-			width: 240px;
-			margin-right: -284px;
+			/* The grid's outer column: 176px, one 32px gutter past the text. */
+			width: 176px;
+			margin-right: -208px;
 			margin-bottom: var(--s-2);
 		}
 	}

@@ -58,6 +58,7 @@
 	<meta name="description" content={local.subtitle} />
 </svelte:head>
 
+<div class="sheet">
 <section class="masthead">
 	<div class="tags">
 		<Tag on>{t.label}</Tag>
@@ -186,10 +187,11 @@
 		{/each}
 	</div>
 </section>
+</div>
 
 <style>
 	.masthead {
-		padding: 46px var(--pad-chrome) 32px;
+		padding: 46px 0 32px;
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 	.tags {
@@ -238,7 +240,7 @@
 	}
 
 	.arc {
-		padding: 30px var(--pad-chrome) 10px;
+		padding: 30px 0 10px;
 	}
 	.part {
 		display: grid;
@@ -353,7 +355,7 @@
 	}
 
 	.bridge-wrap {
-		padding: 8px var(--pad-chrome) 30px;
+		padding: 8px 0 30px;
 	}
 	.bridge {
 		border: 1.5px solid var(--rule-hard);
@@ -412,9 +414,9 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 30px;
-		padding: 20px var(--pad-chrome) 60px;
+		padding: 20px 0 60px;
 		border-top: 1.5px solid var(--rule-hard);
-		margin: 4px var(--pad-chrome) 0;
+		margin: 4px 0 0;
 		padding-left: 0;
 		padding-right: 0;
 	}
@@ -464,18 +466,6 @@
 		.bridge-body,
 		.tail {
 			grid-template-columns: 1fr;
-		}
-	}
-	@media (max-width: 700px) {
-		.masthead,
-		.arc,
-		.bridge-wrap {
-			padding-left: 18px;
-			padding-right: 18px;
-		}
-		.tail {
-			margin-left: 18px;
-			margin-right: 18px;
 		}
 	}
 </style>

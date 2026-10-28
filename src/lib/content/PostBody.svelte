@@ -18,13 +18,46 @@
 		font-family: var(--body);
 		font-size: var(--reading-fs, var(--t-body));
 		line-height: 1.62;
+		counter-reset: section;
 	}
 
-	/* The title block already ends 64px above; a section head that opens the
-	   essay must not add its own two lines on top. */
-	.prose > :global(:first-child) {
-		margin-top: 0;
+	/* ── Page furniture (DIGITAL_EDITORIAL_DESIGN.md §4) ──────────────── */
+
+	/* The section number, as a 13px label on its own line above each h2: `01`,
+	   `02`… — the same count the running head and the contents in the margin
+	   read out, since the contents are the essay's h2s and nothing else. It
+	   was specified to hang in the margin column, but that column is where the
+	   sticky contents ride, and the two collided; above the head it can never
+	   collide with anything. */
+	.prose :global(h2) {
+		counter-increment: section;
 	}
+	.prose :global(h2)::before {
+		content: counter(section, decimal-leading-zero);
+		display: block;
+		margin-bottom: 0.3em;
+		font-family: var(--body);
+		font-size: 13px;
+		font-weight: 400;
+		line-height: 1.4;
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* The end mark: an 8px square of ink-blue at the end of the last line,
+	   in the line, where a magazine prints "END". Drawn, because the text
+	   face has no ■. Only when a paragraph really is the last thing — an
+	   essay that ends on a figure ends on the figure. */
+	.prose > :global(p:last-child)::after {
+		content: '';
+		display: inline-block;
+		width: 0.45em;
+		height: 0.45em;
+		margin-left: 0.4em;
+		background: var(--blue);
+		vertical-align: 0.05em;
+	}
+
 
 	/* mdsvex output is not scoped to this component, hence :global. */
 	.prose :global(p) {

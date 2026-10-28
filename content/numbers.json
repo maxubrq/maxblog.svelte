@@ -1,0 +1,15 @@
+{
+	"vi": {
+		"001-float-memory-vi": 1,
+		"002-seven-years-in-software_vi": 2,
+		"003-pure-joy-vi": 3,
+		"004-AI-empowerment-counting-by-SP-vi": 4,
+		"005-distributed-system-vocabulary-vi": 5
+	},
+	"en": {
+		"001-float-memory-en": 1,
+		"002-seven-years-in-software_en": 2,
+		"004-AI-empowerment-counting-by-SP-en": 3,
+		"005-distributed-system-vocabulary-en": 4
+	}
+}

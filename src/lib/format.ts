@@ -32,6 +32,12 @@ export function dmy(iso: string) {
 	return `${pad(d)}.${pad(m)}.${y}`;
 }
 
+/** `22.09` — the date when the year is already said above it. */
+export function dm(iso: string) {
+	const { m, d } = parts(iso);
+	return `${pad(d)}.${pad(m)}`;
+}
+
 /** `04·14` — the archive-row date, year comes from the section head. */
 export function short(iso: string) {
 	const { m, d } = parts(iso);

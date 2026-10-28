@@ -1,23 +1,22 @@
 <script lang="ts">
 	/**
-	 * A topic as a room with an editor in it, not a filter over the archive.
-	 * Top to bottom, the same order production reads in:
+	 * A topic as a chapter opener (DIGITAL_EDITORIAL_DESIGN.md §7). On the page
+	 * grid, top to bottom:
 	 *
-	 *   1. the siblings strip — the other five doors, from inside this one
-	 *   2. the masthead — oversized blue name, and the tagline
-	 *   3. the editor's note — why the room exists, signed
-	 *   4. the three hand-picked ways in
-	 *   5. the scratchpad — what is being thought about and not yet written
-	 *   6. everything else filed here, newest first
+	 *   1. the opener — the room's name at display size, its line, its plate
+	 *   2. the editor's note — why the room exists, signed
+	 *   3. the hand-picked three and the scratchpad, when they exist
+	 *   4. every essay filed here, as the home page lists them
+	 *   5. the other rooms, at the foot, like the contents at a chapter's end
 	 *
-	 * Sections 3–5 are authored: they come from `$lib/topics`, not from the
-	 * posts, and a room stands up before a single essay is filed in it. That is
-	 * the point of the port — this edition's topic page used to be the masthead
-	 * and a grid, which says nothing a `topic` tag does not already say.
+	 * Labels hang in the margin column; the text column is the essays' own.
+	 * Sections 2–3 are authored in `$lib/topics`; `starters` and `scratchpad`
+	 * are empty on purpose until the archive is thicker (decided 2026-08-11).
 	 */
 	import DuoPhoto from '$lib/components/ink/DuoPhoto.svelte';
-	import Tag from '$lib/components/ink/Tag.svelte';
-	import { long, pad } from '$lib/format';
+	import IndexRow from '$lib/components/ink/IndexRow.svelte';
+	import { formatNumber } from '$lib/content/numbers';
+	import { dm, year } from '$lib/format';
 	import { href, fill, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
 	import { TOPICS_ORDER, TOPIC_CONTENT, TONE_STYLES, getTopicLocale } from '$lib/topics';
@@ -30,10 +29,22 @@
 
 	const room = $derived(TOPIC_CONTENT[data.id]);
 	const local = $derived(getTopicLocale(room, i18n.lang));
+	/** The voice of the note survives as italic and a narrower measure only;
+	 *  its size, leading and centring were cut — one body size, flush left. */
 	const tone = $derived(TONE_STYLES[room.tone]);
 
+	/**
+	 * The inverted opener is on trial in one room before it goes to all six
+	 * (DIGITAL_EDITORIAL_DESIGN.md §12.2). Add an id here to widen the trial.
+	 */
+	const INVERTED_TRIAL = new Set(['tech']);
+	const inverted = $derived(INVERTED_TRIAL.has(data.id));
+
 	const siblings = $derived(
-		TOPICS_ORDER.map((id) => ({ id, name: getTopicLocale(TOPIC_CONTENT[id], i18n.lang).name }))
+		TOPICS_ORDER.filter((id) => id !== data.id).map((id) => ({
+			id,
+			name: getTopicLocale(TOPIC_CONTENT[id], i18n.lang).name
+		}))
 	);
 
 	const kindLabel = $derived({
@@ -41,545 +52,299 @@
 		draft: t.topics.kindDraft,
 		reading: t.topics.kindReading
 	});
+
+	const years = $derived([...new Set(data.posts.map((p) => year(p.date)))]);
 </script>
 
 <svelte:head>
-	<title>{local.name.toLowerCase()} — {site.name}</title>
+	<title>{local.name} — {site.name}</title>
 	<meta name="description" content={local.tagline} />
 </svelte:head>
 
-<!-- The other doors, from inside this one. A room you cannot leave sideways
-     makes the reader go back to the hub to do what is one click of work. -->
-<nav class="siblings">
-	{#each siblings as s (s.id)}
-		<a class:on={s.id === data.id} href={href(i18n.lang, `/topics/${s.id}`)}>{s.name}</a>
-	{/each}
-</nav>
-
-<!-- Masthead and note share a row with the plate, which is why they are wrapped:
-     a plate beside the note alone has only the note's height to fill, and no
-     honest ratio fills a 1568px page from a 380px column. Spanning both gives it
-     the vertical run a department plate actually needs. -->
-<div class="room" class:with-plate={room.plate}>
-	<div class="room-main">
-		<section class="cover">
-			<div class="row">
-			<Tag on>{t.topics.topicLabel} {pad(data.index)} / {pad(data.of)}</Tag>
-				<Tag>{data.total} {data.total === 1 ? t.topics.essay : t.topics.essays}</Tag>
-			</div>
-			<h1>{local.name}</h1>
+<!-- The opener: a chapter's title page. -->
+<section class="opener" class:inverse={inverted}>
+	<div class="grid opener-grid">
+		<ul class="hang-list g-margin facts">
+			<li class="where">{t.topics.topicLabel} {data.index} / {data.of}</li>
+			<li>{data.total} {data.total === 1 ? t.topics.essay : t.topics.essays}</li>
+		</ul>
+		<div class="title-cell" class:with-plate={room.plate}>
+			<h1 class="display">{local.name}</h1>
 			<p class="tagline">{local.tagline}</p>
-		</section>
-
-		<!-- Why the room exists, in the editor's voice. The type is set by the room's
-		     own `tone` rather than by the reader's settings — this is the one place on
-		     the site where a body size is a property of the subject. -->
-		<section
-			class="note"
-			style:--note-size="{tone.size}px"
-			style:--note-lh={tone.lh}
-			style:--note-w={tone.maxW}
-		>
-			<div class="note-head"><Tag on>{t.topics.editorNote}</Tag></div>
-			<!-- One measure governs the paragraphs *and* the signature: a "— m." set to
-			     the edge of a wider box than the prose it signs reads as belonging to
-			     the page rather than to the note. -->
-			<div class="note-body" class:italic={tone.italic} class:centred={tone.align === 'center'}>
-				{#each local.intro as paragraph, i (i)}
-					<p>
-						{#if i === 0}<span class="drop">{paragraph.charAt(0)}</span>{paragraph.slice(1)}{:else}{paragraph}{/if}
-					</p>
-				{/each}
-				<div class="sign">— m.</div>
+		</div>
+		{#if room.plate}
+			<!-- Atmospheric, so `alt` is empty by design: the name beside it says
+			     what the room is, in the reader's own language. -->
+			<div class="plate">
+				<DuoPhoto
+					src={room.plate.src ?? ''}
+					alt=""
+					placeholder={room.plate.placeholder ?? 'plate'}
+					halftone={room.plate.halftone}
+					sizes="(min-width: 1280px) 280px, 1px"
+				/>
 			</div>
-		</section>
+		{/if}
 	</div>
+</section>
 
-	<!-- The department plate — a cell in the grid, divided by the same hairline the
-	     hub's doorways are divided by, rather than a picture floated into a gap.
-	     Atmospheric, so `alt` is empty by design: the note beside it already says
-	     what the room is, in the reader's own language. See $lib/topics. -->
-	{#if room.plate}
-		<div class="plate">
-			<DuoPhoto
-				src={room.plate.src ?? ''}
-				alt=""
-				placeholder={room.plate.placeholder ?? 'plate'}
-				halftone={room.plate.halftone}
-				sizes="(min-width: 1080px) 34vw, 1px"
-			/>
-		</div>
-	{/if}
-</div>
-
-<!-- Both this and the scratchpad below stand down when their array is empty —
-     which is every room today, on purpose; see the note in $lib/topics. An
-     empty "if you read three" is a heading that promises and then does not
-     deliver, and that is worse than a shorter page. -->
-{#if local.starters.length > 0}
-	<section class="starters">
-		<div class="section-head">
-			<h2>{t.topics.readThree}</h2>
-			<Tag>{t.topics.handPicked}</Tag>
-		</div>
-
-		{#each local.starters as s (s.num)}
-			{@const link = s.slug ? href(i18n.lang, `/writing/${s.slug}`) : null}
-			<svelte:element
-				this={link ? 'a' : 'div'}
-				class="starter"
-				class:unwritten={!link}
-				href={link ?? undefined}
-			>
-				<span class="numeral">{s.num}</span>
-				<span class="starter-body">
-					<span class="starter-title">
-						{s.title}
-						<!-- Printed, not hidden: a room is also a promise about what is coming. -->
-						{#if !link}<span class="forthcoming">{t.topics.forthcoming}</span>{/if}
-					</span>
-					<span class="why">“{s.why}”</span>
-				</span>
-				<span class="mins">{s.min} {t.topics.min}</span>
-			</svelte:element>
+<!-- The editor's note, in the text column, signed. -->
+<section class="grid block">
+	<h2 class="hang g-margin">{t.topics.editorNote}</h2>
+	<div class="g-text note" class:italic={tone.italic} style:--note-w={tone.maxW}>
+		{#each local.intro as paragraph, i (i)}
+			<p>{paragraph}</p>
 		{/each}
-	</section>
-{/if}
+		<p class="sign">— m.</p>
+	</div>
+</section>
 
-<!-- The desk, left open. Questions and drafts are not a roadmap and carry no
-     dates: they say what the room is thinking about, and nothing is promised.
-     An empty desk is not a desk, so the box does not draw at all. -->
-{#if local.scratchpad.length > 0}
-	<section class="pad-wrap">
-		<section class="pad">
-			<div class="pad-head">
-				<Tag on>{t.topics.scratchpadLabel}</Tag>
-				<Tag>{t.topics.updatedNote}</Tag>
-			</div>
-			<div class="pad-body">
-				<h3>{t.topics.scratchpadTitle}</h3>
-				<ul>
-					{#each local.scratchpad as item, i (i)}
-						<li>
-							<span class="kind" class:question={item.kind === 'question'}
-								>{kindLabel[item.kind]}</span
-							>
-							<p>{item.text}</p>
-						</li>
-					{/each}
-				</ul>
-			</div>
-		</section>
-	</section>
-{/if}
-
-{#if data.posts.length > 0}
-	<section class="tail">
-		<div class="tail-head">
-			<!-- "also" is only true when the hand-picked three stand above. -->
-			<h3>
-				{fill(local.starters.length > 0 ? t.topics.alsoIn : t.topics.filedIn, {
-					name: local.name
-				})}
-			</h3>
-			<a href={href(i18n.lang)}>{t.topics.everyEssay}</a>
-		</div>
-		<ul>
-			{#each data.posts as p (p.slug)}
+{#if local.starters.length > 0}
+	<section class="grid block ruled">
+		<h2 class="hang g-margin">{t.topics.readThree}</h2>
+		<ul class="g-wide plain">
+			{#each local.starters as s (s.num)}
+				{@const link = s.slug ? href(i18n.lang, `/writing/${s.slug}`) : null}
 				<li>
-					<a href={href(i18n.lang, `/writing/${p.slug}`)}>
-						<span class="tail-title">{p.title}</span>
-						<span class="tail-meta">{long(p.date, i18n.lang)}</span>
-						<span class="tail-meta">{p.reading} {t.topics.min}</span>
-					</a>
+					<svelte:element
+						this={link ? 'a' : 'div'}
+						class="starter"
+						class:unwritten={!link}
+						href={link ?? undefined}
+					>
+						<span class="starter-title">
+							{s.title}
+							<!-- Printed, not hidden: a room is also a promise about what is coming. -->
+							{#if !link}<span class="forthcoming">{t.topics.forthcoming}</span>{/if}
+						</span>
+						<span class="why">{s.why} · {s.min} {t.topics.min}</span>
+					</svelte:element>
 				</li>
 			{/each}
 		</ul>
 	</section>
 {/if}
 
-<style>
-	.siblings {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 18px;
-		padding: 16px var(--pad-chrome);
-		border-bottom: 1px solid var(--rule);
-	}
-	.siblings a {
-		font-family: var(--body);
-		font-size: var(--t-meta);
-		color: var(--muted);
-	}
-	.siblings a.on {
-		color: var(--blue);
-	}
-	.siblings a:hover {
-		color: var(--blue);
-		text-decoration: none;
-	}
+{#if local.scratchpad.length > 0}
+	<section class="grid block ruled">
+		<h2 class="hang g-margin">{t.topics.scratchpadLabel}</h2>
+		<ul class="g-text plain pad">
+			{#each local.scratchpad as item, i (i)}
+				<li>
+					<span class="kind">{kindLabel[item.kind]}</span>
+					<p>{item.text}</p>
+				</li>
+			{/each}
+		</ul>
+	</section>
+{/if}
 
-	.cover {
-		padding: 40px var(--pad-chrome) 34px;
+{#if data.posts.length > 0}
+	<!-- Every essay filed here, set exactly as the home page sets them. -->
+	<section class="grid block ruled">
+		<h2 class="hang g-margin">
+			{fill(local.starters.length > 0 ? t.topics.alsoIn : t.topics.filedIn, { name: local.name })}
+		</h2>
+		<div class="g-wide">
+			{#each years as y (y)}
+				<ul class="plain">
+					{#each data.posts.filter((p) => year(p.date) === y) as p (p.slug)}
+						<li>
+							<IndexRow
+								href={href(i18n.lang, `/writing/${p.slug}`)}
+								lead={p.number ? formatNumber(p.number) : ''}
+								topic={`${dm(p.date)}.${y}`}
+								title={p.title}
+								meta={p.openDraft ? t.openDraft.indexMark : fill(t.article.readTime, { n: p.reading })}
+								interactive={p.interactive}
+								leadWidth="56px"
+							/>
+						</li>
+					{/each}
+				</ul>
+			{/each}
+		</div>
+	</section>
+{/if}
+
+<!-- The other rooms, at the foot — the contents at the end of a chapter. -->
+<nav class="grid block ruled siblings" aria-label={t.nav.topics}>
+	<h2 class="hang g-margin">{t.nav.topics}</h2>
+	<p class="g-wide">
+		{#each siblings as s, i (s.id)}
+			{#if i > 0}<span class="sep" aria-hidden="true"> · </span>{/if}<a
+				href={href(i18n.lang, `/topics/${s.id}`)}>{s.name}</a
+			>
+		{/each}
+	</p>
+</nav>
+
+<style>
+	/* ── The opener ── */
+	.opener {
+		padding: var(--s-4) 0 var(--s-3);
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
-	.row {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 16px;
+	.inverse {
+		background: var(--paper);
+		color: var(--ink);
+		border-bottom: none;
+		padding-bottom: var(--s-4);
 	}
-	h1 {
-		font-family: var(--display);
-		font-weight: 700;
-		font-size: var(--t-title);
-		line-height: 0.9;
-		margin: 10px 0 0;
-		color: var(--blue);
+	.opener-grid {
+		align-items: baseline;
+	}
+	.facts {
+		grid-row: 1;
+	}
+	.facts .where {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	.title-cell {
+		grid-column: 4 / 13;
+		grid-row: 1;
+	}
+	.title-cell.with-plate {
+		grid-column: 4 / 10;
 	}
 	.tagline {
-		max-width: 52ch;
-		font-family: var(--body);
-		font-weight: 500;
 		font-size: var(--t-body);
 		line-height: 1.5;
-		margin: 18px 0 0;
+		color: var(--muted);
+		margin: var(--s-2) 0 0;
+		max-width: 40ch;
+	}
+	.plate {
+		grid-column: 10 / 13;
+		grid-row: 1;
+		align-self: start;
+		aspect-ratio: 4 / 5;
+	}
+	.plate :global(figure),
+	.plate :global(.ink-screen),
+	.plate :global(.ink-duo) {
+		height: 100%;
+		margin: 0;
 	}
 
-	.note {
-		padding: 30px var(--pad-chrome) 40px;
-		border-bottom: 1.5px solid var(--rule-hard);
+	/* ── Blocks: a label hung in the margin, the content beside it ── */
+	.block {
+		padding: var(--s-3) 0 0;
+		align-items: baseline;
 	}
-	.note-head {
-		margin-bottom: 22px;
+	.block > .hang {
+		grid-row: 1;
+		font-family: var(--body);
 	}
-	/**
-	 * Masthead and note on the left, the plate as its own cell on the right. The
-	 * note keeps its own measure inside that left column, so a room with no
-	 * plate reads exactly as it did before — the plate is never what sets the
-	 * width of the text.
-	 */
-	.room.with-plate {
-		display: grid;
-		grid-template-columns: 1fr minmax(0, 34%);
+	.block > :not(.hang) {
+		grid-row: 1;
 	}
-	.room-main {
-		min-width: 0;
-		display: flex;
-		flex-direction: column;
+	.ruled {
+		margin-top: var(--s-3);
 	}
-	/* The note takes up whatever the row's height turns out to be, so its rule
-	   and the plate's land on the same line. Without this the taller of the two
-	   sets the row and the shorter one's border stops short of it. */
-	.note {
-		flex: 1;
+	.ruled::before {
+		content: '';
+		grid-column: 1 / -1;
+		grid-row: 1;
+		align-self: start;
+		margin-top: calc(var(--s-3) * -1);
+		border-top: 1.5px solid var(--rule-hard);
 	}
-	.note-body {
-		max-width: var(--note-w);
-	}
-	/* Divided by the hairline, not by a gap: this is the same rule the hub's
-	   doorways are divided by, so the plate reads as a cell of the page's grid
-	   rather than as a picture dropped into a hole. */
-	.plate {
-		border-left: 1.5px solid var(--rule-hard);
-		border-bottom: 1.5px solid var(--rule-hard);
-		padding: 30px 26px;
-		display: flex;
-		flex-direction: column;
-		/* A floor, so a room whose editor was brief still gets a picture rather
-		   than a letterbox. */
-		min-height: 520px;
-	}
-	/* The picture fills the cell instead of dictating its height — which is what
-	   makes the two rules line up, and means any aspect can be dropped in
-	   without the layout caring. `object-fit: cover` in app.css does the crop. */
-	.plate :global(figure) {
-		flex: 1;
-		display: flex;
-	}
-	.plate :global(.ink-duo),
-	.plate :global(.ink-screen) {
-		flex: 1;
-		aspect-ratio: auto;
-	}
-	/* The masthead's rule stops at the plate's cell instead of crossing it. */
-	.room.with-plate .cover {
-		border-bottom-color: var(--rule);
-	}
-	.note-body.centred {
-		margin: 0 auto;
-		text-align: center;
-	}
-	.note-body p {
-		margin: 0 0 1em;
-		font-size: var(--note-size);
-		line-height: var(--note-lh);
-	}
-	.note-body.italic p {
-		font-style: italic;
-	}
-	.note-body.centred p {
-		margin-left: auto;
-		margin-right: auto;
-	}
-	/* The initial, set in the display face and in blue — the one ornament the
-	   room gets. It floats, so the first line wraps around it. */
-	.drop {
-		float: left;
-		font-family: var(--display);
-		font-weight: 700;
-		font-size: calc(var(--note-size) * 3);
-		line-height: 0.8;
-		padding: 4px 10px 0 0;
-		color: var(--blue);
-	}
-	.note-body.centred .drop {
-		float: none;
+	.plain {
+		list-style: none;
+		margin: 0;
 		padding: 0;
 	}
-	.sign {
-		margin-top: 20px;
-		font-family: var(--body);
-		font-size: var(--t-meta);
-		color: var(--muted);
-		text-align: right;
-	}
 
-	.starters {
-		padding: 34px var(--pad-chrome);
+	.note {
+		max-width: var(--note-w, none);
 	}
-	.section-head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 12px;
-		margin-bottom: 8px;
+	.note p {
+		margin: 0 0 1em;
 	}
-	.section-head h2 {
-		margin: 0;
-		font-family: var(--deck);
-		font-weight: 700;
-		font-size: var(--t-h2);
+	.note.italic p {
+		font-style: italic;
+	}
+	.note .sign {
+		text-align: right;
+		color: var(--muted);
+		font-style: normal;
 	}
 
 	.starter {
 		display: grid;
-		grid-template-columns: 56px 1fr auto;
-		gap: 24px;
-		align-items: baseline;
-		padding: 20px 0;
+		gap: 2px;
+		padding: var(--s-2) 0;
 		border-top: 1px solid var(--rule);
 		color: var(--ink);
-	}
-	a.starter:hover {
-		background: var(--paper2);
 		text-decoration: none;
 	}
-	.numeral {
-		font-family: var(--display);
-		font-weight: 700;
-		font-size: var(--t-title);
-		line-height: 1;
-		color: var(--muted);
-	}
-	.starter-body {
-		min-width: 0;
+	a.starter:hover .starter-title {
+		color: var(--blue);
 	}
 	.starter-title {
-		display: block;
-		font-family: var(--deck);
-		font-size: var(--t-h2);
-		font-weight: 500;
-		line-height: 1.15;
-		margin-bottom: 8px;
+		font-weight: 600;
 	}
 	.unwritten .starter-title {
-		opacity: 0.5;
-	}
-	.forthcoming {
-		margin-left: 10px;
-		font-family: var(--body);
-		font-size: var(--t-meta);
 		color: var(--muted);
 	}
-	.why {
-		display: block;
-		font-style: italic;
-		font-size: var(--t-meta);
-		line-height: 1.5;
-		color: var(--muted);
-		max-width: 54ch;
-	}
-	.mins {
-		font-family: var(--body);
-		font-size: var(--t-meta);
-		color: var(--muted);
-		white-space: nowrap;
-	}
-
-	.pad-wrap {
-		padding: 0 var(--pad-chrome) 40px;
-	}
-	/* A plain 1.5px box. No left-accent card — that trope is banned (§8). */
-	.pad {
-		border: 1.5px solid var(--rule-hard);
-	}
-	.pad-head {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 12px;
-		padding: 11px 16px;
-		border-bottom: 1px solid var(--rule);
-	}
-	.pad-body {
-		padding: 20px 16px;
-	}
-	.pad-body h3 {
-		margin: 0 0 20px;
-		font-family: var(--deck);
-		font-weight: 700;
-		font-size: var(--t-h2);
-	}
-	.pad-body ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.pad-body li {
-		display: grid;
-		grid-template-columns: 92px 1fr;
-		gap: 16px;
-		align-items: baseline;
-		padding: 12px 0;
-		border-top: 1px solid var(--rule);
-	}
-	.pad-body li:first-child {
-		border-top: none;
-	}
+	.forthcoming,
+	.why,
 	.kind {
-		font-family: var(--body);
 		font-size: var(--t-meta);
 		color: var(--muted);
-		padding-top: 4px;
 	}
-	/* A question is the only kind that is not work in progress. */
-	.kind.question {
-		color: var(--blue);
+	.pad li + li {
+		margin-top: var(--s-2);
 	}
-	.pad-body p {
+	.pad p {
 		margin: 0;
-		font-size: var(--t-body);
-		line-height: 1.55;
 	}
 
-	.tail {
-		padding: 0 var(--pad-chrome) 60px;
+	.siblings {
+		padding-bottom: var(--s-4);
 	}
-	/* With the starters and the desk both empty, the tail follows the masthead
-	   block directly and has to bring its own top margin — the gap used to
-	   belong to whichever of the two stood between them. */
-	.room + .tail {
-		padding-top: 34px;
-	}
-	.tail-head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 12px;
-		padding-bottom: 10px;
-		border-bottom: 1.5px solid var(--rule-hard);
-	}
-	.tail-head h3 {
+	.siblings p {
 		margin: 0;
-		font-family: var(--body);
-		font-weight: 700;
-		font-size: var(--t-body);
-	}
-	.tail-head a {
-		font-family: var(--body);
 		font-size: var(--t-meta);
-		color: var(--blue);
-		white-space: nowrap;
 	}
-	.tail ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.tail li a {
-		display: grid;
-		grid-template-columns: 1fr auto auto;
-		gap: 20px;
-		align-items: baseline;
-		padding: 14px 0;
-		border-bottom: 1px solid var(--rule);
-		color: var(--ink);
-	}
-	.tail li a:hover {
-		background: var(--paper2);
-		text-decoration: none;
-	}
-	.tail-title {
-		font-family: var(--body);
-		font-size: var(--t-body);
-		font-weight: 500;
-	}
-	.tail-meta {
-		font-family: var(--body);
-		font-size: var(--t-meta);
+	.siblings a {
 		color: var(--muted);
-		white-space: nowrap;
+	}
+	.siblings a:hover {
+		color: var(--blue);
+	}
+	.sep {
+		color: var(--muted);
 	}
 
-	/* Below this the two columns would each be too narrow to be either a
-	   readable measure or a picture, so the note takes the width back and the
-	   plate stands down. A magazine drops the department art on a narrow page
-	   too — it is the one element here that is atmosphere rather than reading. */
-	@media (max-width: 1080px) {
-		.room.with-plate {
-			display: block;
+	@media (max-width: 1279px) {
+		.facts,
+		.title-cell,
+		.title-cell.with-plate,
+		.plate,
+		.block > .hang,
+		.block > :not(.hang) {
+			grid-column: 1 / -1;
+			grid-row: auto;
+		}
+		.facts {
+			margin-bottom: var(--s-2);
 		}
 		.plate {
 			display: none;
 		}
-		.room.with-plate .cover {
-			border-bottom-color: var(--rule-hard);
+		.ruled::before {
+			grid-row: 1;
 		}
 	}
-
-	@media (max-width: 860px) {
-		.siblings,
-		.cover,
-		.note,
-		.starters {
-			padding-left: 18px;
-			padding-right: 18px;
+	@media (max-width: 900px) {
+		.opener {
+			padding-top: var(--s-3);
 		}
-		.pad-wrap,
-		.tail {
-			padding-left: 18px;
-			padding-right: 18px;
-		}
-		.starter {
-			grid-template-columns: 40px 1fr;
-			gap: 14px;
-		}
-		/* The minutes move under the reason rather than off the edge. */
-		.mins {
-			grid-column: 2;
-		}
-		.pad-body li {
-			grid-template-columns: 1fr;
-			gap: 6px;
-		}
-		.tail li a {
-			grid-template-columns: 1fr auto;
-			row-gap: 6px;
-		}
-		.tail-title {
-			grid-column: 1 / -1;
+		.inverse {
+			max-height: none;
 		}
 	}
 </style>

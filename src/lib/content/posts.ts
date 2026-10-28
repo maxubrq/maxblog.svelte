@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import { numberOf } from './numbers';
 import type { OpenDraft } from '$lib/drafts';
 import { isUnlistedTopic } from '$lib/topics';
 import type { Component } from 'svelte';
@@ -129,6 +130,12 @@ export interface Post extends PostMeta {
 	 * two translations of one essay find each other.
 	 */
 	group: string;
+	/**
+	 * Catalogue number in its own locale, from `content/numbers.json` — null
+	 * for drafts and walk-in rooms, which are not part of the run. See
+	 * `$lib/content/numbers`.
+	 */
+	number: number | null;
 }
 
 type PostModule = { metadata: PostMeta; default: Component };
@@ -145,7 +152,8 @@ function normalize(metadata: PostMeta, slug: string): Post {
 		reading: metadata.reading ?? 1,
 		words: metadata.words ?? 0,
 		lang: metadata.lang ?? 'en',
-		group: groupOf(slug)
+		group: groupOf(slug),
+		number: metadata.draft ? null : numberOf(slug, metadata.lang ?? 'en')
 	};
 }
 

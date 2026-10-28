@@ -42,6 +42,7 @@
 	<meta name="description" content={t.description} />
 </svelte:head>
 
+<div class="sheet">
 <section class="masthead">
 	<div class="row">
 		<Tag on>{t.label}</Tag>
@@ -83,10 +84,11 @@
 		{/each}
 	</section>
 {/if}
+</div>
 
 <style>
 	.masthead {
-		padding: 44px var(--pad-chrome) 32px;
+		padding: 44px 0 32px;
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 	.row {
@@ -106,7 +108,7 @@
 	}
 
 	.empty {
-		padding: 90px var(--pad-chrome) 120px;
+		padding: 90px 0 120px;
 		text-align: center;
 	}
 	.empty-title {
@@ -131,7 +133,7 @@
 		grid-template-columns: 64px 1fr auto;
 		gap: 24px;
 		align-items: baseline;
-		padding: 26px var(--pad-chrome) 28px;
+		padding: 26px 0 28px;
 		border-bottom: 1.5px solid var(--rule-hard);
 		color: var(--ink);
 	}
@@ -188,16 +190,9 @@
 	}
 
 	@media (max-width: 700px) {
-		.masthead,
-		.empty {
-			padding-left: 18px;
-			padding-right: 18px;
-		}
 		.arc {
 			grid-template-columns: 1fr;
 			gap: 10px;
-			padding-left: 18px;
-			padding-right: 18px;
 		}
 		.counts {
 			flex-direction: row;

@@ -73,7 +73,7 @@
 		text-decoration: underline;
 	}
 	/* Above the phone's contents bar rather than on it. */
-	@media (max-width: 1179px) {
+	@media (max-width: 1279px) {
 		.toast {
 			bottom: 64px;
 		}

@@ -36,7 +36,7 @@
 	<meta name="description" content={t.readingRoom.description} />
 </svelte:head>
 
-<div class="page">
+<div class="sheet">
 	<Headline text={title} />
 	<p class="deck">{t.readingRoom.description}</p>
 
@@ -82,11 +82,6 @@
 </div>
 
 <style>
-	.page {
-		max-width: var(--article-w);
-		margin: 0 auto;
-		padding: var(--s-4) var(--pad-measure);
-	}
 	.deck {
 		color: var(--muted);
 		margin: var(--s-2) 0 0;
@@ -129,10 +124,5 @@
 	}
 	.colophon {
 		margin: var(--s-4) 0 0;
-	}
-	@media (max-width: 900px) {
-		.page {
-			padding: var(--s-3) var(--s-2);
-		}
 	}
 </style>

@@ -24,6 +24,7 @@
 	<meta name="description" content={t.topics.hubIndex} />
 </svelte:head>
 
+<div class="sheet">
 <section class="head">
 	<Tag>{t.topics.hubIndex} / {data.doorways.length} {t.topics.doorways}</Tag>
 	<Headline text={t.topics.hubTitle} />
@@ -39,12 +40,13 @@
 		</a>
 	{/each}
 </section>
+</div>
 
 <style>
 	.head {
 		max-width: var(--index-max);
 		margin: 0 auto;
-		padding: var(--s-3) var(--pad-chrome) var(--s-2);
+		padding: var(--s-3) 0 var(--s-2);
 	}
 	.head :global(h1) {
 		margin-top: var(--s-1);
@@ -52,7 +54,7 @@
 	.grid {
 		max-width: var(--index-max);
 		margin: 0 auto;
-		padding: 0 var(--pad-chrome) var(--s-4);
+		padding: 0 0 var(--s-4);
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		column-gap: var(--s-3);

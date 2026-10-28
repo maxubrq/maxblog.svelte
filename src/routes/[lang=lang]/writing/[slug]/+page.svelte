@@ -3,7 +3,6 @@
 	// the prose, a rule, then the appendix. The instruments stand outside the
 	// column — a 2px progress line, the contents in the margin (or a bar at the
 	// foot on a phone) — and nothing stands between the title and the text.
-	import Headline from '$lib/components/ink/Headline.svelte';
 	import ArticleTracker from '$lib/components/article/ArticleTracker.svelte';
 	import Bibliography from '$lib/components/article/Bibliography.svelte';
 	import ContentsRail from '$lib/components/article/ContentsRail.svelte';
@@ -22,6 +21,9 @@
 	import { draftOf } from '$lib/drafts';
 	import { replaceState } from '$app/navigation';
 	import { dmy } from '$lib/format';
+	import { formatNumber } from '$lib/content/numbers';
+	import { cloudinary, srcsetFor } from '$lib/images';
+	import { runningHead } from '$lib/running-head.svelte';
 	import { fill, href, useI18n } from '$lib/i18n';
 	import { createReadingProgress } from '$lib/reading-progress.svelte';
 	import { lastSeen } from '$lib/reading-memory';
@@ -107,8 +109,36 @@
 		replaceState(url, {});
 	}
 
-	/** Above the title: where the piece is filed. */
-	const kicker = $derived([meta.topic, meta.chapter].filter(Boolean).join(' · '));
+	/**
+	 * A title that would run past three lines at 80px steps down to 64px
+	 * (DIGITAL_EDITORIAL_DESIGN.md §6.1), so the first screen still holds the
+	 * opening of the prose. Measured in characters, not rendered lines: at 80px
+	 * Display sets about 23 characters across the 928px it may use.
+	 */
+	const longTitle = $derived(meta.title.length > 64);
+
+	/** The cover, only when the essay names one — no branded stand-in here. */
+	const cover = $derived(meta.coverImage ?? null);
+
+	// The running head (§4): the essay's name and the section you are in,
+	// shown in the header once the opener has scrolled away.
+	let opener = $state<HTMLElement>();
+	$effect(() => {
+		runningHead.open(meta.title, toc.length);
+		return () => runningHead.close();
+	});
+	$effect(() => {
+		const i = toc.findIndex((item) => item.id === activeSection);
+		runningHead.at(i === -1 ? 0 : i + 1);
+	});
+	$effect(() => {
+		if (!opener) return;
+		const io = new IntersectionObserver(([e]) => runningHead.past(!e.isIntersecting), {
+			rootMargin: '-56px 0px 0px 0px'
+		});
+		io.observe(opener);
+		return () => io.disconnect();
+	});
 </script>
 
 <svelte:head>
@@ -148,7 +178,6 @@
 {/if}
 
 {#if toc.length > 0 && !travelling}
-	<ContentsRail items={toc} {activeSection} />
 	<MobileReadingBar items={toc} {activeSection} onopen={() => (tocOpen = true)} />
 	<TocDrawer
 		open={tocOpen}
@@ -162,101 +191,143 @@
 {/if}
 
 <article lang={meta.lang}>
-	<header>
-		{#if kicker}<p class="kicker">{kicker}</p>{/if}
-		<Headline text={meta.title} />
-		{#if meta.subtitle}
-			<p class="deck">{meta.subtitle}</p>
-		{/if}
-		<p class="meta">
-			<span>{fill(t.article.readTime, { n: meta.reading })}</span>
-			<span>{dmy(meta.date)}</span>
-			{#if meta.interactive}<span>{t.article.interactive}</span>{/if}
-			{#if meta.draft}<span class="flag">{t.article.draft}</span>{/if}
+	<!-- The opener (§6.1): the facts hang in the margin on the title's first
+	     baseline, and the title stands alone. Folded below 1280px the facts are
+	     one line above the title. -->
+	<header class="grid opener" bind:this={opener}>
+		<ul class="hang-list g-margin kicker">
+			<li class="topic">{meta.topic}</li>
+			{#if meta.number}<li>{formatNumber(meta.number)}</li>{/if}
+			<li>{fill(t.article.readTime, { n: meta.reading })}</li>
+			<li>{dmy(meta.date)}</li>
+			{#if meta.chapter}<li>{meta.chapter}</li>{/if}
+			{#if meta.interactive}<li>{t.article.interactive}</li>{/if}
+			{#if meta.draft}<li class="flag">{t.article.draft}</li>{/if}
 			{#if meta.openDraft}
-				<span class="flag"
-					>{history ? fill(t.openDraft.lastTouched, { ago: touchedAgo }) : t.openDraft.indexMark}</span
-				>
+				<li class="flag">
+					{history ? fill(t.openDraft.lastTouched, { ago: touchedAgo }) : t.openDraft.indexMark}
+				</li>
 			{/if}
 			{#if data.translation}
-				<a
-					hreflang={data.translation.lang}
-					rel="alternate"
-					href={href(data.translation.lang, `/writing/${data.translation.slug}`)}
-					>{t.article.readInOther}</a
-				>
+				<li>
+					<a
+						hreflang={data.translation.lang}
+						rel="alternate"
+						href={href(data.translation.lang, `/writing/${data.translation.slug}`)}
+						>{t.article.readInOther}</a
+					>
+				</li>
 			{/if}
-		</p>
+		</ul>
+		<h1 class="display g-wide" class:long={longTitle}>{meta.title}</h1>
+		{#if meta.subtitle}
+			<p class="deck g-text">{meta.subtitle}</p>
+		{/if}
 		{#if meta.openDraft}
 			<!-- The draft's own head: what it is, where each section stands, the rail
 			     of saves, and the scar layer's switch. Keyed off the frontmatter,
 			     not the history: the piece is an open draft from its first line. -->
-			<OpenDraftHead
-				open={meta.openDraft}
-				words={meta.words}
-				{history}
-				index={revIndex}
-				{scars}
-				onpick={pickRevision}
-				onscars={(on) => (scars = on)}
-			/>
+			<div class="g-wide draft-head">
+				<OpenDraftHead
+					open={meta.openDraft}
+					words={meta.words}
+					{history}
+					index={revIndex}
+					{scars}
+					onpick={pickRevision}
+					onscars={(on) => (scars = on)}
+				/>
+			</div>
 		{/if}
+		<div class="g-spread g-rule"></div>
 	</header>
 
-	<div class="measure">
-		{#if travelling && revision}
-			<!-- A past save, rebuilt from git. -->
-			<RevisionBody body={revision.body} {scars} />
-		{:else}
-			<Content />
-		{/if}
+	{#if cover}
+		<!-- The cover, across the grid at 3:1, only when the essay has one. -->
+		<div class="grid">
+			<div class="g-spread ink-screen cover">
+				<img
+					class="fill"
+					src={cloudinary(cover, { width: 1600, halftone: 'screen' })}
+					srcset={srcsetFor(cover, { halftone: 'screen' })}
+					sizes="(min-width: 1280px) 1216px, 100vw"
+					alt=""
+					decoding="async"
+				/>
+			</div>
+		</div>
+	{/if}
 
-		{#if meta.openDraft}
-			<!-- What is still only notes, printed as notes. -->
-			<UnwrittenSections
-				sections={travelling && revision ? revision.sections : meta.openDraft.sections}
-				at={revision?.r ?? ''}
-				{travelling}
-			/>
-		{/if}
+	<div class="grid body">
+		<!-- The contents in the margin, sticky, from the first section down. -->
+		<aside class="g-margin rail-cell">
+			{#if toc.length > 0 && !travelling}<ContentsRail items={toc} {activeSection} />{/if}
+		</aside>
 
-		<!-- The appendix belongs to the essay as it stands now; none of it is true
-		     of a version from three edits ago, so it stands down while the reader
-		     is back there. One shape for every block — see `.appendix`. -->
-		{#if !travelling}
-			{#if meta.rememberSentence}
-				<OneSentence sentence={meta.rememberSentence} attribution={meta.rememberAttribution} />
+		<div class="g-text measure">
+			{#if travelling && revision}
+				<!-- A past save, rebuilt from git. -->
+				<RevisionBody body={revision.body} {scars} />
+			{:else}
+				<Content />
 			{/if}
-			<NextReading slug={meta.slug} neighbours={meta.neighborhood ?? []} />
-			<Bibliography slug={meta.slug} citations={meta.citations} />
-			<GlossaryFootnote terms={meta.terms} draft={meta.draft} />
-			<ReflectionPrompt slug={meta.slug} draft={meta.draft} />
-		{/if}
+
+			{#if meta.openDraft}
+				<!-- What is still only notes, printed as notes. -->
+				<UnwrittenSections
+					sections={travelling && revision ? revision.sections : meta.openDraft.sections}
+					at={revision?.r ?? ''}
+					{travelling}
+				/>
+			{/if}
+
+		</div>
 	</div>
+
+	<!-- The appendix belongs to the essay as it stands now; none of it is true
+	     of a version from three edits ago, so it stands down while the reader
+	     is back there. One shape for every block — see `.appendix`.
+
+	     Its own row of the grid, after the prose, on purpose: the contents in
+	     the margin are sticky inside the row above and so stop at the essay's
+	     last line, leaving the margin free for the labels the appendix hangs
+	     there. Inside one row, a long contents list rode down over them. -->
+	{#if !travelling}
+		<div class="grid appendix-row">
+			<div class="g-text measure">
+				{#if meta.rememberSentence}
+					<OneSentence sentence={meta.rememberSentence} attribution={meta.rememberAttribution} />
+				{/if}
+				<NextReading slug={meta.slug} neighbours={meta.neighborhood ?? []} />
+				<Bibliography slug={meta.slug} citations={meta.citations} />
+				<GlossaryFootnote terms={meta.terms} draft={meta.draft} />
+				<ReflectionPrompt slug={meta.slug} draft={meta.draft} />
+			</div>
+		</div>
+	{/if}
 </article>
 
 <style>
-	article {
-		max-width: var(--article-w);
-		margin: 0 auto;
-		/* Room to stop reading before the footer rule arrives. */
-		padding: 0 var(--pad-measure) var(--s-4);
+	/* The opener: facts and title share their first baseline (§2.3). */
+	.opener {
+		align-items: baseline;
+		padding-top: var(--s-4);
 	}
-	header,
-	.measure {
-		max-width: var(--measure);
-		margin: 0 auto;
-	}
-	/* The title block ends on a hard rule; the prose starts a full 64px below
-	   it, so the rule reads as the floor of the title, not the roof of the text. */
-	header {
-		padding: var(--s-4) 0 var(--s-3);
-		border-bottom: 1.5px solid var(--rule-hard);
+	.opener > .g-rule {
+		margin-top: var(--s-3);
 	}
 	.kicker {
-		font-size: var(--t-meta);
-		color: var(--muted);
-		margin: 0 0 var(--s-2);
+		grid-row: 1;
+	}
+	.kicker .topic {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	.kicker .flag {
+		color: var(--blue);
+	}
+	.opener h1 {
+		grid-row: 1;
 	}
 	.deck {
 		font-size: var(--t-body);
@@ -264,33 +335,56 @@
 		color: var(--muted);
 		margin: var(--s-2) 0 0;
 	}
-	.meta {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0 var(--s-2);
-		font-size: var(--t-meta);
-		color: var(--muted);
-		font-variant-numeric: tabular-nums;
-		margin: var(--s-2) 0 0;
+	.draft-head {
+		margin-top: var(--s-3);
 	}
-	.flag {
-		color: var(--blue);
+	.cover {
+		aspect-ratio: 3 / 1;
+		margin-top: var(--s-3);
+	}
+	.body {
+		padding-top: var(--s-4);
+	}
+	/* Room to stop reading before the footer rule arrives. */
+	.appendix-row {
+		padding-bottom: var(--s-4);
+	}
+	/* With no appendix (an old revision), the prose row ends the page. */
+	.body:last-child {
+		padding-bottom: var(--s-4);
 	}
 	.measure {
-		padding-top: var(--s-4);
 		min-width: 0;
-		/* The essay's last line must not sit under the phone's contents bar. */
-		padding-bottom: var(--s-3);
 	}
-
+	/* The contents ride in the margin, below the opener, while you read. */
+	.rail-cell {
+		position: relative;
+	}
+	@media (max-width: 1279px) {
+		.kicker,
+		.opener h1 {
+			grid-row: auto;
+		}
+		.kicker {
+			margin-bottom: var(--s-2);
+		}
+		.rail-cell {
+			display: none;
+		}
+	}
+	/* On a phone the opener gives back its air so the prose still starts in
+	   the first screen (DESIGN.md §9: first line above y = 420 at 390 × 844). */
 	@media (max-width: 900px) {
-		article {
-			padding: 0 var(--s-2) var(--s-4);
+		.opener {
+			padding-top: var(--s-2);
 		}
-		header {
-			padding-top: var(--s-3);
+		.kicker {
+			margin-bottom: var(--s-1);
 		}
-		.measure {
+		.opener > .g-rule {
+			margin-top: var(--s-2);
+		}
+		.body {
 			padding-top: var(--s-3);
 		}
 	}

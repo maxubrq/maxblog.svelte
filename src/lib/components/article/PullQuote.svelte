@@ -48,6 +48,13 @@
 	.q :global(p + p) {
 		margin-top: 0.5em;
 	}
+	/* Where the margin exists the quote reaches one column into it — the
+	   magazine move — and still never past the text column on the right. */
+	@media (min-width: 1280px) {
+		blockquote.pull {
+			margin-left: -104px;
+		}
+	}
 	.from {
 		font-size: var(--t-meta);
 		color: var(--muted);

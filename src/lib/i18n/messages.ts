@@ -31,7 +31,8 @@ const en = {
 	footer: {
 		tagline: 'A notebook, kept in public · est. 2024',
 		search: 'Search the index',
-		rss: 'RSS'
+		rss: 'RSS',
+		type: 'Type'
 	},
 	search: {
 		label: 'search',
@@ -235,7 +236,6 @@ const en = {
 	topics: {
 		hubIndex: 'Index of subjects',
 		hubTitle: 'Pick a door.',
-		hubTitleAccent: 'door.', // ink
 		doorways: 'doorways',
 		topicLabel: 'Topic',
 		essay: 'essay',
@@ -244,22 +244,19 @@ const en = {
 		/* The room, as opposed to the shelf — see $lib/topics. */
 		editorNote: "Editor's note",
 		readThree: 'if you read three',
-		handPicked: 'hand-picked',
 		forthcoming: 'forthcoming',
 		min: 'min',
 		scratchpadLabel: 'Scratchpad',
-		scratchpadTitle: 'What I am chewing on',
-		updatedNote: 'no dates, no promises',
 		kindQuestion: 'Question',
 		kindDraft: 'Draft',
 		kindReading: 'Reading',
 		/* Two headings for one list: 'also' only makes sense when the hand-picked
 		   three stand above it. With no starters, the tail is simply the room. */
-		alsoIn: 'also filed under {name}',
-		filedIn: 'filed under {name}',
-		everyEssay: 'every essay →'
+		alsoIn: 'Also filed under {name}',
+		filedIn: 'Filed under {name}',
 	},
 	article: {
+		sectionOf: 'Section {n} / {of}',
 		next: 'Read next',
 		readTime: '{n} min read',
 		author: 'Author',
@@ -273,7 +270,6 @@ const en = {
 		words: 'Words',
 		oneSentence: 'If you remember one sentence',
 		neighborhood: 'In this neighborhood',
-		handPicked: 'hand-picked, by me',
 		readInOther: 'Đọc bản tiếng Việt →',
 		contents: 'Contents',
 		openContents: 'open the contents',
@@ -519,23 +515,26 @@ const en = {
 	about: {
 		label: 'About / colophon',
 		heading: 'A notebook, kept in public.',
-		headingAccent: 'public', // ink
-		portraitPlate: 'portrait plate',
 		metaWho: 'Who',
 		metaSince: 'Since',
 		metaCadence: 'Cadence',
 		metaCadenceVal: 'every other Sunday',
 		metaType: 'Type',
 		metaTypeVal: 'CDA Independence / Monaspace Xenon',
+		colophon: 'Colophon',
+		metaGrid: 'Grid',
+		metaGridVal: '12 × 72 px, 32 px gutters',
+		metaColour: 'Colour',
+		metaColourVal: 'ink and one blue, #1a24df',
+		credit:
+			'Text is set in CDA Independence by Cōllective Design Agency, drawn from the façade of the Independence Palace in Saigon. Code is set in Monaspace Xenon by GitHub Next. Both under the SIL Open Font License.',
+		vaultEnter: 'Enter the vault →',
+		vaultLabel: 'The vault',
 		bio1: "I'm <strong>maxubrq</strong>. I write here about things that feel worth thinking about slowly: a physics problem that stuck with me, a piece of software I finally understood, a painting I kept coming back to, a sentence that would not leave me alone.",
 		bio2: 'Some of these essays come with a thing you can play with — a small simulation, a diagram that responds to a slider, a figure that recomputes itself. I think of writing and interaction as the same craft: both are attempts to hand someone a thought in a form they can turn over.',
 		topicsHeading: 'What I write about',
 		elsewhereHeading: 'Elsewhere',
 		farewell: 'Thanks for stopping by.',
-		/* The doorway to the vault — the only way in, which is the point. */
-		vaultTagLeft: 'Not in the menu',
-		vaultTagRight: 'reached only from here',
-		vaultTitle: 'The vault →',
 		vaultBlurb:
 			'A private cabinet — the books, records, papers, films and objects that belong to me, each with a line on why. A quieter room off this page.'
 	},
@@ -643,7 +642,8 @@ const vi: typeof en = {
 	footer: {
 		tagline: 'Một cuốn sổ tay công khai · est. 2024',
 		search: 'Tìm trong mục lục',
-		rss: 'RSS'
+		rss: 'RSS',
+		type: 'Chữ'
 	},
 	search: {
 		label: 'tìm',
@@ -840,7 +840,6 @@ const vi: typeof en = {
 	topics: {
 		hubIndex: 'Mục lục chủ đề',
 		hubTitle: 'Chọn một cánh cửa.',
-		hubTitleAccent: 'cánh cửa.',
 		doorways: 'cánh cửa',
 		topicLabel: 'Chủ đề',
 		essay: 'bài viết',
@@ -848,20 +847,17 @@ const vi: typeof en = {
 		empty: 'chưa có bài nào ở đây',
 		editorNote: 'Lời người biên tập',
 		readThree: 'nếu chỉ đọc ba bài',
-		handPicked: 'tuyển chọn',
 		forthcoming: 'sắp có',
 		min: 'phút',
 		scratchpadLabel: 'Sổ nháp',
-		scratchpadTitle: 'Những gì mình đang nghĩ',
-		updatedNote: 'không hạn, không hứa',
 		kindQuestion: 'Câu hỏi',
 		kindDraft: 'Bản nháp',
 		kindReading: 'Đang đọc',
-		alsoIn: 'cũng thuộc {name}',
-		filedIn: 'thuộc {name}',
-		everyEssay: 'tất cả bài viết →'
+		alsoIn: 'Cũng thuộc {name}',
+		filedIn: 'Thuộc {name}',
 	},
 	article: {
+		sectionOf: 'Mục {n} / {of}',
 		next: 'Đọc tiếp theo',
 		readTime: '{n} phút đọc',
 		author: 'Tác giả',
@@ -875,7 +871,6 @@ const vi: typeof en = {
 		words: 'Số chữ',
 		oneSentence: 'Nếu chỉ nhớ một câu',
 		neighborhood: 'Những bài lân cận',
-		handPicked: 'mình tự chọn',
 		readInOther: 'Read in English →',
 		contents: 'Mục lục',
 		openContents: 'mở mục lục',
@@ -1085,22 +1080,26 @@ const vi: typeof en = {
 	about: {
 		label: 'Giới thiệu / colophon',
 		heading: 'Một cuốn sổ tay, giữ nơi công khai.',
-		headingAccent: 'công khai',
-		portraitPlate: 'bản chân dung',
 		metaWho: 'Là ai',
 		metaSince: 'Từ',
 		metaCadence: 'Nhịp',
 		metaCadenceVal: 'chủ nhật mỗi hai tuần',
 		metaType: 'Chữ',
 		metaTypeVal: 'CDA Independence / Monaspace Xenon',
+		colophon: 'Colophon',
+		metaGrid: 'Lưới',
+		metaGridVal: '12 × 72 px, rãnh 32 px',
+		metaColour: 'Màu',
+		metaColourVal: 'mực và một màu xanh, #1a24df',
+		credit:
+			'Chữ thân là CDA Independence của Cōllective Design Agency, lấy cảm hứng từ mặt tiền Dinh Độc Lập. Code là Monaspace Xenon của GitHub Next. Cả hai theo giấy phép SIL Open Font License.',
+		vaultEnter: 'Vào căn hầm →',
+		vaultLabel: 'Căn hầm',
 		bio1: 'Hi! Mình là <strong>maxubrq</strong>. Mình viết ở đây về những điều cảm thấy thú vị đó có thể là một bài toán vật lý, một đoạn code, một bức tranh hoặc là một câu văn.',
 		bio2: 'Một số bài viết sẽ có đính kèm ví dụ tương tác.',
 		topicsHeading: 'Mình viết về gì',
 		elsewhereHeading: 'Ở nơi khác',
 		farewell: 'Cảm ơn bạn đã ghé qua.',
-		vaultTagLeft: 'Không có trong menu',
-		vaultTagRight: 'chỉ vào được từ đây',
-		vaultTitle: 'Căn hầm →',
 		vaultBlurb:
 			'Một tủ đồ riêng, là những cuốn sách, đĩa nhạc, bài báo, bộ phim và vài món đồ thuộc về mình, mỗi thứ kèm một dòng lý do.'
 	},

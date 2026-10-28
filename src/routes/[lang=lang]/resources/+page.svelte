@@ -89,6 +89,7 @@
 	<meta name="description" content={t.description} />
 </svelte:head>
 
+<div class="sheet">
 <section class="masthead">
 	<div class="labels">
 		<Tag>{t.indexLabel}</Tag>
@@ -189,10 +190,11 @@
 {/each}
 
 <p class="colophon">{t.colophon}</p>
+</div>
 
 <style>
 	.masthead {
-		padding: 44px var(--pad-chrome) 30px;
+		padding: 44px 0 30px;
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 	.labels {
@@ -213,7 +215,7 @@
 		align-items: center;
 		gap: 24px;
 		flex-wrap: wrap;
-		padding: 18px var(--pad-chrome);
+		padding: 18px 0;
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 	.search {
@@ -256,7 +258,7 @@
 		align-items: baseline;
 		gap: 4px;
 		flex-wrap: wrap;
-		padding: 18px var(--pad-chrome);
+		padding: 18px 0;
 		border-bottom: 1.5px solid var(--rule-hard);
 		font-family: var(--body);
 		font-size: var(--t-meta);
@@ -284,7 +286,7 @@
 	}
 
 	.group {
-		padding: 0 var(--pad-chrome);
+		padding: 0;
 	}
 	.group-head {
 		display: flex;
@@ -366,7 +368,7 @@
 	}
 
 	.colophon {
-		margin: 48px var(--pad-chrome) 0;
+		margin: 48px 0 0;
 		padding: 24px 0 80px;
 		border-top: 1.5px solid var(--rule-hard);
 		font-family: var(--body);
@@ -375,17 +377,6 @@
 	}
 
 	@media (max-width: 860px) {
-		.masthead,
-		.controls,
-		.jump,
-		.group {
-			padding-left: 18px;
-			padding-right: 18px;
-		}
-		.colophon {
-			margin-left: 18px;
-			margin-right: 18px;
-		}
 		/* The cover column would squeeze the note to nothing at this width. */
 		.ink-res-cell.with-cover {
 			grid-template-columns: 28px 1fr !important;

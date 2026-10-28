@@ -49,7 +49,7 @@
 		text-align: left;
 		cursor: pointer;
 	}
-	@media (max-width: 1179px) {
+	@media (max-width: 1279px) {
 		.bar {
 			display: flex;
 		}

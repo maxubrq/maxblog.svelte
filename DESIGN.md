@@ -495,4 +495,26 @@ Mobile 390 px, đo lại: câu đầu thân bài bài 007 ở **y = 354 px** (tr
 
 ---
 
+## 13. Lượt tiếp theo: bản ấn phẩm (2026-10-28)
+
+Tác giả muốn bản đọc mang cảm giác một ấn phẩm (Digital Editorial + Swiss), như các cuốn specimen trong `inspiration/`, mà không mất khả năng đọc. Đặc tả đầy đủ ở **`DIGITAL_EDITORIAL_DESIGN.md`**. Ở đây chỉ ghi các quyết định và chỗ chúng chạm vào tài liệu này.
+
+**Chẩn đoán (E1–E6 bên đó).** Trang chủ, bài viết, chủ đề và About đang dùng **ba lưới khác nhau**: khối 1080 px canh giữa, cột 744 px canh giữa, và chia đôi tràn mép. Lề trái nhảy 341 → 27 → 488 px khi chuyển trang. Trang chủ đề còn cỡ ngoài thang (52,5 và 17,5 px từ `TONE_STYLES`), tít xanh và chữ hoa thả. About để trống nửa trái màn hình, cắt ảnh thành một dải 220 px, và còn hộp viền duy nhất của site. Ngày tháng có ba định dạng.
+
+**Quyết định:**
+
+1. **Một lưới cho mọi trang**: 12 × 72 px, rãnh 32 px (1216 px). Cột lề 1–3, cột chữ 4–10 (**696 px**, thay cho 680 px ở mục 3.3), cột ngoài 11–12 cho sidenote và chú thích. Bất đối xứng có chủ đích.
+2. **Thêm một bậc chữ `--t-display` 80 px** (mobile 44), chỉ một lần mỗi trang, trên trang mở. Thang thành 13 / 18 / 26 / 40 / 80. Mục 3.2 vẫn đúng cho trang chữ.
+3. **Đồ đạc trang mang thông tin thật**: running head (tên bài + "Mục 3 / 8") khi đang đọc, số hiệu bài `№` (theo từng ngôn ngữ, xem quyết định bên dưới), số mục treo ở cột lề cạnh h2, nhãn khối treo ở cột lề, số hình, dấu kết vuông 8 px trong dòng cuối. Mục 6.4 bỏ folio La Mã vì nó không mang thông tin; các món này mang thông tin, nên không mâu thuẫn. Dấu kết khác ■ đứng riêng mà mục 6.7 đã bỏ: nó nằm trong dòng.
+4. **Trang chủ đề**: trang mở đảo màu (nền `--ink`), tên 80 px; bỏ cỡ, leading và căn giữa trong `TONE_STYLES`; bỏ chữ xanh và chữ hoa thả; danh sách bài dùng `IndexRow` của trang chủ. `starters` / `scratchpad` vẫn rỗng (quyết định 2026-08-11).
+5. **About thành trang colophon**: câu mở 80 px, ảnh chân dung 4 : 5 trong cột lề (không cắt dải), bảng Là ai / Từ / Nhịp / Chữ chuyển xuống cuối thành Colophon, Căn hầm bỏ hộp.
+6. **Trang chủ như mục lục một số báo**: bài mới nhất là bìa (80 px), năm treo ở cột lề, một định dạng ngày cho cả site.
+7. **Không làm**: giấy vân, bóng đổ, lật trang, chữ có chân giả sách, màu riêng cho từng chủ đề.
+
+**Hợp đồng đọc không đổi**: thân 18 / 1.62, một cột, căn trái, 65–75 ký tự, ≥ 4 dòng thân ở màn hình đầu, không tràn ngang. Món "ấn phẩm" nào làm trượt một phép thử ở mục 9 thì bỏ món đó.
+
+**Tác giả đã quyết** (bên đó, mục 12, 2026-10-28): (1) **không chấp nhận lỗ** trong dãy `№`: đánh số riêng theo từng ngôn ngữ, theo thứ tự xuất bản, chỉ bài công khai, kèm kiểm tra chặn bài mới có ngày cũ hơn bài mới nhất; (2) **thử** trang mở đảo màu, trên một phòng trước; (3) **thử** running head thay nav khi đang đọc; (4) **dời** câu giới thiệu trang chủ lên cột lề 13 px. **Đã hiện thực** (2026-10-28, nhánh `design/reader-edition`): trạng thái, số đo và 8 chỗ lệch ở `DIGITAL_EDITORIAL_DESIGN.md` mục 13. Mục 3.3 của tài liệu này: cột đọc giờ là 696 px.
+
+---
+
 _Ghi chú nguồn: nhận xét dựa trên mã trong repo, ảnh chụp màn hình `localhost:5199` (trang chủ, danh sách, bài 005), và sáu ảnh trong `inspiration/`. Lượt 2 đã đo mobile 390 px (trong iframe) và nền sáng, và đã chụp cả hai; số đo ở D12–D16. Thứ vẫn **chưa đo**: thiết bị thật (Safari iOS, Chrome Android), và màn hình đầu ở khổ 375 × 667. Phần về dashboard `/signals` là ngoại suy._

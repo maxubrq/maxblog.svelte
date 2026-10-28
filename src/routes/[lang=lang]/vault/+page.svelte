@@ -49,6 +49,7 @@
 	<meta name="robots" content="noindex, follow" />
 </svelte:head>
 
+<div class="sheet">
 <section class="masthead">
 	<div class="row">
 		<a class="back" href={href(i18n.lang, '/about')}>{t.backToAbout}</a>
@@ -158,10 +159,11 @@
 
 	<p class="colophon">{t.colophon}</p>
 </section>
+</div>
 
 <style>
 	.masthead {
-		padding: 44px var(--pad-chrome) 32px;
+		padding: 44px 0 32px;
 		border-bottom: 1.5px solid var(--rule-hard);
 	}
 	.row {
@@ -221,7 +223,7 @@
 	}
 
 	.timeline {
-		padding: 22px var(--pad-chrome) 60px;
+		padding: 22px 0 60px;
 	}
 	.year {
 		display: grid;
@@ -411,11 +413,6 @@
 		}
 		.marker {
 			position: static;
-		}
-		.masthead,
-		.timeline {
-			padding-left: 18px;
-			padding-right: 18px;
 		}
 	}
 </style>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * The contents, as words, in the left margin (DESIGN.md §6.4). Only where
-	 * the margin exists (≥ 1180px) and only when there is something to find
+	 * the margin exists (≥ 1280px) and only when there is something to find
 	 * your way through — three sections or more. The section you are in is
 	 * the one in blue; that is the whole of the "where am I" answer.
 	 */
@@ -18,8 +18,9 @@
 	<nav class="rail" aria-label={t.contents}>
 		<p class="head">{t.contents}</p>
 		<ol>
-			{#each items as item (item.id)}
+			{#each items as item, i (item.id)}
 				<li>
+					<span class="n">{String(i + 1).padStart(2, '0')}</span>
 					<a
 						href="#{item.id}"
 						class:active={item.id === activeSection}
@@ -32,21 +33,20 @@
 {/if}
 
 <style>
-	/* Anchored to the left edge of the centred article, the way the fore-edge
-	   was: the gutter is whatever the screen leaves on either side of it. */
+	/* Sticky inside the grid's margin column (DIGITAL_EDITORIAL_DESIGN.md §2):
+	   it rides beside the prose, below the header, and stops where the essay
+	   does. The column only exists from 1280px; below that the bar at the
+	   foot of the screen carries the contents. */
 	.rail {
 		display: none;
-		position: fixed;
-		top: 120px;
-		right: calc(50% + var(--article-w) / 2 + var(--s-3));
-		width: min(220px, calc((100vw - var(--article-w)) / 2 - 48px));
-		max-height: calc(100vh - 160px);
+		position: sticky;
+		top: 88px;
+		max-height: calc(100vh - 120px);
 		overflow-y: auto;
 		font-size: var(--t-meta);
 		line-height: 1.4;
-		z-index: 20;
 	}
-	@media (min-width: 1180px) {
+	@media (min-width: 1280px) {
 		.rail {
 			display: block;
 		}
@@ -60,8 +60,16 @@
 		margin: 0;
 		padding: 0;
 	}
+	li {
+		display: grid;
+		grid-template-columns: 2.2em 1fr;
+	}
 	li + li {
 		margin-top: var(--s-1);
+	}
+	.n {
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
 	}
 	a {
 		color: var(--muted);
