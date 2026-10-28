@@ -10,5 +10,4 @@
  *
  * @type {import('./drafts').Drafts}
  */
-export const DRAFTS = {
-};
+export const DRAFTS = {};
