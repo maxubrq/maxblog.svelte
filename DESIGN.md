@@ -68,7 +68,7 @@ Luật xung đột (Tiêu chuẩn A10): khi nhận diện hình thức (Vignelli
 
 ### 3.2 Thang chữ — một bảng, bốn dòng
 
-**Một họ chữ: CDA Independence** (`fonts/CDA Independence/`), thay IBM Plex Sans và Space Grotesk. Mono chỉ cho code: giữ IBM Plex Mono (CDA không có mono). Bỏ serif tùy chọn. KaTeX giữ vì toán cần.
+**Một họ chữ: CDA Independence** (`fonts/CDA Independence/`), thay IBM Plex Sans và Space Grotesk. Mono chỉ cho code: **Monaspace Xenon** (xem 3.2.1), thay IBM Plex Mono (CDA không có mono). Bỏ serif tùy chọn. KaTeX giữ vì toán cần.
 
 **Phán quyết của hội đồng: dùng CDA Independence.** Đã thử trên trình duyệt cạnh IBM Plex Sans, ở 18 px, nền tối, tiếng Anh và tiếng Việt. Lý do, bằng số và bằng phần tử:
 
@@ -113,6 +113,28 @@ Luật xung đột (Tiêu chuẩn A10): khi nhận diện hình thức (Vignelli
 - **Bỏ `text-transform: lowercase`** trên heading. Viết hoa như câu văn bình thường.
 - **Bỏ `text-transform: uppercase` + `letter-spacing: 0.14em`** trên Tag, nav, nhãn. Viết thường như câu, 13 px, weight 500. In hoa chỉ giữ cho từ viết tắt.
 - Bỏ các cỡ: 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13.5, 14, 14.5, 15, 16, 16.5, 17, 19, 20, 21, 22, 24, 30, 34, 44, 46, 58, 72. Toàn bộ về bốn token ở trên. Việc này làm bằng tìm và thay `font-size` trong `src/` (≈ 250 chỗ), rồi gom vào `app.css`.
+
+### 3.2.1 Mono: Monaspace Xenon (quyết 2026-10-28)
+
+**Phán quyết: dùng Monaspace Xenon cho mọi chỗ mono** (khối code, `code` trong dòng, và chỉ ở đó). File: `fonts/Monaspace Xenon/Monaspace Xenon Var.woff2`. Đã thử cạnh IBM Plex Mono ở 13 px trong khung code và `0.86em` trong câu, nền sáng.
+
+Lý do:
+
+1. **Dấu tiếng Việt đủ** (kiểm bằng `fontTools`, 134 chữ có dấu). Comment tiếng Việt trong code đọc gọn ở 13 px.
+2. **Code tách khỏi văn.** Xenon là mono có chân (slab). Thân bài là CDA sans nhân văn, nên một mono có chân cho mắt biết ngay "đây là code", trong khi Plex Mono gần giọng với thân bài sans. Chân của Xenon cũng cùng họ hàng với nét loe của CDA: hai mặt chữ nói cùng một ngôn ngữ, khác vai.
+3. **Bỏ phụ thuộc ngoài cuối cùng.** Plex Mono là thứ duy nhất còn tải từ Google Fonts. Đổi sang Xenon tự host thì bỏ được link Google và hai `preconnect`.
+4. **Giấy phép SIL OFL 1.1** (đọc từ metadata: GitHub Next). Được nhúng web.
+
+Điều kiện (không đạt thì giữ Plex Mono):
+
+- **Không dùng nguyên file variable.** File gốc 570 KB (trục `wght` 200–800, `wdth` 100–125, `slnt` −11–0, 3818 glyph): gấp ba toàn bộ CDA. _Đã làm:_ tác giả cung cấp bản tĩnh (`fonts/Monaspace Xenon/MonaspaceXenon-*.woff2`, mỗi file ~216 KB). Dùng **Regular và SemiBold**, subset Latin + Latin-1 + Latin Extended-A + Vietnamese (U+1EA0–1EFF, Ơ ơ Ư ư, dấu kết hợp) + dấu câu và mũi tên. Kết quả: **35 KB + 35 KB** (bản tĩnh giữ bảng texture healing dày hơn instance cắt từ variable, nên nặng hơn mức 27 KB đo thử), đủ 134 chữ có dấu. Lệnh: `fontTools.subset` (flavor `woff2`, features `calt ccmp locl kern mark mkmk tnum zero`), đặt ở `static/fonts/monaspace-xenon/MonaspaceXenon-{Regular,SemiBold}.woff2`.
+- **Giữ `calt` (texture healing)**: nó là lý do của họ Monaspace, giãn chữ hẹp và chữ rộng trong ô cố định cho màu chữ đều. **Không bật `ss01`–`ss10`** (ligature `!=` → `≠`, `=>` → mũi tên): người đọc blog chép code ra để chạy, và một ký tự trông khác cái họ phải gõ là bất ngờ (A5).
+- **Rộng hơn Plex Mono 3%** (80 ký tự 13 px: 645 px so với 624 px). Khung code trong cột 680 px, trừ padding 16 px hai bên, chứa khoảng 100 ký tự. Đủ; dòng dài hơn thì cuộn trong khung như hiện nay.
+- **Không có `⌘`**: chỉ dùng trong tooltip của nút tìm, trình duyệt lấy font hệ thống, không sao.
+- **Chỉ trong code.** Không dùng Xenon cho nhãn, số liệu hay ngày tháng: đó là việc của CDA Text với `tabular-nums`. Mono làm nhãn là thói quen cũ của bản "ink" mà mục 3.2 đã bỏ.
+- Áp cả cho `viz/`, `interactive/`, `tech/` khi các thư mục đó được rà thang chữ (mục 12, lệch 3): chỗ nào đang `var(--mono)` cho nhãn trục thì chuyển sang `var(--body)`, chỗ nào thật là code (`CodeBlock`, `Terminal`) giữ `var(--mono)`.
+
+Token: `--mono: 'Monaspace Xenon', ui-monospace, monospace;` Không đổi gì khác trong component: mọi chỗ đã đọc `var(--mono)`.
 
 ### 3.3 Lưới và khoảng cách
 
@@ -367,7 +389,7 @@ Bỏ câu "kept in public · est. 2024" khỏi footer (đã ở About). Bỏ Tag
 Làm xong mỗi bước, chạy các phép thử. Số liệu lấy bằng công cụ, không bằng mắt.
 
 1. **Số cỡ chữ**: trên một trang bài, tập hợp `getComputedStyle(el).fontSize` của mọi lá chữ. Đích: **≤ 5 giá trị** (13, 18, 26, 40 và 16 hoặc 17 nếu có cỡ A− / A+; cộng KaTeX).
-2. **Chữ CDA, thử mắt**: 5 người đọc 5 phút thân bài 18 px, sáng và tối, EN và VI, rồi hỏi "mỏi mắt hơn Plex không?". **Số họ chữ**: ≤ 2 họ: CDA Independence (Text / Deck / Display tính là một) và IBM Plex Mono, cộng KaTeX.
+2. **Chữ CDA, thử mắt**: 5 người đọc 5 phút thân bài 18 px, sáng và tối, EN và VI, rồi hỏi "mỏi mắt hơn Plex không?". **Số họ chữ**: ≤ 2 họ: CDA Independence (Text / Deck / Display tính là một) và Monaspace Xenon, cộng KaTeX.
 3. **Ký tự mỗi dòng** thân bài: 65–75 (EN và VI, đếm trên dòng thực).
 4. **Màn hình đầu** (1512 × 795 và 375 × 812): ≥ 4 dòng thân bài, không hộp giữa tít và thân.
 5. **Tương phản**: `--muted` trên `--paper` ≥ 4.5 : 1 ở **cả hai** theme, ở 13 px.
@@ -448,7 +470,7 @@ Nhánh `design/reader-edition`, chưa commit. `pnpm check`: 0 lỗi, 0 cảnh b�
 
 | Bước | Kết quả đo |
 | --- | --- |
-| 1–2 Token, chữ | CDA Independence tự host (5 file `woff2`, 196 KB), bỏ Space Grotesk và Plex Sans khỏi Google Fonts (chỉ còn Plex Mono). Trang bài 005: cỡ chữ còn **13 / 18 / 26 / 40** (cộng KaTeX), từ 24 cỡ. Họ chữ: CDA Text / Deck / Display + KaTeX. Bỏ `lowercase`, `uppercase`, `letter-spacing` trong 52 file. |
+| 1–2 Token, chữ | CDA Independence tự host (5 file `woff2`, 196 KB), bỏ Space Grotesk và Plex Sans khỏi Google Fonts Mono là Monaspace Xenon tự host (3.2.1). **Không còn yêu cầu nào tới Google Fonts** (đo: 0 request). Trang bài 005: cỡ chữ còn **13 / 18 / 26 / 40** (cộng KaTeX), từ 24 cỡ. Họ chữ: CDA Text / Deck / Display + KaTeX. Bỏ `lowercase`, `uppercase`, `letter-spacing` trong 52 file. |
 | 3 Cột đọc | 680 px, đo được đúng 680 px. |
 | 4 Cài đặt | 11 → 2 (theme Theo máy / Sáng / Tối; cỡ chữ 17 / 18 / 20). Đọc lại khóa cũ `theme` (kể cả `dusk` → sáng) và `font-size`. Trang `/reading` đã cất. |
 | 5–7 Trang bài | Đầu bài: một dòng meta, không hộp. Mục lục chữ ở lề (≥ 1180 px, ≥ 3 mục), thanh "Mục lục" ở đáy dưới 1180 px, thanh tiến độ 2 px. Quay lại chỗ dừng bằng `ResumeToast`. Phụ lục một khuôn `.appendix`. |

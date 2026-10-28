@@ -36,6 +36,24 @@
 	font-style: normal;
 	font-display: swap;
 }
+/* Monaspace Xenon — the mono, for code and nothing else (DESIGN.md §3.2.1).
+   Static Regular and SemiBold, subset to Latin + Vietnamese (≈ 35 KB each).
+   `calt` (texture healing) is kept; the ligature sets ss01–ss10 are not
+   shipped, so `!=` is always the two characters a reader has to type. */
+@font-face {
+	font-family: 'Monaspace Xenon';
+	src: url('/fonts/monaspace-xenon/MonaspaceXenon-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Monaspace Xenon';
+	src: url('/fonts/monaspace-xenon/MonaspaceXenon-SemiBold.woff2') format('woff2');
+	font-weight: 500 700;
+	font-style: normal;
+	font-display: swap;
+}
 @font-face {
 	font-family: 'CDA Independence Display';
 	src: url('/fonts/cda-independence/CDAIndependenceDisplay-Bold.woff2') format('woff2');
@@ -83,7 +101,7 @@
 	--display: 'CDA Independence Display', 'CDA Independence Text', sans-serif;
 	--deck: 'CDA Independence Deck', 'CDA Independence Text', sans-serif;
 	--body: 'CDA Independence Text', -apple-system, BlinkMacSystemFont, sans-serif;
-	--mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--mono: 'Monaspace Xenon', ui-monospace, monospace;
 
 	/* The type scale — four sizes and no others (DESIGN.md §3.2). Hierarchy
 	   below a step is weight or colour, never a size in between. */
