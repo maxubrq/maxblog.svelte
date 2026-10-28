@@ -48,13 +48,10 @@
 	.q :global(p + p) {
 		margin-top: 0.5em;
 	}
-	/* Where the margin exists the quote reaches one column into it — the
-	   magazine move — and still never past the text column on the right. */
-	@media (min-width: 1280px) {
-		blockquote.pull {
-			margin-left: -104px;
-		}
-	}
+	/* No reach into the margin. It was specified to hang one column out — the
+	   magazine move — but beside the prose the margin column belongs to the
+	   sticky contents, and the quote slid under them. Size and the two rules
+	   already set it apart; the left edge of the text stays one edge. */
 	.from {
 		font-size: var(--t-meta);
 		color: var(--muted);

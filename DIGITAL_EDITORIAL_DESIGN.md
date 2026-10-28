@@ -145,8 +145,9 @@ Tech
 - Thân bài cột 4–10. Không đổi gì ở cỡ, leading hay màu.
 - **Tiêu đề mục (h2) treo**: số mục trong cột lề (`01`, `02`, 13 px, tabular, cùng baseline), chữ tiêu đề 26 px trong cột chữ. Số mục lấy từ `toc`, và là cùng con số running head dùng. Mục lục trong cột lề đổi sang sticky **phía dưới** trang mở, không đè lên kicker.
 - **Sidenote** và **chú thích hình** ở cột 11–12.
-- **PullQuote**: chữ 26 px treo từ cột 3 (lấn sang lề một cột) tới cột 10, rule trên và dưới. Lấn lề là động tác tạp chí kinh điển, và nó không đụng cột đọc.
-- **Hình tương tác**: rộng cột 4–12 (`wide`) nếu cần chỗ; chú thích ở cột lề, cùng baseline mép trên hình.
+- **PullQuote**: chữ 26 px trong cột chữ (cột 4–10), rule trên và dưới. _Sửa lúc hiện thực:_ bản đầu cho nó lấn sang lề một cột; bỏ, vì nó trượt xuống dưới mục lục (xem luật bên dưới).
+- **Hình tương tác**: rộng cột 4–12 (`wide`) nếu cần chỗ, tức là chỉ lấn sang **phải**.
+- **Luật cột lề cạnh thân bài** (chốt sau hai lần va chạm): bên cạnh thân bài, cột lề (1–3) **thuộc về mục lục sticky**. Không gì trong thân bài được lấn sang trái quá cột chữ. Thứ cần thêm chỗ thì lấn sang phải, vào cột ngoài (11–12), như sidenote. Nhãn treo ở lề chỉ dùng ở trang mở và ở phụ lục, là hai hàng lưới mục lục không chạy tới.
 - Dấu kết sau đoạn cuối (mục 4).
 
 ### 6.3 Phụ lục
@@ -316,6 +317,7 @@ Không trang nào tràn ngang ở 375 và 390 px (13 trang đã thử).
 7. **Header và footer vẫn tràn mép**, không nằm trên lưới. Chúng là phần khung của site, không phải trang.
 8. **Thêm một số hiệu mới**: viết bài, rồi thêm một dòng vào `content/numbers.json`. Build in ra đúng dòng cần thêm.
 9. **Phụ lục là một hàng lưới riêng sau thân bài** (sửa sau phản hồi của tác giả). Mục lục sticky ở cột lề chỉ trượt trong hàng của thân bài, nên dừng ở dòng cuối của bài. Khi phụ lục còn chung hàng, một mục lục dài (bài 005 có 22 mục) trượt xuống đè lên các nhãn "Nếu chỉ nhớ một câu", "Nguồn", "Thuật ngữ" treo ở lề. Đo lại ở 5 vị trí cuộn: không chồng lần nào, đáy mục lục cách nhãn đầu tiên 80 px.
+10. **PullQuote không còn lấn lề** (sửa sau phản hồi của tác giả). Nó lấn 104 px sang cột lề, và mục lục sticky trượt qua nó. Giờ quote nằm trong cột chữ: bài 001, hai quote, mép trái x = 604 px, mục lục kết thúc ở 572 px, đo ở 8 vị trí cuộn không chồng lần nào. Đã soát mọi margin âm trong `src/lib/components` và `PostBody`: chỉ còn `RevisionBody` lùi 18 px, nằm trong rãnh 32 px, không chạm mục lục. Luật cột lề ở mục 6.2 ngăn lỗi này quay lại.
 
 **Chưa đo:** thiết bị thật; nền tối cho mọi trang trừ trang mở đảo màu; ảnh bìa bài (chưa bài nào có `coverImage`).
 

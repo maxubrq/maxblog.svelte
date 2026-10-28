@@ -59,6 +59,12 @@
 	}
 
 
+	/* Nothing in the prose reaches left of the text column. Beside the essay
+	   the grid's margin column belongs to the sticky contents (ContentsRail);
+	   a pull quote hung into it and the section numbers once did, and both
+	   slid under the list. Reach right, into the outer column, if anything
+	   must (sidenotes do). */
+
 	/* mdsvex output is not scoped to this component, hence :global. */
 	.prose :global(p) {
 		margin: 0 0 1.4em;
