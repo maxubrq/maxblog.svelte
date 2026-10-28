@@ -65,7 +65,7 @@
 	}
 	p {
 		margin: 0;
-		font-size: 18.5px;
+		font-size: var(--t-body);
 		line-height: 1.72;
 		color: var(--ink);
 	}
@@ -82,7 +82,7 @@
 		text-decoration: line-through;
 		text-decoration-color: var(--blue);
 		text-decoration-thickness: 1.5px;
-		color: var(--faint);
+		color: var(--muted);
 	}
 	ins {
 		text-decoration: none;
@@ -90,27 +90,26 @@
 	}
 
 	.aside {
-		font-size: 14.5px;
+		font-size: var(--t-meta);
 		line-height: 1.6;
 		color: var(--muted);
 		border-left: 1.5px solid var(--rule);
 		padding-left: 14px;
 	}
 	.quote {
-		font-family: var(--display);
-		font-size: 22px;
+		font-family: var(--deck);
+		font-size: var(--t-h2);
 		line-height: 1.35;
-		letter-spacing: -0.02em;
 	}
 	.fleuron {
 		margin: 30px 0;
 		text-align: center;
-		color: var(--faint);
+		color: var(--muted);
 	}
 
 	@media (max-width: 640px) {
 		p {
-			font-size: 17px;
+			font-size: var(--t-body);
 		}
 		.touched p {
 			margin-left: 0;

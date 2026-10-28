@@ -8,7 +8,7 @@
 	 * `$lib/glossary`, the same module `<Term>` reads, so a definition is
 	 * written once and shown in both places.
 	 */
-	import ArrowMark from '$lib/components/ink/ArrowMark.svelte';
+	import Headline from '$lib/components/ink/Headline.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { pad } from '$lib/format';
 	import { GLOSSARY_TOPICS, TERMS, getGlossaryLocale, type GlossaryTopic } from '$lib/glossary';
@@ -55,12 +55,6 @@
 			.sort((a, b) => a.term.localeCompare(b.term, i18n.lang))
 	);
 
-	/**
-	 * The demo reads from the unfiltered list, so it stays put while you filter.
-	 * It prefers a term that is actually used somewhere — the card shows a
-	 * citation count, and "appears in 0 essays" is a poor advertisement.
-	 */
-	const featured = $derived(available.find((e) => e.appearances.length > 0) ?? available[0]);
 
 	const entries = $derived(
 		available
@@ -96,11 +90,10 @@
 	});
 
 	const plural = (n: number) => (n === 1 ? t.entry : t.entries);
-	const essayWord = (n: number) => (n === 1 ? t.essay : t.essays);
 </script>
 
 <svelte:head>
-	<title>{t.titleLead} {t.titleAccent} — {site.name}</title>
+	<title>{[t.titleLead, t.titleAccent].filter(Boolean).join(' ')} — {site.name}</title>
 	<meta name="description" content={t.description} />
 </svelte:head>
 
@@ -109,40 +102,10 @@
 		<Tag>{t.indexLabel}</Tag>
 		<Tag>{entries.length} {plural(entries.length)} · {totalUses} {t.usesLabel}</Tag>
 	</div>
-	<h1>{t.titleLead} <span class="accent">{t.titleAccent}</span></h1>
+	<Headline text={[t.titleLead, t.titleAccent].filter(Boolean).join(' ')} />
 	<p class="deck">{t.description}</p>
 </section>
 
-{#if featured}
-	<!-- The popover, shown beside the sentence it belongs to. Built from a real
-	     entry so the page never demonstrates a word it does not hold. -->
-	<section class="demo">
-		<div class="demo-label"><Tag on>{t.demoLabel}</Tag></div>
-		<div class="ink-gloss-demo">
-			<p class="sentence">
-				{t.demoLead}
-				<span class="mark">{featured.term}</span>
-				{t.demoTail}
-			</p>
-
-			<div class="card">
-				<ArrowMark dir="left" class="ink-gloss-arrow" left={-46} top={18} w={42} />
-				<Tag on>{t.termTag}</Tag>
-				<div class="card-term">{featured.term}</div>
-				<p class="card-def">{featured.short}</p>
-				<div class="card-foot">
-					<Tag>
-						{fill(t.appearsInCount, {
-							count: featured.appearances.length,
-							essays: essayWord(featured.appearances.length)
-						})}
-					</Tag>
-					<a href="#gl-{featured.term[0].toUpperCase()}">{t.fullEntry}</a>
-				</div>
-			</div>
-		</div>
-	</section>
-{/if}
 
 <section class="controls">
 	<input class="search" type="search" bind:value={query} placeholder={t.searchPlaceholder} />
@@ -228,76 +191,12 @@
 		justify-content: space-between;
 		gap: 12px;
 	}
-	h1 {
-		font-size: clamp(40px, 7vw, 64px);
-		line-height: 0.94;
-		letter-spacing: -0.045em;
-		margin: 12px 0 0;
-	}
-	.accent {
-		color: var(--blue);
-	}
 	.deck {
 		max-width: 58ch;
-		font-size: 16px;
+		font-size: var(--t-body);
 		line-height: 1.5;
 		color: var(--muted);
 		margin: 18px 0 0;
-	}
-
-	.demo {
-		padding: 30px var(--pad-chrome) 34px;
-		border-bottom: 1.5px solid var(--rule-hard);
-		background: var(--paper2);
-	}
-	.demo-label {
-		margin-bottom: 16px;
-	}
-	.sentence {
-		margin: 0;
-		font-size: 20px;
-		line-height: 1.62;
-		max-width: 46ch;
-	}
-	.mark {
-		color: var(--blue);
-		font-weight: 500;
-		border-bottom: 2px dotted var(--blue);
-		cursor: help;
-	}
-	.card {
-		position: relative;
-		border: 1.5px solid var(--rule-hard);
-		background: var(--paper);
-		padding: 18px 20px;
-	}
-	.card-term {
-		font-family: var(--display);
-		font-weight: 700;
-		font-size: 22px;
-		letter-spacing: -0.02em;
-		line-height: 1.05;
-		text-transform: lowercase;
-		margin: 6px 0 8px;
-	}
-	.card-def {
-		margin: 0 0 12px;
-		font-size: 13.5px;
-		line-height: 1.5;
-	}
-	.card-foot {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 12px;
-		flex-wrap: wrap;
-		border-top: 1px solid var(--rule);
-		padding-top: 10px;
-	}
-	.card-foot a {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.06em;
 	}
 
 	.controls {
@@ -316,7 +215,7 @@
 		border-bottom: 1.5px solid var(--rule);
 		padding: 8px 0;
 		font-family: var(--body);
-		font-size: 16px;
+		font-size: var(--t-body);
 		color: var(--ink);
 		outline: none;
 	}
@@ -333,11 +232,9 @@
 		border: none;
 		padding: 0;
 		cursor: pointer;
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		font-weight: 500;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
 		color: var(--muted);
 	}
 	.topic:hover,
@@ -352,8 +249,8 @@
 		flex-wrap: wrap;
 		padding: 18px var(--pad-chrome);
 		border-bottom: 1.5px solid var(--rule-hard);
-		font-family: var(--mono);
-		font-size: 13px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 	.az :global(.tag) {
 		margin-right: 14px;
@@ -361,10 +258,9 @@
 	.az a,
 	.az span {
 		padding: 2px 5px;
-		letter-spacing: 0.06em;
 	}
 	.az span {
-		color: var(--faint);
+		color: var(--muted);
 	}
 
 	.empty {
@@ -385,8 +281,8 @@
 	}
 	.letter-head h2 {
 		margin: 0;
-		font-size: clamp(48px, 8vw, 80px);
-		color: var(--faint);
+		font-size: var(--t-title);
+		color: var(--muted);
 		line-height: 0.9;
 	}
 	.rule {
@@ -396,9 +292,9 @@
 	}
 
 	.num {
-		font-family: var(--mono);
-		font-size: 12px;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 		padding-top: 4px;
 	}
 	.body {
@@ -412,8 +308,7 @@
 	}
 	.head h3 {
 		margin: 0;
-		font-size: 21px;
-		letter-spacing: -0.02em;
+		font-size: var(--t-body);
 		line-height: 1.05;
 	}
 	.meta {
@@ -425,14 +320,14 @@
 	}
 	.short {
 		margin: 8px 0 0;
-		font-size: 13.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		max-width: 44ch;
 	}
 	.long {
 		margin: 8px 0 0;
-		font-size: 12.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		max-width: 44ch;
@@ -445,7 +340,7 @@
 		align-items: baseline;
 	}
 	.appears a {
-		font-size: 13px;
+		font-size: var(--t-meta);
 		color: var(--ink);
 		border-bottom: 1.5px solid var(--blue);
 		padding-bottom: 1px;
@@ -459,16 +354,13 @@
 		margin: 48px var(--pad-chrome) 0;
 		padding: 24px 0 80px;
 		border-top: 1.5px solid var(--rule-hard);
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 
 	@media (max-width: 860px) {
 		.masthead,
-		.demo,
 		.controls,
 		.az,
 		.letter {

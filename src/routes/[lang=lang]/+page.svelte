@@ -1,21 +1,51 @@
 <script lang="ts">
-	// Home — masthead + featured cell/plate + recent archive rows.
-	import ArrowMark from '$lib/components/ink/ArrowMark.svelte';
-	import Headline from '$lib/components/ink/Headline.svelte';
+	// Home = the archive (DESIGN.md §7.1). What you are in the middle of, one
+	// line; the newest essay, set large; then everything, by year, with the
+	// topic filter. `/writing` redirects here.
+	import FilterBar from '$lib/components/ink/FilterBar.svelte';
 	import IndexRow from '$lib/components/ink/IndexRow.svelte';
 	import PickUpWhereYouLeftOff from '$lib/components/home/PickUpWhereYouLeftOff.svelte';
-	import Tag from '$lib/components/ink/Tag.svelte';
-	import { dots, pad } from '$lib/format';
-	import { href, useI18n } from '$lib/i18n';
+	import { dmy, short, year } from '$lib/format';
+	import { fill, href, useI18n } from '$lib/i18n';
 	import { cloudinary, coverImageFor, srcsetFor } from '$lib/images';
 	import { site } from '$lib/site';
+	import { LISTED_TOPICS, TOPIC_CONTENT, getTopicLocale, type TopicId } from '$lib/topics';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	const i18n = useI18n();
 	const t = $derived(i18n.t);
-	const cover = $derived(coverImageFor(data.featured?.coverImage));
+
+	let filter = $state('All');
+
+	/**
+	 * The buttons carry topic *ids*, not the names on them: the id is stable
+	 * across locales, so switching language mid-filter keeps the filter. Only
+	 * topics with at least one essay here are offered — six buttons over four
+	 * essays would misstate the size of the archive.
+	 */
+	const matches = (id: TopicId, topic: string | undefined) =>
+		TOPIC_CONTENT[id].frontmatterTopics
+			.map((x) => x.toLowerCase())
+			.includes(topic?.toLowerCase() ?? '');
+	const options = $derived([
+		'All',
+		...LISTED_TOPICS.filter((id) => data.posts.some((p) => matches(id, p.topic)))
+	]);
+	const label = (o: string) =>
+		o === 'All' ? t.writing.filterAll : getTopicLocale(TOPIC_CONTENT[o as TopicId], i18n.lang).name;
+
+	const featured = $derived(data.posts[0] ?? null);
+	const cover = $derived(coverImageFor(featured?.coverImage));
+
+	// Unfiltered, the newest essay is already set large above; filtered, the
+	// list is the whole answer and has to include it.
+	const visible = $derived.by(() => {
+		if (filter === 'All') return data.posts.slice(1);
+		return data.posts.filter((p) => matches(filter as TopicId, p.topic));
+	});
+	const years = $derived([...new Set(visible.map((p) => year(p.date)))]);
 </script>
 
 <svelte:head>
@@ -23,200 +53,157 @@
 	<meta name="description" content={t.home.description} />
 </svelte:head>
 
-<!-- What you are in the middle of. Renders nothing when there is nothing to
-     resume, which is every first visit — so it can stand above the masthead
-     without pushing the site down for a reader who has none. -->
-<PickUpWhereYouLeftOff />
+<div class="page">
+	<p class="intro">{t.home.headline}</p>
 
-<!-- Masthead -->
-<section class="masthead">
-	<div class="labels">
-		<Tag>{t.home.tagline}</Tag>
-		<Tag>{t.home.mastheadIndex}</Tag>
-	</div>
-	<Headline
-		text={t.home.headline}
-		accent={t.home.headlineAccent}
-		mark="scribble"
-		size={72}
-		markWidth={230}
-	/>
-	<p class="deck">{t.home.description}</p>
-</section>
+	<PickUpWhereYouLeftOff />
 
-<!-- Featured — the latest essay as a full-bleed division -->
-{#if data.featured}
-	{@const f = data.featured}
-	<section class="featured">
-		<a class="cell" href={href(i18n.lang, `/writing/${f.slug}`)}>
-			<div class="tags">
-				{#if f.interactive}<Tag on>● {t.home.interactive}</Tag>{/if}
-				<Tag>{t.home.latestLabel} / {f.topic}</Tag>
+	{#if featured}
+		<a class="featured" href={href(i18n.lang, `/writing/${featured.slug}`)}>
+			<div class="text">
+				<h2>{featured.title}</h2>
+				{#if featured.subtitle || featured.description}
+					<p class="deck">{featured.subtitle ?? featured.description}</p>
+				{/if}
+				<p class="meta">
+					{[
+						featured.topic,
+						fill(t.article.readTime, { n: featured.reading }),
+						dmy(featured.date),
+						featured.interactive ? t.home.interactive : null
+					]
+						.filter(Boolean)
+						.join(' · ')}
+				</p>
 			</div>
-			<div class="number">01</div>
-			<h2>{f.title}</h2>
-			{#if f.subtitle || f.description}
-				<p>{f.subtitle ?? f.description}</p>
-			{/if}
-			<span class="cta">
-				{t.home.readEssay}
-				<ArrowMark left={130} top={-6} w={90} />
-			</span>
-		</a>
-		<!-- Cyanotype plate — the post's cover, or the branded default. -->
-		<div class="ink-screen plate">
-			<img
-				class="fill"
-				src={cloudinary(cover, { width: 1080, halftone: 'screen' })}
-				srcset={srcsetFor(cover, { halftone: 'screen' })}
-				sizes="(max-width: 860px) 100vw, 45vw"
-				alt=""
-				decoding="async"
-			/>
-		</div>
-	</section>
-{/if}
-
-<!-- Recent -->
-<section class="recent">
-	<div class="head">
-		<Tag>{t.home.archiveRecent}</Tag>
-		<a class="all" href={href(i18n.lang, '/writing')}>{t.home.allEssays}</a>
-	</div>
-	<ul>
-		{#each data.recent as p, i (p.slug)}
-			<li>
-				<IndexRow
-					href={href(i18n.lang, `/writing/${p.slug}`)}
-					lead={pad(i + 2)}
-					topic={p.topic}
-					title={p.title}
-					meta={`${dots(p.date)} · ${p.reading}′`}
-					interactive={p.interactive}
+			<!-- The post's cover as a one-colour halftone, or the branded default. -->
+			<div class="ink-screen plate">
+				<img
+					class="fill"
+					src={cloudinary(cover, { width: 1080, halftone: 'screen' })}
+					srcset={srcsetFor(cover, { halftone: 'screen' })}
+					sizes="(max-width: 860px) 100vw, 40vw"
+					alt=""
+					decoding="async"
 				/>
-			</li>
+			</div>
+		</a>
+	{/if}
+
+	{#if options.length > 2}
+		<div class="filter">
+			<FilterBar {options} {label} value={filter} onchange={(v) => (filter = v)} />
+		</div>
+	{/if}
+
+	<section class="list">
+		{#each years as y (y)}
+			<h3 class="year">{y}</h3>
+			<ul>
+				{#each visible.filter((p) => year(p.date) === y) as p (p.slug)}
+					<li>
+						<IndexRow
+							href={href(i18n.lang, `/writing/${p.slug}`)}
+							lead={short(p.date)}
+							topic={p.topic}
+							title={p.title}
+							meta={p.openDraft ? t.openDraft.indexMark : fill(t.article.readTime, { n: p.reading })}
+							interactive={p.interactive}
+							leadWidth="48px"
+						/>
+					</li>
+				{/each}
+			</ul>
 		{/each}
-	</ul>
-</section>
+		{#if filter !== 'All' && visible.length === 0}
+			<p class="empty">{fill(t.writing.empty, { topic: label(filter) })}</p>
+		{/if}
+	</section>
+</div>
 
 <style>
-	.masthead {
-		padding: 46px var(--pad-chrome) 38px;
-		border-bottom: 1.5px solid var(--rule-hard);
-		position: relative;
+	.page {
+		max-width: var(--index-max);
+		margin: 0 auto;
+		padding: var(--s-3) var(--pad-chrome) var(--s-4);
 	}
-	.labels {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 20px;
-	}
-	.deck {
-		max-width: 54ch;
-		font-size: 16px;
-		line-height: 1.5;
+	.intro {
+		font-size: var(--t-body);
 		color: var(--muted);
-		margin: 26px 0 0;
+		margin: 0 0 var(--s-2);
 	}
 
 	.featured {
 		display: grid;
-		grid-template-columns: 1.15fr 1fr;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--s-3);
+		padding: var(--s-3) 0;
+		border-top: 1.5px solid var(--rule-hard);
 		border-bottom: 1.5px solid var(--rule-hard);
-	}
-	.cell {
-		padding: 30px 26px 34px var(--pad-chrome);
-		border-right: 1.5px solid var(--rule-hard);
 		color: var(--ink);
 		text-decoration: none;
-		position: relative;
 	}
-	.cell:hover {
+	.featured:hover {
 		text-decoration: none;
 	}
-	.cell:hover h2 {
+	.featured:hover h2 {
 		color: var(--blue);
 	}
-	.tags {
-		display: flex;
-		gap: 10px;
-		align-items: center;
-		margin-bottom: 18px;
-	}
-	.number {
-		font-family: var(--mono);
-		font-size: 44px;
-		font-weight: 500;
-		color: var(--blue);
-		line-height: 1;
-		letter-spacing: -0.03em;
-		margin-bottom: 14px;
-	}
-	.cell h2 {
+	h2 {
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: 34px;
-		line-height: 1.02;
-		letter-spacing: -0.03em;
-		margin: 0 0 14px;
-		text-transform: lowercase;
+		font-size: var(--t-title);
+		line-height: 1.1;
+		margin: 0;
+		text-wrap: balance;
 	}
-	.cell p {
-		font-size: 14.5px;
-		line-height: 1.55;
+	.deck {
 		color: var(--muted);
-		margin: 0 0 20px;
-		max-width: 46ch;
+		margin: var(--s-2) 0 0;
 	}
-	.cta {
-		position: relative;
-		font-family: var(--mono);
-		font-size: 11.5px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--blue);
+	.meta {
+		font-size: var(--t-meta);
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+		margin: var(--s-2) 0 0;
 	}
-
 	.plate {
-		min-height: 300px;
+		min-height: 280px;
 	}
 
-	.recent {
-		padding: 10px var(--pad-chrome) 34px;
+	.filter {
+		padding: var(--s-3) 0 0;
 	}
-	.head {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		padding: 20px 0 6px;
-	}
-	.all {
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+	.year {
+		font-size: var(--t-meta);
+		font-weight: 600;
+		color: var(--muted);
+		margin: var(--s-3) 0 0;
+		padding-bottom: var(--s-1);
+		font-variant-numeric: tabular-nums;
 	}
 	ul {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 	}
+	.empty {
+		color: var(--muted);
+		padding: var(--s-3) 0;
+	}
 
 	@media (max-width: 860px) {
-		.masthead,
-		.recent {
-			padding-left: 18px;
-			padding-right: 18px;
+		.page {
+			padding: var(--s-2) var(--s-2) var(--s-4);
 		}
 		.featured {
 			grid-template-columns: 1fr;
 		}
-		.cell {
-			border-right: none;
-			border-bottom: 1.5px solid var(--rule-hard);
-			padding: 24px 18px 28px;
+		h2 {
+			font-size: 32px;
 		}
 		.plate {
-			min-height: 220px;
+			min-height: 200px;
 		}
 	}
 </style>

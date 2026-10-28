@@ -23,6 +23,5 @@ export const load: PageLoad = async ({ params }) => {
 		content: post.content,
 		meta: post.meta,
 		translation: translationOf(params.slug),
-		foot: `maxubrq.space / ${post.meta.topic.toLowerCase()}`
 	};
 };

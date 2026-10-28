@@ -7,10 +7,9 @@
 <style>
 	.fleuron {
 		text-align: center;
-		font-family: var(--mono);
-		font-size: 15px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		margin: 34px 0;
-		letter-spacing: 0.3em;
 	}
 </style>

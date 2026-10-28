@@ -58,7 +58,7 @@
 		display: grid;
 		gap: 9px;
 		font-family: var(--body);
-		font-size: 16px;
+		font-size: var(--t-body);
 		line-height: 1.6;
 		color: var(--muted);
 	}

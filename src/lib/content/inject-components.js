@@ -39,7 +39,6 @@ export const KIT_COMPONENTS = [
 	'Sidenote',
 	'Term',
 	'Terminal',
-	'WeatherStrip',
 	'YouTubeVideo'
 ];
 

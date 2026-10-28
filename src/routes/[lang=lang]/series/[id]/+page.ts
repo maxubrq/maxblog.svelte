@@ -37,6 +37,5 @@ export const load: PageLoad = async ({ params }) => {
 	return {
 		id: series.id,
 		chapters: resolveChapters(series, lang, posts),
-		foot: `maxubrq.space / ${series.id}`
 	};
 };

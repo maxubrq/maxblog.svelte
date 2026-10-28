@@ -37,6 +37,5 @@ export const load: PageServerLoad = async ({ params }) => {
 		of: TOPICS_ORDER.length,
 		total: filed.length,
 		posts: filed.filter((p) => !starters.has(p.slug)),
-		foot: `maxubrq.space / ${id}`
 	};
 };

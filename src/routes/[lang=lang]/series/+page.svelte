@@ -47,7 +47,7 @@
 		<Tag on>{t.label}</Tag>
 		<Tag>{fill(t.count, { n: rows.length })}</Tag>
 	</div>
-	<Headline text="{t.titleLead} {t.titleAccent}" accent={t.titleAccent} mark="underline" size={72} />
+	<Headline text="{t.titleLead} {t.titleAccent}" />
 	<p class="deck">{t.description}</p>
 </section>
 
@@ -99,7 +99,7 @@
 	}
 	.deck {
 		margin: 22px 0 0;
-		font-size: 16.5px;
+		font-size: var(--t-body);
 		line-height: 1.55;
 		color: var(--muted);
 		max-width: 58ch;
@@ -110,14 +110,13 @@
 		text-align: center;
 	}
 	.empty-title {
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 500;
-		font-size: 24px;
-		text-transform: lowercase;
+		font-size: var(--t-h2);
 		margin: 0 0 10px;
 	}
 	.empty-body {
-		font-size: 14.5px;
+		font-size: var(--t-meta);
 		line-height: 1.6;
 		color: var(--muted);
 		margin: 0 auto;
@@ -141,9 +140,9 @@
 		text-decoration: none;
 	}
 	.numeral {
-		font-family: var(--mono);
-		font-size: 13px;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 	}
 	.body {
 		min-width: 0;
@@ -156,12 +155,10 @@
 	}
 	.title {
 		display: block;
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 700;
-		font-size: 30px;
-		letter-spacing: -0.03em;
+		font-size: var(--t-h2);
 		line-height: 1.05;
-		text-transform: lowercase;
 	}
 	.arc:hover .title {
 		color: var(--blue);
@@ -169,7 +166,7 @@
 	.subtitle {
 		display: block;
 		margin-top: 8px;
-		font-size: 14.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		max-width: 62ch;
@@ -179,8 +176,8 @@
 		flex-direction: column;
 		align-items: flex-end;
 		gap: 5px;
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		white-space: nowrap;
 	}
 	.written {

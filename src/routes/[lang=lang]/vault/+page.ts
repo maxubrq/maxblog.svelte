@@ -8,4 +8,4 @@ import type { EntryGenerator, PageLoad } from './$types';
  */
 export const entries: EntryGenerator = () => langs.map((lang) => ({ lang }));
 
-export const load: PageLoad = () => ({ foot: 'maxubrq.space / vault' });
+export const load: PageLoad = () => ({});

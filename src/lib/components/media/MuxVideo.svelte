@@ -304,7 +304,7 @@
 		border: 1.5px solid var(--blue);
 		background: color-mix(in srgb, var(--paper) 82%, transparent);
 		color: var(--blue);
-		font-size: 20px;
+		font-size: var(--t-body);
 		line-height: 1;
 		padding-left: 3px;
 	}
@@ -320,10 +320,8 @@
 		place-items: center;
 	}
 	.note span {
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		background: color-mix(in srgb, var(--paper) 82%, transparent);
 		padding: 8px 12px;
@@ -332,10 +330,8 @@
 		position: absolute;
 		left: 12px;
 		bottom: 10px;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		background: color-mix(in srgb, var(--paper) 82%, transparent);
 		padding: 4px 7px;
@@ -361,8 +357,8 @@
 		background: transparent;
 		color: var(--ink);
 		cursor: pointer;
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		line-height: 1;
 		padding: 6px 8px;
 		min-width: 30px;
@@ -373,9 +369,8 @@
 	}
 	.time {
 		flex: none;
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.08em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		font-variant-numeric: tabular-nums;
 	}
@@ -430,7 +425,7 @@
 		.mark {
 			width: 48px;
 			height: 48px;
-			font-size: 16px;
+			font-size: var(--t-body);
 		}
 	}
 </style>

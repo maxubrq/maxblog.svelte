@@ -1,7 +1,8 @@
 <script lang="ts">
-	// Solid blue panel, white DISPLAY 500 lowercase, MONO attribution (§7).
-	// Geometry matches the production blog: 2.4em margin, 38px/40px padding,
-	// 1.7em quote at line-height 1.22.
+	// A passage set at section size, in ink, between two rules (DESIGN.md §6.5):
+	// it stays inside the column and says "this one" by size and air, not by a
+	// blue field. The size sits on `.q` alone — set on the inner <p> as well it
+	// compounds (1.7em × 1.7em was 52px, and ran a long word off a phone).
 	import type { Snippet } from 'svelte';
 
 	let { from = '', children }: { from?: string; children: Snippet } = $props();
@@ -19,25 +20,26 @@
 
 <style>
 	blockquote.pull {
-		background: var(--panel-blue);
-		color: var(--on-blue);
-		padding: 38px 40px;
 		margin: 2.4em 0;
+		padding: var(--s-2) 0;
 		border: none;
+		border-top: 1.5px solid var(--rule-hard);
+		border-bottom: 1.5px solid var(--rule-hard);
 		font-style: normal;
 	}
-	.q,
-	.q :global(p) {
-		font-family: var(--display);
-		font-weight: 500;
-		font-size: 1.7em;
-		line-height: 1.22;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
-		color: var(--on-blue);
-		font-style: normal;
-		margin: 0;
+	.q {
+		font-family: var(--deck);
+		font-weight: 600;
+		font-size: 1.444em;
+		line-height: 1.25;
+		color: var(--ink);
+		overflow-wrap: break-word;
 		text-wrap: pretty;
+	}
+	.q :global(p) {
+		font: inherit;
+		color: inherit;
+		margin: 0;
 	}
 	/* Emphasis inside a quote stays italic — that is the author's, not the theme's. */
 	.q :global(em) {
@@ -47,21 +49,8 @@
 		margin-top: 0.5em;
 	}
 	.from {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--on-blue);
-		margin-top: 18px;
-		opacity: 0.85;
-	}
-	@media (max-width: 720px) {
-		blockquote.pull {
-			padding: 26px 22px;
-		}
-		.q,
-		.q :global(p) {
-			font-size: 1.45em;
-		}
+		font-size: var(--t-meta);
+		color: var(--muted);
+		margin-top: var(--s-1);
 	}
 </style>

@@ -1,10 +1,11 @@
 <script lang="ts">
-	// "If you remember one sentence" — the author's pick, in blue DISPLAY (§7).
+	// "If you remember one sentence" — the author's pick, the first thing after
+	// the essay ends (DESIGN.md §6.7). No box and no blue: it is the reward for
+	// reaching the end, and it is set like a sentence, in ink, at section size.
 	//
-	// Both labels come from the catalogue rather than from here: the plate is
+	// The label comes from the catalogue rather than from here: the plate is
 	// also exported to MDX (`$lib/mdx`), so a post can drop it in with nothing
 	// but a sentence, and it must still speak the locale it is standing in.
-	import Tag from '../ink/Tag.svelte';
 	import { useI18n } from '$lib/i18n';
 
 	let { sentence, attribution }: { sentence: string; attribution?: string } = $props();
@@ -13,42 +14,25 @@
 	const t = $derived(i18n.t.article);
 </script>
 
-<div class="plate">
-	<div class="head">
-		<Tag on>{t.oneSentence}</Tag>
-		<Tag>{attribution ?? t.authorsPick}</Tag>
-	</div>
-	<p>{sentence}</p>
-</div>
+<section class="appendix">
+	<p class="appendix-head">{t.oneSentence}</p>
+	<p class="sentence">{sentence}</p>
+	{#if attribution}<p class="by">{attribution}</p>{/if}
+</section>
 
 <style>
-	.plate {
-		border: 1.5px solid var(--rule-hard);
-		margin: 38px 0 34px;
-	}
-	.head {
-		display: flex;
-		justify-content: space-between;
-		gap: 16px;
-		padding: 10px 16px;
-		border-bottom: 1px solid var(--rule);
-	}
-	p {
-		font-family: var(--display);
-		font-weight: 500;
-		font-size: 27px;
-		line-height: 1.15;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
-		color: var(--blue);
-		margin: 0;
-		padding: 26px 22px;
+	.sentence {
+		font-family: var(--deck);
+		font-weight: 600;
+		font-size: var(--t-h2);
+		line-height: 1.25;
+		color: var(--ink);
+		margin: var(--s-2) 0 0;
 		text-wrap: pretty;
 	}
-	@media (max-width: 720px) {
-		p {
-			font-size: 22px;
-			padding: 20px 16px;
-		}
+	.by {
+		font-size: var(--t-meta);
+		color: var(--muted);
+		margin: var(--s-1) 0 0;
 	}
 </style>

@@ -3,9 +3,8 @@
 	import { page } from '$app/state';
 	import DisplaySettings from '$lib/components/chrome/DisplaySettings.svelte';
 	import SearchButton from '$lib/components/chrome/SearchButton.svelte';
-	import Tag from '$lib/components/ink/Tag.svelte';
 	import { LANG_COOKIE, LANG_COOKIE_MAX_AGE, href, setI18n, swapLocale } from '$lib/i18n';
-	import { reading } from '$lib/reading.svelte';
+	import { reading as prefs } from '$lib/reading.svelte';
 	import { search, searchHotkey } from '$lib/search.svelte';
 	import { site } from '$lib/site';
 	import type { Snippet } from 'svelte';
@@ -17,27 +16,40 @@
 	const i18n = setI18n(() => data.lang);
 
 	/**
-	 * The seven doors, in the production blog's order. Four of them are still
-	 * placeholder rooms — they are in the nav anyway, because the shape of the
-	 * site is part of what the header says.
+	 * Three doors (DESIGN.md §5.1). The archive is the home page; Glossary,
+	 * Resources and the Reading Room are reached from the footer and from the
+	 * essays that point at them — they are the appendix, not the front door.
 	 */
 	const nav = $derived([
-		{ path: '/writing', key: 'writing', label: i18n.t.nav.writing },
+		{ path: '', key: 'writing', label: i18n.t.nav.writing },
 		{ path: '/topics', key: 'topics', label: i18n.t.nav.topics },
-		{ path: '/series', key: 'series', label: i18n.t.nav.series },
-		{ path: '/glossary', key: 'glossary', label: i18n.t.nav.glossary },
-		{ path: '/resources', key: 'resources', label: i18n.t.nav.resources },
-		{ path: '/reading-room', key: 'readingRoom', label: i18n.t.nav.readingRoom },
 		{ path: '/about', key: 'about', label: i18n.t.nav.about }
 	]);
 
-	// The locale root counts as writing — it *is* the index.
+	// The locale root and every essay count as writing — the root *is* the
+	// archive. Topics covers the series too: an arc is a topic with an order.
 	const current = $derived.by(() => {
 		const p = page.url.pathname.replace(/^\/(en|vi)/, '') || '/';
 		if (p === '/' || p.startsWith('/writing')) return 'writing';
-		const hit = nav.find((n) => n.path !== '/writing' && p.startsWith(n.path));
-		return hit?.key ?? '';
+		if (p.startsWith('/topics') || p.startsWith('/series')) return 'topics';
+		if (p.startsWith('/about')) return 'about';
+		return '';
 	});
+
+	/**
+	 * On an essay the header steps aside while you read down and comes back the
+	 * moment you scroll up (DESIGN.md §8): 56px is 7% of a phone screen, and it
+	 * is not what anyone is reading. Everywhere else it stays.
+	 */
+	const reading = $derived(!!page.data.meta);
+	let tucked = $state(false);
+	let lastY = 0;
+	function onScroll() {
+		const y = window.scrollY;
+		if (Math.abs(y - lastY) < 6) return;
+		tucked = reading && y > lastY && y > 120;
+		lastY = y;
+	}
 
 	// On an article, the switch goes to that essay's translation (a different
 	// slug); everywhere else the same page in the other locale.
@@ -49,14 +61,13 @@
 	// build no longer follows a link to a 404.
 	const switchHref = $derived.by(() => {
 		if (page.data.translation) return href(i18n.other, `/writing/${page.data.translation.slug}`);
-		if (page.data.meta) return href(i18n.other, '/writing');
+		if (page.data.meta) return href(i18n.other);
 		return swapLocale(page.url.pathname, i18n.other);
 	});
 
 	/** Only a real translation is an alternate; the archive is a way out, not one. */
 	const alternate = $derived(page.data.meta && !page.data.translation ? null : switchHref);
 
-	const foot = $derived(page.data.foot ?? site.domain);
 
 	/**
 	 * Remember which edition the reader is actually reading, so `/` can send
@@ -74,7 +85,7 @@
 	 * The blocking script in `app.html` has already painted them; this is the
 	 * store catching up with what the page is showing.
 	 */
-	$effect(() => reading.hydrate());
+	$effect(() => prefs.hydrate());
 </script>
 
 <svelte:head>
@@ -91,10 +102,10 @@
 	/>
 </svelte:head>
 
-<svelte:window onkeydown={searchHotkey} />
+<svelte:window onkeydown={searchHotkey} onscroll={onScroll} />
 
 <div class="root">
-	<header>
+	<header class:tucked>
 		<a class="wordmark" href={href(data.lang)}>{site.name}<span class="dot">.</span></a>
 		<nav>
 			{#each nav as item (item.key)}
@@ -106,11 +117,15 @@
 				>
 			{/each}
 		</nav>
-		<div class="slot">
+		<div class="tools">
 			<SearchButton />
-			<span class="divider"></span>
-			<a class="locale" href={switchHref} hreflang={i18n.other} rel="alternate"
-				>{i18n.t.locale.switch}</a
+			<a
+				class="locale"
+				href={switchHref}
+				hreflang={i18n.other}
+				rel="alternate"
+				aria-label={i18n.t.locale.switch}
+				title={i18n.t.locale.switch}>{i18n.t.locale.code}</a
 			>
 			<DisplaySettings />
 		</div>
@@ -129,9 +144,12 @@
 	{/if}
 
 	<footer>
-		<Tag>{foot}</Tag>
-		<Tag>{i18n.t.footer.tagline}</Tag>
-		<Tag>{site.copyright}</Tag>
+		<span>{site.copyright} {site.name}</span>
+		<a href={href(data.lang, '/glossary')}>{i18n.t.nav.glossary}</a>
+		<a href={href(data.lang, '/resources')}>{i18n.t.nav.resources}</a>
+		<a href={href(data.lang, '/reading-room')}>{i18n.t.nav.readingRoom}</a>
+		<a href={href(data.lang, '/about')}>{i18n.t.nav.about}</a>
+		<a href={href(data.lang, '/feed.xml')}>{i18n.t.footer.rss}</a>
 	</footer>
 </div>
 
@@ -145,28 +163,37 @@
 		position: relative;
 	}
 
-	/* 3-slot header on a 1.5px rule: wordmark · centred MONO nav · tools (§7).
-	   Sticky, on solid paper, so the rule stays the site's top edge. */
+	/* One row, 56px, on a 1.5px rule: wordmark · nav · tools (DESIGN.md §8).
+	   Sticky on solid paper, so the rule stays the site's top edge. */
 	header {
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
+		display: flex;
 		align-items: center;
-		gap: 20px;
-		padding: 18px var(--pad-chrome);
+		gap: var(--s-3);
+		height: 56px;
+		padding: 0 var(--pad-chrome);
 		background: var(--paper);
 		border-bottom: 1.5px solid var(--rule-hard);
+		transition: transform 0.2s ease;
+	}
+	header.tucked {
+		transform: translateY(-100%);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		header {
+			transition: none;
+		}
 	}
 
 	.wordmark {
-		font-family: var(--display);
-		font-weight: 700;
-		font-size: 19px;
-		letter-spacing: -0.03em;
+		font-family: var(--body);
+		font-weight: 600;
+		font-size: var(--t-body);
 		color: var(--ink);
 		text-decoration: none;
+		white-space: nowrap;
 	}
 	.wordmark:hover {
 		text-decoration: none;
@@ -175,64 +202,53 @@
 		color: var(--blue);
 	}
 
-	/* Hover = colour flip to blue, no motion. Active = blue + blue underline. */
 	nav {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		gap: 4px;
-		flex-wrap: wrap;
+		gap: var(--s-2);
+		flex: 1;
+		min-width: 0;
 	}
 	.navlink {
 		position: relative;
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-size: var(--t-meta);
+		font-weight: 500;
 		white-space: nowrap;
 		color: var(--muted);
 		text-decoration: none;
-		padding: 4px 8px;
-		transition: color 0.12s;
+		padding: 4px 0;
 	}
 	.navlink:hover {
 		color: var(--blue);
 		text-decoration: none;
 	}
 	.active {
-		color: var(--blue);
+		color: var(--ink);
 	}
 	.active::after {
 		content: '';
 		position: absolute;
-		left: 8px;
-		right: 8px;
+		left: 0;
+		right: 0;
 		bottom: -2px;
 		height: 1.5px;
 		background: var(--blue);
 	}
 
-	.slot {
-		justify-self: end;
+	.tools {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-	}
-	.divider {
-		width: 1px;
-		height: 14px;
-		background: var(--rule);
-		margin: 0 2px;
+		gap: var(--s-1);
 	}
 	.locale {
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.05em;
-		line-height: 1;
+		display: grid;
+		place-items: center;
+		min-width: 32px;
+		height: 32px;
+		font-size: var(--t-meta);
+		font-weight: 500;
 		color: var(--muted);
-		padding: 4px 8px;
 		text-decoration: none;
-		transition: color 0.15s;
 	}
 	.locale:hover {
 		color: var(--blue);
@@ -243,36 +259,36 @@
 		flex: 1;
 	}
 
-	/* Full-bleed, like the header: the inset is padding, not margin, so the rule
-	   runs the whole width of the screen instead of stopping at the measure. */
+	/* One row of words, full bleed like the header (DESIGN.md §7.8). */
 	footer {
-		border-top: 1.5px solid var(--rule-hard);
-		padding: 16px var(--pad-chrome) 22px;
 		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 16px;
+		flex-wrap: wrap;
+		gap: var(--s-1) var(--s-2);
+		padding: var(--s-2) var(--pad-chrome) var(--s-3);
+		border-top: 1.5px solid var(--rule-hard);
+		font-size: var(--t-meta);
+		color: var(--muted);
+	}
+	footer a {
+		color: var(--muted);
+	}
+	footer a:hover {
+		color: var(--blue);
 	}
 
-	/* Seven doors plus three tools need the width; below it the nav drops to its
-	   own row, left-aligned, and the rule still closes the header. */
-	@media (max-width: 1180px) {
+	@media (max-width: 860px) {
 		header {
-			grid-template-columns: 1fr auto;
-			row-gap: 12px;
-			padding: 14px 18px;
+			gap: var(--s-2);
+			padding: 0 var(--s-2);
+		}
+		.wordmark {
+			font-size: var(--t-meta);
 		}
 		nav {
-			grid-row: 2;
-			grid-column: 1 / -1;
-			justify-content: flex-start;
-			gap: 2px;
-			margin-left: -8px;
+			gap: 12px;
 		}
 		footer {
-			padding: 16px 18px 22px;
-			flex-direction: column;
-			gap: 6px;
+			padding: var(--s-2) var(--s-2) 80px;
 		}
 	}
 </style>

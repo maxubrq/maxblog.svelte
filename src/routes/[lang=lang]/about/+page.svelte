@@ -40,9 +40,6 @@
 		     locale at any headline size. -->
 		<Headline
 			text={t.about.heading}
-			accent={t.about.headingAccent}
-			mark="underline"
-			size={52}
 		/>
 	</div>
 	<div class="ink-screen portrait">
@@ -157,7 +154,7 @@
 		padding-right: var(--pad-chrome);
 	}
 	.measure p {
-		font-size: 18px;
+		font-size: var(--t-body);
 		line-height: 1.62;
 		margin: 0 0 1.2em;
 	}
@@ -165,11 +162,9 @@
 		font-weight: 600;
 	}
 	h2 {
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 700;
-		font-size: 24px;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
+		font-size: var(--t-h2);
 		margin: 1.4em 0 0.7em;
 	}
 
@@ -201,7 +196,7 @@
 	}
 	.blurb {
 		display: block;
-		font-size: 18px;
+		font-size: var(--t-body);
 		line-height: 1.45;
 		margin-top: 6px;
 	}
@@ -235,11 +230,9 @@
 	}
 	.door-title {
 		display: block;
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 700;
-		font-size: 24px;
-		letter-spacing: -0.03em;
-		text-transform: lowercase;
+		font-size: var(--t-h2);
 		line-height: 1;
 		color: var(--blue);
 	}
@@ -247,7 +240,7 @@
 	   under AA for text this size. */
 	.door-blurb {
 		display: block;
-		font-size: 18px;
+		font-size: var(--t-body);
 		line-height: 1.5;
 		color: var(--ink);
 		margin-top: 8px;
@@ -272,16 +265,16 @@
 		border-top: 1px solid var(--rule);
 	}
 	.elsewhere a {
-		font-family: var(--mono);
-		font-size: 13px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 
 	/* Qualified by the element, or `.measure p` outranks it and the sign-off
 	   prints at 18px like body copy — which is what was happening, and why the
 	   margin below used to need `!important` to be heard at all. */
 	.measure p.thanks {
-		font-family: var(--mono);
-		font-size: 13px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		line-height: 1.6;
 		color: var(--ink);
 		border-top: 1.5px solid var(--rule-hard);

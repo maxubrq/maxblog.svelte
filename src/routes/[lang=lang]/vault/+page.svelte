@@ -56,10 +56,6 @@
 	</div>
 	<Headline
 		text="{t.titleLead} {t.titleAccent}."
-		accent={t.titleAccent}
-		mark="scribble"
-		size={84}
-		markWidth={240}
 	/>
 	<p class="deck">{t.description}</p>
 </section>
@@ -177,15 +173,13 @@
 		margin-bottom: 14px;
 	}
 	.back {
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 	.deck {
 		margin: 22px 0 0;
-		font-size: 16.5px;
+		font-size: var(--t-body);
 		line-height: 1.55;
 		color: var(--muted);
 		max-width: 58ch;
@@ -202,10 +196,8 @@
 		border-right: 1px solid var(--rule);
 		background: none;
 		color: var(--ink);
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.09em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		padding: 13px 4px;
 		cursor: pointer;
 	}
@@ -246,8 +238,7 @@
 	.numeral {
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: clamp(32px, 5vw, 46px);
-		letter-spacing: -0.03em;
+		font-size: var(--t-title);
 		line-height: 0.9;
 		color: var(--blue);
 	}
@@ -259,10 +250,8 @@
 		border: 1.5px solid var(--rule-hard);
 		background: none;
 		color: var(--ink);
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		padding: 6px 10px;
 		cursor: pointer;
 	}
@@ -345,12 +334,10 @@
 		gap: 8px;
 	}
 	.title {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 600;
-		font-size: 18px;
-		letter-spacing: -0.02em;
+		font-size: var(--t-body);
 		line-height: 1.1;
-		text-transform: lowercase;
 		transition: color 0.12s ease;
 	}
 	.entry:hover .title {
@@ -358,8 +345,8 @@
 	}
 	/* The ↗ only shows up once you are on the entry that carries the link. */
 	.arrow {
-		font-family: var(--mono);
-		font-size: 13px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		flex-shrink: 0;
 		opacity: 0;
@@ -371,15 +358,15 @@
 	}
 	.by {
 		display: block;
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		margin: 3px 0 7px;
 	}
 	.note {
 		display: block;
 		font-style: italic;
-		font-size: 13.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		max-width: 56ch;
 	}
@@ -390,7 +377,7 @@
 		background: none;
 		color: var(--muted);
 		font-style: italic;
-		font-size: 14px;
+		font-size: var(--t-meta);
 		cursor: pointer;
 		padding: 6px 0;
 		text-align: left;
@@ -403,8 +390,8 @@
 		margin: 10px 0 0;
 		padding-top: 16px;
 		border-top: 1.5px solid var(--rule-hard);
-		font-family: var(--mono);
-		font-size: 11.5px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		line-height: 1.6;
 		color: var(--muted);
 	}

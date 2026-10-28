@@ -68,7 +68,7 @@
 		>
 		<Tag>{series.volume}</Tag>
 	</div>
-	<Headline text={local.title} accent="" size={62} />
+	<Headline text={local.title} />
 	<p class="deck">{local.subtitle}</p>
 
 	<!-- The contract for the whole arc: what it costs, and how far in you are.
@@ -200,7 +200,7 @@
 	}
 	.deck {
 		max-width: 56ch;
-		font-size: 17px;
+		font-size: var(--t-body);
 		line-height: 1.55;
 		color: var(--muted);
 		margin: 20px 0 24px;
@@ -220,23 +220,19 @@
 		border-left: none;
 	}
 	.k {
-		font-family: var(--mono);
-		font-size: 9px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 		margin-bottom: 4px;
 	}
 	.v {
-		font-family: var(--mono);
-		font-size: 13px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 
 	.kicker {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		margin-bottom: 20px;
 	}
@@ -274,9 +270,9 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 700;
-		font-size: 14px;
+		font-size: var(--t-meta);
 		border: 2px solid var(--rule);
 		color: var(--muted);
 	}
@@ -321,19 +317,17 @@
 		border-bottom: 1px solid var(--rule);
 	}
 	.where {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.is-current .where {
 		color: var(--blue);
 	}
 	.cost {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 		white-space: nowrap;
 	}
 	.card-body {
@@ -342,11 +336,9 @@
 	}
 	.part-title {
 		display: block;
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 600;
-		font-size: 22px;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
+		font-size: var(--t-h2);
 		line-height: 1.05;
 	}
 	a.card:hover .part-title {
@@ -354,7 +346,7 @@
 	}
 	.note {
 		display: block;
-		font-size: 14px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		margin-top: 7px;
@@ -375,10 +367,8 @@
 		flex-wrap: wrap;
 		padding: 10px 16px;
 		border-bottom: 1px solid color-mix(in srgb, var(--on-blue) 25%, transparent);
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 	.carry {
 		opacity: 0.8;
@@ -393,16 +383,14 @@
 		color: color-mix(in srgb, var(--on-blue) 75%, transparent);
 	}
 	.left-off {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 500;
-		font-size: 19px;
+		font-size: var(--t-body);
 		line-height: 1.25;
-		letter-spacing: -0.01em;
 		margin: 0;
-		text-transform: lowercase;
 	}
 	.carry-text {
-		font-size: 15px;
+		font-size: var(--t-meta);
 		line-height: 1.55;
 		margin: 0;
 		opacity: 0.95;
@@ -410,10 +398,8 @@
 	.enter {
 		display: inline-block;
 		margin-top: 14px;
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--panel-blue);
 		background: var(--on-blue);
 		padding: 11px 16px;
@@ -439,8 +425,8 @@
 		padding: 5px 0;
 	}
 	.thread-label {
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		min-width: 130px;
 	}
@@ -465,7 +451,7 @@
 		background: var(--blue);
 	}
 	.letter p {
-		font-size: 14.5px;
+		font-size: var(--t-meta);
 		line-height: 1.6;
 		margin: 0 0 12px;
 	}

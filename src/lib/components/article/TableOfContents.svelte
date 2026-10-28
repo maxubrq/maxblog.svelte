@@ -120,7 +120,7 @@
 <style>
 	aside {
 		font-family: var(--body);
-		font-size: 14px;
+		font-size: var(--t-meta);
 		width: 100%;
 	}
 
@@ -133,16 +133,13 @@
 		border-bottom: 1px solid var(--rule);
 	}
 	.label {
-		font-family: var(--mono);
-		text-transform: uppercase;
-		letter-spacing: 0.14em;
-		font-size: 10.5px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.left {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.04em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 
@@ -201,10 +198,9 @@
 	}
 
 	.num {
-		font-family: var(--mono);
-		letter-spacing: 0.06em;
-		font-size: 10px;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 	}
 	a.active .num,
 	a.active .min {
@@ -215,10 +211,10 @@
 		text-decoration-color: var(--rule);
 	}
 	.min {
-		font-family: var(--mono);
+		font-family: var(--body);
 		font-variant-numeric: tabular-nums;
 		color: var(--muted);
-		font-size: 10px;
+		font-size: var(--t-meta);
 	}
 
 	.foot {
@@ -228,15 +224,12 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
-		font-family: var(--mono);
-		font-size: 10px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
-		text-transform: uppercase;
-		letter-spacing: 0.14em;
 	}
 	.foot-value {
 		font-variant-numeric: tabular-nums;
-		letter-spacing: 0.04em;
 		color: var(--ink);
 	}
 </style>

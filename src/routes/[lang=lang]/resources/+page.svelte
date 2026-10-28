@@ -10,7 +10,7 @@
 	 * what a reader is looking for — a word is looked up alphabetically, a
 	 * source by subject — so this one groups by topic and has no A–Z.
 	 */
-	import ArrowMark from '$lib/components/ink/ArrowMark.svelte';
+	import Headline from '$lib/components/ink/Headline.svelte';
 	import ResourceCover from '$lib/components/ink/ResourceCover.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
 	import { pad } from '$lib/format';
@@ -47,7 +47,6 @@
 	);
 
 	/** The demo reads the unfiltered list, so it stays put while you filter. */
-	const featured = $derived(available.find((r) => cited(r).length > 0) ?? available[0]);
 
 	const visible = $derived(
 		available
@@ -82,12 +81,11 @@
 
 	const topicLabel = (topic: ResourceTopic) => t.resourceTopics[topic];
 	const plural = (n: number) => (n === 1 ? t.resource : t.resources);
-	const essayWord = (n: number) => (n === 1 ? t.essay : t.essays);
 	const counts = $derived(new Map(grouped.map((g) => [g.topic, g.items.length])));
 </script>
 
 <svelte:head>
-	<title>{t.titleLead} {t.titleAccent} — {site.name}</title>
+	<title>{[t.titleLead, t.titleAccent].filter(Boolean).join(' ')} — {site.name}</title>
 	<meta name="description" content={t.description} />
 </svelte:head>
 
@@ -96,46 +94,10 @@
 		<Tag>{t.indexLabel}</Tag>
 		<Tag>{visible.length} {plural(visible.length)}</Tag>
 	</div>
-	<h1>
-		{#if t.titleLead}{t.titleLead}{' '}{/if}<span class="accent">{t.titleAccent}</span>
-	</h1>
+	<Headline text={[t.titleLead, t.titleAccent].filter(Boolean).join(' ')} />
 	<p class="deck">{t.description}</p>
 </section>
 
-{#if featured}
-	<!-- The card, shown beside the sentence that cites it. Built from a real
-	     entry so the page never demonstrates a source it does not hold. -->
-	<section class="demo">
-		<div class="demo-label"><Tag on>{t.demoLabel}</Tag></div>
-		<div class="ink-gloss-demo">
-			<p class="sentence">
-				{t.demoLead}
-				<span class="cite">{featured.title}<span class="numeral">[01]</span></span>{t.demoTail}
-			</p>
-
-			<div class="card">
-				<ArrowMark dir="left" class="ink-gloss-arrow" left={-46} top={18} w={42} />
-				<Tag on>{t.sourceTag}</Tag>
-				<div class="card-head">
-					<div class="card-title">{featured.title}</div>
-					<ResourceCover src={featured.coverImage} title={featured.title} width={54} />
-				</div>
-				<div class="card-meta">
-					{featured.author}{featured.year ? ` · ${featured.year}` : ''}
-				</div>
-				<div class="card-foot">
-					<Tag>
-						{fill(t.citedInCount, {
-							count: cited(featured).length,
-							essays: essayWord(cited(featured).length)
-						})}
-					</Tag>
-					<a href="#res-{featured.topic}">{t.fullEntry}</a>
-				</div>
-			</div>
-		</div>
-	</section>
-{/if}
 
 <section class="controls">
 	<input class="search" type="search" bind:value={query} placeholder={t.searchPlaceholder} />
@@ -238,88 +200,12 @@
 		justify-content: space-between;
 		gap: 12px;
 	}
-	h1 {
-		font-size: clamp(40px, 7vw, 64px);
-		line-height: 0.94;
-		letter-spacing: -0.045em;
-		margin: 12px 0 0;
-	}
-	.accent {
-		color: var(--blue);
-	}
 	.deck {
 		max-width: 58ch;
-		font-size: 16px;
+		font-size: var(--t-body);
 		line-height: 1.5;
 		color: var(--muted);
 		margin: 18px 0 0;
-	}
-
-	.demo {
-		padding: 30px var(--pad-chrome) 34px;
-		border-bottom: 1.5px solid var(--rule-hard);
-		background: var(--paper2);
-	}
-	.demo-label {
-		margin-bottom: 16px;
-	}
-	.sentence {
-		margin: 0;
-		font-size: 20px;
-		line-height: 1.62;
-		max-width: 46ch;
-	}
-	.cite {
-		font-weight: 500;
-	}
-	.numeral {
-		font-family: var(--mono);
-		font-size: 0.62em;
-		vertical-align: super;
-		color: var(--blue);
-		margin: 0 1px;
-	}
-	.card {
-		position: relative;
-		border: 1.5px solid var(--rule-hard);
-		background: var(--paper);
-		padding: 18px 20px;
-	}
-	.card-head {
-		display: flex;
-		gap: 14px;
-		align-items: flex-start;
-		margin: 6px 0;
-	}
-	.card-title {
-		flex: 1;
-		min-width: 0;
-		font-family: var(--display);
-		font-weight: 700;
-		font-size: 20px;
-		letter-spacing: -0.02em;
-		line-height: 1.1;
-	}
-	.card-meta {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.06em;
-		color: var(--muted);
-		margin-bottom: 10px;
-	}
-	.card-foot {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 12px;
-		flex-wrap: wrap;
-		border-top: 1px solid var(--rule);
-		padding-top: 10px;
-	}
-	.card-foot a {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.06em;
 	}
 
 	.controls {
@@ -338,7 +224,7 @@
 		border-bottom: 1.5px solid var(--rule);
 		padding: 8px 0;
 		font-family: var(--body);
-		font-size: 16px;
+		font-size: var(--t-body);
 		color: var(--ink);
 		outline: none;
 	}
@@ -355,11 +241,9 @@
 		border: none;
 		padding: 0;
 		cursor: pointer;
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		font-weight: 500;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
 		color: var(--muted);
 	}
 	.topic:hover,
@@ -374,8 +258,8 @@
 		flex-wrap: wrap;
 		padding: 18px var(--pad-chrome);
 		border-bottom: 1.5px solid var(--rule-hard);
-		font-family: var(--mono);
-		font-size: 13px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 	.jump :global(.tag) {
 		margin-right: 14px;
@@ -383,13 +267,12 @@
 	.jump a,
 	.jump .off {
 		padding: 2px 8px;
-		letter-spacing: 0.06em;
 	}
 	.jump .off {
-		color: var(--faint);
+		color: var(--muted);
 	}
 	.n {
-		color: var(--faint);
+		color: var(--muted);
 		margin-left: 6px;
 	}
 
@@ -411,8 +294,8 @@
 	}
 	.group-head h2 {
 		margin: 0;
-		font-size: clamp(34px, 6vw, 56px);
-		color: var(--faint);
+		font-size: var(--t-title);
+		color: var(--muted);
 		line-height: 0.9;
 	}
 	.rule {
@@ -422,9 +305,9 @@
 	}
 
 	.num {
-		font-family: var(--mono);
-		font-size: 12px;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 		padding-top: 4px;
 	}
 	.body {
@@ -432,8 +315,7 @@
 	}
 	h3 {
 		margin: 0;
-		font-size: 19px;
-		letter-spacing: -0.02em;
+		font-size: var(--t-body);
 		line-height: 1.15;
 		text-transform: none;
 	}
@@ -453,15 +335,14 @@
 		margin-top: 8px;
 	}
 	.author {
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.06em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		margin-top: 8px;
 	}
 	.note {
 		margin: 8px 0 0;
-		font-size: 13.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		max-width: 44ch;
@@ -474,7 +355,7 @@
 		align-items: baseline;
 	}
 	.appears a {
-		font-size: 13px;
+		font-size: var(--t-meta);
 		color: var(--ink);
 		border-bottom: 1.5px solid var(--blue);
 		padding-bottom: 1px;
@@ -488,16 +369,13 @@
 		margin: 48px var(--pad-chrome) 0;
 		padding: 24px 0 80px;
 		border-top: 1.5px solid var(--rule-hard);
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 
 	@media (max-width: 860px) {
 		.masthead,
-		.demo,
 		.controls,
 		.jump,
 		.group {

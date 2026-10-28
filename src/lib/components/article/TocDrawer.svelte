@@ -114,8 +114,8 @@
 		border: none;
 		cursor: pointer;
 		color: var(--muted);
-		font-family: var(--mono);
-		font-size: 16px;
+		font-family: var(--body);
+		font-size: var(--t-body);
 		line-height: 1;
 		padding: 4px;
 	}

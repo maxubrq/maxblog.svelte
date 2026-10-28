@@ -1,5 +1,6 @@
 <script lang="ts">
-	// The MONO uppercase micro-label — the workhorse of the theme (§7).
+	// The label — 13px text face, sentence case, muted (DESIGN.md §3.2). `on`
+	// turns it blue, which is reserved for a label that is also a signal.
 	import type { Snippet } from 'svelte';
 
 	let {
@@ -10,9 +11,9 @@
 	}: {
 		on?: boolean;
 		/**
-		 * A tag is a micro-label and never breaks — except in a caption slot,
-		 * where the "tag" is a whole sentence and nowrap would run it out past
-		 * the plate's border.
+		 * Kept for callers that pass it; a label may break anywhere now. At 13px
+		 * a nowrap label is wide enough to run a phone sideways (DESIGN.md D14),
+		 * so `wrap` only adds the looser leading a sentence-long caption wants.
 		 */
 		wrap?: boolean;
 		children: Snippet;
@@ -24,18 +25,15 @@
 
 <style>
 	.tag {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
-		white-space: nowrap;
+		overflow-wrap: anywhere;
 	}
 	.on {
 		color: var(--blue);
 	}
 	.wrap {
-		white-space: normal;
 		line-height: 1.85;
 	}
 </style>

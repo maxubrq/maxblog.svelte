@@ -2,7 +2,6 @@
 	// The hub — the doorways. Hover flips the whole cell to solid blue (§8).
 	import Headline from '$lib/components/ink/Headline.svelte';
 	import Tag from '$lib/components/ink/Tag.svelte';
-	import { pad } from '$lib/format';
 	import { href, useI18n } from '$lib/i18n';
 	import { site } from '$lib/site';
 	import { TOPIC_CONTENT, getTopicLocale } from '$lib/topics';
@@ -21,98 +20,81 @@
 </script>
 
 <svelte:head>
-	<title>{t.nav.topics.toLowerCase()} — {site.name}</title>
+	<title>{t.nav.topics} — {site.name}</title>
 	<meta name="description" content={t.topics.hubIndex} />
 </svelte:head>
 
 <section class="head">
 	<Tag>{t.topics.hubIndex} / {data.doorways.length} {t.topics.doorways}</Tag>
-	<Headline text={t.topics.hubTitle} accent={t.topics.hubTitleAccent} size={60} />
+	<Headline text={t.topics.hubTitle} />
 </section>
 
 <section class="grid">
-	{#each doors as d, i (d.id)}
+	<!-- A topic with nothing in it yet is not offered (DESIGN.md §7.4). -->
+	{#each doors.filter((d) => d.count > 0) as d (d.id)}
 		<a class="door" href={href(i18n.lang, `/topics/${d.id}`)}>
-			<div class="row">
-				<span class="num">{pad(i + 1)}</span>
-				<Tag>{d.count} {d.count === 1 ? t.topics.essay : t.topics.essays}</Tag>
-			</div>
 			<h2>{d.name}</h2>
 			<p>{d.tagline}</p>
+			<Tag>{d.count} {d.count === 1 ? t.topics.essay : t.topics.essays}</Tag>
 		</a>
 	{/each}
 </section>
 
 <style>
 	.head {
-		padding: 44px var(--pad-chrome) 24px;
-		border-bottom: 1.5px solid var(--rule-hard);
+		max-width: var(--index-max);
+		margin: 0 auto;
+		padding: var(--s-3) var(--pad-chrome) var(--s-2);
 	}
 	.head :global(h1) {
-		margin-top: 14px;
+		margin-top: var(--s-1);
 	}
 	.grid {
+		max-width: var(--index-max);
+		margin: 0 auto;
+		padding: 0 var(--pad-chrome) var(--s-4);
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		column-gap: var(--s-3);
 	}
+	/* Hover turns the name blue, as everywhere else — a solid blue cell was
+	   louder than anything inside it. */
 	.door {
-		padding: 26px 24px 32px;
+		display: block;
+		padding: var(--s-3) 0;
 		color: var(--ink);
 		text-decoration: none;
-		border-right: 1.5px solid var(--rule-hard);
-		border-bottom: 1.5px solid var(--rule-hard);
-	}
-	.door:nth-child(2n) {
-		border-right: none;
+		border-top: 1.5px solid var(--rule-hard);
 	}
 	.door:hover {
-		background: var(--panel-blue);
-		color: var(--on-blue);
 		text-decoration: none;
 	}
-	.door:hover p,
-	.door:hover :global(.tag),
-	.door:hover .num {
-		color: var(--on-blue);
-	}
-	.row {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		margin-bottom: 34px;
-	}
-	.num {
-		font-family: var(--mono);
-		font-size: 13px;
-		color: var(--faint);
+	.door:hover h2 {
+		color: var(--blue);
 	}
 	h2 {
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: 46px;
-		letter-spacing: -0.04em;
-		line-height: 1;
-		margin: 0 0 12px;
-		text-transform: lowercase;
+		font-size: var(--t-title);
+		line-height: 1.1;
+		margin: 0 0 var(--s-1);
 	}
 	p {
-		font-size: 14.5px;
-		line-height: 1.5;
 		color: var(--muted);
-		margin: 0;
+		margin: 0 0 var(--s-1);
 		max-width: 42ch;
 	}
 	@media (max-width: 860px) {
-		.head {
-			padding-left: 18px;
-			padding-right: 18px;
+		.head,
+		.grid {
+			padding-left: var(--s-2);
+			padding-right: var(--s-2);
 		}
 		.grid {
 			grid-template-columns: 1fr;
 		}
-		.door {
-			border-right: none;
-			padding: 22px 18px 26px;
+		h2 {
+			font-size: 32px;
 		}
 	}
 </style>

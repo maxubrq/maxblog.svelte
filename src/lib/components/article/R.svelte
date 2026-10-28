@@ -93,7 +93,7 @@
 		cursor: help;
 	}
 	.numeral {
-		font-family: var(--mono);
+		font-family: var(--body);
 		font-size: 0.62em;
 		vertical-align: super;
 		color: var(--blue);
@@ -116,10 +116,8 @@
 		text-align: left;
 	}
 	.kind {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 	.head {
@@ -131,23 +129,21 @@
 	.title {
 		flex: 1;
 		min-width: 0;
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 700;
-		font-size: 17px;
-		letter-spacing: -0.02em;
+		font-size: var(--t-body);
 		line-height: 1.15;
 	}
 	.meta {
 		display: block;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.06em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.note {
 		display: block;
 		font-family: var(--body);
-		font-size: 12.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--ink);
 		margin-top: 8px;
@@ -161,9 +157,8 @@
 		padding-top: 8px;
 	}
 	.foot a {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.06em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 </style>

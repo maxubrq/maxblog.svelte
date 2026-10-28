@@ -25,15 +25,13 @@
 		margin-bottom: 12px;
 	}
 	.k {
-		font-family: var(--mono);
-		font-size: 9.5px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.v {
-		font-family: var(--mono);
-		font-size: 12px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--ink);
 		margin-top: 2px;
 	}

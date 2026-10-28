@@ -324,11 +324,9 @@
 		flex-wrap: wrap;
 	}
 	.wordmark {
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 700;
-		font-size: 22px;
-		letter-spacing: -0.03em;
-		text-transform: lowercase;
+		font-size: var(--t-h2);
 	}
 
 	.filters {
@@ -353,10 +351,8 @@
 		border-radius: 0;
 		background: transparent;
 		color: var(--ink);
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		padding: 6px 30px 6px 11px;
 		max-width: min(70vw, 460px);
 		cursor: pointer;
@@ -370,7 +366,7 @@
 	.caret {
 		position: absolute;
 		right: 11px;
-		font-size: 10px;
+		font-size: var(--t-meta);
 		color: var(--muted);
 		pointer-events: none;
 	}
@@ -393,9 +389,8 @@
 	.n {
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: 40px;
+		font-size: var(--t-title);
 		line-height: 1;
-		letter-spacing: -0.03em;
 		color: var(--blue);
 		margin-bottom: 8px;
 	}
@@ -413,7 +408,7 @@
 		border-right: 1.5px solid var(--rule-hard);
 	}
 	.note {
-		font-size: 13px;
+		font-size: var(--t-meta);
 		line-height: 1.4;
 		color: var(--muted);
 		margin: 8px 0 14px;
@@ -439,14 +434,14 @@
 		margin-bottom: 5px;
 	}
 	.quote {
-		font-family: var(--display);
-		font-size: 13.5px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		line-height: 1.3;
 		max-width: 34ch;
 	}
 	.count {
-		font-family: var(--mono);
-		font-size: 12px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 	.bar {
@@ -458,10 +453,8 @@
 		background: var(--blue);
 	}
 	.warn {
-		font-family: var(--mono);
-		font-size: 9.5px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		margin-top: 4px;
 	}
@@ -484,7 +477,7 @@
 		border-left: 3px solid var(--blue);
 	}
 	.against {
-		font-size: 12.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		border-left: 1px solid var(--rule);
@@ -492,9 +485,9 @@
 		margin: 0 0 10px;
 	}
 	.said {
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 500;
-		font-size: 16px;
+		font-size: var(--t-body);
 		line-height: 1.4;
 		margin: 0 0 12px;
 		text-wrap: pretty;
@@ -523,10 +516,8 @@
 		background: transparent;
 		padding: 0;
 		cursor: pointer;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 	.link.muted {
@@ -537,14 +528,14 @@
 	}
 
 	.quiet {
-		font-family: var(--mono);
-		font-size: 12px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		padding: 60px var(--pad-chrome);
 	}
 	.quiet.inline {
 		padding: 8px 0 0;
-		font-size: 11.5px;
+		font-size: var(--t-meta);
 	}
 
 	@media (max-width: 860px) {

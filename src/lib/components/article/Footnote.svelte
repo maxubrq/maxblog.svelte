@@ -24,7 +24,7 @@
 		background: none;
 		border: none;
 		padding: 0 1px;
-		font-family: var(--mono);
+		font-family: var(--body);
 		font-size: 0.7em;
 		vertical-align: super;
 		color: var(--blue);
@@ -36,14 +36,13 @@
 		margin: 14px 0 20px;
 		padding-top: 10px;
 		font-family: var(--body);
-		font-size: 14px;
+		font-size: var(--t-meta);
 		line-height: 1.55;
 		color: var(--muted);
 	}
 	.num {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.1em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		margin-right: 8px;
 	}

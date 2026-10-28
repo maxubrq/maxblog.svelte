@@ -91,7 +91,7 @@
 	);
 </script>
 
-<section class="head flow-hide">
+<section class="head">
 	<!-- Two columns, one row: what this page is and how to move through it on
 	     the left, where the piece stands on the right. One block rather than two
 	     stacked ones because the flag alone is short — beside a table of five
@@ -213,8 +213,8 @@
 		margin: 0;
 	}
 	dd {
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--ink);
 	}
 
@@ -245,41 +245,35 @@
 		margin-bottom: 6px;
 	}
 	.stamp {
-		font-family: var(--mono);
-		font-size: 12px;
-		letter-spacing: 0.08em;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 	}
 	.ago {
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.08em;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 	}
 	.said {
 		margin: 0;
 		font-family: var(--body);
-		font-size: 15px;
+		font-size: var(--t-meta);
 		line-height: 1.55;
 		color: var(--ink);
 		font-style: italic;
 	}
 	.unsaid {
 		margin: 0;
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 	}
 	.said-tag {
 		margin-left: 10px;
 		font-style: normal;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--faint);
+		font-family: var(--body);
+		font-size: var(--t-meta);
+		color: var(--muted);
 	}
 	.back {
 		border: 1.5px solid var(--blue);
@@ -287,10 +281,8 @@
 		color: var(--blue);
 		cursor: pointer;
 		padding: 8px 14px;
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 	.back:hover {
 		background: var(--blue);
@@ -310,10 +302,8 @@
 		color: var(--blue);
 		cursor: pointer;
 		padding: 8px 14px;
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 	}
 	.toggle.on {
 		background: var(--panel-blue);
@@ -322,14 +312,14 @@
 	.scars-say {
 		margin: 10px 0 0;
 		font-family: var(--body);
-		font-size: 14px;
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	del {
 		text-decoration: line-through;
 		text-decoration-color: var(--blue);
 		text-decoration-thickness: 1.5px;
-		color: var(--faint);
+		color: var(--muted);
 	}
 	ins {
 		text-decoration: none;

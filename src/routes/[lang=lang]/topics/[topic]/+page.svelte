@@ -182,7 +182,7 @@
 					name: local.name
 				})}
 			</h3>
-			<a href={href(i18n.lang, '/writing')}>{t.topics.everyEssay}</a>
+			<a href={href(i18n.lang)}>{t.topics.everyEssay}</a>
 		</div>
 		<ul>
 			{#each data.posts as p (p.slug)}
@@ -208,10 +208,8 @@
 		border-bottom: 1px solid var(--rule);
 	}
 	.siblings a {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.siblings a.on {
@@ -235,20 +233,17 @@
 	h1 {
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: clamp(52px, 11vw, 108px);
+		font-size: var(--t-title);
 		line-height: 0.9;
-		letter-spacing: -0.05em;
 		margin: 10px 0 0;
-		text-transform: lowercase;
 		color: var(--blue);
 	}
 	.tagline {
 		max-width: 52ch;
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 500;
-		font-size: 17px;
+		font-size: var(--t-body);
 		line-height: 1.5;
-		letter-spacing: -0.01em;
 		margin: 18px 0 0;
 	}
 
@@ -345,10 +340,8 @@
 	}
 	.sign {
 		margin-top: 20px;
-		font-family: var(--mono);
-		font-size: 11px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		text-align: right;
 	}
@@ -365,11 +358,9 @@
 	}
 	.section-head h2 {
 		margin: 0;
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 700;
-		font-size: 22px;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
+		font-size: var(--t-h2);
 	}
 
 	.starter {
@@ -388,20 +379,18 @@
 	.numeral {
 		font-family: var(--display);
 		font-weight: 700;
-		font-size: 34px;
+		font-size: var(--t-title);
 		line-height: 1;
-		letter-spacing: -0.02em;
-		color: var(--faint);
+		color: var(--muted);
 	}
 	.starter-body {
 		min-width: 0;
 	}
 	.starter-title {
 		display: block;
-		font-family: var(--display);
-		font-size: 22px;
+		font-family: var(--deck);
+		font-size: var(--t-h2);
 		font-weight: 500;
-		letter-spacing: -0.02em;
 		line-height: 1.15;
 		margin-bottom: 8px;
 	}
@@ -410,23 +399,21 @@
 	}
 	.forthcoming {
 		margin-left: 10px;
-		font-family: var(--mono);
-		font-size: 10px;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 	}
 	.why {
 		display: block;
 		font-style: italic;
-		font-size: 14.5px;
+		font-size: var(--t-meta);
 		line-height: 1.5;
 		color: var(--muted);
 		max-width: 54ch;
 	}
 	.mins {
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		white-space: nowrap;
 	}
@@ -451,11 +438,9 @@
 	}
 	.pad-body h3 {
 		margin: 0 0 20px;
-		font-family: var(--display);
+		font-family: var(--deck);
 		font-weight: 700;
-		font-size: 24px;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
+		font-size: var(--t-h2);
 	}
 	.pad-body ul {
 		margin: 0;
@@ -474,10 +459,8 @@
 		border-top: none;
 	}
 	.kind {
-		font-family: var(--mono);
-		font-size: 9.5px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		padding-top: 4px;
 	}
@@ -487,7 +470,7 @@
 	}
 	.pad-body p {
 		margin: 0;
-		font-size: 15.5px;
+		font-size: var(--t-body);
 		line-height: 1.55;
 	}
 
@@ -510,17 +493,13 @@
 	}
 	.tail-head h3 {
 		margin: 0;
-		font-family: var(--display);
+		font-family: var(--body);
 		font-weight: 700;
-		font-size: 20px;
-		letter-spacing: -0.02em;
-		text-transform: lowercase;
+		font-size: var(--t-body);
 	}
 	.tail-head a {
-		font-family: var(--mono);
-		font-size: 10.5px;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--blue);
 		white-space: nowrap;
 	}
@@ -543,14 +522,13 @@
 		text-decoration: none;
 	}
 	.tail-title {
-		font-family: var(--display);
-		font-size: 18px;
+		font-family: var(--body);
+		font-size: var(--t-body);
 		font-weight: 500;
-		letter-spacing: -0.02em;
 	}
 	.tail-meta {
-		font-family: var(--mono);
-		font-size: 11px;
+		font-family: var(--body);
+		font-size: var(--t-meta);
 		color: var(--muted);
 		white-space: nowrap;
 	}
